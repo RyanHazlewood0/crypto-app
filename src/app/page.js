@@ -1,3 +1,10 @@
+"use client";
+import Table from "./components/Table/Table";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <>
+      <Table />
+    </>
+  );
 }
