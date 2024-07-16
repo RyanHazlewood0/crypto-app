@@ -2,10 +2,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import CoinCount from "./assets/CoinCount";
-import Btc from "./assets/Btc";
-import Eth from "./assets/Eth";
-import TotalVol from "./assets/TotalVol";
+import CoinCount from "./svg/CoinCount";
+import Btc from "./svg/Btc";
+import Eth from "./svg/Eth";
+import TotalVol from "./svg/TotalVol";
 
 const MarketDataBarWrapper = styled.div`
   background: #1e1932;

@@ -1,5 +1,4 @@
 "use client";
-import { Inter } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -42,8 +41,6 @@ const PortfolioBtnContainer = styled.div`
   align-items: center;
 `;
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function RootLayout({ children }) {
   const [marketData, setMarketData] = useState({});
   const [hasError, setHasError] = useState(false);
@@ -84,9 +81,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={spaceGrotesk.className}>
         <MarketDataBar marketData={marketData} hasError={hasError} />
-        <BtnsContainer className={spaceGrotesk.className}>
+        <BtnsContainer>
           <CoinsBtnContainer>
             <Link href="/">Home</Link>
           </CoinsBtnContainer>
