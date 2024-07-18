@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
+import RedArrow from "./svg/RedArrow";
+import GreenArrow from "./svg/GreenArrow";
 
 const CoinTable = styled.table`
   max-width: 1440px;
@@ -36,6 +38,11 @@ const StyledTd = styled.td`
 
 const StyledTh = styled.th`
   padding: 5px 15px 5px 15px;
+`;
+
+const ArrowAndPercentContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Table = () => {
@@ -96,21 +103,45 @@ const Table = () => {
               <img
                 src={coin.image}
                 style={{
-                  width: "32px",
                   marginRight: "15px",
+                  width: "32px",
                 }}
               />
               {coin.name} ({coin.symbol.toUpperCase()})
             </NameAndImageContainer>
             <StyledTd>{abbreviateNumber(coin.current_price)}</StyledTd>
             <StyledTd>
-              {coin.price_change_percentage_1h_in_currency.toFixed(2)}
+              <ArrowAndPercentContainer>
+                {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                1 ? (
+                  <RedArrow />
+                ) : (
+                  <GreenArrow />
+                )}
+                {coin.price_change_percentage_1h_in_currency.toFixed(2)}
+              </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
-              {coin.price_change_percentage_24h_in_currency.toFixed(2)}
+              <ArrowAndPercentContainer>
+                {Math.sign(coin.price_change_percentage_24h_in_currency) !==
+                1 ? (
+                  <RedArrow />
+                ) : (
+                  <GreenArrow />
+                )}
+                {coin.price_change_percentage_24h_in_currency.toFixed(2)}
+              </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
-              {coin.price_change_percentage_7d_in_currency.toFixed(2)}
+              <ArrowAndPercentContainer>
+                {Math.sign(coin.price_change_percentage_7d_in_currency) !==
+                1 ? (
+                  <RedArrow />
+                ) : (
+                  <GreenArrow />
+                )}
+                {coin.price_change_percentage_7d_in_currency.toFixed(2)}
+              </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
               {abbreviateNumber(coin.market_cap)} /{" "}
