@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
@@ -45,6 +46,25 @@ const ArrowAndPercentContainer = styled.div`
   align-items: center;
 `;
 
+const LevelIndicatorOuter = styled.div`
+  display: flex;
+  height: 5px;
+  background-color: #40916c;
+  border-radius: 5px;
+`;
+
+const LevelIndicatorInner = styled.div`
+  height: 5px;
+  background-color: #30e0a1;
+  border-radius: 5px;
+`;
+
+const NumberSeparator = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+`;
+
 const Table = () => {
   const [hasError, setHasError] = useState(false);
   const [coins, setCoins] = useState([]);
@@ -59,6 +79,16 @@ const Table = () => {
     const formatted = scaled >= 100 ? scaled.toFixed(2) : scaled.toFixed(2);
     return `${formatted}${prefixes[magnitude]}`;
   }
+
+  const findSupplyLevel = (coin) => {
+    const progress = (coin.circulating_supply / coin.total_supply) * 100;
+    return progress;
+  };
+
+  const findVolumeLevel = (coin) => {
+    const progress = (coin.total_volume / coin.market_cap) * 100;
+    return progress;
+  };
 
   useEffect(() => {
     setHasError(false);
@@ -107,7 +137,9 @@ const Table = () => {
                   width: "32px",
                 }}
               />
-              {coin.name} ({coin.symbol.toUpperCase()})
+              <Link href={`/coin/${coin.id}`}>
+                {coin.name} ({coin.symbol.toUpperCase()})
+              </Link>
             </NameAndImageContainer>
             <StyledTd>{abbreviateNumber(coin.current_price)}</StyledTd>
             <StyledTd>
@@ -118,7 +150,18 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                {coin.price_change_percentage_1h_in_currency.toFixed(2)}
+                <div
+                  style={{
+                    color: `${
+                      Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                      1
+                        ? "#FE2264"
+                        : "#01F1E3"
+                    }`,
+                  }}
+                >
+                  {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                </div>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
@@ -129,7 +172,19 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                {coin.price_change_percentage_24h_in_currency.toFixed(2)}
+                <div
+                  style={{
+                    color: `${
+                      Math.sign(
+                        coin.price_change_percentage_24h_in_currency
+                      ) !== 1
+                        ? "#FE2264"
+                        : "#01F1E3"
+                    }`,
+                  }}
+                >
+                  {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                </div>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
@@ -140,18 +195,41 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                {coin.price_change_percentage_7d_in_currency.toFixed(2)}
+                <div
+                  style={{
+                    color: `${
+                      Math.sign(coin.price_change_percentage_7d_in_currency) !==
+                      1
+                        ? "#FE2264"
+                        : "#01F1E3"
+                    }`,
+                  }}
+                >
+                  {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
+                </div>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
-              {abbreviateNumber(coin.market_cap)} /{" "}
-              {abbreviateNumber(coin.total_volume)}
-              {" line placeholer"}
+              <NumberSeparator>
+                <div>{abbreviateNumber(coin.total_volume)}</div>
+                <div>{abbreviateNumber(coin.market_cap)}</div>
+              </NumberSeparator>
+              <LevelIndicatorOuter>
+                <LevelIndicatorInner
+                  style={{ width: `${findVolumeLevel(coin)}%` }}
+                />
+              </LevelIndicatorOuter>
             </StyledTd>
             <StyledTd>
-              {abbreviateNumber(coin.circulating_supply)} /{" "}
-              {abbreviateNumber(coin.total_supply)}
-              {" line placeholer"}
+              <NumberSeparator>
+                <div>{abbreviateNumber(coin.circulating_supply)}</div>
+                <div>{abbreviateNumber(coin.total_supply)}</div>
+              </NumberSeparator>
+              <LevelIndicatorOuter>
+                <LevelIndicatorInner
+                  style={{ width: `${findSupplyLevel(coin)}%` }}
+                />
+              </LevelIndicatorOuter>
             </StyledTd>
             <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
               {"placeholder sparkline"}
