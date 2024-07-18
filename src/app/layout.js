@@ -84,13 +84,14 @@ export default function RootLayout({ children }) {
       <body className={spaceGrotesk.className}>
         <MarketDataBar marketData={marketData} hasError={hasError} />
         <BtnsContainer>
-          <CoinsBtnContainer>
-            <Link href="/">Home</Link>
-          </CoinsBtnContainer>
-          <PortfolioBtnContainer>
-            <Link href="/portfolio">Portfolio</Link>
-          </PortfolioBtnContainer>
+          <Link href="/">
+            <CoinsBtnContainer>Home</CoinsBtnContainer>
+          </Link>
+          <Link href="/portfolio">
+            <PortfolioBtnContainer>Portfolio</PortfolioBtnContainer>
+          </Link>
         </BtnsContainer>
+
         {children}
       </body>
     </html>

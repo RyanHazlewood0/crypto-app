@@ -4,17 +4,38 @@ import styled from "styled-components";
 
 const CoinTable = styled.table`
   max-width: 1440px;
+  margin: 0 auto 0 auto;
+  border-collapse: separate;
+  border-spacing: 0 6px;
 `;
 
 const TableRow = styled.tr`
   width: 100%;
   background: #191925;
-  border-top: 5px solid #03071e;
+  font-size: 14px;
 `;
 
-const TableHeader = styled.th`
+const TableHeader = styled.thead`
   color: #d1d1d1;
-  font-size: 14px;
+  font-size: 12px;
+  text-align: left;
+`;
+
+const NameAndImageContainer = styled.td`
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  max-width: 175px;
+  height: 75px;
+`;
+
+const StyledTd = styled.td`
+  padding: 15px;
+  height: 75px;
+`;
+
+const StyledTh = styled.th`
+  padding: 5px 15px 5px 15px;
 `;
 
 const Table = () => {
@@ -52,39 +73,58 @@ const Table = () => {
     <div>{"Error loading coin data"}</div>
   ) : (
     <CoinTable>
-      <tbody>
+      <TableHeader>
         <tr>
-          <TableHeader style={{ textAlign: "left" }}>#</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>Name</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>Price</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>1h%</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>24h%</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>7d%</TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>
-            24h Volume / Market Cap
-          </TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>
-            Circulating / Total Supply
-          </TableHeader>
-          <TableHeader style={{ textAlign: "left" }}>Last 7d</TableHeader>
+          <StyledTh>#</StyledTh>
+          <StyledTh>Name</StyledTh>
+          <StyledTh>Price</StyledTh>
+          <StyledTh>1h%</StyledTh>
+          <StyledTh>24h%</StyledTh>
+          <StyledTh>7d%</StyledTh>
+          <StyledTh>24h Volume / Market Cap</StyledTh>
+          <StyledTh>Circulating / Total Supply</StyledTh>
+          <StyledTh>Last 7d</StyledTh>
         </tr>
+      </TableHeader>
+      <tbody>
         {coins.map((coin) => (
           <TableRow key={coin.id}>
-            <td>{coin.market_cap_rank}</td>
-            <td>{coin.name}</td>
-            <td>{abbreviateNumber(coin.current_price)}</td>
-            <td>{coin.price_change_percentage_1h_in_currency.toFixed(2)}</td>
-            <td>{coin.price_change_percentage_24h_in_currency.toFixed(2)}</td>
-            <td>{coin.price_change_percentage_7d_in_currency.toFixed(2)}</td>
-            <td>
+            <StyledTd style={{ borderRadius: "10px 0 0 10px" }}>
+              {coin.market_cap_rank}
+            </StyledTd>
+            <NameAndImageContainer>
+              <img
+                src={coin.image}
+                style={{
+                  width: "32px",
+                  marginRight: "15px",
+                }}
+              />
+              {coin.name} ({coin.symbol.toUpperCase()})
+            </NameAndImageContainer>
+            <StyledTd>{abbreviateNumber(coin.current_price)}</StyledTd>
+            <StyledTd>
+              {coin.price_change_percentage_1h_in_currency.toFixed(2)}
+            </StyledTd>
+            <StyledTd>
+              {coin.price_change_percentage_24h_in_currency.toFixed(2)}
+            </StyledTd>
+            <StyledTd>
+              {coin.price_change_percentage_7d_in_currency.toFixed(2)}
+            </StyledTd>
+            <StyledTd>
               {abbreviateNumber(coin.market_cap)} /{" "}
               {abbreviateNumber(coin.total_volume)}
-            </td>
-            <td>
+              {" line placeholer"}
+            </StyledTd>
+            <StyledTd>
               {abbreviateNumber(coin.circulating_supply)} /{" "}
               {abbreviateNumber(coin.total_supply)}
-            </td>
-            <td>{"placeholder sparkline"}</td>
+              {" line placeholer"}
+            </StyledTd>
+            <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
+              {"placeholder sparkline"}
+            </StyledTd>
           </TableRow>
         ))}
       </tbody>
