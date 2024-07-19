@@ -26,7 +26,7 @@ const TableLineChart = ({ coin }) => {
   const minPrice = Math.min(prices);
   const maxPrice = Math.max(prices);
   const lineChartData = {
-    labels: prices.map((index) => index),
+    labels: prices.map((price) => "price"),
 
     datasets: [
       {
