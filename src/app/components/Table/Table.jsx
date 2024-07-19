@@ -232,7 +232,7 @@ const Table = () => {
               </LevelIndicatorOuter>
             </StyledTd>
             <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
-              {"placeholder sparkline"}
+              {"line chart placeholder"}
             </StyledTd>
           </TableRow>
         ))}
