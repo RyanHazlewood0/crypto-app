@@ -8,6 +8,7 @@ import GreenArrow from "./svg/GreenArrow";
 
 const CoinTable = styled.table`
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto 0 auto;
   border-collapse: separate;
   border-spacing: 0 6px;
@@ -233,7 +234,9 @@ const Table = () => {
                 />
               </LevelIndicatorOuter>
             </StyledTd>
-            <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
+            <StyledTd
+              style={{ borderRadius: "0 10px 10px 0", paddingRight: "0" }}
+            >
               <div style={{ maxHeight: "47px", width: "150px" }}>
                 <TableLineChart coin={coin} />
               </div>

@@ -34,11 +34,13 @@ const TableLineChart = ({ coin }) => {
         borderColor: "#30e0a1",
         tension: 0.4,
         pointRadius: 0,
+        borderWidth: 1.5,
       },
     ],
   };
 
   const options = {
+    responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {

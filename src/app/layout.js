@@ -8,6 +8,12 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
 
+const MainContainer = styled.div`
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 const BtnsContainer = styled.div`
   display: flex;
 `;
@@ -78,16 +84,17 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <MarketDataBar marketData={marketData} hasError={hasError} />
-        <BtnsContainer>
-          <Link href="/">
-            <CoinsBtnContainer>Home</CoinsBtnContainer>
-          </Link>
-          <Link href="/portfolio">
-            <PortfolioBtnContainer>Portfolio</PortfolioBtnContainer>
-          </Link>
-        </BtnsContainer>
-
-        {children}
+        <MainContainer>
+          <BtnsContainer>
+            <Link href="/">
+              <CoinsBtnContainer>Home</CoinsBtnContainer>
+            </Link>
+            <Link href="/portfolio">
+              <PortfolioBtnContainer>Portfolio</PortfolioBtnContainer>
+            </Link>
+          </BtnsContainer>
+          {children}
+        </MainContainer>
       </body>
     </html>
   );
