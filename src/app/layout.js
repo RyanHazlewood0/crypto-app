@@ -1,5 +1,5 @@
 "use client";
-import { Space_Grotesk } from "next/font/google";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import "./globals.css";
@@ -7,11 +7,6 @@ import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const BtnsContainer = styled.div`
   display: flex;
@@ -81,7 +76,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={spaceGrotesk.className}>
+      <body>
         <MarketDataBar marketData={marketData} hasError={hasError} />
         <BtnsContainer>
           <Link href="/">

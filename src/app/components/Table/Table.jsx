@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
 import styled from "styled-components";
 import RedArrow from "./svg/RedArrow";
@@ -16,6 +17,7 @@ const TableRow = styled.tr`
   width: 100%;
   background: #191925;
   font-size: 14px;
+  height: 77px;
 `;
 
 const TableHeader = styled.thead`
@@ -29,12 +31,12 @@ const NameAndImageContainer = styled.td`
   align-items: center;
   padding: 15px;
   max-width: 175px;
-  height: 75px;
+  height: 77px;
 `;
 
 const StyledTd = styled.td`
   padding: 15px;
-  height: 75px;
+  height: 77px;
 `;
 
 const StyledTh = styled.th`
@@ -232,7 +234,9 @@ const Table = () => {
               </LevelIndicatorOuter>
             </StyledTd>
             <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
-              {"line chart placeholder"}
+              <div style={{ maxHeight: "47px", width: "150px" }}>
+                <TableLineChart coin={coin} />
+              </div>
             </StyledTd>
           </TableRow>
         ))}

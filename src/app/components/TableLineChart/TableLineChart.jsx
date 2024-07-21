@@ -26,7 +26,7 @@ const TableLineChart = ({ coin }) => {
   const minPrice = Math.min(prices);
   const maxPrice = Math.max(prices);
   const lineChartData = {
-    labels: prices.map((price) => "price"),
+    labels: prices.map(() => "price"),
 
     datasets: [
       {
@@ -39,6 +39,7 @@ const TableLineChart = ({ coin }) => {
   };
 
   const options = {
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
