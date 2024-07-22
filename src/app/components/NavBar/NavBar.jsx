@@ -23,13 +23,12 @@ const BtnContainer = styled.div`
 
 const SearchDiv = styled.div`
   display: flex;
+  align-items: center;
   position: relative;
 `;
 
 const SearchIconWrapper = styled.div`
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   margin-left: 10px;
 `;
 
