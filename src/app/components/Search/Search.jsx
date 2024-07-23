@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
 const SearchContainer = styled.div`
@@ -35,6 +35,7 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const { coins } = useCoin();
+  const router = useRouter();
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
@@ -56,22 +57,27 @@ const Search = () => {
     setDropDownOpen(false);
   };
 
+  const handleNavLink = (coin) => {
+    router.push(`/coin/${coin.id}`);
+    setSearchValue("");
+  };
+
   return (
-    <SearchContainer>
+    <SearchContainer onBlur={handleBlur}>
       <SearchInput
         type="text"
         placeholder="Search..."
         value={searchValue}
         onChange={(e) => handleSearch(e)}
-        onBlur={handleBlur}
       />
       {dropDownOpen && (
         <DropDown>
           {filteredCoins.map((coin) => (
-            <LinkContainer key={coin.id}>
-              <Link href={`/coin/${coin.id}`}>
-                <p>{coin.name}</p>
-              </Link>
+            <LinkContainer
+              key={coin.id}
+              onMouseDown={() => handleNavLink(coin)}
+            >
+              <p style={{ cursor: "pointer" }}>{coin.name}</p>
             </LinkContainer>
           ))}
         </DropDown>
