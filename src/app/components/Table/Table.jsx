@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useCoin } from "@/app/contexts/CoinProvider";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
 import styled from "styled-components";
@@ -70,7 +71,8 @@ const NumberSeparator = styled.div`
 
 const Table = () => {
   const [hasError, setHasError] = useState(false);
-  const [coins, setCoins] = useState([]);
+
+  const { coins, setCoins } = useCoin();
 
   function abbreviateNumber(num) {
     const prefixes = ["", "k", "M", "B", "T"];

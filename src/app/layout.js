@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useState } from "react";
+import { CoinProvider } from "./contexts/CoinProvider";
 import "./globals.css";
 import styled from "styled-components";
 import Link from "next/link";
@@ -85,18 +86,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <MarketDataBar marketData={marketData} hasError={hasError} />
-        <MainContainer>
-          <NavBar />
-          <BtnsContainer>
-            <Link href="/">
-              <CoinsBtnContainer>Coins</CoinsBtnContainer>
-            </Link>
-            <Link href="/convertor">
-              <PortfolioBtnContainer>Convertor</PortfolioBtnContainer>
-            </Link>
-          </BtnsContainer>
-          {children}
-        </MainContainer>
+        <CoinProvider>
+          <MainContainer>
+            <NavBar />
+            <BtnsContainer>
+              <Link href="/">
+                <CoinsBtnContainer>Coins</CoinsBtnContainer>
+              </Link>
+              <Link href="/convertor">
+                <PortfolioBtnContainer>Convertor</PortfolioBtnContainer>
+              </Link>
+            </BtnsContainer>
+            {children}
+          </MainContainer>
+        </CoinProvider>
       </body>
     </html>
   );

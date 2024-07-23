@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const SearchInput = styled.input`
@@ -7,7 +8,26 @@ const SearchInput = styled.input`
 `;
 
 const Search = () => {
-  return <SearchInput type="text" placeholder="Search..." />;
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleChangeSearchValue = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault;
+  };
+
+  return (
+    <form onSubmit={handleSearchSubmit}>
+      <SearchInput
+        type="text"
+        placeholder="Search..."
+        value={searchValue}
+        onChange={(e) => handleChangeSearchValue(e)}
+      />
+    </form>
+  );
 };
 
 export default Search;
