@@ -25,6 +25,12 @@ const DropDown = styled.div`
   border-radius: 6px;
 `;
 
+const LinkContainer = styled.div`
+  &:hover {
+    background-color: #0077b6;
+  }
+`;
+
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
@@ -57,13 +63,16 @@ const Search = () => {
         placeholder="Search..."
         value={searchValue}
         onChange={(e) => handleSearch(e)}
+        onBlur={handleBlur}
       />
       {dropDownOpen && (
-        <DropDown onBlur={handleBlur}>
+        <DropDown>
           {filteredCoins.map((coin) => (
-            <Link href={`/coin/${coin.id}`} key={coin.id}>
-              <p>{coin.name}</p>
-            </Link>
+            <LinkContainer key={coin.id}>
+              <Link href={`/coin/${coin.id}`}>
+                <p>{coin.name}</p>
+              </Link>
+            </LinkContainer>
           ))}
         </DropDown>
       )}
