@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const CoinContext = createContext();
 
@@ -24,5 +25,5 @@ export const CoinProvider = ({ children }) => {
 };
 
 CoinProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
