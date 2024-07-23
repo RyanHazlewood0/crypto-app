@@ -1,6 +1,5 @@
 "use client";
-import { Inter } from "next/font/google";
-import { Space_Grotesk } from "next/font/google";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import "./globals.css";
@@ -8,11 +7,6 @@ import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const BtnsContainer = styled.div`
   display: flex;
@@ -41,8 +35,6 @@ const PortfolioBtnContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   const [marketData, setMarketData] = useState({});
@@ -84,16 +76,17 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <MarketDataBar marketData={marketData} hasError={hasError} />
-        <BtnsContainer className={spaceGrotesk.className}>
-          <CoinsBtnContainer>
-            <Link href="/">Home</Link>
-          </CoinsBtnContainer>
-          <PortfolioBtnContainer>
-            <Link href="/portfolio">Portfolio</Link>
-          </PortfolioBtnContainer>
+        <BtnsContainer>
+          <Link href="/">
+            <CoinsBtnContainer>Home</CoinsBtnContainer>
+          </Link>
+          <Link href="/portfolio">
+            <PortfolioBtnContainer>Portfolio</PortfolioBtnContainer>
+          </Link>
         </BtnsContainer>
+
         {children}
       </body>
     </html>
