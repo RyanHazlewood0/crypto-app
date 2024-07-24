@@ -1,15 +1,23 @@
 "use client";
-
 import { useEffect } from "react";
 import { useState } from "react";
+import { CoinProvider } from "./contexts/CoinProvider";
 import "./globals.css";
 import styled from "styled-components";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
+import NavBar from "./components/NavBar/NavBar";
+
+const MainContainer = styled.div`
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 const BtnsContainer = styled.div`
   display: flex;
+  margin-bottom: 30px;
 `;
 
 const CoinsBtnContainer = styled.div`
@@ -18,7 +26,7 @@ const CoinsBtnContainer = styled.div`
   width: 244px;
   height: 45px;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +38,7 @@ const PortfolioBtnContainer = styled.div`
   width: 244px;
   height: 45px;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,16 +86,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <MarketDataBar marketData={marketData} hasError={hasError} />
-        <BtnsContainer>
-          <Link href="/">
-            <CoinsBtnContainer>Home</CoinsBtnContainer>
-          </Link>
-          <Link href="/portfolio">
-            <PortfolioBtnContainer>Portfolio</PortfolioBtnContainer>
-          </Link>
-        </BtnsContainer>
-
-        {children}
+        <CoinProvider>
+          <MainContainer>
+            <NavBar />
+            <BtnsContainer>
+              <Link href="/">
+                <CoinsBtnContainer>Coins</CoinsBtnContainer>
+              </Link>
+              <Link href="/convertor">
+                <PortfolioBtnContainer>Convertor</PortfolioBtnContainer>
+              </Link>
+            </BtnsContainer>
+            {children}
+          </MainContainer>
+        </CoinProvider>
       </body>
     </html>
   );

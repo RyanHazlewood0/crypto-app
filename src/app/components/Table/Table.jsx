@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useCoin } from "@/app/contexts/CoinProvider";
 import {
   abbreviateNumber,
   findSupplyLevel,
@@ -13,6 +14,7 @@ import GreenArrow from "./svg/GreenArrow";
 
 const CoinTable = styled.table`
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto 0 auto;
   border-collapse: separate;
   border-spacing: 0 6px;
@@ -78,7 +80,8 @@ const PriceChangeDiv = styled.div`
 
 const Table = () => {
   const [hasError, setHasError] = useState(false);
-  const [coins, setCoins] = useState([]);
+
+  const { coins, setCoins } = useCoin();
 
   useEffect(() => {
     setHasError(false);
@@ -206,7 +209,9 @@ const Table = () => {
                 />
               </LevelIndicatorOuter>
             </StyledTd>
-            <StyledTd style={{ borderRadius: "0 10px 10px 0" }}>
+            <StyledTd
+              style={{ borderRadius: "0 10px 10px 0", paddingRight: "0" }}
+            >
               <div style={{ maxHeight: "47px", width: "150px" }}>
                 <TableLineChart coin={coin} />
               </div>
