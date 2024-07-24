@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import {
+  abbreviateNumber,
+  findSupplyLevel,
+  findVolumeLevel,
+} from "./helper-functions";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
 import styled from "styled-components";
@@ -69,31 +74,14 @@ const NumberSeparator = styled.div`
   width: 200px;
 `;
 
+const PriceChangeDiv = styled.div`
+  color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+`;
+
 const Table = () => {
   const [hasError, setHasError] = useState(false);
 
   const { coins, setCoins } = useCoin();
-
-  function abbreviateNumber(num) {
-    const prefixes = ["", "k", "M", "B", "T"];
-    if (num < 1) {
-      return num.toFixed(2);
-    }
-    const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
-    const scaled = num / Math.pow(1000, magnitude);
-    const formatted = scaled >= 100 ? scaled.toFixed(2) : scaled.toFixed(2);
-    return `${formatted}${prefixes[magnitude]}`;
-  }
-
-  const findSupplyLevel = (coin) => {
-    const progress = (coin.circulating_supply / coin.total_supply) * 100;
-    return progress;
-  };
-
-  const findVolumeLevel = (coin) => {
-    const progress = (coin.total_volume / coin.market_cap) * 100;
-    return progress;
-  };
 
   useEffect(() => {
     setHasError(false);
@@ -155,18 +143,13 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                <div
-                  style={{
-                    color: `${
-                      Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                      1
-                        ? "#FE2264"
-                        : "#01F1E3"
-                    }`,
-                  }}
+                <PriceChangeDiv
+                  green={
+                    Math.sign(coin.price_change_percentage_1h_in_currency) === 1
+                  }
                 >
                   {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                </div>
+                </PriceChangeDiv>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
@@ -177,19 +160,14 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                <div
-                  style={{
-                    color: `${
-                      Math.sign(
-                        coin.price_change_percentage_24h_in_currency
-                      ) !== 1
-                        ? "#FE2264"
-                        : "#01F1E3"
-                    }`,
-                  }}
+                <PriceChangeDiv
+                  green={
+                    Math.sign(coin.price_change_percentage_24h_in_currency) ===
+                    1
+                  }
                 >
                   {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
-                </div>
+                </PriceChangeDiv>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
@@ -200,18 +178,13 @@ const Table = () => {
                 ) : (
                   <GreenArrow />
                 )}
-                <div
-                  style={{
-                    color: `${
-                      Math.sign(coin.price_change_percentage_7d_in_currency) !==
-                      1
-                        ? "#FE2264"
-                        : "#01F1E3"
-                    }`,
-                  }}
+                <PriceChangeDiv
+                  green={
+                    Math.sign(coin.price_change_percentage_7d_in_currency) === 1
+                  }
                 >
                   {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
-                </div>
+                </PriceChangeDiv>
               </ArrowAndPercentContainer>
             </StyledTd>
             <StyledTd>
