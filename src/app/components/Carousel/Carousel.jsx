@@ -17,11 +17,10 @@ const Carousel = () => {
     height: 78px;
     background: #232336;
     border-radius: 6px;
+    padding: 10px;
   `;
 
-  const CoinInfoBox = styled.div`
-    width: 75%;
-  `;
+  const CoinInfoBox = styled.div``;
 
   const ArrowAndPercentContainer = styled.div`
     display: flex;
@@ -32,22 +31,54 @@ const Carousel = () => {
     color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
   `;
 
+  const StyledSlider = styled(Slider)`
+    .slick-slide {
+      margin: 0 5px;
+    }
+    .slick-next {
+      position: absolute;
+      right: 10px;
+      top: 42px;
+      hover: pointer;
+      z-index: 1;
+    }
+    .slick-prev {
+      position: absolute;
+      top: 42px;
+      hover: pointer;
+      z-index: 1;
+      left: 10px;
+    }
+    .slick-track,
+    .slick-list {
+      max-height: 78px;
+    }
+    .slick-list {
+      margin-bottom: 30px;
+    }
+  `;
+
+  const CoinImage = styled.img`
+    width: 32px;
+    height: 32px;
+  `;
+
   const { coins } = useCoin();
 
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     variableWidth: true,
   };
   return (
     <CarouselContainer>
-      <Slider {...settings}>
+      <StyledSlider {...settings}>
         {coins.map((coin) => (
-          <CarouselBox style={{ width: 250 }} key={coin.id}>
-            <img
+          <CarouselBox style={{ width: 280 }} key={coin.id}>
+            <CoinImage
               src={coin.image}
               style={{
                 width: "32px",
@@ -78,7 +109,7 @@ const Carousel = () => {
             </CoinInfoBox>
           </CarouselBox>
         ))}
-      </Slider>
+      </StyledSlider>
     </CarouselContainer>
   );
 };
