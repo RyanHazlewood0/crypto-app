@@ -134,7 +134,7 @@ const Table = () => {
                 {coin.name} ({coin.symbol.toUpperCase()})
               </Link>
             </NameAndImageContainer>
-            <StyledTd>{abbreviateNumber(coin.current_price)}</StyledTd>
+            <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
             <StyledTd>
               <ArrowAndPercentContainer>
                 {Math.sign(coin.price_change_percentage_1h_in_currency) !==

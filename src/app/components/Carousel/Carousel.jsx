@@ -1,51 +1,90 @@
+import { useCoin } from "@/app/contexts/CoinProvider";
 import Slider from "react-slick";
+import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { abbreviateNumber } from "../Table/helper-functions";
+import RedArrow from "./svg/RedArrow";
+import GreenArrow from "./svg/GreenArrow";
 
 const Carousel = () => {
+  const CarouselContainer = styled.div`
+    width: 100%;
+  `;
+
+  const CarouselBox = styled.div`
+    display: flex;
+    height: 78px;
+    background: #232336;
+    border-radius: 6px;
+  `;
+
+  const CoinInfoBox = styled.div`
+    width: 75%;
+  `;
+
+  const ArrowAndPercentContainer = styled.div`
+    display: flex;
+    align-items: center;
+  `;
+
+  const PriceChangeDiv = styled.div`
+    color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+  `;
+
+  const { coins } = useCoin();
+
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    variableWidth: true,
   };
   return (
-    <div className="slider-container">
+    <CarouselContainer>
       <Slider {...settings}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-        <div>
-          <h3>7</h3>
-        </div>
-        <div>
-          <h3>8</h3>
-        </div>
-        <div>
-          <h3>9</h3>
-        </div>
-        <div>
-          <h3>10</h3>
-        </div>
+        {coins.map((coin) => (
+          <CarouselBox style={{ width: 250 }} key={coin.id}>
+            <img
+              src={coin.image}
+              style={{
+                width: "32px",
+              }}
+            />
+            <CoinInfoBox>
+              <p>
+                {coin.name}({coin.symbol.toUpperCase()})
+              </p>
+              <ArrowAndPercentContainer>
+                <p style={{ marginRight: "10px" }}>
+                  ${abbreviateNumber(coin.current_price)}
+                </p>
+                {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                1 ? (
+                  <RedArrow />
+                ) : (
+                  <GreenArrow />
+                )}
+                <PriceChangeDiv
+                  green={
+                    Math.sign(coin.price_change_percentage_1h_in_currency) === 1
+                  }
+                >
+                  {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                </PriceChangeDiv>
+              </ArrowAndPercentContainer>
+            </CoinInfoBox>
+          </CarouselBox>
+        ))}
       </Slider>
-    </div>
+    </CarouselContainer>
   );
+};
+
+Carousel.propTypes = {
+  green: PropTypes.style,
 };
 
 export default Carousel;
