@@ -13,14 +13,14 @@ const Carousel = () => {
   `;
 
   const CarouselBox = styled.div`
-    display: flex;
+    display: flex !important;
     height: 78px;
     background: #232336;
     border-radius: 6px;
     padding: 10px;
+    align-items: center;
+    justify-content: space-around;
   `;
-
-  const CoinInfoBox = styled.div``;
 
   const ArrowAndPercentContainer = styled.div`
     display: flex;
@@ -69,27 +69,33 @@ const Carousel = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 7,
+    slidesToScroll: 7,
     variableWidth: true,
   };
   return (
     <CarouselContainer>
       <StyledSlider {...settings}>
         {coins.map((coin) => (
-          <CarouselBox style={{ width: 280 }} key={coin.id}>
+          <CarouselBox style={{ width: 197.25 }} key={coin.id}>
             <CoinImage
               src={coin.image}
               style={{
                 width: "32px",
               }}
             />
-            <CoinInfoBox>
-              <p>
+            <div>
+              <p style={{ fontSize: "16px", fontWeight: "bold" }}>
                 {coin.name}({coin.symbol.toUpperCase()})
               </p>
               <ArrowAndPercentContainer>
-                <p style={{ marginRight: "10px" }}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#D1D1D1",
+                    marginRight: "10px",
+                  }}
+                >
                   ${abbreviateNumber(coin.current_price)}
                 </p>
                 {Math.sign(coin.price_change_percentage_1h_in_currency) !==
@@ -106,7 +112,7 @@ const Carousel = () => {
                   {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
                 </PriceChangeDiv>
               </ArrowAndPercentContainer>
-            </CoinInfoBox>
+            </div>
           </CarouselBox>
         ))}
       </StyledSlider>
