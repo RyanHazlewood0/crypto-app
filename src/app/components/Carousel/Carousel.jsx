@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-
+import PropTypes from "prop-types";
 const Carousel = () => {
   const CarouselContainer = styled.div`
     width: 100%;
