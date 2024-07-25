@@ -85,7 +85,7 @@ const Carousel = () => {
               }}
             />
             <div>
-              <p style={{ fontSize: "16px", fontWeight: "bold" }}>
+              <p style={{ fontSize: "16px" }}>
                 {coin.name}({coin.symbol.toUpperCase()})
               </p>
               <ArrowAndPercentContainer>
