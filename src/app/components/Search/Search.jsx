@@ -23,6 +23,7 @@ const DropDown = styled.div`
   background: #191925;
   padding: 10px;
   border-radius: 6px;
+  z-index: 1;
 `;
 
 const LinkContainer = styled.div`
