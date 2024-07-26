@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const ChartsContainer = styled.div`
   width: 100%;
   display: flex;
+  justify-content: space-between;
 `;
 
 const HomePageCharts = () => {

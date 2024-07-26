@@ -24,10 +24,10 @@ const BtcVolumeChart = ({ btcVolumeData }) => {
     labels: btcVolumeData.map(() => "1"),
     datasets: [
       {
-        label: "Volume",
+        label: null,
         data: btcVolumeData,
-        backgroundColor: "yellow",
-        borderColor: "black",
+        backgroundColor: "#240046",
+        borderColor: "#a663cc",
         borderWidth: 1,
       },
     ],
@@ -38,12 +38,39 @@ const BtcVolumeChart = ({ btcVolumeData }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
+      x: {
         display: true,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
       },
     },
   };
 
-  return <Bar options={options} data={barChartData} />;
+  return (
+    <div
+      style={{
+        width: "49%",
+        background: "#191932",
+        borderRadius: "6px",
+        height: "400px",
+      }}
+    >
+      <Bar options={options} data={barChartData} />
+    </div>
+  );
 };
 
 BtcVolumeChart.propTypes = {

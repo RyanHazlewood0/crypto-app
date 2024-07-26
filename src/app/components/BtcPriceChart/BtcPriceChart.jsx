@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -18,7 +19,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const BtcPriceChart = ({ btcPriceData }) => {
@@ -26,34 +28,59 @@ const BtcPriceChart = ({ btcPriceData }) => {
     labels: btcPriceData.map(() => "1"),
     datasets: [
       {
-        label: "price",
+        label: null,
         data: btcPriceData,
-        borderColor: "#30e0a1",
-        tension: 0.4,
+        borderColor: "#3a0ca3",
         pointRadius: 0,
-        borderWidth: 1.5,
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(0, "rgba(0, 76, 153, 0.8)");
+          gradient.addColorStop(1, "rgba(51, 0, 102, 0.0)");
+          return gradient;
+        },
+        fill: true,
       },
     ],
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
+        display: false,
       },
     },
     scales: {
+      y: {
+        display: false,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+      },
       x: {
         display: true,
-      },
-      y: {
-        display: true,
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
       },
     },
+    tension: 0.5,
   };
-  return <>{btcPriceData && <Line options={options} data={lineChartData} />}</>;
+  return (
+    <div
+      style={{
+        width: "49%",
+        background: "#191932",
+        borderRadius: "6px",
+        height: "400px",
+      }}
+    >
+      {btcPriceData && <Line options={options} data={lineChartData} />}
+    </div>
+  );
 };
 
 BtcPriceChart.propTypes = {
