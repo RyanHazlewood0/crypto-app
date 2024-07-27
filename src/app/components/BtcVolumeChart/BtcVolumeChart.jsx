@@ -21,11 +21,11 @@ ChartJS.register(
 
 const BtcVolumeChart = ({ btcVolumeData }) => {
   const barChartData = {
-    labels: btcVolumeData.map(() => "1"),
+    labels: btcVolumeData.map((obj) => obj.date),
     datasets: [
       {
         label: null,
-        data: btcVolumeData,
+        data: btcVolumeData.map((obj) => obj.volume),
         backgroundColor: "#240046",
         borderColor: "#a663cc",
         borderWidth: 1,
@@ -50,7 +50,7 @@ const BtcVolumeChart = ({ btcVolumeData }) => {
         },
       },
       x: {
-        display: true,
+        display: false,
         grid: {
           display: false,
           drawBorder: false,
@@ -65,10 +65,12 @@ const BtcVolumeChart = ({ btcVolumeData }) => {
         width: "49%",
         background: "#191932",
         borderRadius: "6px",
-        height: "400px",
+        maxHeight: "400px",
+        display: "flex",
+        alignItems: "flex-end",
       }}
     >
-      <Bar options={options} data={barChartData} />
+      <Bar options={options} data={barChartData} style={{ maxHeight: "70%" }} />
     </div>
   );
 };

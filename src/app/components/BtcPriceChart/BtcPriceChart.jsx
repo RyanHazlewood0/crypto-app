@@ -25,12 +25,12 @@ ChartJS.register(
 
 const BtcPriceChart = ({ btcPriceData }) => {
   const lineChartData = {
-    labels: btcPriceData.map(() => "1"),
+    labels: btcPriceData.map((obj) => obj.date),
     datasets: [
       {
         label: null,
-        data: btcPriceData,
-        borderColor: "#3a0ca3",
+        data: btcPriceData.map((obj) => obj.price.toFixed()),
+        borderColor: "#2d00f7",
         pointRadius: 0,
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
@@ -50,6 +50,10 @@ const BtcPriceChart = ({ btcPriceData }) => {
       legend: {
         display: false,
       },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
     },
     scales: {
       y: {
@@ -60,7 +64,7 @@ const BtcPriceChart = ({ btcPriceData }) => {
         },
       },
       x: {
-        display: true,
+        display: false,
         grid: {
           display: false,
           drawBorder: false,
@@ -76,9 +80,17 @@ const BtcPriceChart = ({ btcPriceData }) => {
         background: "#191932",
         borderRadius: "6px",
         height: "400px",
+        display: "flex",
+        alignItems: "flex-end",
       }}
     >
-      {btcPriceData && <Line options={options} data={lineChartData} />}
+      {btcPriceData && (
+        <Line
+          options={options}
+          data={lineChartData}
+          style={{ maxHeight: "70%" }}
+        />
+      )}
     </div>
   );
 };

@@ -22,8 +22,24 @@ const HomePageCharts = () => {
           "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=180&interval=daily"
         );
         const fetchedData = await response.json();
-        setBtcPriceData(fetchedData.prices.map((price) => price[1]));
-        setBtcVolumeData(fetchedData.total_volumes.map((volume) => volume[1]));
+        setBtcPriceData(
+          fetchedData.prices.map((price) => {
+            const fromTimestamp = (timestamp) => new Date(timestamp);
+            return {
+              price: price[1],
+              date: fromTimestamp(price[0]).toDateString(),
+            };
+          })
+        );
+        setBtcVolumeData(
+          fetchedData.total_volumes.map((volume) => {
+            const fromTimestamp = (timestamp) => new Date(timestamp);
+            return {
+              volume: volume[1],
+              date: fromTimestamp(volume[0]).toDateString(),
+            };
+          })
+        );
       } catch {
         setHasError(true);
       }
