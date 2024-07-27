@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -22,6 +23,20 @@ ChartJS.register(
   Legend,
   Filler
 );
+
+const ChartContainer = styled.div`
+  width: 49%;
+  background: #191932;
+  border-radius: 6px;
+  height: 400px;
+  display: flex;
+  align-items: flex-end;
+`;
+
+const ChartHeader = styled.h1`
+  font-size: 24px;
+  position: absolute;
+`;
 
 const BtcPriceChart = ({ btcPriceData }) => {
   const lineChartData = {
@@ -74,16 +89,8 @@ const BtcPriceChart = ({ btcPriceData }) => {
     tension: 0.5,
   };
   return (
-    <div
-      style={{
-        width: "49%",
-        background: "#191932",
-        borderRadius: "6px",
-        height: "400px",
-        display: "flex",
-        alignItems: "flex-end",
-      }}
-    >
+    <ChartContainer>
+      <ChartHeader>Bitcoin</ChartHeader>
       {btcPriceData && (
         <Line
           options={options}
@@ -91,7 +98,7 @@ const BtcPriceChart = ({ btcPriceData }) => {
           style={{ maxHeight: "70%" }}
         />
       )}
-    </div>
+    </ChartContainer>
   );
 };
 

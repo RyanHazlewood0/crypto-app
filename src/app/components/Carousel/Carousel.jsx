@@ -33,7 +33,7 @@ const Carousel = () => {
 
   const StyledSlider = styled(Slider)`
     .slick-slide {
-      margin: 0 5px;
+      margin: 0 3.6px 0 3.6px;
     }
     .slick-next {
       position: absolute;
@@ -69,15 +69,15 @@ const Carousel = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
+    slidesToShow: 6,
+    slidesToScroll: 6,
     variableWidth: true,
   };
   return (
     <CarouselContainer>
       <StyledSlider {...settings}>
         {coins.map((coin) => (
-          <CarouselBox style={{ width: 197.25 }} key={coin.id}>
+          <CarouselBox style={{ width: 210 }} key={coin.id}>
             <CoinImage
               src={coin.image}
               style={{
