@@ -29,22 +29,36 @@ const ChartContainer = styled.div`
   background: #191932;
   border-radius: 6px;
   height: 400px;
-  display: flex;
   align-items: flex-end;
 `;
 
-const ChartHeader = styled.h1`
-  font-size: 24px;
-  position: absolute;
+const HeaderTextContainer = styled.div`
+  height: 30%;
+  padding: 15px 0 0 15px;
 `;
 
-const BtcPriceChart = ({ btcPriceData }) => {
+const CoinText = styled.h1`
+  font-size: 24px;
+  color: gray;
+  margin-bottom: 10px;
+`;
+
+const PriceText = styled.h2`
+  font-size: 28px;
+`;
+
+const DateText = styled.h3`
+  font-size: 16px;
+  color: gray;
+`;
+
+const BtcPriceChart = ({ coinPriceData }) => {
   const lineChartData = {
-    labels: btcPriceData.map((obj) => obj.date),
+    labels: coinPriceData.map((obj) => obj.date),
     datasets: [
       {
         label: null,
-        data: btcPriceData.map((obj) => obj.price.toFixed()),
+        data: coinPriceData.map((obj) => obj.price.toFixed()),
         borderColor: "#2d00f7",
         pointRadius: 0,
         backgroundColor: (context) => {
@@ -88,10 +102,15 @@ const BtcPriceChart = ({ btcPriceData }) => {
     },
     tension: 0.5,
   };
+
   return (
     <ChartContainer>
-      <ChartHeader>Bitcoin</ChartHeader>
-      {btcPriceData && (
+      <HeaderTextContainer>
+        <CoinText>Bitcoin</CoinText>
+        <PriceText>$60,000</PriceText>
+        <DateText>July 29 2024</DateText>
+      </HeaderTextContainer>
+      {coinPriceData && (
         <Line
           options={options}
           data={lineChartData}
@@ -103,7 +122,7 @@ const BtcPriceChart = ({ btcPriceData }) => {
 };
 
 BtcPriceChart.propTypes = {
-  btcPriceData: PropTypes.arrayOf(PropTypes.number),
+  coinPriceData: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default BtcPriceChart;

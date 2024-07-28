@@ -25,26 +25,40 @@ const ChartContainer = styled.div`
   background: #191932;
   border-radius: 6px;
   height: 400px;
-  display: flex;
+
   align-items: flex-end;
-  position: relative;
 `;
 
-const ChartHeader = styled.h1`
+const HeaderTextContainer = styled.div`
+  height: 30%;
+  padding: 15px 0 0 15px;
+`;
+
+const CoinText = styled.h1`
   font-size: 24px;
-  position: absolute;
+  color: gray;
+  margin-bottom: 10px;
 `;
 
-const BtcVolumeChart = ({ btcVolumeData }) => {
+const VolumeText = styled.h2`
+  font-size: 28px;
+`;
+
+const DateText = styled.h3`
+  font-size: 16px;
+  color: gray;
+`;
+
+const BtcVolumeChart = ({ coinVolumeData }) => {
   const barChartData = {
-    labels: btcVolumeData.map((obj) => obj.date),
+    labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
       {
         label: null,
-        data: btcVolumeData.map((obj) => obj.volume),
+        data: coinVolumeData.map((obj) => obj.volume),
         backgroundColor: "#240046",
         borderColor: "#a663cc",
-        borderWidth: 1,
+        borderWidth: 2,
       },
     ],
   };
@@ -77,14 +91,18 @@ const BtcVolumeChart = ({ btcVolumeData }) => {
 
   return (
     <ChartContainer>
-      <ChartHeader>Bitcoin</ChartHeader>
+      <HeaderTextContainer>
+        <CoinText>Bitcoin</CoinText>
+        <VolumeText>1 Billion</VolumeText>
+        <DateText>Jult 29 2024</DateText>
+      </HeaderTextContainer>
       <Bar options={options} data={barChartData} style={{ maxHeight: "70%" }} />
     </ChartContainer>
   );
 };
 
 BtcVolumeChart.propTypes = {
-  btcVolumeData: PropTypes.arrayOf(PropTypes.number),
+  coinVolumeData: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default BtcVolumeChart;

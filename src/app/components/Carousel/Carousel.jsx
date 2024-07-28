@@ -7,63 +7,68 @@ import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import PropTypes from "prop-types";
-const Carousel = () => {
-  const CarouselContainer = styled.div`
-    width: 100%;
-  `;
 
-  const CarouselBox = styled.div`
-    display: flex !important;
-    height: 78px;
-    background: #232336;
-    border-radius: 6px;
-    padding: 10px;
-    align-items: center;
-    justify-content: space-around;
-  `;
+const CarouselContainer = styled.div`
+  width: 100%;
+`;
 
-  const ArrowAndPercentContainer = styled.div`
-    display: flex;
-    align-items: center;
-  `;
+const CarouselBox = styled.div`
+  display: flex !important;
+  height: 78px;
+  background: #232336;
+  border-radius: 6px;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-around;
+`;
 
-  const PriceChangeDiv = styled.div`
-    color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
-  `;
+const ArrowAndPercentContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-  const StyledSlider = styled(Slider)`
-    .slick-slide {
-      margin: 0 3.6px 0 3.6px;
-    }
-    .slick-next {
-      position: absolute;
-      right: 10px;
-      top: 42px;
-      hover: pointer;
-      z-index: 1;
-    }
-    .slick-prev {
-      position: absolute;
-      top: 42px;
-      hover: pointer;
-      z-index: 1;
-      left: 10px;
-    }
-    .slick-track,
-    .slick-list {
-      max-height: 78px;
-    }
-    .slick-list {
-      margin-bottom: 30px;
-    }
-  `;
+const PriceChangeDiv = styled.div`
+  color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+`;
 
-  const CoinImage = styled.img`
-    width: 32px;
-    height: 32px;
-  `;
+const StyledSlider = styled(Slider)`
+  .slick-slide {
+    margin: 0 3.6px 0 3.6px;
+  }
+  .slick-next {
+    position: absolute;
+    right: 10px;
+    top: 42px;
+    hover: pointer;
+    z-index: 1;
+  }
+  .slick-prev {
+    position: absolute;
+    top: 42px;
+    hover: pointer;
+    z-index: 1;
+    left: 10px;
+  }
+  .slick-track,
+  .slick-list {
+    max-height: 78px;
+  }
+  .slick-list {
+    margin-bottom: 30px;
+  }
+`;
 
+const CoinImage = styled.img`
+  width: 32px;
+  height: 32px;
+`;
+
+const Carousel = ({ setSelectedCoin }) => {
   const { coins } = useCoin();
+
+  const handleSelectCoin = (id) => {
+    setSelectedCoin(id);
+  };
 
   const settings = {
     dots: true,
@@ -73,6 +78,7 @@ const Carousel = () => {
     slidesToScroll: 6,
     variableWidth: true,
   };
+
   return (
     <CarouselContainer>
       <StyledSlider {...settings}>
@@ -85,7 +91,10 @@ const Carousel = () => {
               }}
             />
             <div>
-              <p style={{ fontSize: "16px" }}>
+              <p
+                style={{ fontSize: "16px" }}
+                onClick={() => handleSelectCoin(coin.id)}
+              >
                 {coin.name}({coin.symbol.toUpperCase()})
               </p>
               <ArrowAndPercentContainer>
@@ -122,6 +131,7 @@ const Carousel = () => {
 
 Carousel.propTypes = {
   green: PropTypes.style,
+  setSelectedCoin: PropTypes.func,
 };
 
 export default Carousel;

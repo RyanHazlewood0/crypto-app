@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import BtcPriceChart from "../BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "../BtcVolumeChart/BtcVolumeChart";
@@ -10,20 +11,20 @@ const ChartsContainer = styled.div`
   margin-bottom: 50px;
 `;
 
-const HomePageCharts = () => {
+const HomePageCharts = ({ selectedCoin }) => {
   const [hasError, setHasError] = useState(false);
-  const [btcPriceData, setBtcPriceData] = useState(null);
-  const [btcVolumeData, setBtcVolumeData] = useState(null);
+  const [coinPriceData, setCoinPriceData] = useState(null);
+  const [coinVolumeData, setCoinVolumeData] = useState(null);
 
   useEffect(() => {
     setHasError(false);
-    const getBtcData = async () => {
+    const getCoinData = async () => {
       try {
         const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=180&interval=daily"
+          `https://api.coingecko.com/api/v3/coins/${selectedCoin}/market_chart?vs_currency=usd&days=180&interval=daily`
         );
         const fetchedData = await response.json();
-        setBtcPriceData(
+        setCoinPriceData(
           fetchedData.prices.map((price) => {
             const fromTimestamp = (timestamp) => new Date(timestamp);
             return {
@@ -32,7 +33,7 @@ const HomePageCharts = () => {
             };
           })
         );
-        setBtcVolumeData(
+        setCoinVolumeData(
           fetchedData.total_volumes.map((volume) => {
             const fromTimestamp = (timestamp) => new Date(timestamp);
             return {
@@ -45,16 +46,20 @@ const HomePageCharts = () => {
         setHasError(true);
       }
     };
-    getBtcData();
-  }, []);
+    getCoinData();
+  }, [selectedCoin]);
 
   return (
     <ChartsContainer>
       {hasError && <p>Error loading chart data</p>}
-      {btcPriceData && <BtcPriceChart btcPriceData={btcPriceData} />}
-      {btcVolumeData && <BtcVolumeChart btcVolumeData={btcVolumeData} />}
+      {coinPriceData && <BtcPriceChart coinPriceData={coinPriceData} />}
+      {coinVolumeData && <BtcVolumeChart coinVolumeData={coinVolumeData} />}
     </ChartsContainer>
   );
 };
 
 export default HomePageCharts;
+
+HomePageCharts.propTypes = {
+  selectedCoin: PropTypes.string,
+};
