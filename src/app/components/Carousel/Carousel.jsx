@@ -7,6 +7,7 @@ import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -71,6 +72,12 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
     setSelectedCoin(coin);
   };
 
+  useEffect(() => {
+    if (coins.length > 0) {
+      setSelectedCoin(coins[0]);
+    }
+  }, [coins]);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -81,56 +88,59 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
   };
 
   return (
-    <CarouselContainer>
-      <StyledSlider {...settings}>
-        {coins.map((coin) => (
-          <CarouselBox
-            style={{ width: 210 }}
-            key={coin.id}
-            selected={coin.id === selectedCoin.id}
-          >
-            <CoinImage
-              src={coin.image}
-              style={{
-                width: "32px",
-              }}
-            />
-            <div>
-              <p
-                style={{ fontSize: "16px", cursor: "pointer" }}
-                onClick={() => handleSelectCoin(coin)}
-              >
-                {coin.name}({coin.symbol.toUpperCase()})
-              </p>
-              <ArrowAndPercentContainer>
+    selectedCoin !== null && (
+      <CarouselContainer>
+        <StyledSlider {...settings}>
+          {coins.map((coin) => (
+            <CarouselBox
+              style={{ width: 210 }}
+              key={coin.id}
+              selected={coin.id === selectedCoin.id}
+            >
+              <CoinImage
+                src={coin.image}
+                style={{
+                  width: "32px",
+                }}
+              />
+              <div>
                 <p
-                  style={{
-                    fontSize: "14px",
-                    color: "#D1D1D1",
-                    marginRight: "10px",
-                  }}
+                  style={{ fontSize: "16px", cursor: "pointer" }}
+                  onClick={() => handleSelectCoin(coin)}
                 >
-                  ${abbreviateNumber(coin.current_price)}
+                  {coin.name}({coin.symbol.toUpperCase()})
                 </p>
-                {Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                1 ? (
-                  <RedArrow />
-                ) : (
-                  <GreenArrow />
-                )}
-                <PriceChangeDiv
-                  green={
-                    Math.sign(coin.price_change_percentage_1h_in_currency) === 1
-                  }
-                >
-                  {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                </PriceChangeDiv>
-              </ArrowAndPercentContainer>
-            </div>
-          </CarouselBox>
-        ))}
-      </StyledSlider>
-    </CarouselContainer>
+                <ArrowAndPercentContainer>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      color: "#D1D1D1",
+                      marginRight: "10px",
+                    }}
+                  >
+                    ${abbreviateNumber(coin.current_price)}
+                  </p>
+                  {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                  1 ? (
+                    <RedArrow />
+                  ) : (
+                    <GreenArrow />
+                  )}
+                  <PriceChangeDiv
+                    green={
+                      Math.sign(coin.price_change_percentage_1h_in_currency) ===
+                      1
+                    }
+                  >
+                    {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                  </PriceChangeDiv>
+                </ArrowAndPercentContainer>
+              </div>
+            </CarouselBox>
+          ))}
+        </StyledSlider>
+      </CarouselContainer>
+    )
   );
 };
 

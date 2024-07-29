@@ -71,5 +71,5 @@ const HomePageCharts = ({ selectedCoin }) => {
 export default HomePageCharts;
 
 HomePageCharts.propTypes = {
-  selectedCoin: PropTypes.string,
+  selectedCoin: PropTypes.object,
 };

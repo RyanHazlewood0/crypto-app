@@ -6,7 +6,7 @@ import Carousel from "./components/Carousel/Carousel";
 import { useState } from "react";
 
 export default function Home() {
-  const [selectedCoin, setSelectedCoin] = useState("btc");
+  const [selectedCoin, setSelectedCoin] = useState(null);
 
   return (
     <>
