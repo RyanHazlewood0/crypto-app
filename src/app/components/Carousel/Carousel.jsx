@@ -10,12 +10,13 @@ import PropTypes from "prop-types";
 
 const CarouselContainer = styled.div`
   width: 100%;
+  margin-top: 80px;
 `;
 
 const CarouselBox = styled.div`
   display: flex !important;
   height: 78px;
-  background: #232336;
+  background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
   border-radius: 6px;
   padding: 10px;
   align-items: center;
@@ -63,7 +64,7 @@ const CoinImage = styled.img`
   height: 32px;
 `;
 
-const Carousel = ({ setSelectedCoin }) => {
+const Carousel = ({ setSelectedCoin, selectedCoin }) => {
   const { coins } = useCoin();
 
   const handleSelectCoin = (coin) => {
@@ -83,7 +84,11 @@ const Carousel = ({ setSelectedCoin }) => {
     <CarouselContainer>
       <StyledSlider {...settings}>
         {coins.map((coin) => (
-          <CarouselBox style={{ width: 210 }} key={coin.id}>
+          <CarouselBox
+            style={{ width: 210 }}
+            key={coin.id}
+            selected={coin.id === selectedCoin.id}
+          >
             <CoinImage
               src={coin.image}
               style={{
@@ -132,6 +137,7 @@ const Carousel = ({ setSelectedCoin }) => {
 Carousel.propTypes = {
   green: PropTypes.style,
   setSelectedCoin: PropTypes.func,
+  selectedCoin: PropTypes.object,
 };
 
 export default Carousel;

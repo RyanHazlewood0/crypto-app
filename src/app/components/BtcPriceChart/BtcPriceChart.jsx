@@ -12,6 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
+import { abbreviateNumber } from "../Table/helper-functions";
 
 ChartJS.register(
   CategoryScale,
@@ -34,7 +35,7 @@ const ChartContainer = styled.div`
 
 const HeaderTextContainer = styled.div`
   height: 30%;
-  padding: 15px 0 0 15px;
+  padding: 2.5% 0 0 2.5%;
 `;
 
 const CoinText = styled.h1`
@@ -107,14 +108,14 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }) => {
     <ChartContainer>
       <HeaderTextContainer>
         <CoinText>{selectedCoin.name}</CoinText>
-        <PriceText>{selectedCoin.current_price}</PriceText>
+        <PriceText>${abbreviateNumber(selectedCoin.current_price)}</PriceText>
         <DateText>{new Date().toDateString()}</DateText>
       </HeaderTextContainer>
       {coinPriceData && (
         <Line
           options={options}
           data={lineChartData}
-          style={{ maxHeight: "70%" }}
+          style={{ maxHeight: "70%", padding: "2.5%" }}
         />
       )}
     </ChartContainer>

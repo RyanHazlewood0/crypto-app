@@ -11,7 +11,7 @@ const NavBarContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  margin: 15px 0 10px 0;
   padding-bottom: 30px;
 `;
 

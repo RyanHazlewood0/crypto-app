@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { abbreviateNumber } from "../Table/helper-functions";
 
 ChartJS.register(
   CategoryScale,
@@ -31,7 +32,7 @@ const ChartContainer = styled.div`
 
 const HeaderTextContainer = styled.div`
   height: 30%;
-  padding: 15px 0 0 15px;
+  padding: 2.5% 0 0 2.5%;
 `;
 
 const CoinText = styled.h1`
@@ -93,10 +94,14 @@ const BtcVolumeChart = ({ coinVolumeData, selectedCoin }) => {
     <ChartContainer>
       <HeaderTextContainer>
         <CoinText>{selectedCoin.name}</CoinText>
-        <VolumeText>{selectedCoin.total_volume}</VolumeText>
+        <VolumeText>${abbreviateNumber(selectedCoin.total_volume)}</VolumeText>
         <DateText>{new Date().toDateString()}</DateText>
       </HeaderTextContainer>
-      <Bar options={options} data={barChartData} style={{ maxHeight: "70%" }} />
+      <Bar
+        options={options}
+        data={barChartData}
+        style={{ maxHeight: "70%", padding: "2.5%" }}
+      />
     </ChartContainer>
   );
 };
