@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import BtcPriceChart from "../BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "../BtcVolumeChart/BtcVolumeChart";
+import HomeChartTimeSelect from "../HomeChartTimeSelect/HomeChartTimeSelect";
 import { useEffect, useState } from "react";
 
 const ChartsContainer = styled.div`
@@ -15,6 +16,7 @@ const HomePageCharts = ({ selectedCoin }) => {
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState(null);
   const [coinVolumeData, setCoinVolumeData] = useState(null);
+  const [TimeFrameSelected, setTimeFrameSelected] = useState(null);
 
   useEffect(() => {
     setHasError(false);
@@ -48,23 +50,29 @@ const HomePageCharts = ({ selectedCoin }) => {
     };
     getCoinData();
   }, [selectedCoin]);
-
   return (
-    <ChartsContainer>
-      {hasError && <p>Error loading chart data</p>}
-      {coinPriceData && (
-        <BtcPriceChart
-          coinPriceData={coinPriceData}
-          selectedCoin={selectedCoin}
-        />
-      )}
-      {coinVolumeData && (
-        <BtcVolumeChart
-          coinVolumeData={coinVolumeData}
-          selectedCoin={selectedCoin}
-        />
-      )}
-    </ChartsContainer>
+    <div>
+      <ChartsContainer>
+        {hasError && <p>Error loading chart data</p>}
+        {coinPriceData && (
+          <BtcPriceChart
+            coinPriceData={coinPriceData}
+            selectedCoin={selectedCoin}
+          />
+        )}
+        {coinVolumeData && (
+          <BtcVolumeChart
+            coinVolumeData={coinVolumeData}
+            selectedCoin={selectedCoin}
+          />
+        )}
+      </ChartsContainer>
+      <HomeChartTimeSelect
+        TimeFrameSelected={TimeFrameSelected}
+        setTimeFrameSelected={setTimeFrameSelected}
+      />
+      <ChartsContainer />
+    </div>
   );
 };
 
