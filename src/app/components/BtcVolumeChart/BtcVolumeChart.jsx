@@ -49,7 +49,7 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-const BtcVolumeChart = ({ coinVolumeData }) => {
+const BtcVolumeChart = ({ coinVolumeData, selectedCoin }) => {
   const barChartData = {
     labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
@@ -92,9 +92,9 @@ const BtcVolumeChart = ({ coinVolumeData }) => {
   return (
     <ChartContainer>
       <HeaderTextContainer>
-        <CoinText>Bitcoin</CoinText>
-        <VolumeText>1 Billion</VolumeText>
-        <DateText>Jult 29 2024</DateText>
+        <CoinText>{selectedCoin.name}</CoinText>
+        <VolumeText>{selectedCoin.total_volume}</VolumeText>
+        <DateText>{new Date().toDateString()}</DateText>
       </HeaderTextContainer>
       <Bar options={options} data={barChartData} style={{ maxHeight: "70%" }} />
     </ChartContainer>
@@ -103,6 +103,7 @@ const BtcVolumeChart = ({ coinVolumeData }) => {
 
 BtcVolumeChart.propTypes = {
   coinVolumeData: PropTypes.arrayOf(PropTypes.number),
+  selectedCoin: PropTypes.object,
 };
 
 export default BtcVolumeChart;

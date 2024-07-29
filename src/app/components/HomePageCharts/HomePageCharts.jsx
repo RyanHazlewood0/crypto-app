@@ -21,7 +21,7 @@ const HomePageCharts = ({ selectedCoin }) => {
     const getCoinData = async () => {
       try {
         const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${selectedCoin}/market_chart?vs_currency=usd&days=180&interval=daily`
+          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=180&interval=daily&x_cg_pro_api_key=CG-3pE3n6jpPAp5aMpDLciCCcsz`
         );
         const fetchedData = await response.json();
         setCoinPriceData(
@@ -52,8 +52,18 @@ const HomePageCharts = ({ selectedCoin }) => {
   return (
     <ChartsContainer>
       {hasError && <p>Error loading chart data</p>}
-      {coinPriceData && <BtcPriceChart coinPriceData={coinPriceData} />}
-      {coinVolumeData && <BtcVolumeChart coinVolumeData={coinVolumeData} />}
+      {coinPriceData && (
+        <BtcPriceChart
+          coinPriceData={coinPriceData}
+          selectedCoin={selectedCoin}
+        />
+      )}
+      {coinVolumeData && (
+        <BtcVolumeChart
+          coinVolumeData={coinVolumeData}
+          selectedCoin={selectedCoin}
+        />
+      )}
     </ChartsContainer>
   );
 };

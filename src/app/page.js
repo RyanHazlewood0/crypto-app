@@ -8,7 +8,7 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
   return (
     <>
-      <Carousel selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} />
+      <Carousel setSelectedCoin={setSelectedCoin} />
       <HomePageCharts selectedCoin={selectedCoin} />
       <Table />
     </>

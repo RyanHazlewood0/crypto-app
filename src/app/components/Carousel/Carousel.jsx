@@ -66,8 +66,8 @@ const CoinImage = styled.img`
 const Carousel = ({ setSelectedCoin }) => {
   const { coins } = useCoin();
 
-  const handleSelectCoin = (id) => {
-    setSelectedCoin(id);
+  const handleSelectCoin = (coin) => {
+    setSelectedCoin(coin);
   };
 
   const settings = {
@@ -92,8 +92,8 @@ const Carousel = ({ setSelectedCoin }) => {
             />
             <div>
               <p
-                style={{ fontSize: "16px" }}
-                onClick={() => handleSelectCoin(coin.id)}
+                style={{ fontSize: "16px", cursor: "pointer" }}
+                onClick={() => handleSelectCoin(coin)}
               >
                 {coin.name}({coin.symbol.toUpperCase()})
               </p>

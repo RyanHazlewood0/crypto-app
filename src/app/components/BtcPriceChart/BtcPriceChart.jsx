@@ -52,7 +52,7 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-const BtcPriceChart = ({ coinPriceData }) => {
+const BtcPriceChart = ({ coinPriceData, selectedCoin }) => {
   const lineChartData = {
     labels: coinPriceData.map((obj) => obj.date),
     datasets: [
@@ -106,9 +106,9 @@ const BtcPriceChart = ({ coinPriceData }) => {
   return (
     <ChartContainer>
       <HeaderTextContainer>
-        <CoinText>Bitcoin</CoinText>
-        <PriceText>$60,000</PriceText>
-        <DateText>July 29 2024</DateText>
+        <CoinText>{selectedCoin.name}</CoinText>
+        <PriceText>{selectedCoin.current_price}</PriceText>
+        <DateText>{new Date().toDateString()}</DateText>
       </HeaderTextContainer>
       {coinPriceData && (
         <Line
@@ -123,6 +123,7 @@ const BtcPriceChart = ({ coinPriceData }) => {
 
 BtcPriceChart.propTypes = {
   coinPriceData: PropTypes.arrayOf(PropTypes.number),
+  selectedCoin: PropTypes.object,
 };
 
 export default BtcPriceChart;
