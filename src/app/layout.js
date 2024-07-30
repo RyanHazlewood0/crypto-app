@@ -59,9 +59,7 @@ export default function RootLayout({ children }) {
     const getMarketData = async () => {
       setHasError(false);
       try {
-        const response = await fetch(
-          "https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=CG-3pE3n6jpPAp5aMpDLciCCcsz"
-        );
+        const response = await fetch("https://api.coingecko.com/api/v3/global");
         const fetchedData = await response.json();
         const totalCap = abbreviateNumber(
           fetchedData.data.total_market_cap.usd

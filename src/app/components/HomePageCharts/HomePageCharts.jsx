@@ -21,7 +21,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }) => {
     const getCoinData = async () => {
       try {
         const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=CG-3pE3n6jpPAp5aMpDLciCCcsz`
+          `https://api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily`
         );
         const fetchedData = await response.json();
         setCoinPriceData(

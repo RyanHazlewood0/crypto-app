@@ -10,6 +10,7 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState(null);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
+
   return (
     <>
       <Carousel setSelectedCoin={setSelectedCoin} selectedCoin={selectedCoin} />
