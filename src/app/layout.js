@@ -10,7 +10,7 @@ import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
 import NavBar from "./components/NavBar/NavBar";
 
 const MainContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1296px;
   margin-left: auto;
   margin-right: auto;
 `;
