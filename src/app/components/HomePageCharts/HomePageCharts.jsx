@@ -16,12 +16,14 @@ const HomePageCharts = ({ selectedCoin, dayCount }) => {
   const [coinPriceData, setCoinPriceData] = useState(null);
   const [coinVolumeData, setCoinVolumeData] = useState(null);
 
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
   useEffect(() => {
     setHasError(false);
     const getCoinData = async () => {
       try {
         const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily`
+          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData = await response.json();
         setCoinPriceData(

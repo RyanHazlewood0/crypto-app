@@ -33,6 +33,12 @@ const PriceChangeDiv = styled.div`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
 `;
 
+const HeaderText = styled.p`
+  color: #d1d1d1;
+  font-size: 14px;
+  margin-bottom: 20px;
+`;
+
 const StyledSlider = styled(Slider)`
   .slick-slide {
     margin: 0 3.6px 0 3.6px;
@@ -90,6 +96,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
   return (
     selectedCoin !== null && (
       <CarouselContainer>
+        <HeaderText>Select the currency to view statistics</HeaderText>
         <StyledSlider {...settings}>
           {coins.map((coin) => (
             <CarouselBox
