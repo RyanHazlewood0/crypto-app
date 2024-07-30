@@ -26,7 +26,6 @@ const ChartContainer = styled.div`
   background: #191932;
   border-radius: 6px;
   height: 400px;
-
   align-items: flex-end;
 `;
 

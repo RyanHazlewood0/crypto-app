@@ -8,9 +8,9 @@ const Container = styled.div`
   justify-content: space-between;
   background: #232336;
   align-items: center;
-  margin-bottom: 20px;
   border-radius: 6px;
   padding: 4px;
+  margin-bottom: 70px;
 `;
 
 const SelectBtn = styled.div`
@@ -27,53 +27,57 @@ const SelectBtn = styled.div`
   padding: 20px 8px 20px 8px;
 `;
 
-const HomeChartTimeSelect = ({ TimeFrameSelected, setTimeFrameSelected }) => {
-  const handleClickTimeFrame = (e) => {
-    setTimeFrameSelected(e.target.textContent);
+const HomeChartTimeSelect = ({
+  timeFrameSelected,
+  setTimeFrameSelected,
+  setDayCount,
+}) => {
+  const findDayCount = (e) => {
+    if (e.target.textContent === "1D") {
+      setDayCount("1");
+      setTimeFrameSelected("1D");
+    } else if (e.target.textContent === "7D") {
+      setDayCount("7");
+      setTimeFrameSelected("7D");
+    } else if (e.target.textContent === "14D") {
+      setDayCount("14");
+      setTimeFrameSelected("14D");
+    } else if (e.target.textContent === "1M") {
+      setDayCount("30");
+      setTimeFrameSelected("1M");
+    } else if (e.target.textContent === "1Q") {
+      setDayCount("90");
+      setTimeFrameSelected("1Q");
+    } else if (e.target.textContent === "1Y") {
+      setDayCount("365");
+      setTimeFrameSelected("1Y");
+    } else if (e.target.textContent === "5Y") {
+      setDayCount("1825");
+      setTimeFrameSelected("5Y");
+    }
   };
 
   return (
     <Container>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "1D"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1D"}>
         1D
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "7D"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "7D"}>
         7D
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "14D"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "14D"}>
         14D
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "1M"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1M"}>
         1M
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "1Q"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1Q"}>
         1Q
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "1Y"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1Y"}>
         1Y
       </SelectBtn>
-      <SelectBtn
-        onClick={handleClickTimeFrame}
-        selected={TimeFrameSelected === "5Y"}
-      >
+      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "5Y"}>
         5Y
       </SelectBtn>
     </Container>
@@ -81,8 +85,9 @@ const HomeChartTimeSelect = ({ TimeFrameSelected, setTimeFrameSelected }) => {
 };
 
 HomeChartTimeSelect.propTypes = {
-  TimeFrameSelected: PropTypes.string,
+  timeFrameSelected: PropTypes.string,
   setTimeFrameSelected: PropTypes.func,
+  setDayCount: PropTypes.string,
 };
 
 export default HomeChartTimeSelect;

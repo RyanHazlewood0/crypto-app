@@ -2,28 +2,26 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import BtcPriceChart from "../BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "../BtcVolumeChart/BtcVolumeChart";
-import HomeChartTimeSelect from "../HomeChartTimeSelect/HomeChartTimeSelect";
 import { useEffect, useState } from "react";
 
 const ChartsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin: 40px 0 50px 0;
 `;
 
-const HomePageCharts = ({ selectedCoin }) => {
+const HomePageCharts = ({ selectedCoin, dayCount }) => {
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState(null);
   const [coinVolumeData, setCoinVolumeData] = useState(null);
-  const [TimeFrameSelected, setTimeFrameSelected] = useState(null);
 
   useEffect(() => {
     setHasError(false);
     const getCoinData = async () => {
       try {
         const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=180&interval=daily&x_cg_pro_api_key=CG-3pE3n6jpPAp5aMpDLciCCcsz`
+          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=CG-3pE3n6jpPAp5aMpDLciCCcsz`
         );
         const fetchedData = await response.json();
         setCoinPriceData(
@@ -49,30 +47,23 @@ const HomePageCharts = ({ selectedCoin }) => {
       }
     };
     getCoinData();
-  }, [selectedCoin]);
+  }, [selectedCoin, dayCount]);
   return (
-    <div>
-      <ChartsContainer>
-        {hasError && <p>Error loading chart data</p>}
-        {coinPriceData && (
-          <BtcPriceChart
-            coinPriceData={coinPriceData}
-            selectedCoin={selectedCoin}
-          />
-        )}
-        {coinVolumeData && (
-          <BtcVolumeChart
-            coinVolumeData={coinVolumeData}
-            selectedCoin={selectedCoin}
-          />
-        )}
-      </ChartsContainer>
-      <HomeChartTimeSelect
-        TimeFrameSelected={TimeFrameSelected}
-        setTimeFrameSelected={setTimeFrameSelected}
-      />
-      <ChartsContainer />
-    </div>
+    <ChartsContainer>
+      {hasError && <p>Error loading chart data</p>}
+      {coinPriceData && (
+        <BtcPriceChart
+          coinPriceData={coinPriceData}
+          selectedCoin={selectedCoin}
+        />
+      )}
+      {coinVolumeData && (
+        <BtcVolumeChart
+          coinVolumeData={coinVolumeData}
+          selectedCoin={selectedCoin}
+        />
+      )}
+    </ChartsContainer>
   );
 };
 
@@ -80,4 +71,5 @@ export default HomePageCharts;
 
 HomePageCharts.propTypes = {
   selectedCoin: PropTypes.object,
+  dayCount: PropTypes.string,
 };
