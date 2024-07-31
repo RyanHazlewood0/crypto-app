@@ -92,11 +92,19 @@ const InfoContainerTwo = styled.div`
   background: purple;
   height: 420px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
+`;
+
+const InfoContainerTwoColumn = styled.div`
+  width: 50%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const InfoContainerThree = styled.div`
@@ -160,6 +168,12 @@ export default function Coin({ params }) {
     fetchData();
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString();
+    return formattedDate;
+  };
+
   if (isLoading) {
     return <p>Loading Data</p>;
   }
@@ -194,9 +208,53 @@ export default function Coin({ params }) {
               <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                 ${abbreviateNumber(coinData.market_data.current_price.usd)}
               </h1>
+              <p style={{ fontSize: "16px" }}>
+                All time high:{" "}
+                <span style={{ fontSize: "20px" }}>
+                  ${abbreviateNumber(coinData.market_data.ath.usd)}
+                </span>{" "}
+              </p>
+              <p style={{ fontSize: "14px" }}>
+                {formatDate(coinData.market_data.ath_date.usd)}
+              </p>
+              <p style={{ fontSize: "16px" }}>
+                All time low:{" "}
+                <span style={{ fontSize: "20px" }}>
+                  ${abbreviateNumber(coinData.market_data.atl.usd)}
+                </span>{" "}
+              </p>
+              <p style={{ fontSize: "14px" }}>
+                {formatDate(coinData.market_data.atl_date.usd)}
+              </p>
             </PriceInfoContainer>
           </InfoContainerOne>
-          <InfoContainerTwo>bunch of price stuff</InfoContainerTwo>
+          <InfoContainerTwo>
+            <InfoContainerTwoColumn style={{ fontSize: "14px" }}>
+              <p>Market Cap</p>
+              <p>Fully Diluted Valuation</p>
+              <p>Volume 24h</p>
+              <p>Volume/Market</p>
+              <p>Total Volume</p>
+              <p>Circulating Supply</p>
+              <p>Total Supply</p>
+            </InfoContainerTwoColumn>
+            <InfoContainerTwoColumn style={{ fontSize: "20px" }}>
+              <p>${abbreviateNumber(coinData.market_data.market_cap.usd)}</p>
+              <p>
+                $
+                {abbreviateNumber(
+                  coinData.market_data.fully_diluted_valuation.usd
+                )}
+              </p>
+              <p> ${abbreviateNumber(coinData.market_data.total_volume.usd)}</p>
+              <p>*Volume/Market*</p>
+              <p>*Total Volume*</p>
+              <p>
+                ${abbreviateNumber(coinData.market_data.circulating_supply)}
+              </p>
+              <p> ${abbreviateNumber(coinData.market_data.total_supply)}</p>
+            </InfoContainerTwoColumn>
+          </InfoContainerTwo>
         </TopHalfContainer>
         <BottomHalfContainer>
           <InfoContainerThree>
@@ -204,9 +262,9 @@ export default function Coin({ params }) {
             <DescriptionText>{coinData.description.en}</DescriptionText>
           </InfoContainerThree>
           <InfoContainerFour>
-            <LinkContainer>www.google.com</LinkContainer>
-            <LinkContainer>www.google.com</LinkContainer>
-            <LinkContainer>www.google.com</LinkContainer>
+            <LinkContainer>{coinData.links.blockchain_site[0]}</LinkContainer>
+            <LinkContainer>{coinData.links.blockchain_site[1]}</LinkContainer>
+            <LinkContainer>{coinData.links.blockchain_site[2]}</LinkContainer>
           </InfoContainerFour>
         </BottomHalfContainer>
       </Container>
