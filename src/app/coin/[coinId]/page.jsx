@@ -5,6 +5,10 @@ import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { useState, useEffect } from "react";
 import { abbreviateNumber } from "@/app/components/Table/helper-functions";
+import CopyIcon from "./svg/CopyIcon";
+import RoundIcon from "./svg/RoundIcon";
+import RedArrow from "./svg/RedArrow";
+import GreenArrow from "./svg/GreenArrow";
 
 const Container = styled.div`
   width: 100%;
@@ -62,6 +66,7 @@ const CoinNameContainer = styled.div`
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
+  gap: 20px;
 `;
 
 const PriceInfoContainer = styled.div`
@@ -74,6 +79,7 @@ const PriceInfoContainer = styled.div`
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
+  gap: 20px;
 `;
 
 const CoinLinkContainer = styled.div`
@@ -85,26 +91,6 @@ const CoinLinkContainer = styled.div`
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
-`;
-
-const InfoContainerTwo = styled.div`
-  width: 544px;
-  background: purple;
-  height: 420px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #1e1932;
-  border-radius: 12px;
-`;
-
-const InfoContainerTwoColumn = styled.div`
-  width: 50%;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const InfoContainerThree = styled.div`
@@ -138,6 +124,50 @@ const LinkContainer = styled.div`
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
+`;
+
+const TableRow = styled.tr`
+  background: #1e1932;
+  font-size: 14px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 544px;
+  padding: 0 35px;
+`;
+
+const StyledTd = styled.td`
+  display: flex;
+  align-items: center;
+`;
+
+const LeftContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+`;
+
+const RightText = styled.p`
+  font-size: 20px;
+`;
+
+const TableContainer = styled.div`
+  height: 420px;
+`;
+
+const PriceInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 243px;
+  gap: 20px;
+`;
+
+const DateText = styled.p`
+  font-size: 14px;
+  color: #b9b9ba;
+  text-align: center;
 `;
 
 export default function Coin({ params }) {
@@ -200,61 +230,159 @@ export default function Coin({ params }) {
                   {coinData.name} ({coinData.symbol})
                 </h1>
               </CoinNameContainer>
-              <Link href={coinData.links.homepage[0]}>
-                <CoinLinkContainer>{coinData.links.homepage}</CoinLinkContainer>
-              </Link>
+              <CoinLinkContainer>
+                <Link
+                  href={coinData.links.homepage[0]}
+                  style={{ marginRight: "10px" }}
+                >
+                  {coinData.links.homepage[0]}
+                </Link>
+                <div
+                  onClick={() =>
+                    navigator.clipboard.writeText(coinData.links.homepage[0])
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <CopyIcon />
+                </div>
+              </CoinLinkContainer>
             </NameAndLinkContainer>
             <PriceInfoContainer>
               <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                 ${abbreviateNumber(coinData.market_data.current_price.usd)}
               </h1>
-              <p style={{ fontSize: "16px" }}>
-                All time high:{" "}
-                <span style={{ fontSize: "20px" }}>
-                  ${abbreviateNumber(coinData.market_data.ath.usd)}
-                </span>{" "}
-              </p>
-              <p style={{ fontSize: "14px" }}>
-                {formatDate(coinData.market_data.ath_date.usd)}
-              </p>
-              <p style={{ fontSize: "16px" }}>
-                All time low:{" "}
-                <span style={{ fontSize: "20px" }}>
-                  ${abbreviateNumber(coinData.market_data.atl.usd)}
-                </span>{" "}
-              </p>
-              <p style={{ fontSize: "14px" }}>
-                {formatDate(coinData.market_data.atl_date.usd)}
-              </p>
+              <PriceInnerContainer>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    <GreenArrow />
+                    <p style={{ fontSize: "16px" }}>All time high:</p>
+                    <p style={{ fontSize: "20px" }}>
+                      ${abbreviateNumber(coinData.market_data.ath.usd)}
+                    </p>{" "}
+                  </div>
+                  <DateText>
+                    {formatDate(coinData.market_data.ath_date.usd)}
+                  </DateText>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    <RedArrow />
+                    <p style={{ fontSize: "16px" }}>All time low:</p>
+                    <p style={{ fontSize: "20px" }}>
+                      ${abbreviateNumber(coinData.market_data.atl.usd)}
+                    </p>{" "}
+                  </div>
+                  <DateText>
+                    {formatDate(coinData.market_data.atl_date.usd)}
+                  </DateText>
+                </div>
+              </PriceInnerContainer>
             </PriceInfoContainer>
           </InfoContainerOne>
-          <InfoContainerTwo>
-            <InfoContainerTwoColumn style={{ fontSize: "14px" }}>
-              <p>Market Cap</p>
-              <p>Fully Diluted Valuation</p>
-              <p>Volume 24h</p>
-              <p>Volume/Market</p>
-              <p>Total Volume</p>
-              <p>Circulating Supply</p>
-              <p>Total Supply</p>
-            </InfoContainerTwoColumn>
-            <InfoContainerTwoColumn style={{ fontSize: "20px" }}>
-              <p>${abbreviateNumber(coinData.market_data.market_cap.usd)}</p>
-              <p>
-                $
-                {abbreviateNumber(
-                  coinData.market_data.fully_diluted_valuation.usd
-                )}
-              </p>
-              <p> ${abbreviateNumber(coinData.market_data.total_volume.usd)}</p>
-              <p>*Volume/Market*</p>
-              <p>*Total Volume*</p>
-              <p>
-                ${abbreviateNumber(coinData.market_data.circulating_supply)}
-              </p>
-              <p> ${abbreviateNumber(coinData.market_data.total_supply)}</p>
-            </InfoContainerTwoColumn>
-          </InfoContainerTwo>
+          <TableContainer>
+            <table>
+              <TableRow
+                style={{
+                  borderTopLeftRadius: "12px",
+                  borderTopRightRadius: "12px",
+                }}
+              >
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Market Cap</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>
+                    ${abbreviateNumber(coinData.market_data.market_cap.usd)}
+                  </RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow>
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Fully Diluted Valuation</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>
+                    $
+                    {abbreviateNumber(
+                      coinData.market_data.fully_diluted_valuation.usd
+                    )}
+                  </RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow>
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Volume 24h</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>
+                    ${abbreviateNumber(coinData.market_data.total_volume.usd)}
+                  </RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow>
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Volume / Market</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>*Volume / Market*</RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow>
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Total Volume</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>*Total Volume*</RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow>
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Circulating Supply</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>
+                    ${abbreviateNumber(coinData.market_data.circulating_supply)}
+                  </RightText>
+                </StyledTd>
+              </TableRow>
+              <TableRow
+                style={{
+                  borderBottomLeftRadius: "12px",
+                  borderBottomRightRadius: "12px",
+                }}
+              >
+                <LeftContent>
+                  <RoundIcon />
+                  <p>Total Supply</p>
+                </LeftContent>
+                <StyledTd>
+                  <RightText>
+                    ${abbreviateNumber(coinData.market_data.total_supply)}
+                  </RightText>
+                </StyledTd>
+              </TableRow>
+            </table>
+          </TableContainer>
         </TopHalfContainer>
         <BottomHalfContainer>
           <InfoContainerThree>
@@ -262,9 +390,66 @@ export default function Coin({ params }) {
             <DescriptionText>{coinData.description.en}</DescriptionText>
           </InfoContainerThree>
           <InfoContainerFour>
-            <LinkContainer>{coinData.links.blockchain_site[0]}</LinkContainer>
-            <LinkContainer>{coinData.links.blockchain_site[1]}</LinkContainer>
-            <LinkContainer>{coinData.links.blockchain_site[2]}</LinkContainer>
+            <LinkContainer>
+              <Link
+                style={{ marginRight: "10px" }}
+                href={coinData.links.blockchain_site[0]}
+              >
+                {coinData.links.blockchain_site[0]}
+              </Link>
+              <div
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    coinData.links.blockchain_site[0]
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <CopyIcon
+                  onClick={() => copyText(coinData.links.blockchain_site[0])}
+                />
+              </div>
+            </LinkContainer>
+            <LinkContainer>
+              <Link
+                style={{ marginRight: "10px" }}
+                href={coinData.links.blockchain_site[1]}
+              >
+                {coinData.links.blockchain_site[1]}
+              </Link>
+              <div
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    coinData.links.blockchain_site[1]
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <CopyIcon
+                  onClick={() => copyText(coinData.links.blockchain_site[1])}
+                />
+              </div>
+            </LinkContainer>
+            <LinkContainer>
+              <Link
+                style={{ marginRight: "10px" }}
+                href={coinData.links.blockchain_site[2]}
+              >
+                {coinData.links.blockchain_site[2]}
+              </Link>
+              <div
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    coinData.links.blockchain_site[2]
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <CopyIcon
+                  onClick={() => copyText(coinData.links.blockchain_site[2])}
+                />
+              </div>
+            </LinkContainer>
           </InfoContainerFour>
         </BottomHalfContainer>
       </Container>
