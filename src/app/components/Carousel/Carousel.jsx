@@ -23,6 +23,7 @@ const CarouselBox = styled.div`
   align-items: center;
   justify-content: space-around;
   border: ${(props) => (props.selected ? "solid 1px #a7a7cc" : "none")};
+  cursor: pointer;
 `;
 
 const ArrowAndPercentContainer = styled.div`
@@ -104,6 +105,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
               style={{ width: 210 }}
               key={coin.id}
               selected={coin.id === selectedCoin.id}
+              onClick={() => handleSelectCoin(coin)}
             >
               <CoinImage
                 src={coin.image}
@@ -112,10 +114,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
                 }}
               />
               <div>
-                <p
-                  style={{ fontSize: "16px", cursor: "pointer" }}
-                  onClick={() => handleSelectCoin(coin)}
-                >
+                <p style={{ fontSize: "16px" }}>
                   {coin.name}({coin.symbol.toUpperCase()})
                 </p>
                 <ArrowAndPercentContainer>

@@ -13,7 +13,7 @@ import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 
 const CoinTable = styled.table`
-  max-width: 1440px;
+  max-width: 100%;
   width: 100%;
   margin: 0 auto 0 auto;
   border-collapse: separate;
