@@ -144,7 +144,6 @@ const StyledTd = styled.td`
 
 const LeftContent = styled.div`
   display: flex;
-  align-items: center;
   gap: 10px;
   font-size: 16px;
 `;
