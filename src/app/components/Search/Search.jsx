@@ -14,6 +14,7 @@ const SearchInput = styled.input`
   padding: 10px 10px 10px 35px;
   border-radius: 6px;
   width: 100%;
+  border: solid 1px gray;
 `;
 
 const DropDown = styled.div`
