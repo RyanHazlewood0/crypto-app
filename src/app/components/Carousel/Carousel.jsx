@@ -22,6 +22,7 @@ const CarouselBox = styled.div`
   padding: 10px;
   align-items: center;
   justify-content: space-around;
+  border: ${(props) => (props.selected ? "solid 1px #a7a7cc" : "none")};
 `;
 
 const ArrowAndPercentContainer = styled.div`
