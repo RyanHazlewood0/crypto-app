@@ -52,7 +52,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }) => {
   }, [selectedCoin, dayCount]);
   return (
     <ChartsContainer>
-      {hasError && <p>Error loading chart data</p>}
+      {hasError && <p>Error loading chart data...</p>}
       {coinPriceData && (
         <BtcPriceChart
           coinPriceData={coinPriceData}
