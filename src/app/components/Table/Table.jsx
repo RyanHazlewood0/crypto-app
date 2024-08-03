@@ -102,8 +102,7 @@ const Table = () => {
     getCoinData();
   }, [sortOrder]);
 
-  const getSortOption = (e) => {
-    const order = e.currentTarget.dataset.order;
+  const getSortOption = (e, order) => {
     setSortOrder(order);
   };
 
@@ -164,14 +163,12 @@ const Table = () => {
               #
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e)}
-                data-order="mcap-desc"
+                onClick={(e) => getSortOption(e, "mcap-desc")}
               >
                 ▼
               </span>
               <span
-                onClick={(e) => getSortOption(e)}
-                data-order="mcap-asc"
+                onClick={(e) => getSortOption(e, "mcap-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
@@ -183,14 +180,12 @@ const Table = () => {
               Name{" "}
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e)}
-                data-order="name-desc"
+                onClick={(e) => getSortOption(e, "name-desc")}
               >
                 ▼
               </span>
               <span
-                onClick={(e) => getSortOption(e)}
-                data-order="name-asc"
+                onClick={(e) => getSortOption(e, "name-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
@@ -202,14 +197,12 @@ const Table = () => {
               Price{" "}
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                data-order="price-desc"
-                onClick={(e) => getSortOption(e)}
+                onClick={(e) => getSortOption(e, "price-desc")}
               >
                 ▼
               </span>
               <span
-                data-order="price-asc"
-                onClick={(e) => getSortOption(e)}
+                onClick={(e) => getSortOption(e, "price-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
@@ -221,14 +214,12 @@ const Table = () => {
               1h%{" "}
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e)}
-                data-order="1h-desc"
+                onClick={(e) => getSortOption(e, "1h-desc")}
               >
                 ▼
               </span>
               <span
-                onClick={(e) => getSortOption(e)}
-                data-order="1h-asc"
+                onClick={(e) => getSortOption(e, "1h-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
@@ -240,14 +231,12 @@ const Table = () => {
               24h%{" "}
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e)}
-                data-order="24h-desc"
+                onClick={(e) => getSortOption(e, "24h-desc")}
               >
                 ▼
               </span>
               <span
-                onClick={(e) => getSortOption(e)}
-                data-order="24h-asc"
+                onClick={(e) => getSortOption(e, "24h-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
@@ -259,14 +248,12 @@ const Table = () => {
               7d%{" "}
               <span
                 style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e)}
-                data-order="7d-desc"
+                onClick={(e) => getSortOption(e, "7d-desc")}
               >
                 ▼
               </span>
               <span
-                onClick={(e) => getSortOption(e)}
-                data-order="7d-asc"
+                onClick={(e) => getSortOption(e, "7d-asc")}
                 style={{ cursor: "pointer" }}
               >
                 ▲
