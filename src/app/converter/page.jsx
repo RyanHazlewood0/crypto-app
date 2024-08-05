@@ -4,6 +4,7 @@ import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState } from "react";
+import { useCoin } from "../contexts/CoinProvider";
 
 const ConverterContainer = styled.div`
   width: 100%;
@@ -93,13 +94,26 @@ const ConvertBtn = styled.div`
   top: 50%;
 `;
 
+const DropDown = styled.div`
+  margin-top: 5px;
+  width: 30%;
+  background: #191925;
+  padding: 10px;
+  border-radius: 6px;
+  background: ##191925;
+`;
+
 export default function Converter() {
-  //const [buyCoin, setBuyCoin] = useState(null);
-  //const [sellCoin, setSellCoin] = useState(null);
+  // const [buyCoin, setBuyCoin] = useState(null);
+  // const [sellCoin, setSellCoin] = useState(null);
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   //const [dayCount, setDayCount] = useState("30");
+  const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
+  const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
+
+  const { coins } = useCoin();
 
   const date = new Date();
   const currentDate = date.toLocaleString();
@@ -107,12 +121,36 @@ export default function Converter() {
   const handleBuySearch = (e) => {
     const value = e.target.value;
     setBuySearch(value);
+    if (e.target.value.length !== 0) {
+      setBuyDropdownOpen(true);
+    } else {
+      setBuyDropdownOpen(false);
+    }
   };
 
   const handleSellSearch = (e) => {
     const value = e.target.value;
     setSellSearch(value);
+    if (e.target.value.length !== 0) {
+      setSellDropdownOpen(true);
+    } else {
+      setSellDropdownOpen(false);
+    }
   };
+
+  const filteredBuyCoins = coins.filter(
+    (coin) =>
+      coin.id.includes(buySearch) ||
+      coin.symbol.includes(buySearch) ||
+      coin.name.includes(buySearch)
+  );
+
+  const filteredSellCoins = coins.filter(
+    (coin) =>
+      coin.id.includes(sellSearch) ||
+      coin.symbol.includes(sellSearch) ||
+      coin.name.includes(sellSearch)
+  );
 
   return (
     <>
@@ -122,14 +160,23 @@ export default function Converter() {
       <ConverterContainer>
         <ConverterBox style={{ background: "#191932" }}>
           <InnerContainer>
-            <BuySellText>You Buy</BuySellText>
+            <BuySellText>You Sell</BuySellText>
             <SearchAndValueContainer>
               <SearchInput
-                value={buySearch}
-                onChange={(e) => handleBuySearch(e)}
+                value={sellSearch}
+                onChange={(e) => handleSellSearch(e)}
               />
               <ValueText>$5,000</ValueText>
             </SearchAndValueContainer>
+            {sellDropdownOpen && (
+              <DropDown>
+                {filteredSellCoins.map((coin) => (
+                  <p style={{ cursor: "pointer" }} key={coin.id}>
+                    {coin.name}
+                  </p>
+                ))}
+              </DropDown>
+            )}
             <HorizontalLine />
             <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
           </InnerContainer>
@@ -142,11 +189,20 @@ export default function Converter() {
             <BuySellText>You Buy</BuySellText>
             <SearchAndValueContainer>
               <SearchInput
-                value={sellSearch}
-                onChange={(e) => handleSellSearch(e)}
+                value={buySearch}
+                onChange={(e) => handleBuySearch(e)}
               />
               <ValueText>$5,000</ValueText>
             </SearchAndValueContainer>
+            {buyDropdownOpen && (
+              <DropDown>
+                {filteredBuyCoins.map((coin) => (
+                  <p style={{ cursor: "pointer" }} key={coin.id}>
+                    {coin.name}
+                  </p>
+                ))}
+              </DropDown>
+            )}
             <HorizontalLine />
             <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
           </InnerContainer>
