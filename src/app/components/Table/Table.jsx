@@ -80,6 +80,7 @@ const PriceChangeDiv = styled.div`
 
 const Table = () => {
   const [hasError, setHasError] = useState(false);
+  const [sortOrder, setSortOrder] = useState("descending mcap");
 
   const { coins, setCoins } = useCoin();
 
@@ -99,7 +100,57 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, []);
+  }, [sortOrder]);
+
+  const getSortOption = (e, order) => {
+    setSortOrder(order);
+  };
+
+  const sortedCoins = [...coins].sort((a, b) => {
+    if (sortOrder === "price-desc") {
+      return a.current_price - b.current_price;
+    } else if (sortOrder === "price-asc") {
+      return b.current_price - a.current_price;
+    } else if (sortOrder === "1h-desc") {
+      return (
+        a.price_change_percentage_1h_in_currency -
+        b.price_change_percentage_1h_in_currency
+      );
+    } else if (sortOrder === "1h-asc") {
+      return (
+        b.price_change_percentage_1h_in_currency -
+        a.price_change_percentage_1h_in_currency
+      );
+    } else if (sortOrder === "24h-desc") {
+      return (
+        a.price_change_percentage_24h_in_currency -
+        b.price_change_percentage_24h_in_currency
+      );
+    } else if (sortOrder === "24h-asc") {
+      return (
+        b.price_change_percentage_24h_in_currency -
+        a.price_change_percentage_24h_in_currency
+      );
+    } else if (sortOrder === "7d-desc") {
+      return (
+        a.price_change_percentage_7d_in_currency -
+        b.price_change_percentage_7d_in_currency
+      );
+    } else if (sortOrder === "7d-asc") {
+      return (
+        b.price_change_percentage_7d_in_currency -
+        a.price_change_percentage_7d_in_currency
+      );
+    } else if (sortOrder === "mcap-desc") {
+      return a.market_cap - b.market_cap;
+    } else if (sortOrder === "mcap-asc") {
+      return b.market_cap - a.market_cap;
+    } else if (sortOrder === "name-desc") {
+      return b.name.localeCompare(a.name);
+    } else if (sortOrder === "name-asc") {
+      return a.name.localeCompare(b.name);
+    }
+  });
 
   return hasError ? (
     <div>{"Error loading coin data"}</div>
@@ -107,19 +158,115 @@ const Table = () => {
     <CoinTable>
       <TableHeader>
         <tr>
-          <StyledTh>#</StyledTh>
-          <StyledTh>Name</StyledTh>
-          <StyledTh>Price</StyledTh>
-          <StyledTh>1h%</StyledTh>
-          <StyledTh>24h%</StyledTh>
-          <StyledTh>7d%</StyledTh>
+          <StyledTh>
+            <p>
+              #
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "mcap-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "mcap-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
+          <StyledTh>
+            <p>
+              Name{" "}
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "name-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "name-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
+          <StyledTh>
+            <p>
+              Price{" "}
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "price-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "price-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
+          <StyledTh>
+            <p>
+              1h%{" "}
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "1h-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "1h-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
+          <StyledTh>
+            <p>
+              24h%{" "}
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "24h-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "24h-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
+          <StyledTh>
+            <p>
+              7d%{" "}
+              <span
+                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
+                onClick={(e) => getSortOption(e, "7d-desc")}
+              >
+                ▼
+              </span>
+              <span
+                onClick={(e) => getSortOption(e, "7d-asc")}
+                style={{ cursor: "pointer" }}
+              >
+                ▲
+              </span>
+            </p>
+          </StyledTh>
           <StyledTh>24h Volume / Market Cap</StyledTh>
           <StyledTh>Circulating / Total Supply</StyledTh>
           <StyledTh>Last 7d</StyledTh>
         </tr>
       </TableHeader>
       <tbody>
-        {coins.map((coin) => (
+        {sortedCoins.map((coin) => (
           <TableRow key={coin.id}>
             <StyledTd style={{ borderRadius: "10px 0 0 10px" }}>
               {coin.market_cap_rank}
