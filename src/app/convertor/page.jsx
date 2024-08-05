@@ -96,16 +96,24 @@ const ConvertBtn = styled.div`
 
 const DropDown = styled.div`
   margin-top: 5px;
-  width: 30%;
+  width: 178.8px;
   background: #191925;
   padding: 10px;
   border-radius: 6px;
   background: ##191925;
+  position: absolute;
+  z-index.: 1;
+  margin-top: 40px;
+`;
+
+const DropDownContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export default function Converter() {
-  //const [buyCoin, setBuyCoin] = useState(null);
-  // const [sellCoin, setSellCoin] = useState(null);
+  const [buyCoin, setBuyCoin] = useState(null);
+  const [sellCoin, setSellCoin] = useState(null);
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
@@ -152,6 +160,26 @@ export default function Converter() {
       coin.name.includes(sellSearch)
   );
 
+  const selectCoinSell = (coin) => {
+    setSellCoin(coin);
+    setSellDropdownOpen(false);
+  };
+
+  const selectCoinBuy = (coin) => {
+    setBuyCoin(coin);
+    setBuyDropdownOpen(false);
+  };
+
+  const clearBuyCoin = () => {
+    setBuyCoin(null);
+    setBuySearch("");
+  };
+
+  const clearSellCoin = () => {
+    setSellCoin(null);
+    setSellSearch("");
+  };
+
   return (
     <>
       <CoinsAndConverterBtns />
@@ -161,22 +189,46 @@ export default function Converter() {
         <ConverterBox style={{ background: "#191932" }}>
           <InnerContainer>
             <BuySellText>You Sell</BuySellText>
-            <SearchAndValueContainer>
-              <SearchInput
-                value={sellSearch}
-                onChange={(e) => handleSellSearch(e)}
-              />
-              <ValueText>$5,000</ValueText>
-            </SearchAndValueContainer>
-            {sellDropdownOpen && (
-              <DropDown>
-                {filteredSellCoins.map((coin) => (
-                  <p style={{ cursor: "pointer" }} key={coin.id}>
-                    {coin.name}
-                  </p>
-                ))}
-              </DropDown>
-            )}
+            <DropDownContainer>
+              <SearchAndValueContainer>
+                {sellCoin ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "150px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img src={sellCoin.image} style={{ width: "24px" }} />
+                    <p>{sellCoin.name}</p>
+                    <p>({sellCoin.symbol.toUpperCase()})</p>
+                    <p style={{ cursor: "pointer" }} onClick={clearSellCoin}>
+                      ▼
+                    </p>
+                  </div>
+                ) : (
+                  <SearchInput
+                    value={sellSearch}
+                    onChange={(e) => handleSellSearch(e)}
+                  />
+                )}
+
+                <ValueText>$5,000</ValueText>
+              </SearchAndValueContainer>
+              {sellDropdownOpen && (
+                <DropDown>
+                  {filteredSellCoins.map((coin) => (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      key={coin.id}
+                      onClick={(e) => selectCoinSell(coin, e)}
+                    >
+                      {coin.name}
+                    </p>
+                  ))}
+                </DropDown>
+              )}
+            </DropDownContainer>
             <HorizontalLine />
             <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
           </InnerContainer>
@@ -187,22 +239,45 @@ export default function Converter() {
         <ConverterBox style={{ background: "#1E1932" }}>
           <InnerContainer>
             <BuySellText>You Buy</BuySellText>
-            <SearchAndValueContainer>
-              <SearchInput
-                value={buySearch}
-                onChange={(e) => handleBuySearch(e)}
-              />
-              <ValueText>$5,000</ValueText>
-            </SearchAndValueContainer>
-            {buyDropdownOpen && (
-              <DropDown>
-                {filteredBuyCoins.map((coin) => (
-                  <p style={{ cursor: "pointer" }} key={coin.id}>
-                    {coin.name}
-                  </p>
-                ))}
-              </DropDown>
-            )}
+            <DropDownContainer>
+              <SearchAndValueContainer>
+                {buyCoin ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "150px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img src={buyCoin.image} style={{ width: "24px" }} />
+                    <p>{buyCoin.name}</p>
+                    <p>({buyCoin.symbol.toUpperCase()})</p>
+                    <p style={{ cursor: "pointer" }} onClick={clearBuyCoin}>
+                      ▼
+                    </p>
+                  </div>
+                ) : (
+                  <SearchInput
+                    value={buySearch}
+                    onChange={(e) => handleBuySearch(e)}
+                  />
+                )}
+                <ValueText>$5,000</ValueText>
+              </SearchAndValueContainer>
+              {buyDropdownOpen && (
+                <DropDown>
+                  {filteredBuyCoins.map((coin) => (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      key={coin.id}
+                      onClick={(e) => selectCoinBuy(coin, e)}
+                    >
+                      {coin.name}
+                    </p>
+                  ))}
+                </DropDown>
+              )}
+            </DropDownContainer>
             <HorizontalLine />
             <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
           </InnerContainer>
