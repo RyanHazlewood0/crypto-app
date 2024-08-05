@@ -18,7 +18,7 @@ const CoinsBtnContainer = styled.div`
   align-items: center;
 `;
 
-const ConvertorBtnContainer = styled.div`
+const ConverterBtnContainer = styled.div`
   background: #232336;
   color: white;
   width: 244px;
@@ -30,17 +30,17 @@ const ConvertorBtnContainer = styled.div`
   align-items: center;
 `;
 
-const CoinsAndConvertorBtns = () => {
+const CoinsAndConverterBtns = () => {
   return (
     <BtnsContainer>
       <Link href="/">
         <CoinsBtnContainer>Coins</CoinsBtnContainer>
       </Link>
       <Link href="/convertor">
-        <ConvertorBtnContainer>Convertor</ConvertorBtnContainer>
+        <ConverterBtnContainer>Convertor</ConverterBtnContainer>
       </Link>
     </BtnsContainer>
   );
 };
 
-export default CoinsAndConvertorBtns;
+export default CoinsAndConverterBtns;
