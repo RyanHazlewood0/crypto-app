@@ -38,10 +38,11 @@ const ChartContainer = styled.div`
   }
 `;
 
-const ConverterChart = ({ dayCount, sellCoin }) => {
+const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
   const [sellCoinPriceData, setSellCoinPriceData] = useState(null);
-  //const [buyCoinPriceData, setBuyCoinPriceData] = useState(null);
+  const [buyCoinPriceData, setBuyCoinPriceData] = useState(null);
   const [hasError, setHasError] = useState(false);
+  const [dataSet, setDataSet] = useState(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -53,26 +54,46 @@ const ConverterChart = ({ dayCount, sellCoin }) => {
           `https://pro-api.coingecko.com/api/v3/coins/${sellCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData = await response.json();
+        const response2 = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedData2 = await response2.json();
         setSellCoinPriceData(fetchedData);
+        setBuyCoinPriceData(fetchedData2);
       } catch {
         setHasError(true);
       }
     };
     fetchData();
-  }, [sellCoin, dayCount]);
+  }, [sellCoin, buyCoin, dayCount]);
+
+  useEffect(() => {
+    const setData = () => {
+      if (sellCoinPriceData && buyCoinPriceData) {
+        const convertedPrices = sellCoinPriceData.prices.map((price, index) => {
+          const sellPrice = price[1];
+          const buyPrice = buyCoinPriceData.prices[index][1];
+          return sellPrice / buyPrice;
+        });
+        setDataSet(convertedPrices);
+      }
+    };
+    setData();
+  }, [sellCoinPriceData]);
 
   const lineChartData = {
     labels: sellCoinPriceData
       ? sellCoinPriceData.prices.map((array) =>
           new Date(array[0]).toDateString()
         )
-      : ["1,2"],
+      : [],
     datasets: [
       {
-        label: null,
-        data: sellCoinPriceData
-          ? sellCoinPriceData.prices.map((obj) => obj[1].toFixed(2))
-          : ["1,2"],
+        label:
+          buyCoin && sellCoin
+            ? "1" + " " + sellCoin.name + " " + "to" + " " + `${buyCoin.name}`
+            : "",
+        data: dataSet ? dataSet.map((price) => price.toFixed(2)) : [],
         borderColor: "#2d00f7",
         pointRadius: 0,
         backgroundColor: (context) => {
@@ -137,7 +158,7 @@ const ConverterChart = ({ dayCount, sellCoin }) => {
 ConverterChart.propTypes = {
   dayCount: PropTypes.string,
   sellCoin: PropTypes.object,
-  // buyCoin: PropTypes.object,
+  buyCoin: PropTypes.object,
 };
 
 export default ConverterChart;
