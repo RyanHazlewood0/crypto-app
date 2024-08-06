@@ -123,7 +123,7 @@ export default function Converter() {
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
-  //const [dayCount, setDayCount] = useState("30");
+  const [dayCount, setDayCount] = useState("30");
   const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
   const [sellQuantity, setSellQuantity] = useState(null);
@@ -349,11 +349,15 @@ export default function Converter() {
           </InnerContainer>
         </ConverterBox>
       </ConverterContainer>
-      <ConverterChart />
+      <ConverterChart
+        dayCount={dayCount}
+        buyCoin={buyCoin}
+        sellCoin={sellCoin}
+      />
       <ConverterTimeSelect
         timeFrameSelected={timeFrameSelected}
         setTimeFrameSelected={setTimeFrameSelected}
-        //  setDayCount={setDayCount}
+        setDayCount={setDayCount}
       />
     </>
   );
