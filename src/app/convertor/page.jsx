@@ -65,12 +65,6 @@ const HorizontalLine = styled.hr`
   color: white;
   width: 100%;
   margin-top: 15px;
-  margin-bottom: 15px;
-`;
-
-const ValueText = styled.p`
-  font-size: 24px;
-  font-weight: bold;
 `;
 
 const CurrencyAndPriceText = styled.p`
@@ -111,6 +105,18 @@ const DropDownContainer = styled.div`
   flex-direction: column;
 `;
 
+const SellAmountInput = styled.input`
+  border: solid 1px gray;
+  border-radius: 6px;
+  background: #191932;
+`;
+
+const BuyAmountInput = styled.input`
+  border: solid 1px gray;
+  border-radius: 6px;
+  background: #191932;
+`;
+
 export default function Converter() {
   const [buyCoin, setBuyCoin] = useState(null);
   const [sellCoin, setSellCoin] = useState(null);
@@ -120,6 +126,8 @@ export default function Converter() {
   //const [dayCount, setDayCount] = useState("30");
   const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
+  const [sellQuantity, setSellQuantity] = useState(null);
+  const [buyQuantity, setBuyQuantity] = useState(null);
 
   const { coins } = useCoin();
 
@@ -180,6 +188,40 @@ export default function Converter() {
     setSellSearch("");
   };
 
+  const handleSellQuantity = (e) => {
+    const value = e.target.value;
+    setSellQuantity(Number(value));
+  };
+
+  const handleBuyQuantity = (e) => {
+    const value = e.target.value;
+    setBuyQuantity(Number(value));
+  };
+
+  const convertToSell = () => {
+    const sellCoinPrice = sellCoin.current_price;
+    const sellCoinValue = sellCoinPrice * sellQuantity;
+    const buyCoinPrice = buyCoin.current_price;
+    const result = sellCoinValue / buyCoinPrice;
+    setBuyQuantity(result.toFixed(3));
+  };
+
+  const handleSellQuantityBlur = () => {
+    convertToSell();
+  };
+
+  const convertToBuy = () => {
+    const buyCoinPrice = buyCoin.current_price;
+    const buyCoinValue = buyCoinPrice * buyQuantity;
+    const sellCoinPrice = sellCoin.current_price;
+    const result = buyCoinValue / sellCoinPrice;
+    setSellQuantity(result.toFixed(3));
+  };
+
+  const handleBuyQuantityBlur = () => {
+    convertToBuy();
+  };
+
   return (
     <>
       <CoinsAndConverterBtns />
@@ -210,10 +252,16 @@ export default function Converter() {
                   <SearchInput
                     value={sellSearch}
                     onChange={(e) => handleSellSearch(e)}
+                    placeholder="Search Coin..."
                   />
                 )}
 
-                <ValueText>$5,000</ValueText>
+                <SellAmountInput
+                  placeholder="Add Quanitity..."
+                  value={sellQuantity}
+                  onChange={(e) => handleSellQuantity(e)}
+                  onBlur={(e) => handleSellQuantityBlur(e)}
+                />
               </SearchAndValueContainer>
               {sellDropdownOpen && (
                 <DropDown>
@@ -230,7 +278,13 @@ export default function Converter() {
               )}
             </DropDownContainer>
             <HorizontalLine />
-            <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
+            {sellCoin !== null ? (
+              <CurrencyAndPriceText>
+                1 {sellCoin.symbol.toUpperCase()} = ${sellCoin.current_price}
+              </CurrencyAndPriceText>
+            ) : (
+              <CurrencyAndPriceText>0</CurrencyAndPriceText>
+            )}
           </InnerContainer>
         </ConverterBox>
         <ConvertBtn>
@@ -260,9 +314,15 @@ export default function Converter() {
                   <SearchInput
                     value={buySearch}
                     onChange={(e) => handleBuySearch(e)}
+                    placeholder="Search Coin..."
                   />
                 )}
-                <ValueText>$5,000</ValueText>
+                <BuyAmountInput
+                  placeholder="Add Quanitity..."
+                  value={buyQuantity}
+                  onChange={(e) => handleBuyQuantity(e)}
+                  onBlur={(e) => handleBuyQuantityBlur(e)}
+                />
               </SearchAndValueContainer>
               {buyDropdownOpen && (
                 <DropDown>
@@ -279,7 +339,13 @@ export default function Converter() {
               )}
             </DropDownContainer>
             <HorizontalLine />
-            <CurrencyAndPriceText>1 BTC = $20,000</CurrencyAndPriceText>
+            {buyCoin !== null ? (
+              <CurrencyAndPriceText>
+                1 {buyCoin.symbol.toUpperCase()} = ${buyCoin.current_price}
+              </CurrencyAndPriceText>
+            ) : (
+              <CurrencyAndPriceText>0</CurrencyAndPriceText>
+            )}
           </InnerContainer>
         </ConverterBox>
       </ConverterContainer>
@@ -287,7 +353,7 @@ export default function Converter() {
       <ConverterTimeSelect
         timeFrameSelected={timeFrameSelected}
         setTimeFrameSelected={setTimeFrameSelected}
-        // setDayCount={setDayCount}
+        //  setDayCount={setDayCount}
       />
     </>
   );
