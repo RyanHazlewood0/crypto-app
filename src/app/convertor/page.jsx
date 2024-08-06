@@ -3,7 +3,7 @@ import CoinsAndConverterBtns from "../components/CoinsAndConverterBtns/CoinsAndC
 import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCoin } from "../contexts/CoinProvider";
 
 const ConverterContainer = styled.div`
@@ -122,14 +122,21 @@ export default function Converter() {
   const [sellCoin, setSellCoin] = useState(null);
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
-  const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
-  const [dayCount, setDayCount] = useState("30");
+  const [timeFrameSelected, setTimeFrameSelected] = useState("1Y");
+  const [dayCount, setDayCount] = useState("365");
   const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
   const [sellQuantity, setSellQuantity] = useState(null);
   const [buyQuantity, setBuyQuantity] = useState(null);
 
   const { coins } = useCoin();
+
+  useEffect(() => {
+    if (coins.length > 0) {
+      setSellCoin(coins[0]);
+      setBuyCoin(coins[1]);
+    }
+  }, []);
 
   const date = new Date();
   const currentDate = date.toLocaleString();
