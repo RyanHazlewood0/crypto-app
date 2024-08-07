@@ -232,6 +232,8 @@ export default function Converter() {
   const reverseConvert = () => {
     setBuyCoin(sellCoin);
     setSellCoin(buyCoin);
+    setSellSearch(buySearch);
+    setBuySearch(sellSearch);
   };
 
   return (
@@ -251,6 +253,7 @@ export default function Converter() {
                       display: "flex",
                       width: "150px",
                       alignItems: "center",
+                      gap: "5px",
                     }}
                   >
                     <img src={sellCoin.image} style={{ width: "24px" }} />
@@ -273,6 +276,7 @@ export default function Converter() {
                   value={sellQuantity}
                   onChange={(e) => handleSellQuantity(e)}
                   onBlur={(e) => handleSellQuantityBlur(e)}
+                  type="number"
                 />
               </SearchAndValueContainer>
               {sellDropdownOpen && (
@@ -313,6 +317,7 @@ export default function Converter() {
                       display: "flex",
                       width: "150px",
                       alignItems: "center",
+                      gap: "5px",
                     }}
                   >
                     <img src={buyCoin.image} style={{ width: "24px" }} />
@@ -334,6 +339,7 @@ export default function Converter() {
                   value={buyQuantity}
                   onChange={(e) => handleBuyQuantity(e)}
                   onBlur={(e) => handleBuyQuantityBlur(e)}
+                  type="number"
                 />
               </SearchAndValueContainer>
               {buyDropdownOpen && (
