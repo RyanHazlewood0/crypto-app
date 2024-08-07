@@ -71,7 +71,7 @@ const CurrencyAndPriceText = styled.p`
   font-size: 14px;
 `;
 
-const ConvertBtn = styled.div`
+const ReverseConvertBtn = styled.div`
   background: white;
   border-radius: 50px;
   width: 48px;
@@ -229,6 +229,11 @@ export default function Converter() {
     convertToBuy();
   };
 
+  const reverseConvert = () => {
+    setBuyCoin(sellCoin);
+    setSellCoin(buyCoin);
+  };
+
   return (
     <>
       <CoinsAndConverterBtns />
@@ -294,9 +299,9 @@ export default function Converter() {
             )}
           </InnerContainer>
         </ConverterBox>
-        <ConvertBtn>
+        <ReverseConvertBtn onClick={(e) => reverseConvert(e)}>
           <p>↑↓</p>
-        </ConvertBtn>
+        </ReverseConvertBtn>
         <ConverterBox style={{ background: "#1E1932" }}>
           <InnerContainer>
             <BuySellText>You Buy</BuySellText>

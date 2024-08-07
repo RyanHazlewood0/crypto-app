@@ -142,7 +142,14 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
   return (
     <>
       <ChartContainer>
-        {hasError && <p>Error loading chart data...</p>}
+        {hasError && (
+          <p style={{ marginBottom: "15px" }}>Error fetching data for chart</p>
+        )}
+        {(!sellCoin || !buyCoin) && (
+          <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+            Select two coins to show chart
+          </p>
+        )}
         {buyCoin && sellCoin ? (
           <Line
             options={options}
@@ -150,7 +157,7 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
             style={{ maxHeight: "100%" }}
           />
         ) : (
-          "Choose two coins to show chart"
+          ""
         )}
       </ChartContainer>
     </>
