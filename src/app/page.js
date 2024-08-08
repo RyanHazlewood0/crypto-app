@@ -4,8 +4,8 @@ import Table from "./components/Table/Table";
 import HomePageCharts from "./components/HomePageCharts/HomePageCharts";
 import Carousel from "./components/Carousel/Carousel";
 import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeSelect";
+import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import { useState } from "react";
-import CoinsAndConvertorBtns from "./components/CoinsAndConvertorBtns/CoinsAndConvertorBtns";
 
 export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState(null);
@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <CoinsAndConvertorBtns />
+      <CoinsAndConverterBtns />
       <Carousel setSelectedCoin={setSelectedCoin} selectedCoin={selectedCoin} />
       <HomePageCharts selectedCoin={selectedCoin} dayCount={dayCount} />
       <HomeChartTimeSelect

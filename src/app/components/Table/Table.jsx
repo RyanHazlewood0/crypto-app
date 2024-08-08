@@ -44,6 +44,8 @@ const NameAndImageContainer = styled.td`
 const StyledTd = styled.td`
   padding: 15px;
   height: 77px;
+  border-radius: ${(props) =>
+    props.left ? "10px 0 0 10px" : props.right ? "0 10px 10px 0" : "none"};
 `;
 
 const StyledTh = styled.th`
@@ -76,6 +78,21 @@ const NumberSeparator = styled.div`
 
 const PriceChangeDiv = styled.div`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+`;
+
+const ArrowSpan = styled.span`
+  margin: ${(props) => (props.left ? "0 5px 0 5px" : "none")};
+  cursor: pointer;
+`;
+
+const CoinImage = styled.img`
+  margin-right: 15px;
+  width: 32px;
+`;
+
+const LineChartContainer = styled.div`
+  width: 150px;
+  max-height: 47px;
 `;
 
 const Table = () => {
@@ -161,103 +178,67 @@ const Table = () => {
           <StyledTh>
             <p>
               #
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "mcap-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "mcap-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "mcap-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>
             <p>
               Name{" "}
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "name-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "name-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "name-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>
             <p>
               Price{" "}
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "price-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "price-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "price-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>
             <p>
               1h%{" "}
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "1h-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "1h-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>
             <p>
               24h%{" "}
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "24h-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "24h-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>
             <p>
               7d%{" "}
-              <span
-                style={{ margin: "0 5px 0 5px", cursor: "pointer" }}
-                onClick={(e) => getSortOption(e, "7d-desc")}
-              >
+              <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
                 ▼
-              </span>
-              <span
-                onClick={(e) => getSortOption(e, "7d-asc")}
-                style={{ cursor: "pointer" }}
-              >
+              </ArrowSpan>
+              <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
                 ▲
-              </span>
+              </ArrowSpan>
             </p>
           </StyledTh>
           <StyledTh>24h Volume / Market Cap</StyledTh>
@@ -268,17 +249,9 @@ const Table = () => {
       <tbody>
         {sortedCoins.map((coin) => (
           <TableRow key={coin.id}>
-            <StyledTd style={{ borderRadius: "10px 0 0 10px" }}>
-              {coin.market_cap_rank}
-            </StyledTd>
+            <StyledTd left>{coin.market_cap_rank}</StyledTd>
             <NameAndImageContainer>
-              <img
-                src={coin.image}
-                style={{
-                  marginRight: "15px",
-                  width: "32px",
-                }}
-              />
+              <CoinImage src={coin.image} />
               <Link href={`/coin/${coin.id}`}>
                 {coin.name} ({coin.symbol.toUpperCase()})
               </Link>
@@ -358,12 +331,10 @@ const Table = () => {
                 />
               </LevelIndicatorOuter>
             </StyledTd>
-            <StyledTd
-              style={{ borderRadius: "0 10px 10px 0", paddingRight: "0" }}
-            >
-              <div style={{ maxHeight: "47px", width: "150px" }}>
+            <StyledTd right>
+              <LineChartContainer>
                 <TableLineChart coin={coin} />
-              </div>
+              </LineChartContainer>
             </StyledTd>
           </TableRow>
         ))}

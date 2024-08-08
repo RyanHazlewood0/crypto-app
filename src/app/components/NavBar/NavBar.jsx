@@ -7,6 +7,7 @@ import Home from "./svg/Home";
 import Portfolio from "./svg/Portfolio";
 import SearchIcon from "./svg/SearchIcon";
 import Search from "../Search/Search";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -77,21 +78,27 @@ const ThemeIconContainer = styled.div`
   align-items: center;
 `;
 
+const HomeText = styled.p`
+  margin-left: 10px;
+  color: ${(props) => (props.gray ? "gray" : "white")};
+`;
+
 const NavBar = () => {
+  const { setSelectedBtn } = useCoin();
   return (
     <NavBarContainer>
       <LeftDiv>
         <Logo />
-        <Link href="/">
+        <Link href="/" onClick={() => setSelectedBtn("Coins")}>
           <HomeWrapper>
             <Home />
-            <p style={{ marginLeft: "10px" }}>Home</p>
+            <HomeText>Home</HomeText>
           </HomeWrapper>
         </Link>
         <Link href="/portfolio">
           <PortfolioWrapper>
             <Portfolio />
-            <p style={{ color: "gray", marginLeft: "10px" }}>Portfolio</p>
+            <HomeText gray>Portfolio</HomeText>
           </PortfolioWrapper>
         </Link>
       </LeftDiv>
