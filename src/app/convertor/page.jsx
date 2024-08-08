@@ -21,6 +21,7 @@ const ConverterBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: ${(props) => (props.sell ? "#191932" : "#1E1932")};
 `;
 
 const Title = styled.h1`
@@ -115,6 +116,31 @@ const BuyAmountInput = styled.input`
   border: solid 1px gray;
   border-radius: 6px;
   background: #191932;
+`;
+
+const CoinContainer = styled.div`
+  display: flex;
+  width: 150px;
+  align-items: center;
+  gap: 5px;
+`;
+
+const CoinText = styled.p`
+  font-size: 20px;
+`;
+
+const ArrowText = styled.p`
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+const CoinOption = styled.p`
+  cursor: pointer;
+`;
+
+const CoinLogo = styled.img`
+  width: 24px;
+  height: 24px;
 `;
 
 export default function Converter() {
@@ -242,27 +268,18 @@ export default function Converter() {
       <Title>Cryptocurrency Converter</Title>
       <DateText>{currentDate}</DateText>
       <ConverterContainer>
-        <ConverterBox style={{ background: "#191932" }}>
+        <ConverterBox sell>
           <InnerContainer>
             <BuySellText>You Sell</BuySellText>
             <DropDownContainer>
               <SearchAndValueContainer>
                 {sellCoin ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "150px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    <img src={sellCoin.image} style={{ width: "24px" }} />
-                    <p>{sellCoin.name}</p>
-                    <p>({sellCoin.symbol.toUpperCase()})</p>
-                    <p style={{ cursor: "pointer" }} onClick={clearSellCoin}>
-                      ▼
-                    </p>
-                  </div>
+                  <CoinContainer>
+                    <CoinLogo src={sellCoin.image} />
+                    <CoinText>{sellCoin.name}</CoinText>
+                    <CoinText>({sellCoin.symbol.toUpperCase()})</CoinText>
+                    <ArrowText onClick={clearSellCoin}>▼</ArrowText>
+                  </CoinContainer>
                 ) : (
                   <SearchInput
                     value={sellSearch}
@@ -282,13 +299,12 @@ export default function Converter() {
               {sellDropdownOpen && (
                 <DropDown>
                   {filteredSellCoins.map((coin) => (
-                    <p
-                      style={{ cursor: "pointer" }}
+                    <CoinOption
                       key={coin.id}
                       onClick={(e) => selectCoinSell(coin, e)}
                     >
                       {coin.name}
-                    </p>
+                    </CoinOption>
                   ))}
                 </DropDown>
               )}
@@ -306,27 +322,18 @@ export default function Converter() {
         <ReverseConvertBtn onClick={(e) => reverseConvert(e)}>
           <p>↑↓</p>
         </ReverseConvertBtn>
-        <ConverterBox style={{ background: "#1E1932" }}>
+        <ConverterBox>
           <InnerContainer>
             <BuySellText>You Buy</BuySellText>
             <DropDownContainer>
               <SearchAndValueContainer>
                 {buyCoin ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "150px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    <img src={buyCoin.image} style={{ width: "24px" }} />
-                    <p>{buyCoin.name}</p>
-                    <p>({buyCoin.symbol.toUpperCase()})</p>
-                    <p style={{ cursor: "pointer" }} onClick={clearBuyCoin}>
-                      ▼
-                    </p>
-                  </div>
+                  <CoinContainer>
+                    <CoinLogo src={buyCoin.image} />
+                    <CoinText>{buyCoin.name}</CoinText>
+                    <CoinText>({buyCoin.symbol.toUpperCase()})</CoinText>
+                    <ArrowText onClick={clearBuyCoin}>▼</ArrowText>
+                  </CoinContainer>
                 ) : (
                   <SearchInput
                     value={buySearch}
@@ -345,13 +352,12 @@ export default function Converter() {
               {buyDropdownOpen && (
                 <DropDown>
                   {filteredBuyCoins.map((coin) => (
-                    <p
-                      style={{ cursor: "pointer" }}
+                    <CoinOption
                       key={coin.id}
                       onClick={(e) => selectCoinBuy(coin, e)}
                     >
                       {coin.name}
-                    </p>
+                    </CoinOption>
                   ))}
                 </DropDown>
               )}
