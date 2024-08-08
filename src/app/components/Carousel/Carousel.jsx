@@ -73,6 +73,15 @@ const CoinImage = styled.img`
   height: 32px;
 `;
 
+const CoinNameText = styled.p`
+  font-size: 16px;
+`;
+const CoinPricetext = styled.p`
+  font-size: 14px;
+  margin-right: 10px;
+  color: #d1d1d1;
+`;
+
 const Carousel = ({ setSelectedCoin, selectedCoin }) => {
   const { coins } = useCoin();
 
@@ -107,26 +116,15 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
               selected={coin.id === selectedCoin.id}
               onClick={() => handleSelectCoin(coin)}
             >
-              <CoinImage
-                src={coin.image}
-                style={{
-                  width: "32px",
-                }}
-              />
+              <CoinImage src={coin.image} />
               <div>
-                <p style={{ fontSize: "16px" }}>
+                <CoinNameText>
                   {coin.name}({coin.symbol.toUpperCase()})
-                </p>
+                </CoinNameText>
                 <ArrowAndPercentContainer>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#D1D1D1",
-                      marginRight: "10px",
-                    }}
-                  >
+                  <CoinPricetext>
                     ${abbreviateNumber(coin.current_price)}
-                  </p>
+                  </CoinPricetext>
                   {Math.sign(coin.price_change_percentage_1h_in_currency) !==
                   1 ? (
                     <RedArrow />

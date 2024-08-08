@@ -4,8 +4,8 @@ import Table from "./components/Table/Table";
 import HomePageCharts from "./components/HomePageCharts/HomePageCharts";
 import Carousel from "./components/Carousel/Carousel";
 import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeSelect";
-import { useState } from "react";
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
+import { useState } from "react";
 
 export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState(null);

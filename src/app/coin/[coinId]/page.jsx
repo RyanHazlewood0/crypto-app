@@ -25,6 +25,7 @@ const BackBtn = styled.div`
 
 const HeaderAndBtnContainer = styled.div`
   display: flex;
+  margin-bottom: 10px;
 `;
 
 const TopHalfContainer = styled.div`

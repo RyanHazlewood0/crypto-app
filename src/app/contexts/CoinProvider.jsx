@@ -12,12 +12,15 @@ export const useCoin = () => {
 
 export const CoinProvider = ({ children }) => {
   const [coins, setCoins] = useState([]);
+  const [selectedBtn, setSelectedBtn] = useState("Coins");
 
   return (
     <CoinContext.Provider
       value={{
         coins,
         setCoins,
+        selectedBtn,
+        setSelectedBtn,
       }}
     >
       {children}

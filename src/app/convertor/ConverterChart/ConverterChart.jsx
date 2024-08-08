@@ -38,6 +38,14 @@ const ChartContainer = styled.div`
   }
 `;
 
+const ErrorText = styled.p`
+  margin-bottom: 15px;
+`;
+const ChartMessage = styled.p`
+  font-weight: bold;
+  font-size: 18px;
+`;
+
 const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
   const [sellCoinPriceData, setSellCoinPriceData] = useState(null);
   const [buyCoinPriceData, setBuyCoinPriceData] = useState(null);
@@ -142,13 +150,9 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
   return (
     <>
       <ChartContainer>
-        {hasError && (
-          <p style={{ marginBottom: "15px" }}>Error fetching data for chart</p>
-        )}
+        {hasError && <ErrorText>Error fetching data for chart</ErrorText>}
         {(!sellCoin || !buyCoin) && (
-          <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-            Select two coins to show chart
-          </p>
+          <ChartMessage>Select two coins to show chart</ChartMessage>
         )}
         {buyCoin && sellCoin ? (
           <Line
