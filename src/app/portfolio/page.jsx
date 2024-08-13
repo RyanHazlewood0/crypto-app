@@ -49,7 +49,7 @@ export default function Portfolio() {
   const [purchasedAmountValue, setPurchasedAmountValue] = useState("");
   const [purchaseDateValue, setPurchaseDateValue] = useState("");
 
-  // const { coins } = useCoin();
+  //const { coins } = useCoin();
 
   const handleFormOpen = () => {
     setFormOpen(true);
