@@ -77,8 +77,6 @@ export default function Portfolio() {
     setPurchaseDateValue(value);
   };
 
-  const handleSubmit = () => {};
-
   return (
     <>
       <HeaderContainer>
@@ -98,7 +96,6 @@ export default function Portfolio() {
           handleCoinSelectInputChange={handleCoinSelectInputChange}
           handlePurchaseAmountInputChange={handlePurchaseAmountInputChange}
           handlePurchaseDateInputChange={handlePurchaseDateInputChange}
-          handleSubmit={handleSubmit}
         />
       )}
     </>

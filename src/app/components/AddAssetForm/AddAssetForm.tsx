@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import CloseIcon from "./close-circle";
 
@@ -76,16 +75,25 @@ const SvgContainer = styled.div`
   cursor: pointer;
 `;
 
+type AddAssetFormProps = {
+  handleFormClose: () => void;
+  handlePurchaseDateInputChange: () => void;
+  handlePurchaseAmountInputChange: () => void;
+  handleCoinSelectInputChange: () => void;
+  CoinSelectValue: string;
+  purchasedAmountValue: string;
+  purchaseDateValue: string;
+};
+
 const AddAssetForm = ({
   handleFormClose,
+  handlePurchaseDateInputChange,
+  handlePurchaseAmountInputChange,
+  handleCoinSelectInputChange,
   CoinSelectValue,
   purchasedAmountValue,
   purchaseDateValue,
-  handleCoinSelectInputChange,
-  handlePurchaseAmountInputChange,
-  handlePurchaseDateInputChange,
-  handleSubmit,
-}) => {
+}: AddAssetFormProps) => {
   return (
     <>
       <ModalContainer>
@@ -117,9 +125,7 @@ const AddAssetForm = ({
             </InputsContainer>
             <BtnContainer>
               <CancelBtn onClick={handleFormClose}>Cancel</CancelBtn>
-              <SaveBtn type="submit" onSubmit={(e) => handleSubmit(e)}>
-                Save and Continue
-              </SaveBtn>
+              <SaveBtn>Save and Continue</SaveBtn>
             </BtnContainer>
           </CoinForm>
         </InnerContainer>
@@ -129,14 +135,3 @@ const AddAssetForm = ({
 };
 
 export default AddAssetForm;
-
-AddAssetForm.propTypes = {
-  handleFormClose: PropTypes.function,
-  CoinSelectValue: PropTypes.function,
-  purchasedAmountValue: PropTypes.function,
-  purchaseDateValue: PropTypes.function,
-  handleCoinSelectInputChange: PropTypes.function,
-  handlePurchaseAmountInputChange: PropTypes.function,
-  handlePurchaseDateInputChange: PropTypes.function,
-  handleSubmit: PropTypes.function,
-};

@@ -1,7 +1,6 @@
 "use client";
 import { createContext, useContext } from "react";
 import { useState } from "react";
-import PropTypes from "prop-types";
 
 const CoinContext = createContext();
 
@@ -10,7 +9,11 @@ export const useCoin = () => {
   return value;
 };
 
-export const CoinProvider = ({ children }) => {
+type useCoinProps = {
+  children: React.ReactNode;
+};
+
+export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState([]);
   const [selectedBtn, setSelectedBtn] = useState("Coins");
 
@@ -26,8 +29,4 @@ export const CoinProvider = ({ children }) => {
       {children}
     </CoinContext.Provider>
   );
-};
-
-CoinProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };

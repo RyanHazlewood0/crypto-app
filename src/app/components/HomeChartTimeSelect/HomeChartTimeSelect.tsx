@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +12,7 @@ const Container = styled.div`
   margin-bottom: 70px;
 `;
 
-const SelectBtn = styled.div`
+const SelectBtn = styled.div<StyleProp>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,11 +26,21 @@ const SelectBtn = styled.div`
   padding: 20px 8px 20px 8px;
 `;
 
-const ConverterTimeSelect = ({
+type StyleProp = {
+  selected: boolean;
+};
+
+type HomeChartTimeSelectProps = {
+  timeFrameSelected: string;
+  setTimeFrameSelected: (days: string) => void;
+  setDayCount: (days: string) => void;
+};
+
+const HomeChartTimeSelect = ({
   timeFrameSelected,
   setTimeFrameSelected,
   setDayCount,
-}) => {
+}: HomeChartTimeSelectProps) => {
   const findDayCount = (e) => {
     if (e.target.textContent === "1D") {
       setDayCount("1");
@@ -84,10 +93,4 @@ const ConverterTimeSelect = ({
   );
 };
 
-ConverterTimeSelect.propTypes = {
-  timeFrameSelected: PropTypes.string,
-  setTimeFrameSelected: PropTypes.func,
-  setDayCount: PropTypes.string,
-};
-
-export default ConverterTimeSelect;
+export default HomeChartTimeSelect;

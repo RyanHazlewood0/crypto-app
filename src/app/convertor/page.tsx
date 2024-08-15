@@ -14,7 +14,7 @@ const ConverterContainer = styled.div`
   margin-bottom: 70px;
 `;
 
-const ConverterBox = styled.div`
+const ConverterBox = styled.div<StyleProp>`
   width: 636px;
   height: 200px;
   border-radius: 16px;
@@ -142,6 +142,10 @@ const CoinLogo = styled.img`
   width: 24px;
   height: 24px;
 `;
+
+type StyleProp = {
+  sell: boolean;
+};
 
 export default function Converter() {
   const [buyCoin, setBuyCoin] = useState(null);

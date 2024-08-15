@@ -41,7 +41,7 @@ const NameAndImageContainer = styled.td`
   height: 77px;
 `;
 
-const StyledTd = styled.td`
+const StyledTd = styled.td<StyleProp>`
   padding: 15px;
   height: 77px;
   border-radius: ${(props) =>
@@ -76,11 +76,11 @@ const NumberSeparator = styled.div`
   width: 200px;
 `;
 
-const PriceChangeDiv = styled.div`
+const PriceChangeDiv = styled.div<StyleProp>`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
 `;
 
-const ArrowSpan = styled.span`
+const ArrowSpan = styled.span<StyleProp>`
   margin: ${(props) => (props.left ? "0 5px 0 5px" : "none")};
   cursor: pointer;
 `;
@@ -94,6 +94,12 @@ const LineChartContainer = styled.div`
   width: 150px;
   max-height: 47px;
 `;
+
+type StyleProp = {
+  left: boolean;
+  green: boolean;
+  right: boolean;
+};
 
 const Table = () => {
   const [hasError, setHasError] = useState(false);

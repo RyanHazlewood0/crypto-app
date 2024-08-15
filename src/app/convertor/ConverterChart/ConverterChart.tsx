@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
@@ -46,7 +45,23 @@ const ChartMessage = styled.p`
   font-size: 18px;
 `;
 
-const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
+type ConverterChartProps = {
+  dayCount: string;
+  buyCoin: {
+    id: string;
+    name: string;
+  };
+  sellCoin: {
+    id: string;
+    name: string;
+  };
+};
+
+const ConverterChart = ({
+  dayCount,
+  buyCoin,
+  sellCoin,
+}: ConverterChartProps) => {
   const [sellCoinPriceData, setSellCoinPriceData] = useState(null);
   const [buyCoinPriceData, setBuyCoinPriceData] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -166,12 +181,6 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
       </ChartContainer>
     </>
   );
-};
-
-ConverterChart.propTypes = {
-  dayCount: PropTypes.string,
-  sellCoin: PropTypes.object,
-  buyCoin: PropTypes.object,
 };
 
 export default ConverterChart;

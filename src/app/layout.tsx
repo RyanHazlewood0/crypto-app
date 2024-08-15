@@ -4,7 +4,6 @@ import { useState } from "react";
 import { CoinProvider } from "./contexts/CoinProvider";
 import "./globals.css";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
 import NavBar from "./components/NavBar/NavBar";
 
@@ -14,7 +13,11 @@ const MainContainer = styled.div`
   margin-right: auto;
 `;
 
-export default function RootLayout({ children }) {
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
   const [marketData, setMarketData] = useState({});
   const [hasError, setHasError] = useState(false);
 
@@ -70,7 +73,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-RootLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};

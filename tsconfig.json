@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/components/MarketDataBar/MarketDataBar.jsx"  ],
+, "src/app/components/MarketDataBar/MarketDataBar.tsx"  ],
   "exclude": [
     "node_modules"
   ]

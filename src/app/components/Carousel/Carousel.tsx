@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import PropTypes from "prop-types";
+
 import { useEffect } from "react";
 
 const CarouselContainer = styled.div`
@@ -31,7 +31,7 @@ const ArrowAndPercentContainer = styled.div`
   align-items: center;
 `;
 
-const PriceChangeDiv = styled.div`
+const PriceChangeDiv = styled.div<StyleProp>`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
 `;
 
@@ -82,7 +82,18 @@ const CoinPricetext = styled.p`
   color: #d1d1d1;
 `;
 
-const Carousel = ({ setSelectedCoin, selectedCoin }) => {
+type StyleProp = {
+  green: boolean;
+};
+
+type CarouselProps = {
+  selectedCoin: {
+    id: string;
+  };
+  setSelectedCoin: () => void;
+};
+
+const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const { coins } = useCoin();
 
   const handleSelectCoin = (coin) => {
@@ -147,12 +158,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }) => {
       </CarouselContainer>
     )
   );
-};
-
-Carousel.propTypes = {
-  green: PropTypes.style,
-  setSelectedCoin: PropTypes.func,
-  selectedCoin: PropTypes.object,
 };
 
 export default Carousel;

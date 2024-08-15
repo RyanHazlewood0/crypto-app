@@ -1,5 +1,5 @@
 "use client";
-import PropTypes from "prop-types";
+
 import styled from "styled-components";
 import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -170,7 +170,11 @@ const DateText = styled.p`
   text-align: center;
 `;
 
-export default function Coin({ params }) {
+type CoinProps = {
+  params: { coinId: string };
+};
+
+export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [coinData, setCoinData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -456,9 +460,3 @@ export default function Coin({ params }) {
     )
   );
 }
-
-Coin.propTypes = {
-  params: PropTypes.shape({
-    coinId: PropTypes.string.isRequired,
-  }).isRequired,
-};

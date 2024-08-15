@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import BtcPriceChart from "../BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "../BtcVolumeChart/BtcVolumeChart";
@@ -11,7 +10,14 @@ const ChartsContainer = styled.div`
   margin: 40px 0 50px 0;
 `;
 
-const HomePageCharts = ({ selectedCoin, dayCount }) => {
+type HomePageChartsProps = {
+  selectedCoin: {
+    id: string;
+  };
+  dayCount: String;
+};
+
+const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState(null);
   const [coinVolumeData, setCoinVolumeData] = useState(null);
@@ -70,8 +76,3 @@ const HomePageCharts = ({ selectedCoin, dayCount }) => {
 };
 
 export default HomePageCharts;
-
-HomePageCharts.propTypes = {
-  selectedCoin: PropTypes.object,
-  dayCount: PropTypes.string,
-};
