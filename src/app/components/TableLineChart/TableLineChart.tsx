@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -21,17 +22,13 @@ ChartJS.register(
 );
 
 type TableLineChartProps = {
-  coin: {
-    sparkline_in_7d: {
-      price: number[];
-    };
-  };
+  coin: CoinTypes;
 };
 
 const TableLineChart = ({ coin }: TableLineChartProps) => {
-  const prices = coin.sparkline_in_7d.price;
-  const minPrice = Math.min(prices);
-  const maxPrice = Math.max(prices);
+  const prices: number[] = coin.sparkline_in_7d.price;
+  const minPrice: number = Math.min(...prices);
+  const maxPrice: number = Math.max(...prices);
   const lineChartData = {
     labels: prices.map(() => "price"),
 

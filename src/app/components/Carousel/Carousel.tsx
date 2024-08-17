@@ -1,4 +1,5 @@
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { Dispatch, SetStateAction } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
@@ -6,7 +7,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-
+import { SelectedCoinTypes } from "@/app/page";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 import { useEffect } from "react";
 
 const CarouselContainer = styled.div`
@@ -14,7 +16,7 @@ const CarouselContainer = styled.div`
   margin-top: 80px;
 `;
 
-const CarouselBox = styled.div`
+const CarouselBox = styled.div<StylePropSelected>`
   display: flex !important;
   height: 78px;
   background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
@@ -31,7 +33,7 @@ const ArrowAndPercentContainer = styled.div`
   align-items: center;
 `;
 
-const PriceChangeDiv = styled.div<StyleProp>`
+const PriceChangeDiv = styled.div<StylePropGreen>`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
 `;
 
@@ -82,21 +84,25 @@ const CoinPricetext = styled.p`
   color: #d1d1d1;
 `;
 
-type StyleProp = {
+type StylePropGreen = {
   green: boolean;
 };
 
+type StylePropSelected = {
+  selected: boolean;
+};
+
 type CarouselProps = {
-  selectedCoin: {
-    id: string;
-  };
-  setSelectedCoin: () => void;
+  selectedCoin: SelectedCoinTypes | null;
+  setSelectedCoin: Dispatch<
+    SetStateAction<SelectedCoinTypes | CoinTypes | null>
+  >;
 };
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const { coins } = useCoin();
 
-  const handleSelectCoin = (coin) => {
+  const handleSelectCoin = (coin: SelectedCoinTypes) => {
     setSelectedCoin(coin);
   };
 

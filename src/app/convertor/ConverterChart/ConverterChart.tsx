@@ -12,6 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -47,14 +48,8 @@ const ChartMessage = styled.p`
 
 type ConverterChartProps = {
   dayCount: string;
-  buyCoin: {
-    id: string;
-    name: string;
-  };
-  sellCoin: {
-    id: string;
-    name: string;
-  };
+  buyCoin: CoinTypes;
+  sellCoin: CoinTypes;
 };
 
 const ConverterChart = ({

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Dispatch, SetStateAction } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -32,8 +33,8 @@ type StyleProp = {
 
 type HomeChartTimeSelectProps = {
   timeFrameSelected: string;
-  setTimeFrameSelected: (days: string) => void;
-  setDayCount: (days: string) => void;
+  setTimeFrameSelected: Dispatch<SetStateAction<string>>;
+  setDayCount: Dispatch<SetStateAction<string>>;
 };
 
 const HomeChartTimeSelect = ({
@@ -41,26 +42,26 @@ const HomeChartTimeSelect = ({
   setTimeFrameSelected,
   setDayCount,
 }: HomeChartTimeSelectProps) => {
-  const findDayCount = (e) => {
-    if (e.target.textContent === "1D") {
+  const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget.textContent === "1D") {
       setDayCount("1");
       setTimeFrameSelected("1D");
-    } else if (e.target.textContent === "7D") {
+    } else if (e.currentTarget.textContent === "7D") {
       setDayCount("7");
       setTimeFrameSelected("7D");
-    } else if (e.target.textContent === "14D") {
+    } else if (e.currentTarget.textContent === "14D") {
       setDayCount("14");
       setTimeFrameSelected("14D");
-    } else if (e.target.textContent === "1M") {
+    } else if (e.currentTarget.textContent === "1M") {
       setDayCount("30");
       setTimeFrameSelected("1M");
-    } else if (e.target.textContent === "1Q") {
+    } else if (e.currentTarget.textContent === "1Q") {
       setDayCount("90");
       setTimeFrameSelected("1Q");
-    } else if (e.target.textContent === "1Y") {
+    } else if (e.currentTarget.textContent === "1Y") {
       setDayCount("365");
       setTimeFrameSelected("1Y");
-    } else if (e.target.textContent === "5Y") {
+    } else if (e.currentTarget.textContent === "5Y") {
       setDayCount("1825");
       setTimeFrameSelected("5Y");
     }

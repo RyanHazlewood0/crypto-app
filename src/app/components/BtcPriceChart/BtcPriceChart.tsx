@@ -12,6 +12,7 @@ import {
   Filler,
 } from "chart.js";
 import { abbreviateNumber } from "../Table/helper-functions";
+import { SelectedCoinTypes } from "@/app/page";
 
 ChartJS.register(
   CategoryScale,
@@ -52,17 +53,14 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-type CoinPriceDataProps = {
+type CoinPriceDataTypes = {
   price: number;
   date: string;
 };
 
 type BtcPriceChartProps = {
-  selectedCoin: {
-    name: string;
-    current_price: number;
-  };
-  coinPriceData: CoinPriceDataProps[];
+  selectedCoin: SelectedCoinTypes;
+  coinPriceData: CoinPriceDataTypes[];
 };
 
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
@@ -93,7 +91,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
         display: false,
       },
       tooltip: {
-        mode: "index",
+        mode: "index" as const,
         intersect: false,
       },
     },

@@ -1,5 +1,4 @@
 "use client";
-
 import styled from "styled-components";
 import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -174,9 +173,53 @@ type CoinProps = {
   params: { coinId: string };
 };
 
+interface CoinDataTypes {
+  id: string;
+  symbol: string;
+  name: string;
+  image: {
+    small: string;
+  };
+  links: {
+    homepage: string[];
+    blockchain_site: string[];
+  };
+  market_data: {
+    current_price: {
+      usd: number;
+    };
+    ath_date: {
+      usd: string;
+    };
+    atl_date: {
+      usd: string;
+    };
+    atl: {
+      usd: number;
+    };
+    ath: {
+      usd: number;
+    };
+    market_cap: {
+      usd: number;
+    };
+    fully_diluted_valuation: {
+      usd: number;
+    };
+    total_volume: {
+      usd: number;
+    };
+    circulating_supply: number;
+    total_supply: number;
+  };
+  description: {
+    en: string;
+  };
+}
+
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
-  const [coinData, setCoinData] = useState(null);
+  const [coinData, setCoinData] = useState<CoinDataTypes | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { coins } = useCoin();
 
@@ -188,10 +231,10 @@ export default function Coin({ params }: CoinProps) {
       setHasError(false);
       setIsLoading(true);
       try {
-        const response = await fetch(
+        const response: Response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${thisCoin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData = await response.json();
+        const fetchedData: CoinDataTypes = await response.json();
         setCoinData(fetchedData);
         setIsLoading(false);
       } catch {
@@ -202,7 +245,7 @@ export default function Coin({ params }: CoinProps) {
     fetchData();
   }, []);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString();
     return formattedDate;

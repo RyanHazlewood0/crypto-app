@@ -1,3 +1,4 @@
+import { SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -28,8 +29,8 @@ const SelectBtn = styled.div<SelectBtnProps>`
 
 type ConverterTimeSelectProps = {
   timeFrameSelected: string;
-  setTimeFrameSelected: (value: string) => void;
-  setDayCount: (value: string) => void;
+  setTimeFrameSelected: Dispatch<SetStateAction<string>>;
+  setDayCount: Dispatch<SetStateAction<string>>;
 };
 
 type SelectBtnProps = {
@@ -41,26 +42,26 @@ const ConverterTimeSelect = ({
   setTimeFrameSelected,
   setDayCount,
 }: ConverterTimeSelectProps) => {
-  const findDayCount = (e) => {
-    if (e.target.currentTarget === "1D") {
+  const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget.textContent === "1D") {
       setDayCount("1");
       setTimeFrameSelected("1D");
-    } else if (e.target.textContent === "7D") {
+    } else if (e.currentTarget.textContent === "7D") {
       setDayCount("7");
       setTimeFrameSelected("7D");
-    } else if (e.target.textContent === "14D") {
+    } else if (e.currentTarget.textContent === "14D") {
       setDayCount("14");
       setTimeFrameSelected("14D");
-    } else if (e.target.textContent === "1M") {
+    } else if (e.currentTarget.textContent === "1M") {
       setDayCount("30");
       setTimeFrameSelected("1M");
-    } else if (e.target.textContent === "1Q") {
+    } else if (e.currentTarget.textContent === "1Q") {
       setDayCount("90");
       setTimeFrameSelected("1Q");
-    } else if (e.target.textContent === "1Y") {
+    } else if (e.currentTarget.textContent === "1Y") {
       setDayCount("365");
       setTimeFrameSelected("1Y");
-    } else if (e.target.textContent === "5Y") {
+    } else if (e.currentTarget.textContent === "5Y") {
       setDayCount("1825");
       setTimeFrameSelected("5Y");
     }

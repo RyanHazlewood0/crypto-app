@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { CoinTypes, useCoin } from "@/app/contexts/CoinProvider";
 import {
   abbreviateNumber,
   findSupplyLevel,
@@ -96,9 +96,9 @@ const LineChartContainer = styled.div`
 `;
 
 type StyleProp = {
-  left: boolean;
-  green: boolean;
-  right: boolean;
+  left?: boolean;
+  green?: boolean;
+  right?: boolean;
 };
 
 const Table = () => {
@@ -113,10 +113,10 @@ const Table = () => {
     setHasError(false);
     const getCoinData = async () => {
       try {
-        const response = await fetch(
+        const response: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData = await response.json();
+        const fetchedData: CoinTypes[] = await response.json();
         setCoins(fetchedData);
       } catch {
         setHasError(true);
@@ -125,11 +125,14 @@ const Table = () => {
     getCoinData();
   }, [sortOrder]);
 
-  const getSortOption = (e, order) => {
+  const getSortOption = (
+    e: React.MouseEvent<HTMLSpanElement>,
+    order: string
+  ) => {
     setSortOrder(order);
   };
 
-  const sortedCoins = [...coins].sort((a, b) => {
+  const sortedCoins = [...coins].sort((a, b): number => {
     if (sortOrder === "price-desc") {
       return a.current_price - b.current_price;
     } else if (sortOrder === "price-asc") {

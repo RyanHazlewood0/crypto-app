@@ -1,8 +1,8 @@
 "use client";
 import { createContext, useContext } from "react";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 
-interface Coin {
+export interface CoinTypes {
   id: string;
   symbol: string;
   name: string;
@@ -24,10 +24,10 @@ interface Coin {
 }
 
 interface CoinContextType {
-  coins: Coin[];
+  coins: CoinTypes[];
   selectedBtn: string;
-  setCoins: (value: Coin[]) => void;
-  setSelectedBtn: (value: string) => void;
+  setCoins: Dispatch<SetStateAction<CoinTypes[]>>;
+  setSelectedBtn: Dispatch<SetStateAction<string>>;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -42,7 +42,7 @@ type useCoinProps = {
 };
 
 export const CoinProvider = ({ children }: useCoinProps) => {
-  const [coins, setCoins] = useState<Coin[]>([]);
+  const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
 
   return (

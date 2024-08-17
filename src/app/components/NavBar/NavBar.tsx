@@ -84,7 +84,7 @@ const HomeText = styled.p<StyleProp>`
 `;
 
 type StyleProp = {
-  gray: boolean;
+  gray?: boolean;
 };
 
 const NavBar = () => {

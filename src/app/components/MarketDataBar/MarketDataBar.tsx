@@ -5,6 +5,7 @@ import CoinCount from "./svg/CoinCount";
 import Btc from "./svg/Btc";
 import Eth from "./svg/Eth";
 import TotalVol from "./svg/TotalVol";
+import { MarketDataTypes } from "@/app/layout";
 
 const MarketDataBarWrapper = styled.div`
   background: #1e1932;
@@ -32,17 +33,14 @@ const SvgWrapper = styled.div`
 `;
 
 type MarketDataBarProps = {
-  marketData: {
-    coins: number;
-    totalMarketCap: number;
-    totalVolume: number;
-    btcPercent: number;
-    ethPercent: number;
-  };
+  marketData: MarketDataTypes;
   hasError: boolean;
 };
 
 const MarketDataBar = ({ marketData, hasError }: MarketDataBarProps) => {
+  if (!marketData) {
+    return <MarketDataBarWrapper>Loading...</MarketDataBarWrapper>;
+  }
   return hasError ? (
     <MarketDataBarWrapper>Market Data Loading Error</MarketDataBarWrapper>
   ) : (

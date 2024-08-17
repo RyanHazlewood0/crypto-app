@@ -1,4 +1,6 @@
-export const abbreviateNumber = (num) => {
+import { CoinTypes } from "@/app/contexts/CoinProvider";
+
+export const abbreviateNumber = (num: number): number | string => {
   const prefixes = ["", "k", "M", "B", "T"];
   if (num < 1) {
     return num.toFixed(2);
@@ -9,12 +11,12 @@ export const abbreviateNumber = (num) => {
   return `${formatted}${prefixes[magnitude]}`;
 };
 
-export const findSupplyLevel = (coin) => {
+export const findSupplyLevel = (coin: CoinTypes): number => {
   const progress = (coin.circulating_supply / coin.total_supply) * 100;
   return progress;
 };
 
-export const findVolumeLevel = (coin) => {
+export const findVolumeLevel = (coin: CoinTypes): number => {
   const progress = (coin.total_volume / coin.market_cap) * 100;
   return progress;
 };

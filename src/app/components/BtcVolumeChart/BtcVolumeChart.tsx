@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { abbreviateNumber } from "../Table/helper-functions";
+import { SelectedCoinTypes } from "@/app/page";
 
 ChartJS.register(
   CategoryScale,
@@ -48,15 +49,14 @@ const DateText = styled.h3`
   color: gray;
 `;
 
+type CoinVolumeDataTypes = {
+  volume: number;
+  date: string;
+};
+
 type BtcVolumeChartProps = {
-  coinVolumeData: {
-    volume: number;
-    date: string;
-  };
-  selectedCoin: {
-    name: string;
-    total_volume: number;
-  };
+  selectedCoin: SelectedCoinTypes;
+  coinVolumeData: CoinVolumeDataTypes[];
 };
 
 const BtcVolumeChart = ({
