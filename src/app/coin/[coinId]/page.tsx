@@ -452,9 +452,7 @@ export default function Coin({ params }: CoinProps) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[0])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
             <LinkContainer>
@@ -472,9 +470,7 @@ export default function Coin({ params }: CoinProps) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[1])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
             <LinkContainer>
@@ -492,9 +488,7 @@ export default function Coin({ params }: CoinProps) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[2])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
           </InfoContainerFour>
