@@ -42,7 +42,7 @@ interface FetchedDataTypes {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [marketData, setMarketData] = useState<MarketDataTypes>(null);
+  const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
 
   function abbreviateNumber(num: number): string {

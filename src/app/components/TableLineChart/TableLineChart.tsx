@@ -21,9 +21,9 @@ ChartJS.register(
   Legend
 );
 
-type TableLineChartProps = {
+interface TableLineChartProps {
   coin: CoinTypes;
-};
+}
 
 const TableLineChart = ({ coin }: TableLineChartProps) => {
   const prices: number[] = coin.sparkline_in_7d.price;

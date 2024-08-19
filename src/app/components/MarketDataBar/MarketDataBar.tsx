@@ -32,10 +32,10 @@ const SvgWrapper = styled.div`
   margin-right: 5px;
 `;
 
-type MarketDataBarProps = {
+interface MarketDataBarProps {
   marketData: MarketDataTypes;
   hasError: boolean;
-};
+}
 
 const MarketDataBar = ({ marketData, hasError }: MarketDataBarProps) => {
   if (!marketData) {

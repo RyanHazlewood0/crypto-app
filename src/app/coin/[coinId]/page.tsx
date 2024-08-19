@@ -169,9 +169,9 @@ const DateText = styled.p`
   text-align: center;
 `;
 
-type CoinProps = {
+interface CoinProps {
   params: { coinId: string };
-};
+}
 
 interface CoinDataTypes {
   id: string;

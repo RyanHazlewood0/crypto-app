@@ -27,11 +27,11 @@ const SelectBtn = styled.div<SelectBtnProps>`
   padding: 20px 8px 20px 8px;
 `;
 
-type ConverterTimeSelectProps = {
+interface ConverterTimeSelectProps {
   timeFrameSelected: string;
   setTimeFrameSelected: Dispatch<SetStateAction<string>>;
   setDayCount: Dispatch<SetStateAction<string>>;
-};
+}
 
 type SelectBtnProps = {
   selected: boolean;

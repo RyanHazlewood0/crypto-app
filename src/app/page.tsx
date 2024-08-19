@@ -6,18 +6,10 @@ import Carousel from "./components/Carousel/Carousel";
 import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeSelect";
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import { useState } from "react";
-
-export type SelectedCoinTypes = {
-  id: string;
-  name: string;
-  total_volume: string;
-  current_price: string;
-};
+import { CoinTypes } from "./contexts/CoinProvider";
 
 export default function Home() {
-  const [selectedCoin, setSelectedCoin] = useState<SelectedCoinTypes | null>(
-    null
-  );
+  const [selectedCoin, setSelectedCoin] = useState<CoinTypes | null>(null);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
 

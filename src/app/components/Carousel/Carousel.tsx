@@ -7,7 +7,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import { SelectedCoinTypes } from "@/app/page";
 import { CoinTypes } from "@/app/contexts/CoinProvider";
 import { useEffect } from "react";
 
@@ -92,17 +91,15 @@ type StylePropSelected = {
   selected: boolean;
 };
 
-type CarouselProps = {
-  selectedCoin: SelectedCoinTypes | null;
-  setSelectedCoin: Dispatch<
-    SetStateAction<SelectedCoinTypes | CoinTypes | null>
-  >;
-};
+interface CarouselProps {
+  selectedCoin: CoinTypes | null;
+  setSelectedCoin: Dispatch<SetStateAction<CoinTypes | null>>;
+}
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const { coins } = useCoin();
 
-  const handleSelectCoin = (coin: SelectedCoinTypes) => {
+  const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);
   };
 

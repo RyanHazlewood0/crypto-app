@@ -75,15 +75,19 @@ const SvgContainer = styled.div`
   cursor: pointer;
 `;
 
-type AddAssetFormProps = {
+interface AddAssetFormProps {
   handleFormClose: () => void;
-  handlePurchaseDateInputChange: () => void;
-  handlePurchaseAmountInputChange: () => void;
-  handleCoinSelectInputChange: () => void;
+  handlePurchaseDateInputChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  handlePurchaseAmountInputChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  handleCoinSelectInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   CoinSelectValue: string;
   purchasedAmountValue: string;
   purchaseDateValue: string;
-};
+}
 
 const AddAssetForm = ({
   handleFormClose,

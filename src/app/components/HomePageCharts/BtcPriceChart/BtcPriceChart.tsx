@@ -11,8 +11,8 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { abbreviateNumber } from "../Table/helper-functions";
-import { SelectedCoinTypes } from "@/app/page";
+import { abbreviateNumber } from "../../Table/helper-functions";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -59,7 +59,7 @@ type CoinPriceDataTypes = {
 };
 
 type BtcPriceChartProps = {
-  selectedCoin: SelectedCoinTypes;
+  selectedCoin: CoinTypes;
   coinPriceData: CoinPriceDataTypes[];
 };
 

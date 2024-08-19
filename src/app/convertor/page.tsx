@@ -264,6 +264,8 @@ export default function Converter() {
     setSellCoin(buyCoin);
     setSellSearch(buySearch);
     setBuySearch(sellSearch);
+    setBuyQuantity(sellQuantity);
+    setSellQuantity(buyQuantity);
   };
 
   return (
@@ -323,7 +325,7 @@ export default function Converter() {
             )}
           </InnerContainer>
         </ConverterBox>
-        <ReverseConvertBtn onClick={(e) => reverseConvert(e)}>
+        <ReverseConvertBtn onClick={() => reverseConvert()}>
           <p>↑↓</p>
         </ReverseConvertBtn>
         <ConverterBox>
@@ -358,7 +360,7 @@ export default function Converter() {
                   {filteredBuyCoins.map((coin) => (
                     <CoinOption
                       key={coin.id}
-                      onClick={(e) => selectCoinBuy(coin, e)}
+                      onClick={() => selectCoinBuy(coin)}
                     >
                       {coin.name}
                     </CoinOption>

@@ -9,8 +9,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { abbreviateNumber } from "../Table/helper-functions";
-import { SelectedCoinTypes } from "@/app/page";
+import { abbreviateNumber } from "../../Table/helper-functions";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -49,15 +49,15 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-type CoinVolumeDataTypes = {
+interface CoinVolumeDataTypes {
   volume: number;
   date: string;
-};
+}
 
-type BtcVolumeChartProps = {
-  selectedCoin: SelectedCoinTypes;
+interface BtcVolumeChartProps {
+  selectedCoin: CoinTypes;
   coinVolumeData: CoinVolumeDataTypes[];
-};
+}
 
 const BtcVolumeChart = ({
   coinVolumeData,

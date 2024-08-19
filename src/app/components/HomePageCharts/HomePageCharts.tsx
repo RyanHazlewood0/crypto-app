@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import BtcPriceChart from "../BtcPriceChart/BtcPriceChart";
-import BtcVolumeChart from "../BtcVolumeChart/BtcVolumeChart";
+import BtcPriceChart from "./BtcPriceChart/BtcPriceChart";
+import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
-import { SelectedCoinTypes } from "@/app/page";
+import { CoinTypes } from "@/app/contexts/CoinProvider";
 
 const ChartsContainer = styled.div`
   width: 100%;
@@ -11,12 +11,12 @@ const ChartsContainer = styled.div`
   margin: 40px 0 50px 0;
 `;
 
-type HomePageChartsProps = {
-  selectedCoin: SelectedCoinTypes;
+interface HomePageChartsProps {
+  selectedCoin: CoinTypes;
   dayCount: String;
-};
+}
 
-interface FetchedDataTypes {
+export interface FetchedDataTypes {
   prices: [number, number][];
   market_caps: [number, number][];
   total_volumes: [number, number][];

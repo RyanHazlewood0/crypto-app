@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-//import { useCoin } from "../contexts/CoinProvider";
 import styled from "styled-components";
-import AddAssetForm from "../components/AddAssetForm/AddAssetForm";
+import AddAssetForm from "./AddAssetForm/AddAssetForm";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -43,13 +42,10 @@ const CoinInfoContainer = styled.div`
 `;
 
 export default function Portfolio() {
-  //const [portfolioCoins, setPortfolioCoins] = useState();
   const [formOpen, setFormOpen] = useState(false);
   const [CoinSelectValue, setCoinSelectValue] = useState("");
   const [purchasedAmountValue, setPurchasedAmountValue] = useState("");
   const [purchaseDateValue, setPurchaseDateValue] = useState("");
-
-  //const { coins } = useCoin();
 
   const handleFormOpen = () => {
     setFormOpen(true);
@@ -62,17 +58,23 @@ export default function Portfolio() {
     setPurchasedAmountValue("");
   };
 
-  const handleCoinSelectInputChange = (e) => {
+  const handleCoinSelectInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setCoinSelectValue(value);
   };
 
-  const handlePurchaseAmountInputChange = (e) => {
+  const handlePurchaseAmountInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setPurchasedAmountValue(value);
   };
 
-  const handlePurchaseDateInputChange = (e) => {
+  const handlePurchaseDateInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setPurchaseDateValue(value);
   };
