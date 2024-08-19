@@ -158,7 +158,7 @@ const ConverterChart = ({
       },
     },
     tension: 0.5,
-  };
+  } as any;
 
   return (
     <>
