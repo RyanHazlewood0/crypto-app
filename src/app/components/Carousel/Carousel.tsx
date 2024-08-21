@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "../Table/helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 import { useEffect } from "react";
 
 const CarouselContainer = styled.div`

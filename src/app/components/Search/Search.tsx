@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import { CoinTypes, useCoin } from "@/app/contexts/CoinProvider";
+import { useCoin } from "@/app/contexts/CoinProvider";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { CoinTypes } from "types";
 
 const SearchContainer = styled.div`
   display: column;

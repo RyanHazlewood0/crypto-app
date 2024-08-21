@@ -12,7 +12,7 @@ import {
   Filler,
 } from "chart.js";
 import { abbreviateNumber } from "../../Table/helper-functions";
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 ChartJS.register(
   CategoryScale,

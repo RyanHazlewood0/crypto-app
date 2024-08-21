@@ -2,7 +2,7 @@ import styled from "styled-components";
 import BtcPriceChart from "./BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 const ChartsContainer = styled.div`
   width: 100%;

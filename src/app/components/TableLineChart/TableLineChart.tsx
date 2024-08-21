@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 ChartJS.register(
   CategoryScale,

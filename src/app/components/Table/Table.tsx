@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { CoinTypes, useCoin } from "@/app/contexts/CoinProvider";
+import { useCoin } from "@/app/contexts/CoinProvider";
 import {
   abbreviateNumber,
   findSupplyLevel,
   findVolumeLevel,
 } from "./helper-functions";
+import { CoinTypes } from "types";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
 import styled from "styled-components";

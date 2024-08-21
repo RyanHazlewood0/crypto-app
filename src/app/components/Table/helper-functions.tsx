@@ -1,4 +1,4 @@
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 export const abbreviateNumber = (num: number): number | string => {
   const prefixes = ["", "k", "M", "B", "T"];

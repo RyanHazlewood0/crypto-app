@@ -12,7 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { CoinTypes } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
 
 ChartJS.register(
