@@ -8,6 +8,7 @@ import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
+import { CurrencyValue } from "types";
 
 const Container = styled.div`
   width: 100%;
@@ -171,10 +172,6 @@ const DateText = styled.p`
 
 interface CoinProps {
   params: { coinId: string };
-}
-
-interface CurrencyValue {
-  [key: string]: number;
 }
 
 interface CoinDataTypes {
