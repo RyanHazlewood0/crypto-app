@@ -1,4 +1,37 @@
-export interface CoinTypes {
+
+  export interface CurrencyValue {
+    [key: string]: number;
+  }
+  
+  export interface CoinDataTypes {
+    id: string;
+    symbol: string;
+    name: string;
+    image: {
+      small: string;
+    };
+    links: {
+      homepage: string[];
+      blockchain_site: string[];
+    };
+   market_data: { 
+      current_price: CurrencyValue;
+      ath_date: string;
+      atl_date: string;
+      atl: CurrencyValue;
+      ath: CurrencyValue;
+      market_cap: CurrencyValue;
+      fully_diluted_valuation: CurrencyValue;
+      total_volume: CurrencyValue;
+      circulating_supply: number;
+      total_supply: number;
+    };
+    description: {
+      en: string;
+    };
+  }
+
+  export interface CoinTypes {
     id: string;
     symbol: string;
     name: string;
@@ -17,9 +50,5 @@ export interface CoinTypes {
     sparkline_in_7d: {
       price: number[];
     };
-  }
-  
-  export interface CurrencyValue {
-    [key: string]: number;
   }
   

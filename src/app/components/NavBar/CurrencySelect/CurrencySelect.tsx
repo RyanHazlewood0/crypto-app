@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import DollarSymbol from "../svg/DollarSymbol";
+import { useCoin } from "@/app/contexts/CoinProvider";
+import { useState } from "react";
 
 const CurrencyContainer = styled.div`
   display: flex;
   background: #191925;
-  width: 108px;
+  width: 100%;
   border: solid 1px gray;
   border-radius: 6px;
   height: 44px;
@@ -12,15 +14,64 @@ const CurrencyContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  position: relative;
+`;
+
+const DropdownContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #191925;
+  padding: 10px;
+  border: solid 1px gray;
+  position: absolute;
+  width: 108px;
+  text-align: center;
+`;
+
+const DropdownAndOptionContainer = styled.div`
+  width: 108px;
+`;
+
+const CurrencyOptionContainer = styled.div`
+  width: 100%;
+  cursor: pointer;
 `;
 
 const CurrencySelect = () => {
+  const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
+  const { fiatCurrency, setFiatCurrency } = useCoin();
+  const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
+
+  const handleToggleDropdown = () => {
+    setFiatDropdownOpen(!fiatDropownOpen);
+  };
+
+  const handleCurrencySelect = (e: React.MouseEvent<HTMLDivElement>) => {
+    const value = e.currentTarget.textContent;
+    setFiatCurrency(value);
+    handleToggleDropdown();
+  };
+
   return (
-    <CurrencyContainer>
-      <DollarSymbol />
-      <p>USD</p>
-      <p>▼</p>
-    </CurrencyContainer>
+    <DropdownAndOptionContainer>
+      <CurrencyContainer onClick={handleToggleDropdown}>
+        <DollarSymbol />
+        <p>{fiatCurrency}</p>
+        <p>▼</p>
+      </CurrencyContainer>
+      {fiatDropownOpen && (
+        <DropdownContainer>
+          {currencyOptions.map((currency) => (
+            <CurrencyOptionContainer
+              key={currency}
+              onClick={(e) => handleCurrencySelect(e)}
+            >
+              {currency}
+            </CurrencyOptionContainer>
+          ))}
+        </DropdownContainer>
+      )}
+    </DropdownAndOptionContainer>
   );
 };
 
