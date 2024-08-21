@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Line } from "react-chartjs-2";
 import {
@@ -12,7 +11,8 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { abbreviateNumber } from "../Table/helper-functions";
+import { abbreviateNumber } from "../../Table/helper-functions";
+import { CoinTypes } from "types";
 
 ChartJS.register(
   CategoryScale,
@@ -53,7 +53,17 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-const BtcPriceChart = ({ coinPriceData, selectedCoin }) => {
+type CoinPriceDataTypes = {
+  price: number;
+  date: string;
+};
+
+type BtcPriceChartProps = {
+  selectedCoin: CoinTypes;
+  coinPriceData: CoinPriceDataTypes[];
+};
+
+const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
   const lineChartData = {
     labels: coinPriceData.map((obj) => obj.date),
     datasets: [
@@ -81,7 +91,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }) => {
         display: false,
       },
       tooltip: {
-        mode: "index",
+        mode: "index" as const,
         intersect: false,
       },
     },
@@ -120,11 +130,6 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }) => {
       )}
     </ChartContainer>
   );
-};
-
-BtcPriceChart.propTypes = {
-  coinPriceData: PropTypes.arrayOf(PropTypes.number),
-  selectedCoin: PropTypes.object,
 };
 
 export default BtcPriceChart;

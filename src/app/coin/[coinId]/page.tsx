@@ -1,5 +1,4 @@
 "use client";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -9,6 +8,7 @@ import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
+import { CurrencyValue } from "types";
 
 const Container = styled.div`
   width: 100%;
@@ -170,9 +170,43 @@ const DateText = styled.p`
   text-align: center;
 `;
 
-export default function Coin({ params }) {
+interface CoinProps {
+  params: { coinId: string };
+}
+
+interface CoinDataTypes {
+  id: string;
+  symbol: string;
+  name: string;
+  image: {
+    small: string;
+  };
+  links: {
+    homepage: string[];
+    blockchain_site: string[];
+  };
+  market_data: {
+    current_price: CurrencyValue;
+    ath_date: string;
+    atl_date: string;
+    atl: CurrencyValue;
+    ath: CurrencyValue;
+    market_cap: CurrencyValue;
+    fully_diluted_valuation: CurrencyValue;
+    total_volume: CurrencyValue;
+    circulating_supply: number;
+    total_supply: number;
+  };
+  description: {
+    en: string;
+  };
+}
+
+const selectedCurrency: string = "usd";
+
+export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
-  const [coinData, setCoinData] = useState(null);
+  const [coinData, setCoinData] = useState<CoinDataTypes | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { coins } = useCoin();
 
@@ -184,10 +218,10 @@ export default function Coin({ params }) {
       setHasError(false);
       setIsLoading(true);
       try {
-        const response = await fetch(
+        const response: Response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${thisCoin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData = await response.json();
+        const fetchedData: CoinDataTypes = await response.json();
         setCoinData(fetchedData);
         setIsLoading(false);
       } catch {
@@ -198,7 +232,7 @@ export default function Coin({ params }) {
     fetchData();
   }, []);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString();
     return formattedDate;
@@ -249,7 +283,10 @@ export default function Coin({ params }) {
             </NameAndLinkContainer>
             <PriceInfoContainer>
               <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
-                ${abbreviateNumber(coinData.market_data.current_price.usd)}
+                $
+                {abbreviateNumber(
+                  coinData.market_data.current_price[selectedCurrency]
+                )}
               </h1>
               <PriceInnerContainer>
                 <div>
@@ -264,11 +301,14 @@ export default function Coin({ params }) {
                     <GreenArrow />
                     <p style={{ fontSize: "16px" }}>All time high:</p>
                     <p style={{ fontSize: "20px" }}>
-                      ${abbreviateNumber(coinData.market_data.ath.usd)}
+                      $
+                      {abbreviateNumber(
+                        coinData.market_data.ath[selectedCurrency]
+                      )}
                     </p>{" "}
                   </div>
                   <DateText>
-                    {formatDate(coinData.market_data.ath_date.usd)}
+                    {formatDate(coinData.market_data.ath_date)}
                   </DateText>
                 </div>
                 <div>
@@ -283,11 +323,14 @@ export default function Coin({ params }) {
                     <RedArrow />
                     <p style={{ fontSize: "16px" }}>All time low:</p>
                     <p style={{ fontSize: "20px" }}>
-                      ${abbreviateNumber(coinData.market_data.atl.usd)}
+                      $
+                      {abbreviateNumber(
+                        coinData.market_data.atl[selectedCurrency]
+                      )}
                     </p>{" "}
                   </div>
                   <DateText>
-                    {formatDate(coinData.market_data.atl_date.usd)}
+                    {formatDate(coinData.market_data.atl_date)}
                   </DateText>
                 </div>
               </PriceInnerContainer>
@@ -307,7 +350,10 @@ export default function Coin({ params }) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    ${abbreviateNumber(coinData.market_data.market_cap.usd)}
+                    $
+                    {abbreviateNumber(
+                      coinData.market_data.market_cap[selectedCurrency]
+                    )}
                   </RightText>
                 </StyledTd>
               </TableRow>
@@ -320,7 +366,9 @@ export default function Coin({ params }) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.fully_diluted_valuation.usd
+                      coinData.market_data.fully_diluted_valuation[
+                        selectedCurrency
+                      ]
                     )}
                   </RightText>
                 </StyledTd>
@@ -332,7 +380,10 @@ export default function Coin({ params }) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    ${abbreviateNumber(coinData.market_data.total_volume.usd)}
+                    $
+                    {abbreviateNumber(
+                      coinData.market_data.total_volume[selectedCurrency]
+                    )}
                   </RightText>
                 </StyledTd>
               </TableRow>
@@ -405,9 +456,7 @@ export default function Coin({ params }) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[0])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
             <LinkContainer>
@@ -425,9 +474,7 @@ export default function Coin({ params }) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[1])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
             <LinkContainer>
@@ -445,9 +492,7 @@ export default function Coin({ params }) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <CopyIcon
-                  onClick={() => copyText(coinData.links.blockchain_site[2])}
-                />
+                <CopyIcon />
               </div>
             </LinkContainer>
           </InfoContainerFour>
@@ -456,9 +501,3 @@ export default function Coin({ params }) {
     )
   );
 }
-
-Coin.propTypes = {
-  params: PropTypes.shape({
-    coinId: PropTypes.string.isRequired,
-  }).isRequired,
-};

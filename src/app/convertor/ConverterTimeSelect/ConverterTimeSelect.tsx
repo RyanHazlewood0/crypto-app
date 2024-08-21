@@ -1,5 +1,5 @@
+import { SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Container = styled.div`
   margin-bottom: 70px;
 `;
 
-const SelectBtn = styled.div`
+const SelectBtn = styled.div<SelectBtnProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,31 +27,41 @@ const SelectBtn = styled.div`
   padding: 20px 8px 20px 8px;
 `;
 
+interface ConverterTimeSelectProps {
+  timeFrameSelected: string;
+  setTimeFrameSelected: Dispatch<SetStateAction<string>>;
+  setDayCount: Dispatch<SetStateAction<string>>;
+}
+
+type SelectBtnProps = {
+  selected: boolean;
+};
+
 const ConverterTimeSelect = ({
   timeFrameSelected,
   setTimeFrameSelected,
   setDayCount,
-}) => {
-  const findDayCount = (e) => {
-    if (e.target.textContent === "1D") {
+}: ConverterTimeSelectProps) => {
+  const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.currentTarget.textContent === "1D") {
       setDayCount("1");
       setTimeFrameSelected("1D");
-    } else if (e.target.textContent === "7D") {
+    } else if (e.currentTarget.textContent === "7D") {
       setDayCount("7");
       setTimeFrameSelected("7D");
-    } else if (e.target.textContent === "14D") {
+    } else if (e.currentTarget.textContent === "14D") {
       setDayCount("14");
       setTimeFrameSelected("14D");
-    } else if (e.target.textContent === "1M") {
+    } else if (e.currentTarget.textContent === "1M") {
       setDayCount("30");
       setTimeFrameSelected("1M");
-    } else if (e.target.textContent === "1Q") {
+    } else if (e.currentTarget.textContent === "1Q") {
       setDayCount("90");
       setTimeFrameSelected("1Q");
-    } else if (e.target.textContent === "1Y") {
+    } else if (e.currentTarget.textContent === "1Y") {
       setDayCount("365");
       setTimeFrameSelected("1Y");
-    } else if (e.target.textContent === "5Y") {
+    } else if (e.currentTarget.textContent === "5Y") {
       setDayCount("1825");
       setTimeFrameSelected("5Y");
     }
@@ -82,12 +92,6 @@ const ConverterTimeSelect = ({
       </SelectBtn>
     </Container>
   );
-};
-
-ConverterTimeSelect.propTypes = {
-  timeFrameSelected: PropTypes.string,
-  setTimeFrameSelected: PropTypes.func,
-  setDayCount: PropTypes.string,
 };
 
 export default ConverterTimeSelect;

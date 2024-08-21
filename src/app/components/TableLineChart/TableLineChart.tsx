@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { CoinTypes } from "types";
 
 ChartJS.register(
   CategoryScale,
@@ -21,10 +21,14 @@ ChartJS.register(
   Legend
 );
 
-const TableLineChart = ({ coin }) => {
-  const prices = coin.sparkline_in_7d.price;
-  const minPrice = Math.min(prices);
-  const maxPrice = Math.max(prices);
+interface TableLineChartProps {
+  coin: CoinTypes;
+}
+
+const TableLineChart = ({ coin }: TableLineChartProps) => {
+  const prices: number[] = coin.sparkline_in_7d.price;
+  const minPrice: number = Math.min(...prices);
+  const maxPrice: number = Math.max(...prices);
   const lineChartData = {
     labels: prices.map(() => "price"),
 
@@ -60,10 +64,6 @@ const TableLineChart = ({ coin }) => {
   };
 
   return <Line options={options} data={lineChartData} />;
-};
-
-TableLineChart.propTypes = {
-  coin: PropTypes.object,
 };
 
 export default TableLineChart;

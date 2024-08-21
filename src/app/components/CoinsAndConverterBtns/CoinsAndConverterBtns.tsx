@@ -7,7 +7,7 @@ const BtnsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const Btn = styled.div`
+const Btn = styled.div<StyleProp>`
   background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
   color: white;
   width: 244px;
@@ -18,6 +18,10 @@ const Btn = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+type StyleProp = {
+  selected: boolean;
+};
 
 const CoinsAndConverterBtns = () => {
   const { setSelectedBtn, selectedBtn } = useCoin();

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { CoinProvider } from "./contexts/CoinProvider";
 import "./globals.css";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
 import NavBar from "./components/NavBar/NavBar";
 
@@ -14,11 +13,39 @@ const MainContainer = styled.div`
   margin-right: auto;
 `;
 
-export default function RootLayout({ children }) {
-  const [marketData, setMarketData] = useState({});
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
+
+export interface MarketDataTypes {
+  coins: string;
+  totalMarketCap: string;
+  totalVolume: string;
+  btcPercent: number;
+  ethPercent: number;
+}
+
+interface FetchedDataTypes {
+  data: {
+    total_market_cap: {
+      usd: number;
+    };
+    total_volume: {
+      usd: number;
+    };
+    market_cap_percentage: {
+      eth: number;
+      btc: number;
+    };
+    active_cryptocurrencies: number;
+  };
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
 
-  function abbreviateNumber(num) {
+  function abbreviateNumber(num: number): string {
     const prefixes = ["", "k", "M", "B", "T"];
     const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
     const abbreviated = (num / Math.pow(1000, magnitude)).toFixed(2);
@@ -34,7 +61,7 @@ export default function RootLayout({ children }) {
         const response = await fetch(
           `https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData = await response.json();
+        const fetchedData: FetchedDataTypes = await response.json();
         const totalCap = abbreviateNumber(
           fetchedData.data.total_market_cap.usd
         );
@@ -70,7 +97,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-RootLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};

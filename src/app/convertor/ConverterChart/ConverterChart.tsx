@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
@@ -13,6 +12,8 @@ import {
   Legend,
   Filler,
 } from "chart.js";
+import { CoinTypes } from "types";
+import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
 
 ChartJS.register(
   CategoryScale,
@@ -46,9 +47,21 @@ const ChartMessage = styled.p`
   font-size: 18px;
 `;
 
-const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
-  const [sellCoinPriceData, setSellCoinPriceData] = useState(null);
-  const [buyCoinPriceData, setBuyCoinPriceData] = useState(null);
+interface ConverterChartProps {
+  dayCount: string;
+  buyCoin: CoinTypes;
+  sellCoin: CoinTypes;
+}
+
+const ConverterChart = ({
+  dayCount,
+  buyCoin,
+  sellCoin,
+}: ConverterChartProps) => {
+  const [sellCoinPriceData, setSellCoinPriceData] =
+    useState<FetchedDataTypes | null>(null);
+  const [buyCoinPriceData, setBuyCoinPriceData] =
+    useState<FetchedDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
   const [dataSet, setDataSet] = useState(null);
 
@@ -58,14 +71,14 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
     setHasError(false);
     const fetchData = async () => {
       try {
-        const response = await fetch(
+        const response: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/${sellCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData = await response.json();
-        const response2 = await fetch(
+        const fetchedData: FetchedDataTypes = await response.json();
+        const response2: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData2 = await response2.json();
+        const fetchedData2: FetchedDataTypes = await response2.json();
         setSellCoinPriceData(fetchedData);
         setBuyCoinPriceData(fetchedData2);
       } catch {
@@ -145,7 +158,7 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
       },
     },
     tension: 0.5,
-  };
+  } as any;
 
   return (
     <>
@@ -166,12 +179,6 @@ const ConverterChart = ({ dayCount, buyCoin, sellCoin }) => {
       </ChartContainer>
     </>
   );
-};
-
-ConverterChart.propTypes = {
-  dayCount: PropTypes.string,
-  sellCoin: PropTypes.object,
-  buyCoin: PropTypes.object,
 };
 
 export default ConverterChart;

@@ -78,10 +78,14 @@ const ThemeIconContainer = styled.div`
   align-items: center;
 `;
 
-const HomeText = styled.p`
+const HomeText = styled.p<StyleProp>`
   margin-left: 10px;
   color: ${(props) => (props.gray ? "gray" : "white")};
 `;
+
+type StyleProp = {
+  gray?: boolean;
+};
 
 const NavBar = () => {
   const { setSelectedBtn } = useCoin();

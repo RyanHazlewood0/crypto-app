@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { CoinTypes } from "types";
 
 const SearchContainer = styled.div`
   display: column;
@@ -39,7 +40,7 @@ const Search = () => {
   const { coins } = useCoin();
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     if (e.target.value.length !== 0) {
       setDropDownOpen(true);
@@ -59,7 +60,7 @@ const Search = () => {
     setDropDownOpen(false);
   };
 
-  const handleNavLink = (coin) => {
+  const handleNavLink = (coin: CoinTypes) => {
     router.push(`/coin/${coin.id}`);
     setSearchValue("");
   };

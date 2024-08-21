@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Bar } from "react-chartjs-2";
 import {
@@ -10,7 +9,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { abbreviateNumber } from "../Table/helper-functions";
+import { abbreviateNumber } from "../../Table/helper-functions";
+import { CoinTypes } from "types";
 
 ChartJS.register(
   CategoryScale,
@@ -49,7 +49,20 @@ const DateText = styled.h3`
   color: gray;
 `;
 
-const BtcVolumeChart = ({ coinVolumeData, selectedCoin }) => {
+interface CoinVolumeDataTypes {
+  volume: number;
+  date: string;
+}
+
+interface BtcVolumeChartProps {
+  selectedCoin: CoinTypes;
+  coinVolumeData: CoinVolumeDataTypes[];
+}
+
+const BtcVolumeChart = ({
+  coinVolumeData,
+  selectedCoin,
+}: BtcVolumeChartProps) => {
   const barChartData = {
     labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
@@ -103,11 +116,6 @@ const BtcVolumeChart = ({ coinVolumeData, selectedCoin }) => {
       />
     </ChartContainer>
   );
-};
-
-BtcVolumeChart.propTypes = {
-  coinVolumeData: PropTypes.arrayOf(PropTypes.number),
-  selectedCoin: PropTypes.object,
 };
 
 export default BtcVolumeChart;

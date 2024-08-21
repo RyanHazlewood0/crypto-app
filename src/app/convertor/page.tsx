@@ -5,6 +5,7 @@ import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useCoin } from "../contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 const ConverterContainer = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const ConverterContainer = styled.div`
   margin-bottom: 70px;
 `;
 
-const ConverterBox = styled.div`
+const ConverterBox = styled.div<StyleProp>`
   width: 636px;
   height: 200px;
   border-radius: 16px;
@@ -143,17 +144,21 @@ const CoinLogo = styled.img`
   height: 24px;
 `;
 
+type StyleProp = {
+  sell?: boolean;
+};
+
 export default function Converter() {
-  const [buyCoin, setBuyCoin] = useState(null);
-  const [sellCoin, setSellCoin] = useState(null);
+  const [buyCoin, setBuyCoin] = useState<CoinTypes | null>(null);
+  const [sellCoin, setSellCoin] = useState<CoinTypes | null>(null);
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
   const [timeFrameSelected, setTimeFrameSelected] = useState("1Y");
   const [dayCount, setDayCount] = useState("365");
   const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
-  const [sellQuantity, setSellQuantity] = useState(null);
-  const [buyQuantity, setBuyQuantity] = useState(null);
+  const [sellQuantity, setSellQuantity] = useState<number | null>(null);
+  const [buyQuantity, setBuyQuantity] = useState<number | null>(null);
 
   const { coins } = useCoin();
 
@@ -167,7 +172,7 @@ export default function Converter() {
   const date = new Date();
   const currentDate = date.toLocaleString();
 
-  const handleBuySearch = (e) => {
+  const handleBuySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setBuySearch(value);
     if (e.target.value.length !== 0) {
@@ -177,7 +182,7 @@ export default function Converter() {
     }
   };
 
-  const handleSellSearch = (e) => {
+  const handleSellSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSellSearch(value);
     if (e.target.value.length !== 0) {
@@ -201,12 +206,12 @@ export default function Converter() {
       coin.name.includes(sellSearch)
   );
 
-  const selectCoinSell = (coin) => {
+  const selectCoinSell = (coin: CoinTypes) => {
     setSellCoin(coin);
     setSellDropdownOpen(false);
   };
 
-  const selectCoinBuy = (coin) => {
+  const selectCoinBuy = (coin: CoinTypes) => {
     setBuyCoin(coin);
     setBuyDropdownOpen(false);
   };
@@ -221,12 +226,12 @@ export default function Converter() {
     setSellSearch("");
   };
 
-  const handleSellQuantity = (e) => {
+  const handleSellQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSellQuantity(Number(value));
   };
 
-  const handleBuyQuantity = (e) => {
+  const handleBuyQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setBuyQuantity(Number(value));
   };
@@ -236,7 +241,7 @@ export default function Converter() {
     const sellCoinValue = sellCoinPrice * sellQuantity;
     const buyCoinPrice = buyCoin.current_price;
     const result = sellCoinValue / buyCoinPrice;
-    setBuyQuantity(result.toFixed(3));
+    setBuyQuantity(parseFloat(result.toFixed(3)));
   };
 
   const handleSellQuantityBlur = () => {
@@ -248,7 +253,7 @@ export default function Converter() {
     const buyCoinValue = buyCoinPrice * buyQuantity;
     const sellCoinPrice = sellCoin.current_price;
     const result = buyCoinValue / sellCoinPrice;
-    setSellQuantity(result.toFixed(3));
+    setSellQuantity(parseFloat(result.toFixed(3)));
   };
 
   const handleBuyQuantityBlur = () => {
@@ -260,6 +265,8 @@ export default function Converter() {
     setSellCoin(buyCoin);
     setSellSearch(buySearch);
     setBuySearch(sellSearch);
+    setBuyQuantity(sellQuantity);
+    setSellQuantity(buyQuantity);
   };
 
   return (
@@ -292,7 +299,7 @@ export default function Converter() {
                   placeholder="Add Quanitity..."
                   value={sellQuantity}
                   onChange={(e) => handleSellQuantity(e)}
-                  onBlur={(e) => handleSellQuantityBlur(e)}
+                  onBlur={() => handleSellQuantityBlur()}
                   type="number"
                 />
               </SearchAndValueContainer>
@@ -301,7 +308,7 @@ export default function Converter() {
                   {filteredSellCoins.map((coin) => (
                     <CoinOption
                       key={coin.id}
-                      onClick={(e) => selectCoinSell(coin, e)}
+                      onClick={() => selectCoinSell(coin)}
                     >
                       {coin.name}
                     </CoinOption>
@@ -319,7 +326,7 @@ export default function Converter() {
             )}
           </InnerContainer>
         </ConverterBox>
-        <ReverseConvertBtn onClick={(e) => reverseConvert(e)}>
+        <ReverseConvertBtn onClick={() => reverseConvert()}>
           <p>↑↓</p>
         </ReverseConvertBtn>
         <ConverterBox>
@@ -345,7 +352,7 @@ export default function Converter() {
                   placeholder="Add Quanitity..."
                   value={buyQuantity}
                   onChange={(e) => handleBuyQuantity(e)}
-                  onBlur={(e) => handleBuyQuantityBlur(e)}
+                  onBlur={() => handleBuyQuantityBlur()}
                   type="number"
                 />
               </SearchAndValueContainer>
@@ -354,7 +361,7 @@ export default function Converter() {
                   {filteredBuyCoins.map((coin) => (
                     <CoinOption
                       key={coin.id}
-                      onClick={(e) => selectCoinBuy(coin, e)}
+                      onClick={() => selectCoinBuy(coin)}
                     >
                       {coin.name}
                     </CoinOption>

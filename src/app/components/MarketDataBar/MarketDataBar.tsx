@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import CoinCount from "./svg/CoinCount";
 import Btc from "./svg/Btc";
 import Eth from "./svg/Eth";
 import TotalVol from "./svg/TotalVol";
+import { MarketDataTypes } from "@/app/layout";
 
 const MarketDataBarWrapper = styled.div`
   background: #1e1932;
@@ -32,7 +32,15 @@ const SvgWrapper = styled.div`
   margin-right: 5px;
 `;
 
-const MarketDataBar = ({ marketData, hasError }) => {
+interface MarketDataBarProps {
+  marketData: MarketDataTypes;
+  hasError: boolean;
+}
+
+const MarketDataBar = ({ marketData, hasError }: MarketDataBarProps) => {
+  if (!marketData) {
+    return <MarketDataBarWrapper>Loading...</MarketDataBarWrapper>;
+  }
   return hasError ? (
     <MarketDataBarWrapper>Market Data Loading Error</MarketDataBarWrapper>
   ) : (
@@ -68,11 +76,6 @@ const MarketDataBar = ({ marketData, hasError }) => {
       </MarketDataBarInnerWrapper>
     </MarketDataBarWrapper>
   );
-};
-
-MarketDataBar.propTypes = {
-  marketData: PropTypes.object,
-  hasError: PropTypes.bool,
 };
 
 export default MarketDataBar;
