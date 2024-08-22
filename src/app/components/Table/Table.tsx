@@ -106,7 +106,7 @@ const Table = () => {
   const [hasError, setHasError] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
 
-  const { coins, setCoins } = useCoin();
+  const { coins, setCoins, fiatCurrency } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -115,7 +115,7 @@ const Table = () => {
     const getCoinData = async () => {
       try {
         const response: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinTypes[] = await response.json();
         setCoins(fetchedData);
@@ -124,7 +124,7 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [sortOrder]);
+  }, [sortOrder, fiatCurrency]);
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,

@@ -3,6 +3,7 @@ import BtcPriceChart from "./BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
 import { CoinTypes } from "types";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 const ChartsContainer = styled.div`
   width: 100%;
@@ -41,6 +42,8 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
     coinVolumeDataTypes[] | null
   >(null);
 
+  const { fiatCurrency } = useCoin();
+
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
     const getCoinData = async () => {
       try {
         const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: FetchedDataTypes = await response.json();
         setCoinPriceData(
