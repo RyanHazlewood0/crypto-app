@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CloseIcon from "./close-circle";
+import { useRef, useEffect } from "react";
 
 const ModalContainer = styled.div`
   width: 886px;
@@ -98,6 +99,12 @@ const AddAssetForm = ({
   purchasedAmountValue,
   purchaseDateValue,
 }: AddAssetFormProps) => {
+  const focusInput = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    focusInput.current.focus();
+  });
+
   return (
     <>
       <ModalContainer>
@@ -115,6 +122,7 @@ const AddAssetForm = ({
                 type="text"
                 value={CoinSelectValue}
                 onChange={(e) => handleCoinSelectInputChange(e)}
+                ref={focusInput}
               />
               <Input
                 type="text"

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import DollarSymbol from "../svg/DollarSymbol";
 import { useCoin } from "@/app/contexts/CoinProvider";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const CurrencyContainer = styled.div`
   display: flex;
@@ -47,16 +47,33 @@ const CurrencySelect = () => {
   };
 
   const handleCurrencySelect = (e: React.MouseEvent<HTMLDivElement>) => {
-    const value = e.currentTarget.textContent;
+    const value = e.currentTarget.textContent.toLowerCase();
     setFiatCurrency(value);
     handleToggleDropdown();
   };
 
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          setFiatDropdownOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    });
+  };
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
+
   return (
-    <DropdownAndOptionContainer>
+    <DropdownAndOptionContainer ref={wrapperRef}>
       <CurrencyContainer onClick={handleToggleDropdown}>
         <DollarSymbol />
-        <p>{fiatCurrency}</p>
+        <p>{fiatCurrency.toUpperCase()}</p>
         <p>▼</p>
       </CurrencyContainer>
       {fiatDropownOpen && (
@@ -66,7 +83,7 @@ const CurrencySelect = () => {
               key={currency}
               onClick={(e) => handleCurrencySelect(e)}
             >
-              {currency}
+              {currency.toUpperCase()}
             </CurrencyOptionContainer>
           ))}
         </DropdownContainer>
