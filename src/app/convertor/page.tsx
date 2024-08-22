@@ -159,15 +159,34 @@ export default function Converter() {
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
   const [sellQuantity, setSellQuantity] = useState<number | null>(null);
   const [buyQuantity, setBuyQuantity] = useState<number | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-  const { coins } = useCoin();
+  const { coins, setCoins, fiatCurrency } = useCoin();
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    setHasError(false);
+    const fetchCoinData = async () => {
+      try {
+        const response: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedData: CoinTypes[] = await response.json();
+        setCoins(fetchedData);
+      } catch {
+        setHasError(true);
+      }
+    };
+    fetchCoinData();
+  }, [fiatCurrency]);
 
   useEffect(() => {
     if (coins.length > 0) {
       setSellCoin(coins[0]);
       setBuyCoin(coins[1]);
     }
-  }, []);
+  }, [coins]);
 
   const date = new Date();
   const currentDate = date.toLocaleString();
@@ -268,6 +287,10 @@ export default function Converter() {
     setBuyQuantity(sellQuantity);
     setSellQuantity(buyQuantity);
   };
+
+  if (hasError) {
+    return <p>error fetching coins data</p>;
+  }
 
   return (
     <>

@@ -97,7 +97,7 @@ interface CarouselProps {
 }
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
-  const { coins } = useCoin();
+  const { coins, fiatCurrency } = useCoin();
 
   const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);

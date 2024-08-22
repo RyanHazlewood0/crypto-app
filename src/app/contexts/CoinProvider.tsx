@@ -8,6 +8,8 @@ interface CoinContextType {
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<CoinTypes[]>>;
   setSelectedBtn: Dispatch<SetStateAction<string>>;
+  fiatCurrency: string;
+  setFiatCurrency: Dispatch<SetStateAction<string>>;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -24,6 +26,7 @@ type useCoinProps = {
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
+  const [fiatCurrency, setFiatCurrency] = useState<string>("usd");
 
   return (
     <CoinContext.Provider
@@ -32,6 +35,8 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setCoins,
         selectedBtn,
         setSelectedBtn,
+        fiatCurrency,
+        setFiatCurrency,
       }}
     >
       {children}

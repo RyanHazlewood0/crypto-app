@@ -8,7 +8,7 @@ import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import { CurrencyValue } from "types";
+import { CoinDataTypes } from "types";
 
 const Container = styled.div`
   width: 100%;
@@ -174,41 +174,11 @@ interface CoinProps {
   params: { coinId: string };
 }
 
-interface CoinDataTypes {
-  id: string;
-  symbol: string;
-  name: string;
-  image: {
-    small: string;
-  };
-  links: {
-    homepage: string[];
-    blockchain_site: string[];
-  };
-  market_data: {
-    current_price: CurrencyValue;
-    ath_date: string;
-    atl_date: string;
-    atl: CurrencyValue;
-    ath: CurrencyValue;
-    market_cap: CurrencyValue;
-    fully_diluted_valuation: CurrencyValue;
-    total_volume: CurrencyValue;
-    circulating_supply: number;
-    total_supply: number;
-  };
-  description: {
-    en: string;
-  };
-}
-
-const selectedCurrency: string = "usd";
-
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [coinData, setCoinData] = useState<CoinDataTypes | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { coins } = useCoin();
+  const { coins, fiatCurrency } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -285,7 +255,7 @@ export default function Coin({ params }: CoinProps) {
               <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                 $
                 {abbreviateNumber(
-                  coinData.market_data.current_price[selectedCurrency]
+                  coinData.market_data.current_price[fiatCurrency]
                 )}
               </h1>
               <PriceInnerContainer>
@@ -302,9 +272,7 @@ export default function Coin({ params }: CoinProps) {
                     <p style={{ fontSize: "16px" }}>All time high:</p>
                     <p style={{ fontSize: "20px" }}>
                       $
-                      {abbreviateNumber(
-                        coinData.market_data.ath[selectedCurrency]
-                      )}
+                      {abbreviateNumber(coinData.market_data.ath[fiatCurrency])}
                     </p>{" "}
                   </div>
                   <DateText>
@@ -324,9 +292,7 @@ export default function Coin({ params }: CoinProps) {
                     <p style={{ fontSize: "16px" }}>All time low:</p>
                     <p style={{ fontSize: "20px" }}>
                       $
-                      {abbreviateNumber(
-                        coinData.market_data.atl[selectedCurrency]
-                      )}
+                      {abbreviateNumber(coinData.market_data.atl[fiatCurrency])}
                     </p>{" "}
                   </div>
                   <DateText>
@@ -352,7 +318,7 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.market_cap[selectedCurrency]
+                      coinData.market_data.market_cap[fiatCurrency]
                     )}
                   </RightText>
                 </StyledTd>
@@ -366,9 +332,7 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.fully_diluted_valuation[
-                        selectedCurrency
-                      ]
+                      coinData.market_data.fully_diluted_valuation[fiatCurrency]
                     )}
                   </RightText>
                 </StyledTd>
@@ -382,7 +346,7 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.total_volume[selectedCurrency]
+                      coinData.market_data.total_volume[fiatCurrency]
                     )}
                   </RightText>
                 </StyledTd>
@@ -412,7 +376,7 @@ export default function Coin({ params }: CoinProps) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    ${abbreviateNumber(coinData.market_data.circulating_supply)}
+                    {abbreviateNumber(coinData.market_data.circulating_supply)}
                   </RightText>
                 </StyledTd>
               </TableRow>
@@ -428,7 +392,7 @@ export default function Coin({ params }: CoinProps) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    ${abbreviateNumber(coinData.market_data.total_supply)}
+                    {abbreviateNumber(coinData.market_data.total_supply)}
                   </RightText>
                 </StyledTd>
               </TableRow>

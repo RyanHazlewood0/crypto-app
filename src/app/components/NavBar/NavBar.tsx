@@ -1,12 +1,12 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Logo from "./svg/Logo";
-import DollarSymbol from "./svg/DollarSymbol";
 import ThemeIcon from "./svg/ThemeIcon";
 import Home from "./svg/Home";
 import Portfolio from "./svg/Portfolio";
 import SearchIcon from "./svg/SearchIcon";
 import Search from "../Search/Search";
+import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
 
 const NavBarContainer = styled.div`
@@ -51,19 +51,6 @@ const RightDiv = styled.div`
   align-items: center;
   width: 544px;
   justify-content: space-between;
-`;
-
-const CurrencyContainer = styled.div`
-  display: flex;
-  background: #191925;
-  width: 108px;
-  border: solid 1px gray;
-  border-radius: 6px;
-  height: 44px;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
 `;
 
 const ThemeIconContainer = styled.div`
@@ -113,11 +100,7 @@ const NavBar = () => {
           </SearchIconWrapper>
           <Search />
         </SearchDiv>
-        <CurrencyContainer>
-          <DollarSymbol />
-          <p>USD</p>
-          <p>▼</p>
-        </CurrencyContainer>
+        <CurrencySelect />
         <ThemeIconContainer>
           <ThemeIcon />
         </ThemeIconContainer>
