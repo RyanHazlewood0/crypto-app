@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import CloseIcon from "./close-circle";
+import CloseIcon from "../svg/close-circle";
+import { SetStateAction, Dispatch, useState } from "react";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.form`
   width: 886px;
   height: 393px;
   background: #13121a;
@@ -63,6 +65,7 @@ const InputsContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 164px;
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -75,32 +78,114 @@ const SvgContainer = styled.div`
   cursor: pointer;
 `;
 
+const DropDown = styled.div`
+  width: 200px;
+  background: #191925;
+  padding: 10px;
+  border-radius: 6px;
+  background: ##191925;
+  position: absolute;
+  top: 45px;
+`;
+
+const CoinOption = styled.p`
+  cursor: pointer;
+  &:hover {
+    background-color: #0077b6;
+  }
+`;
+
 interface AddAssetFormProps {
-  handleFormClose: () => void;
-  handlePurchaseDateInputChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  handlePurchaseAmountInputChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  handleCoinSelectInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  CoinSelectValue: string;
+  handleFormClose: (e: React.MouseEvent<HTMLInputElement>) => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
+  setPurchasedAmountValue: Dispatch<SetStateAction<null | string>>;
+  setPurchaseDateValue: Dispatch<SetStateAction<null | string>>;
+  portfolioCoins: PortfolioCoin[];
+  setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
+  coinSelectValue: string;
+  setCoinSelectValue: Dispatch<SetStateAction<null | string>>;
+}
+
+export interface PortfolioCoin {
+  name: string;
+  totalAmount: number;
+  purchaseDate: Date;
+  purchaseDatePrice: number;
+  currentPrice: number;
+  totalValue: number;
+  priceChange24h: number;
 }
 
 const AddAssetForm = ({
   handleFormClose,
-  handlePurchaseDateInputChange,
-  handlePurchaseAmountInputChange,
-  handleCoinSelectInputChange,
-  CoinSelectValue,
   purchasedAmountValue,
   purchaseDateValue,
+  coinSelectValue,
+  setCoinSelectValue,
+  setPurchasedAmountValue,
+  setPurchaseDateValue,
+  portfolioCoins,
+  setPortfolioCoins,
 }: AddAssetFormProps) => {
+  const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
+  const { coins } = useCoin();
+
+  const handleCoinSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCoinSelectValue(value);
+    if (value.length !== 0) {
+      setNameDropdownOpen(true);
+    } else {
+      setNameDropdownOpen(false);
+    }
+  };
+
+  const filteredCoins = coins.filter(
+    (coin) =>
+      coin.id.includes(coinSelectValue) ||
+      coin.symbol.includes(coinSelectValue) ||
+      coin.name.includes(coinSelectValue)
+  );
+
+  const handlePurchaseAmountInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setPurchasedAmountValue(value);
+  };
+
+  const handlePurchaseDateInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setPurchaseDateValue(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const buyDate = new Date(purchaseDateValue);
+    const newCoinEntry: PortfolioCoin = {
+      name: coinSelectValue,
+      totalAmount: Number(purchasedAmountValue),
+      purchaseDate: buyDate,
+      purchaseDatePrice: 5,
+      currentPrice: 7,
+      totalValue: 15,
+      priceChange24h: 12,
+    };
+    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+  };
+
+  const selectCoin = (e: React.MouseEvent<HTMLParagraphElement>) => {
+    const value = e.currentTarget.textContent;
+    setCoinSelectValue(value);
+    setNameDropdownOpen(false);
+  };
+
   return (
     <>
-      <ModalContainer>
+      <ModalContainer onSubmit={handleSubmit}>
         <FormHeader>
           <HeaderText>Select Coins</HeaderText>
           <SvgContainer onClick={handleFormClose}>
@@ -113,24 +198,34 @@ const AddAssetForm = ({
             <InputsContainer>
               <Input
                 type="text"
-                value={CoinSelectValue}
-                onChange={(e) => handleCoinSelectInputChange(e)}
+                value={coinSelectValue}
+                onChange={(e) => handleCoinSearch(e)}
                 autoFocus
               />
+              {nameDropdownOpen && (
+                <DropDown>
+                  {filteredCoins.map((coin) => (
+                    <CoinOption key={coin.id} onClick={selectCoin}>
+                      {coin.name}
+                    </CoinOption>
+                  ))}
+                </DropDown>
+              )}
+
               <Input
                 type="text"
                 value={purchasedAmountValue}
                 onChange={(e) => handlePurchaseAmountInputChange(e)}
               />
               <Input
-                type="text"
+                type="date"
                 value={purchaseDateValue}
                 onChange={(e) => handlePurchaseDateInputChange(e)}
               />
             </InputsContainer>
             <BtnContainer>
               <CancelBtn onClick={handleFormClose}>Cancel</CancelBtn>
-              <SaveBtn>Save and Continue</SaveBtn>
+              <SaveBtn type="submit">Save and Continue</SaveBtn>
             </BtnContainer>
           </CoinForm>
         </InnerContainer>

@@ -35,6 +35,9 @@ const DropdownAndOptionContainer = styled.div`
 const CurrencyOptionContainer = styled.div`
   width: 100%;
   cursor: pointer;
+  &:hover {
+    background-color: #0077b6;
+  }
 `;
 
 const CurrencySelect = () => {
