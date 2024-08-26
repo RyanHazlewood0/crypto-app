@@ -26,7 +26,7 @@ const AddBtn = styled.button`
 
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
-    null
+    []
   );
   const [formOpen, setFormOpen] = useState(false);
   const [coinSelectValue, setCoinSelectValue] = useState("");

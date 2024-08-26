@@ -5,6 +5,7 @@ const CoinEntryContainer = styled.div`
   width: 100%;
   height: 292px;
   display: flex;
+  margin-bottom: 25px;
 `;
 
 const CoinImageContainer = styled.div`
@@ -27,8 +28,10 @@ interface CoinEntryProps {
 const CoinEntry = ({ coin }: CoinEntryProps) => {
   return (
     <CoinEntryContainer>
-      <CoinImageContainer>logo</CoinImageContainer>
-      <CoinInfoContainer>coin.name</CoinInfoContainer>
+      <CoinImageContainer>
+        <img src={coin.image} />
+      </CoinImageContainer>
+      <CoinInfoContainer>{coin.name}</CoinInfoContainer>
     </CoinEntryContainer>
   );
 };

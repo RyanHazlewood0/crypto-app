@@ -2,8 +2,9 @@ import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
-const ModalContainer = styled.form`
+const ModalContainer = styled.div`
   width: 886px;
   height: 393px;
   background: #13121a;
@@ -115,6 +116,7 @@ export interface PortfolioCoin {
   currentPrice: number;
   totalValue: number;
   priceChange24h: number;
+  image: string;
 }
 
 const AddAssetForm = ({
@@ -164,6 +166,10 @@ const AddAssetForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const thisCoin = coins.find((coin) => {
+      return coin.name === coinSelectValue;
+    });
+    const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
     const newCoinEntry: PortfolioCoin = {
       name: coinSelectValue,
@@ -173,8 +179,12 @@ const AddAssetForm = ({
       currentPrice: 7,
       totalValue: 15,
       priceChange24h: 12,
+      image: logo,
     };
     setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+    setCoinSelectValue("");
+    setPurchaseDateValue("");
+    setPurchasedAmountValue("");
   };
 
   const selectCoin = (e: React.MouseEvent<HTMLParagraphElement>) => {
@@ -185,7 +195,7 @@ const AddAssetForm = ({
 
   return (
     <>
-      <ModalContainer onSubmit={handleSubmit}>
+      <ModalContainer>
         <FormHeader>
           <HeaderText>Select Coins</HeaderText>
           <SvgContainer onClick={handleFormClose}>
@@ -194,7 +204,7 @@ const AddAssetForm = ({
         </FormHeader>
         <InnerContainer>
           <ImageContainer>image</ImageContainer>
-          <CoinForm>
+          <CoinForm onSubmit={handleSubmit}>
             <InputsContainer>
               <Input
                 type="text"
