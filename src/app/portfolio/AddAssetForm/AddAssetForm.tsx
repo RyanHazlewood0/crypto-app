@@ -2,7 +2,6 @@ import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
-import { CoinTypes } from "types";
 
 const ModalContainer = styled.div`
   width: 886px;
@@ -115,8 +114,11 @@ export interface PortfolioCoin {
   purchaseDatePrice: number;
   currentPrice: number;
   totalValue: number;
-  priceChange24h: number;
+  priceChangeSincePurchase: number;
   image: string;
+  mCapVsVol: any;
+  circVsTotalSupply: any;
+  priceChange24h: any;
 }
 
 const AddAssetForm = ({
@@ -174,16 +176,20 @@ const AddAssetForm = ({
       name: coinSelectValue,
       totalAmount: Number(purchasedAmountValue),
       purchaseDate: buyDate,
-      purchaseDatePrice: 5,
-      currentPrice: 7,
-      totalValue: 15,
-      priceChange24h: 12,
+      purchaseDatePrice: thisCoin.current_price,
+      currentPrice: thisCoin.current_price,
+      totalValue: thisCoin.current_price * Number(purchasedAmountValue),
+      priceChangeSincePurchase: 12,
       image: logo,
+      mCapVsVol: null,
+      circVsTotalSupply: null,
+      priceChange24h: 7,
     };
     setPortfolioCoins([...portfolioCoins, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
     setPurchasedAmountValue("");
+    handleFormClose();
   };
 
   const selectCoin = (e: React.MouseEvent<HTMLParagraphElement>) => {
