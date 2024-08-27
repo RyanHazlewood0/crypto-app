@@ -23,6 +23,7 @@ const ConverterBox = styled.div<StyleProp>`
   justify-content: center;
   align-items: center;
   background: ${(props) => (props.sell ? "#191932" : "#1E1932")};
+  position: relative;
 `;
 
 const Title = styled.h1`
@@ -51,7 +52,7 @@ const InnerContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 30%;
+  width: 100%;
   border: solid 1px gray;
   border-radius: 6px;
   background: #191932;
@@ -82,29 +83,12 @@ const ReverseConvertBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto 0 auto 0;
   cursor: pointer;
   position: absolute;
   left: 50%;
   transform: translate(-24px, -24px);
   top: 50%;
-`;
-
-const DropDown = styled.div`
-  margin-top: 5px;
-  width: 178.8px;
-  background: #191925;
-  padding: 10px;
-  border-radius: 6px;
-  background: ##191925;
-  position: absolute;
-  z-index.: 1;
-  margin-top: 40px;
-`;
-
-const DropDownContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  z-index: 1;
 `;
 
 const SellAmountInput = styled.input`
@@ -144,6 +128,42 @@ const CoinLogo = styled.img`
   height: 24px;
 `;
 
+const DropdownAndPopupContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+`;
+
+const CoinSearchPopup = styled.div`
+  width: 200px;
+  background: #191925;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  height: 90px;
+  position: absolute;
+  margin-left: -100px;
+  gap: 5px;
+  top: 100%;
+`;
+
+const CoinSearchPopupHeader = styled.h1`
+  font-size: 25px;
+`;
+
+const DropDown = styled.div`
+  width: 200px;
+  background: #191925;
+  padding: 10px;
+  border-radius: 6px;
+  background: ##191925;
+  position: absolute;
+  top: 100%;
+  transform: translateY(90px) translateX(-100px);
+`;
+
 type StyleProp = {
   sell?: boolean;
 };
@@ -157,9 +177,11 @@ export default function Converter() {
   const [dayCount, setDayCount] = useState("365");
   const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false);
-  const [sellQuantity, setSellQuantity] = useState<number | null>(null);
-  const [buyQuantity, setBuyQuantity] = useState<number | null>(null);
+  const [sellQuantity, setSellQuantity] = useState<number | string>("");
+  const [buyQuantity, setBuyQuantity] = useState<number | string>("");
   const [hasError, setHasError] = useState(false);
+  const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
+  const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
   const { coins, setCoins, fiatCurrency } = useCoin();
 
@@ -187,6 +209,16 @@ export default function Converter() {
       setBuyCoin(coins[1]);
     }
   }, [coins]);
+
+  useEffect(() => {
+    if (sellCoin && buyCoin) {
+      const sellCoinPrice = sellCoin.current_price;
+      const sellCoinValue = sellCoinPrice * Number(sellQuantity);
+      const buyCoinPrice = buyCoin.current_price;
+      const result = sellCoinValue / buyCoinPrice;
+      setBuyQuantity(parseFloat(result.toFixed(3)));
+    }
+  }, [sellCoin, buyCoin]);
 
   const date = new Date();
   const currentDate = date.toLocaleString();
@@ -225,58 +257,46 @@ export default function Converter() {
       coin.name.includes(sellSearch)
   );
 
-  const selectCoinSell = (coin: CoinTypes) => {
-    setSellCoin(coin);
-    setSellDropdownOpen(false);
-  };
-
-  const selectCoinBuy = (coin: CoinTypes) => {
-    setBuyCoin(coin);
-    setBuyDropdownOpen(false);
-  };
-
-  const clearBuyCoin = () => {
-    setBuyCoin(null);
-    setBuySearch("");
-  };
-
-  const clearSellCoin = () => {
-    setSellCoin(null);
-    setSellSearch("");
-  };
-
   const handleSellQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    if (value === "") {
+      setSellQuantity("");
+      setBuyQuantity("");
+      return;
+    }
     setSellQuantity(Number(value));
+    convertToSell(Number(value));
   };
 
   const handleBuyQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    if (value === "") {
+      setBuyQuantity("");
+      setSellQuantity("");
+      return;
+    }
     setBuyQuantity(Number(value));
+    convertToBuy(Number(value));
   };
 
-  const convertToSell = () => {
-    const sellCoinPrice = sellCoin.current_price;
-    const sellCoinValue = sellCoinPrice * sellQuantity;
-    const buyCoinPrice = buyCoin.current_price;
-    const result = sellCoinValue / buyCoinPrice;
-    setBuyQuantity(parseFloat(result.toFixed(3)));
+  const convertToSell = (number: number) => {
+    if (buyCoin && sellCoin) {
+      const sellCoinPrice = sellCoin.current_price;
+      const sellCoinValue = sellCoinPrice * number;
+      const buyCoinPrice = buyCoin.current_price;
+      const result = sellCoinValue / buyCoinPrice;
+      setBuyQuantity(parseFloat(result.toFixed(3)));
+    }
   };
 
-  const handleSellQuantityBlur = () => {
-    convertToSell();
-  };
-
-  const convertToBuy = () => {
-    const buyCoinPrice = buyCoin.current_price;
-    const buyCoinValue = buyCoinPrice * buyQuantity;
-    const sellCoinPrice = sellCoin.current_price;
-    const result = buyCoinValue / sellCoinPrice;
-    setSellQuantity(parseFloat(result.toFixed(3)));
-  };
-
-  const handleBuyQuantityBlur = () => {
-    convertToBuy();
+  const convertToBuy = (number: number) => {
+    if (buyCoin && sellCoin) {
+      const buyCoinPrice = buyCoin.current_price;
+      const buyCoinValue = buyCoinPrice * number;
+      const sellCoinPrice = sellCoin.current_price;
+      const result = buyCoinValue / sellCoinPrice;
+      setSellQuantity(parseFloat(result.toFixed(3)));
+    }
   };
 
   const reverseConvert = () => {
@@ -288,131 +308,181 @@ export default function Converter() {
     setSellQuantity(buyQuantity);
   };
 
+  const toggleBuyPopup = () => {
+    setSearchBuyPopupOpen(!searchBuyPopupOpen);
+    if (searchBuyPopupOpen === false) {
+      setBuySearch("");
+    }
+    if (buyDropdownOpen) {
+      setBuyDropdownOpen(false);
+    }
+  };
+
+  const toggleSellPopup = () => {
+    setSearchSellPopupOpen(!searchSellPopupOpen);
+    if (searchSellPopupOpen === false) {
+      setSellSearch("");
+    }
+    if (sellDropdownOpen) {
+      setSellDropdownOpen(false);
+    }
+  };
+
+  const handleSetSellCoin = (coin: CoinTypes) => {
+    setSellCoin(coin);
+    setSearchBuyPopupOpen(false);
+    setSearchSellPopupOpen(false);
+    setBuyDropdownOpen(false);
+    setSellDropdownOpen(false);
+    setSellSearch("");
+  };
+
+  const handleSetBuyCoin = (coin: CoinTypes) => {
+    setBuyCoin(coin);
+    setSearchSellPopupOpen(false);
+    setSearchBuyPopupOpen(false);
+    setBuyDropdownOpen(false);
+    setSellDropdownOpen(false);
+    setBuySearch("");
+  };
+
   if (hasError) {
-    return <p>error fetching coins data</p>;
+    return <p>Error fetching data...</p>;
   }
 
   return (
     <>
-      <CoinsAndConverterBtns />
-      <Title>Cryptocurrency Converter</Title>
-      <DateText>{currentDate}</DateText>
-      <ConverterContainer>
-        <ConverterBox sell>
-          <InnerContainer>
-            <BuySellText>You Sell</BuySellText>
-            <DropDownContainer>
-              <SearchAndValueContainer>
-                {sellCoin ? (
+      {sellCoin && (
+        <>
+          <CoinsAndConverterBtns />
+          <Title>Cryptocurrency Converter</Title>
+          <DateText>{currentDate}</DateText>
+          <ConverterContainer>
+            <ConverterBox sell>
+              <InnerContainer>
+                <BuySellText>You Sell</BuySellText>
+                <SearchAndValueContainer>
                   <CoinContainer>
                     <CoinLogo src={sellCoin.image} />
                     <CoinText>{sellCoin.name}</CoinText>
                     <CoinText>({sellCoin.symbol.toUpperCase()})</CoinText>
-                    <ArrowText onClick={clearSellCoin}>▼</ArrowText>
+                    <ArrowText onClick={toggleSellPopup}>▼</ArrowText>
                   </CoinContainer>
-                ) : (
-                  <SearchInput
-                    value={sellSearch}
-                    onChange={(e) => handleSellSearch(e)}
-                    placeholder="Search Coin..."
+                  <DropdownAndPopupContainer>
+                    {searchSellPopupOpen && (
+                      <CoinSearchPopup>
+                        <CoinSearchPopupHeader>
+                          Search Coin
+                        </CoinSearchPopupHeader>
+                        <SearchInput
+                          value={sellSearch}
+                          onChange={(e) => handleSellSearch(e)}
+                          placeholder="Search Coin..."
+                          autoFocus
+                        />
+                      </CoinSearchPopup>
+                    )}
+                    {sellDropdownOpen && (
+                      <DropDown>
+                        {filteredSellCoins.map((coin) => (
+                          <CoinOption
+                            key={coin.id}
+                            onClick={() => handleSetSellCoin(coin)}
+                          >
+                            {coin.name}
+                          </CoinOption>
+                        ))}
+                      </DropDown>
+                    )}
+                  </DropdownAndPopupContainer>
+                  <SellAmountInput
+                    placeholder="Add Quanitity..."
+                    value={sellQuantity}
+                    onChange={(e) => handleSellQuantity(e)}
+                    type="number"
                   />
+                </SearchAndValueContainer>
+                <HorizontalLine />
+                {sellCoin !== null ? (
+                  <CurrencyAndPriceText>
+                    1 {sellCoin.symbol.toUpperCase()} = $
+                    {sellCoin.current_price}
+                  </CurrencyAndPriceText>
+                ) : (
+                  <CurrencyAndPriceText>0</CurrencyAndPriceText>
                 )}
-
-                <SellAmountInput
-                  placeholder="Add Quanitity..."
-                  value={sellQuantity}
-                  onChange={(e) => handleSellQuantity(e)}
-                  onBlur={() => handleSellQuantityBlur()}
-                  type="number"
-                />
-              </SearchAndValueContainer>
-              {sellDropdownOpen && (
-                <DropDown>
-                  {filteredSellCoins.map((coin) => (
-                    <CoinOption
-                      key={coin.id}
-                      onClick={() => selectCoinSell(coin)}
-                    >
-                      {coin.name}
-                    </CoinOption>
-                  ))}
-                </DropDown>
-              )}
-            </DropDownContainer>
-            <HorizontalLine />
-            {sellCoin !== null ? (
-              <CurrencyAndPriceText>
-                1 {sellCoin.symbol.toUpperCase()} = ${sellCoin.current_price}
-              </CurrencyAndPriceText>
-            ) : (
-              <CurrencyAndPriceText>0</CurrencyAndPriceText>
-            )}
-          </InnerContainer>
-        </ConverterBox>
-        <ReverseConvertBtn onClick={() => reverseConvert()}>
-          <p>↑↓</p>
-        </ReverseConvertBtn>
-        <ConverterBox>
-          <InnerContainer>
-            <BuySellText>You Buy</BuySellText>
-            <DropDownContainer>
-              <SearchAndValueContainer>
-                {buyCoin ? (
+              </InnerContainer>
+            </ConverterBox>
+            <ReverseConvertBtn onClick={() => reverseConvert()}>
+              <p>↑↓</p>
+            </ReverseConvertBtn>
+            <ConverterBox>
+              <InnerContainer>
+                <BuySellText>You Buy</BuySellText>
+                <SearchAndValueContainer>
                   <CoinContainer>
                     <CoinLogo src={buyCoin.image} />
                     <CoinText>{buyCoin.name}</CoinText>
                     <CoinText>({buyCoin.symbol.toUpperCase()})</CoinText>
-                    <ArrowText onClick={clearBuyCoin}>▼</ArrowText>
+                    <ArrowText onClick={toggleBuyPopup}>▼</ArrowText>
                   </CoinContainer>
-                ) : (
-                  <SearchInput
-                    value={buySearch}
-                    onChange={(e) => handleBuySearch(e)}
-                    placeholder="Search Coin..."
+                  <DropdownAndPopupContainer>
+                    {searchBuyPopupOpen && (
+                      <CoinSearchPopup>
+                        <CoinSearchPopupHeader>
+                          Search Coin
+                        </CoinSearchPopupHeader>
+                        <SearchInput
+                          value={buySearch}
+                          onChange={(e) => handleBuySearch(e)}
+                          placeholder="Search Coin..."
+                          autoFocus
+                        />
+                      </CoinSearchPopup>
+                    )}
+                    {buyDropdownOpen && (
+                      <DropDown>
+                        {filteredBuyCoins.map((coin) => (
+                          <CoinOption
+                            key={coin.id}
+                            onClick={() => handleSetBuyCoin(coin)}
+                          >
+                            {coin.name}
+                          </CoinOption>
+                        ))}
+                      </DropDown>
+                    )}
+                  </DropdownAndPopupContainer>
+                  <BuyAmountInput
+                    placeholder="Add Quanitity..."
+                    value={buyQuantity}
+                    onChange={(e) => handleBuyQuantity(e)}
+                    type="number"
                   />
+                </SearchAndValueContainer>
+                <HorizontalLine />
+                {buyCoin !== null ? (
+                  <CurrencyAndPriceText>
+                    1 {buyCoin.symbol.toUpperCase()} = ${buyCoin.current_price}
+                  </CurrencyAndPriceText>
+                ) : (
+                  <CurrencyAndPriceText>0</CurrencyAndPriceText>
                 )}
-                <BuyAmountInput
-                  placeholder="Add Quanitity..."
-                  value={buyQuantity}
-                  onChange={(e) => handleBuyQuantity(e)}
-                  onBlur={() => handleBuyQuantityBlur()}
-                  type="number"
-                />
-              </SearchAndValueContainer>
-              {buyDropdownOpen && (
-                <DropDown>
-                  {filteredBuyCoins.map((coin) => (
-                    <CoinOption
-                      key={coin.id}
-                      onClick={() => selectCoinBuy(coin)}
-                    >
-                      {coin.name}
-                    </CoinOption>
-                  ))}
-                </DropDown>
-              )}
-            </DropDownContainer>
-            <HorizontalLine />
-            {buyCoin !== null ? (
-              <CurrencyAndPriceText>
-                1 {buyCoin.symbol.toUpperCase()} = ${buyCoin.current_price}
-              </CurrencyAndPriceText>
-            ) : (
-              <CurrencyAndPriceText>0</CurrencyAndPriceText>
-            )}
-          </InnerContainer>
-        </ConverterBox>
-      </ConverterContainer>
-      <ConverterChart
-        dayCount={dayCount}
-        buyCoin={buyCoin}
-        sellCoin={sellCoin}
-      />
-      <ConverterTimeSelect
-        timeFrameSelected={timeFrameSelected}
-        setTimeFrameSelected={setTimeFrameSelected}
-        setDayCount={setDayCount}
-      />
+              </InnerContainer>
+            </ConverterBox>
+          </ConverterContainer>
+          <ConverterChart
+            dayCount={dayCount}
+            buyCoin={buyCoin}
+            sellCoin={sellCoin}
+          />
+          <ConverterTimeSelect
+            timeFrameSelected={timeFrameSelected}
+            setTimeFrameSelected={setTimeFrameSelected}
+            setDayCount={setDayCount}
+          />
+        </>
+      )}
     </>
   );
 }
