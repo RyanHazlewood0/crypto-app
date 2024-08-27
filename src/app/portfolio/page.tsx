@@ -56,7 +56,12 @@ export default function Portfolio() {
       </HeaderContainer>
       {portfolioCoins &&
         portfolioCoins.map((coin: PortfolioCoin) => (
-          <CoinEntry coin={coin} key={coin.name} />
+          <CoinEntry
+            coin={coin}
+            key={coin.name}
+            portfolioCoins={portfolioCoins}
+            setPortfolioCoins={setPortfolioCoins}
+          />
         ))}
       {formOpen && (
         <AddAssetForm

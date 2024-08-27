@@ -166,9 +166,8 @@ const AddAssetForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const thisCoin = coins.find((coin) => {
-      return coin.name === coinSelectValue;
-    });
+    const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
+
     const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
     const newCoinEntry: PortfolioCoin = {
