@@ -119,6 +119,8 @@ export interface PortfolioCoin {
   mCapVsVol: any;
   circVsTotalSupply: any;
   priceChange24h: any;
+  symbol: string;
+  id: string;
 }
 
 const AddAssetForm = ({
@@ -184,6 +186,8 @@ const AddAssetForm = ({
       mCapVsVol: null,
       circVsTotalSupply: null,
       priceChange24h: 7,
+      symbol: thisCoin.symbol.toUpperCase(),
+      id: thisCoin.id,
     };
     setPortfolioCoins([...portfolioCoins, newCoinEntry]);
     setCoinSelectValue("");

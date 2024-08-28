@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useCoin } from "@/app/contexts/CoinProvider";
 import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
@@ -86,11 +88,53 @@ interface CoinEntryProps {
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
 }
 
+interface FetchedDataType {
+  prices: [number, number][];
+}
+interface CoinPriceDataTypes {
+  price: number;
+  date: string;
+}
+
 const CoinEntry = ({
   coin,
   setPortfolioCoins,
   portfolioCoins,
 }: CoinEntryProps) => {
+  const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
+  const [error, setError] = useState(false);
+  const { fiatCurrency } = useCoin();
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    setError(false);
+    if (coin) {
+      const fetchPriceData = async () => {
+        try {
+          const response: Response = await fetch(
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=3000&interval=daily&x_cg_pro_api_key=${apiKey}`
+          );
+          const fetchedData: FetchedDataType = await response.json();
+
+          setPriceData(
+            fetchedData.prices.map((el) => {
+              const thisDate = new Date(el[0]);
+              const thisPrice = el[1];
+              return {
+                price: thisPrice,
+                date: thisDate.toLocaleDateString(),
+              };
+            })
+          );
+        } catch {
+          setError(true);
+        }
+      };
+      fetchPriceData();
+    }
+  }, []);
+
   const deleteEntry = (thisCoin: PortfolioCoin) => {
     const filteredPortfolio = portfolioCoins.filter(
       (coin) => coin.name !== thisCoin.name
@@ -98,11 +142,30 @@ const CoinEntry = ({
     setPortfolioCoins(filteredPortfolio);
   };
 
+  const getChangeFromPurchaseDate = () => {
+    const purchasePrice = coin.purchaseDatePrice;
+    const currentPrice = coin.currentPrice;
+    const biggerNum = Math.max(purchasePrice, currentPrice);
+    const smallerNum = Math.min(purchasePrice, currentPrice);
+    const difference = biggerNum - smallerNum;
+    const average = (biggerNum + smallerNum) / 2;
+    const diffByAvg = difference / average;
+    const percentDiff = diffByAvg * 100;
+
+    return percentDiff;
+  };
+
+  if (error) {
+    return <p>error fetching data</p>;
+  }
+
   return (
     <CoinEntryContainer>
       <CoinImageContainer>
         <Symbol src={coin.image} />
-        <NameText>{coin.name}</NameText>
+        <NameText>
+          {coin.name} ({coin.symbol})
+        </NameText>
       </CoinImageContainer>
       <CoinInfoContainer>
         <Row>
@@ -113,7 +176,7 @@ const CoinEntry = ({
           <InnerRow>
             <ValueBox>
               <SmallText>Current Price</SmallText>
-              <NumberText>${coin.currentPrice}</NumberText>
+              <NumberText>${coin.currentPrice.toFixed(3)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change 24h</SmallText>
@@ -144,11 +207,11 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Amount Value</SmallText>
-              <NumberText>${coin.totalValue}</NumberText>
+              <NumberText>${coin.totalValue.toFixed(3)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>
-              <NumberText>{coin.priceChangeSincePurchase}</NumberText>
+              <NumberText>{getChangeFromPurchaseDate()}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Purchase Date</SmallText>
