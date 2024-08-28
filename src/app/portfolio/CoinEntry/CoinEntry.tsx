@@ -4,6 +4,7 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
+import { abbreviateNumber } from "@/app/components/Table/helper-functions";
 
 const CoinEntryContainer = styled.div`
   width: 100%;
@@ -207,7 +208,7 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Amount Value</SmallText>
-              <NumberText>${coin.totalValue.toFixed(3)}</NumberText>
+              <NumberText>${coin.totalValue}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>

@@ -118,6 +118,7 @@ const Table = () => {
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinTypes[] = await response.json();
+
         setCoins(fetchedData);
       } catch {
         setHasError(true);
@@ -268,61 +269,74 @@ const Table = () => {
             </NameAndImageContainer>
             <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
             <StyledTd>
-              <ArrowAndPercentContainer>
-                {Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                1 ? (
-                  <RedArrow />
-                ) : (
-                  <GreenArrow />
-                )}
-                <PriceChangeDiv
-                  green={
-                    Math.sign(coin.price_change_percentage_1h_in_currency) === 1
-                  }
-                >
-                  {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                </PriceChangeDiv>
-              </ArrowAndPercentContainer>
+              {coin.price_change_percentage_1h_in_currency && (
+                <ArrowAndPercentContainer>
+                  {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                  1 ? (
+                    <RedArrow />
+                  ) : (
+                    <GreenArrow />
+                  )}
+                  <PriceChangeDiv
+                    green={
+                      Math.sign(coin.price_change_percentage_1h_in_currency) ===
+                      1
+                    }
+                  >
+                    {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                  </PriceChangeDiv>
+                </ArrowAndPercentContainer>
+              )}
             </StyledTd>
             <StyledTd>
-              <ArrowAndPercentContainer>
-                {Math.sign(coin.price_change_percentage_24h_in_currency) !==
-                1 ? (
-                  <RedArrow />
-                ) : (
-                  <GreenArrow />
-                )}
-                <PriceChangeDiv
-                  green={
-                    Math.sign(coin.price_change_percentage_24h_in_currency) ===
-                    1
-                  }
-                >
-                  {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
-                </PriceChangeDiv>
-              </ArrowAndPercentContainer>
+              {coin.price_change_percentage_24h_in_currency && (
+                <ArrowAndPercentContainer>
+                  {Math.sign(coin.price_change_percentage_24h_in_currency) !==
+                  1 ? (
+                    <RedArrow />
+                  ) : (
+                    <GreenArrow />
+                  )}
+                  <PriceChangeDiv
+                    green={
+                      Math.sign(
+                        coin.price_change_percentage_24h_in_currency
+                      ) === 1
+                    }
+                  >
+                    {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                  </PriceChangeDiv>
+                </ArrowAndPercentContainer>
+              )}
             </StyledTd>
             <StyledTd>
-              <ArrowAndPercentContainer>
-                {Math.sign(coin.price_change_percentage_7d_in_currency) !==
-                1 ? (
-                  <RedArrow />
-                ) : (
-                  <GreenArrow />
-                )}
-                <PriceChangeDiv
-                  green={
-                    Math.sign(coin.price_change_percentage_7d_in_currency) === 1
-                  }
-                >
-                  {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
-                </PriceChangeDiv>
-              </ArrowAndPercentContainer>
+              {coin.price_change_percentage_7d_in_currency && (
+                <ArrowAndPercentContainer>
+                  {Math.sign(coin.price_change_percentage_7d_in_currency) !==
+                  1 ? (
+                    <RedArrow />
+                  ) : (
+                    <GreenArrow />
+                  )}
+                  <PriceChangeDiv
+                    green={
+                      Math.sign(coin.price_change_percentage_7d_in_currency) ===
+                      1
+                    }
+                  >
+                    {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
+                  </PriceChangeDiv>
+                </ArrowAndPercentContainer>
+              )}
             </StyledTd>
             <StyledTd>
               <NumberSeparator>
-                <div>{abbreviateNumber(coin.total_volume)}</div>
-                <div>{abbreviateNumber(coin.market_cap)}</div>
+                {coin.total_volume && coin.market_cap && (
+                  <>
+                    <div>{abbreviateNumber(coin.total_volume)}</div>
+                    <div>{abbreviateNumber(coin.market_cap)}</div>
+                  </>
+                )}
               </NumberSeparator>
               <LevelIndicatorOuter>
                 <LevelIndicatorInner
