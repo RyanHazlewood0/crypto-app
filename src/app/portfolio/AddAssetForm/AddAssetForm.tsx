@@ -96,7 +96,7 @@ const CoinOption = styled.p`
 `;
 
 interface AddAssetFormProps {
-  handleFormClose: (e: React.MouseEvent<HTMLInputElement>) => void;
+  handleFormClose: () => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
   setPurchasedAmountValue: Dispatch<SetStateAction<null | string>>;
@@ -178,7 +178,7 @@ const AddAssetForm = ({
       name: coinSelectValue,
       totalAmount: Number(purchasedAmountValue),
       purchaseDate: buyDate,
-      purchaseDatePrice: thisCoin.current_price,
+      purchaseDatePrice: 0,
       currentPrice: thisCoin.current_price,
       totalValue: thisCoin.current_price * Number(purchasedAmountValue),
       priceChangeSincePurchase: 12,

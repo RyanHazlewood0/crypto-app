@@ -4,7 +4,6 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
-import { abbreviateNumber } from "@/app/components/Table/helper-functions";
 
 const CoinEntryContainer = styled.div`
   width: 100%;
@@ -78,10 +77,19 @@ const NumberText = styled.p`
   font-size: 16px;
 `;
 
+const PriceChangeText = styled.p<TextColor>`
+  font-size: 16px;
+  color: ${(props) => (props.green ? "green" : "red")};
+`;
+
 const ValueBox = styled.div`
   flex-direction: column;
   display: flex;
 `;
+
+type TextColor = {
+  green: boolean;
+};
 
 interface CoinEntryProps {
   coin: PortfolioCoin;
@@ -92,7 +100,7 @@ interface CoinEntryProps {
 interface FetchedDataType {
   prices: [number, number][];
 }
-interface CoinPriceDataTypes {
+export interface CoinPriceDataTypes {
   price: number;
   date: string;
 }
@@ -102,9 +110,10 @@ const CoinEntry = ({
   setPortfolioCoins,
   portfolioCoins,
 }: CoinEntryProps) => {
-  const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
   const [error, setError] = useState(false);
   const { fiatCurrency } = useCoin();
+  const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
+  const [purchasePrice, setPurchasePrice] = useState<number | null>(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -117,7 +126,6 @@ const CoinEntry = ({
             `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=3000&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData: FetchedDataType = await response.json();
-
           setPriceData(
             fetchedData.prices.map((el) => {
               const thisDate = new Date(el[0]);
@@ -136,6 +144,15 @@ const CoinEntry = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (priceData) {
+      const thisPriceData = priceData.find(
+        (el) => el.date === coin.purchaseDate.toLocaleDateString()
+      );
+      setPurchasePrice(thisPriceData.price);
+    }
+  }, [priceData]);
+
   const deleteEntry = (thisCoin: PortfolioCoin) => {
     const filteredPortfolio = portfolioCoins.filter(
       (coin) => coin.name !== thisCoin.name
@@ -143,8 +160,11 @@ const CoinEntry = ({
     setPortfolioCoins(filteredPortfolio);
   };
 
+  if (error) {
+    return <p>error fetching data</p>;
+  }
+
   const getChangeFromPurchaseDate = () => {
-    const purchasePrice = coin.purchaseDatePrice;
     const currentPrice = coin.currentPrice;
     const biggerNum = Math.max(purchasePrice, currentPrice);
     const smallerNum = Math.min(purchasePrice, currentPrice);
@@ -152,13 +172,8 @@ const CoinEntry = ({
     const average = (biggerNum + smallerNum) / 2;
     const diffByAvg = difference / average;
     const percentDiff = diffByAvg * 100;
-
     return percentDiff;
   };
-
-  if (error) {
-    return <p>error fetching data</p>;
-  }
 
   return (
     <CoinEntryContainer>
@@ -181,7 +196,11 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change 24h</SmallText>
-              <NumberText>{coin.priceChange24h}</NumberText>
+              <PriceChangeText green={coin.currentPrice > purchasePrice}>
+                {" "}
+                {coin.currentPrice < purchasePrice && "- "}
+                {coin.priceChange24h}
+              </PriceChangeText>
             </ValueBox>
             <ValueBox>
               <SmallText>Market Cap vs Volume</SmallText>
@@ -212,7 +231,12 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>
-              <NumberText>{getChangeFromPurchaseDate()}</NumberText>
+              {priceData && (
+                <PriceChangeText green={coin.currentPrice > purchasePrice}>
+                  {coin.currentPrice < purchasePrice && "- "}
+                  {getChangeFromPurchaseDate()}
+                </PriceChangeText>
+              )}
             </ValueBox>
             <ValueBox>
               <SmallText>Purchase Date</SmallText>

@@ -54,6 +54,7 @@ export default function Portfolio() {
         <HeaderText>Portfolio</HeaderText>
         <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
       </HeaderContainer>
+
       {portfolioCoins &&
         portfolioCoins.map((coin: PortfolioCoin) => (
           <CoinEntry
