@@ -4,6 +4,13 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
+import { abbreviateNumber } from "@/app/components/Table/helper-functions";
+import RedArrow from "../svg/RedArrow";
+import GreenArrow from "../svg/GreenArrow";
+import {
+  findSupplyLevel,
+  findVolumeLevel,
+} from "@/app/components/Table/helper-functions";
 
 const CoinEntryContainer = styled.div`
   width: 100%;
@@ -80,11 +87,27 @@ const NumberText = styled.p`
 const PriceChangeText = styled.p<TextColor>`
   font-size: 16px;
   color: ${(props) => (props.green ? "green" : "red")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ValueBox = styled.div`
   flex-direction: column;
   display: flex;
+`;
+
+const LevelIndicatorOuter = styled.div`
+  display: flex;
+  height: 5px;
+  background-color: #40916c;
+  border-radius: 5px;
+`;
+
+const LevelIndicatorInner = styled.div`
+  height: 5px;
+  background-color: #30e0a1;
+  border-radius: 5px;
 `;
 
 type TextColor = {
@@ -192,23 +215,36 @@ const CoinEntry = ({
           <InnerRow>
             <ValueBox>
               <SmallText>Current Price</SmallText>
-              <NumberText>${coin.currentPrice.toFixed(3)}</NumberText>
+              <NumberText>${abbreviateNumber(coin.currentPrice)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change 24h</SmallText>
-              <PriceChangeText green={coin.currentPrice > purchasePrice}>
-                {" "}
-                {coin.currentPrice < purchasePrice && "- "}
-                {coin.priceChange24h}
+              <PriceChangeText green={coin.priceChange24h > 0}>
+                {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
+                {abbreviateNumber(coin.priceChange24h)}%
               </PriceChangeText>
             </ValueBox>
             <ValueBox>
-              <SmallText>Market Cap vs Volume</SmallText>
-              <NumberText>{coin.mCapVsVol}</NumberText>
+              <SmallText>24h Vol Vs M-Cap</SmallText>
+              <NumberText>
+                <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
+              </NumberText>
+              <LevelIndicatorOuter>
+                <LevelIndicatorInner
+                  style={{ width: `${findVolumeLevel(coin)}%` }}
+                />
+              </LevelIndicatorOuter>
             </ValueBox>
             <ValueBox>
-              <SmallText>Cicrulating vs Total Supply</SmallText>
-              <NumberText>{coin.circVsTotalSupply}</NumberText>
+              <SmallText>Circ vs Total Supply</SmallText>
+              <NumberText>
+                <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
+              </NumberText>
+              <LevelIndicatorOuter>
+                <LevelIndicatorInner
+                  style={{ width: `${findSupplyLevel(coin)}%` }}
+                />
+              </LevelIndicatorOuter>
             </ValueBox>
           </InnerRow>
         </Row>
@@ -231,12 +267,15 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>
-              {priceData && (
-                <PriceChangeText green={coin.currentPrice > purchasePrice}>
-                  {coin.currentPrice < purchasePrice && "- "}
-                  {getChangeFromPurchaseDate()}
-                </PriceChangeText>
-              )}
+              <PriceChangeText green={coin.currentPrice > purchasePrice}>
+                {coin.currentPrice > purchasePrice ? (
+                  <GreenArrow />
+                ) : (
+                  <RedArrow />
+                )}
+                {coin.currentPrice < purchasePrice && "- "}
+                {abbreviateNumber(getChangeFromPurchaseDate())}%
+              </PriceChangeText>
             </ValueBox>
             <ValueBox>
               <SmallText>Purchase Date</SmallText>

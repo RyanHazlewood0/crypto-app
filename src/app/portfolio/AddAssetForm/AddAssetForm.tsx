@@ -116,9 +116,11 @@ export interface PortfolioCoin {
   totalValue: number;
   priceChangeSincePurchase: number;
   image: string;
-  mCapVsVol: any;
-  circVsTotalSupply: any;
-  priceChange24h: any;
+  circulating_supply: number;
+  total_supply: number;
+  total_volume: number;
+  market_cap: number;
+  priceChange24h: number;
   symbol: string;
   id: string;
 }
@@ -183,9 +185,11 @@ const AddAssetForm = ({
       totalValue: thisCoin.current_price * Number(purchasedAmountValue),
       priceChangeSincePurchase: 12,
       image: logo,
-      mCapVsVol: null,
-      circVsTotalSupply: null,
-      priceChange24h: 7,
+      circulating_supply: thisCoin.circulating_supply,
+      total_volume: thisCoin.total_volume,
+      market_cap: thisCoin.market_cap,
+      total_supply: thisCoin.total_supply,
+      priceChange24h: thisCoin.price_change_percentage_24h_in_currency,
       symbol: thisCoin.symbol.toUpperCase(),
       id: thisCoin.id,
     };
