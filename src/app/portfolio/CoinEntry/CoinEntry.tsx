@@ -86,7 +86,7 @@ const NumberText = styled.p`
 
 const PriceChangeText = styled.p<TextColor>`
   font-size: 16px;
-  color: ${(props) => (props.green ? "green" : "red")};
+  color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,12 +102,19 @@ const LevelIndicatorOuter = styled.div`
   height: 5px;
   background-color: #40916c;
   border-radius: 5px;
+  width: 55px;
 `;
 
 const LevelIndicatorInner = styled.div`
   height: 5px;
-  background-color: #30e0a1;
+  background-color: #01f1e3;
   border-radius: 5px;
+`;
+
+const NumberAndLevelBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 type TextColor = {
@@ -226,25 +233,29 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>24h Vol Vs M-Cap</SmallText>
-              <NumberText>
-                <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
-              </NumberText>
-              <LevelIndicatorOuter>
-                <LevelIndicatorInner
-                  style={{ width: `${findVolumeLevel(coin)}%` }}
-                />
-              </LevelIndicatorOuter>
+              <NumberAndLevelBox>
+                <NumberText>
+                  <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
+                </NumberText>
+                <LevelIndicatorOuter>
+                  <LevelIndicatorInner
+                    style={{ width: `${findVolumeLevel(coin)}%` }}
+                  />
+                </LevelIndicatorOuter>
+              </NumberAndLevelBox>
             </ValueBox>
             <ValueBox>
               <SmallText>Circ vs Total Supply</SmallText>
-              <NumberText>
-                <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
-              </NumberText>
-              <LevelIndicatorOuter>
-                <LevelIndicatorInner
-                  style={{ width: `${findSupplyLevel(coin)}%` }}
-                />
-              </LevelIndicatorOuter>
+              <NumberAndLevelBox>
+                <NumberText>
+                  <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
+                </NumberText>
+                <LevelIndicatorOuter>
+                  <LevelIndicatorInner
+                    style={{ width: `${findSupplyLevel(coin)}%` }}
+                  />
+                </LevelIndicatorOuter>
+              </NumberAndLevelBox>
             </ValueBox>
           </InnerRow>
         </Row>
@@ -263,7 +274,7 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Amount Value</SmallText>
-              <NumberText>${coin.totalValue}</NumberText>
+              <NumberText>${abbreviateNumber(coin.totalValue)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>

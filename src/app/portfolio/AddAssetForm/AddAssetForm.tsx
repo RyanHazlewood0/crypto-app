@@ -95,12 +95,19 @@ const CoinOption = styled.p`
   }
 `;
 
+const DateTimeInput = styled.input`
+  height: 44px;
+  background: #191925;
+  width: 35%;
+`;
+
 interface AddAssetFormProps {
   handleFormClose: () => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
   setPurchasedAmountValue: Dispatch<SetStateAction<null | string>>;
   setPurchaseDateValue: Dispatch<SetStateAction<null | string>>;
+
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
   coinSelectValue: string;
@@ -111,7 +118,6 @@ export interface PortfolioCoin {
   name: string;
   totalAmount: number;
   purchaseDate: Date;
-  purchaseDatePrice: number;
   currentPrice: number;
   totalValue: number;
   priceChangeSincePurchase: number;
@@ -180,7 +186,6 @@ const AddAssetForm = ({
       name: coinSelectValue,
       totalAmount: Number(purchasedAmountValue),
       purchaseDate: buyDate,
-      purchaseDatePrice: 0,
       currentPrice: thisCoin.current_price,
       totalValue: thisCoin.current_price * Number(purchasedAmountValue),
       priceChangeSincePurchase: 12,
@@ -196,6 +201,7 @@ const AddAssetForm = ({
     setPortfolioCoins([...portfolioCoins, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
+
     setPurchasedAmountValue("");
     handleFormClose();
   };
@@ -234,13 +240,12 @@ const AddAssetForm = ({
                   ))}
                 </DropDown>
               )}
-
               <Input
                 type="text"
                 value={purchasedAmountValue}
                 onChange={(e) => handlePurchaseAmountInputChange(e)}
               />
-              <Input
+              <DateTimeInput
                 type="date"
                 value={purchaseDateValue}
                 onChange={(e) => handlePurchaseDateInputChange(e)}
