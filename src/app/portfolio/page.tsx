@@ -2,6 +2,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
+import CoinEntry from "./CoinEntry/CoinEntry";
+import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -22,30 +24,18 @@ const AddBtn = styled.button`
   background: #6161d6;
 `;
 
-const CoinEntryContainer = styled.div`
-  width: 100%;
-  height: 292px;
-  display: flex;
-`;
-
-const CoinImageContainer = styled.div`
-  width: 258px;
-  height: 100%;
-  background: #1e1932;
-`;
-
-const CoinInfoContainer = styled.div`
-  width: 1038px;
-  height: 100%;
-  background: #2f184b;
-  padding: 20px;
-`;
-
 export default function Portfolio() {
+  const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
+    []
+  );
   const [formOpen, setFormOpen] = useState(false);
-  const [CoinSelectValue, setCoinSelectValue] = useState("");
-  const [purchasedAmountValue, setPurchasedAmountValue] = useState("");
-  const [purchaseDateValue, setPurchaseDateValue] = useState("");
+  const [coinSelectValue, setCoinSelectValue] = useState("");
+  const [purchasedAmountValue, setPurchasedAmountValue] = useState<
+    null | string
+  >(null);
+  const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
+    null
+  );
 
   const handleFormOpen = () => {
     setFormOpen(true);
@@ -54,29 +44,8 @@ export default function Portfolio() {
   const handleFormClose = () => {
     setFormOpen(false);
     setCoinSelectValue("");
-    setPurchaseDateValue("");
-    setPurchasedAmountValue("");
-  };
-
-  const handleCoinSelectInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    setCoinSelectValue(value);
-  };
-
-  const handlePurchaseAmountInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    setPurchasedAmountValue(value);
-  };
-
-  const handlePurchaseDateInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    setPurchaseDateValue(value);
+    setPurchaseDateValue(null);
+    setPurchasedAmountValue(null);
   };
 
   return (
@@ -85,19 +54,27 @@ export default function Portfolio() {
         <HeaderText>Portfolio</HeaderText>
         <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
       </HeaderContainer>
-      <CoinEntryContainer>
-        <CoinImageContainer>logo</CoinImageContainer>
-        <CoinInfoContainer>info</CoinInfoContainer>
-      </CoinEntryContainer>
+
+      {portfolioCoins &&
+        portfolioCoins.map((coin: PortfolioCoin) => (
+          <CoinEntry
+            coin={coin}
+            key={coin.name}
+            portfolioCoins={portfolioCoins}
+            setPortfolioCoins={setPortfolioCoins}
+          />
+        ))}
       {formOpen && (
         <AddAssetForm
           handleFormClose={handleFormClose}
-          CoinSelectValue={CoinSelectValue}
           purchasedAmountValue={purchasedAmountValue}
           purchaseDateValue={purchaseDateValue}
-          handleCoinSelectInputChange={handleCoinSelectInputChange}
-          handlePurchaseAmountInputChange={handlePurchaseAmountInputChange}
-          handlePurchaseDateInputChange={handlePurchaseDateInputChange}
+          setPurchasedAmountValue={setPurchasedAmountValue}
+          setPurchaseDateValue={setPurchaseDateValue}
+          setPortfolioCoins={setPortfolioCoins}
+          portfolioCoins={portfolioCoins}
+          coinSelectValue={coinSelectValue}
+          setCoinSelectValue={setCoinSelectValue}
         />
       )}
     </>

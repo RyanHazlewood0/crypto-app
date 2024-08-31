@@ -226,7 +226,7 @@ export default function Converter() {
   const handleBuySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setBuySearch(value);
-    if (e.target.value.length !== 0) {
+    if (value.length !== 0) {
       setBuyDropdownOpen(true);
     } else {
       setBuyDropdownOpen(false);

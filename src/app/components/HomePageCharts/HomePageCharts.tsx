@@ -54,6 +54,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
           `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: FetchedDataTypes = await response.json();
+
         setCoinPriceData(
           fetchedData.prices.map((price) => {
             const fromTimestamp = (timestamp: number): Date =>
