@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
+import { useCoin } from "../contexts/CoinProvider";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -34,6 +35,26 @@ export default function Portfolio() {
   const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
     null
   );
+  const [hasError, setHasError] = useState(false);
+
+  const { fiatCurrency, setCoins } = useCoin();
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    setHasError(false);
+    const fetchData = async () => {
+      try {
+        const fetchedData = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const coinData = await fetchedData.json();
+        setCoins(coinData);
+      } catch {
+        setHasError(true);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleFormOpen = () => {
     setFormOpen(true);
@@ -59,6 +80,10 @@ export default function Portfolio() {
   const sortedPortfolioCoins: [] | PortfolioCoin[] = [...portfolioCoins].sort(
     (a, b) => b.totalValue - a.totalValue
   );
+
+  if (hasError) {
+    return <p>Error loading coin data</p>;
+  }
 
   return (
     <>

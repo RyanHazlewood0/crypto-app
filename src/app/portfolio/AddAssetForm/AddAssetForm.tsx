@@ -172,7 +172,6 @@ const AddAssetForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
-
     const newCoinsList = portfolioCoins.filter((coin) => {
       return coin.name !== thisCoin.name;
     });

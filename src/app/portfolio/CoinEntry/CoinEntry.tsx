@@ -167,7 +167,7 @@ const CoinEntry = ({
               const thisPrice = el[1];
               return {
                 price: thisPrice,
-                date: thisDate.toLocaleDateString(),
+                date: thisDate.toISOString(),
               };
             })
           );
@@ -182,7 +182,7 @@ const CoinEntry = ({
   useEffect(() => {
     if (priceData) {
       const thisPriceData = priceData.find(
-        (el) => el.date === coin.purchaseDate.toLocaleDateString()
+        (el) => el.date === coin.purchaseDate.toISOString()
       );
       setPurchasePrice(thisPriceData.price);
     }
@@ -295,7 +295,9 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Purchase Date</SmallText>
-              <NumberText>{coin.purchaseDate.toLocaleDateString()}</NumberText>
+              <NumberText>
+                {coin.purchaseDate.toISOString().split("T")[0]}
+              </NumberText>
             </ValueBox>
           </InnerRow>
         </Row>
