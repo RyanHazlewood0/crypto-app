@@ -56,6 +56,10 @@ export default function Portfolio() {
     setPurchasedAmountValue(coin.totalAmount.toString());
   };
 
+  const sortedPortfolioCoins: [] | PortfolioCoin[] = [...portfolioCoins].sort(
+    (a, b) => b.totalValue - a.totalValue
+  );
+
   return (
     <>
       <HeaderContainer>
@@ -63,8 +67,8 @@ export default function Portfolio() {
         <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
       </HeaderContainer>
 
-      {portfolioCoins &&
-        portfolioCoins.map((coin: PortfolioCoin) => (
+      {sortedPortfolioCoins &&
+        sortedPortfolioCoins.map((coin: PortfolioCoin) => (
           <CoinEntry
             coin={coin}
             key={coin.name}
