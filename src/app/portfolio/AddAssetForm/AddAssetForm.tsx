@@ -207,6 +207,8 @@ const AddAssetForm = ({
     setNameDropdownOpen(false);
   };
 
+  const today = new Date();
+
   return (
     <>
       <ModalContainer>
@@ -247,6 +249,7 @@ const AddAssetForm = ({
                 value={purchaseDateValue}
                 onChange={(e) => handlePurchaseDateInputChange(e)}
                 required
+                max={today.toISOString().split("T")[0]}
               />
             </InputsContainer>
             <BtnContainer>
