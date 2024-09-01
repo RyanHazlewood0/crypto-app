@@ -95,23 +95,17 @@ const CoinOption = styled.p`
   }
 `;
 
-const DateTimeInput = styled.input`
-  height: 44px;
-  background: #191925;
-  width: 35%;
-`;
-
 interface AddAssetFormProps {
   handleFormClose: () => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
-  setPurchasedAmountValue: Dispatch<SetStateAction<null | string>>;
+  setPurchasedAmountValue: Dispatch<SetStateAction<string>>;
   setPurchaseDateValue: Dispatch<SetStateAction<null | string>>;
 
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
   coinSelectValue: string;
-  setCoinSelectValue: Dispatch<SetStateAction<null | string>>;
+  setCoinSelectValue: Dispatch<SetStateAction<string>>;
 }
 
 export interface PortfolioCoin {
@@ -120,7 +114,6 @@ export interface PortfolioCoin {
   purchaseDate: Date;
   currentPrice: number;
   totalValue: number;
-  priceChangeSincePurchase: number;
   image: string;
   circulating_supply: number;
   total_supply: number;
@@ -180,6 +173,10 @@ const AddAssetForm = ({
     e.preventDefault();
     const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
 
+    const newCoinsList = portfolioCoins.filter((coin) => {
+      return coin.name !== thisCoin.name;
+    });
+
     const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
     const newCoinEntry: PortfolioCoin = {
@@ -188,7 +185,6 @@ const AddAssetForm = ({
       purchaseDate: buyDate,
       currentPrice: thisCoin.current_price,
       totalValue: thisCoin.current_price * Number(purchasedAmountValue),
-      priceChangeSincePurchase: 12,
       image: logo,
       circulating_supply: thisCoin.circulating_supply,
       total_volume: thisCoin.total_volume,
@@ -198,10 +194,9 @@ const AddAssetForm = ({
       symbol: thisCoin.symbol.toUpperCase(),
       id: thisCoin.id,
     };
-    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+    setPortfolioCoins([...newCoinsList, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
-
     setPurchasedAmountValue("");
     handleFormClose();
   };
@@ -245,7 +240,7 @@ const AddAssetForm = ({
                 value={purchasedAmountValue}
                 onChange={(e) => handlePurchaseAmountInputChange(e)}
               />
-              <DateTimeInput
+              <Input
                 type="date"
                 value={purchaseDateValue}
                 onChange={(e) => handlePurchaseDateInputChange(e)}

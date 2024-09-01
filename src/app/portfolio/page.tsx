@@ -30,9 +30,7 @@ export default function Portfolio() {
   );
   const [formOpen, setFormOpen] = useState(false);
   const [coinSelectValue, setCoinSelectValue] = useState("");
-  const [purchasedAmountValue, setPurchasedAmountValue] = useState<
-    null | string
-  >(null);
+  const [purchasedAmountValue, setPurchasedAmountValue] = useState<string>("");
   const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
     null
   );
@@ -46,6 +44,16 @@ export default function Portfolio() {
     setCoinSelectValue("");
     setPurchaseDateValue(null);
     setPurchasedAmountValue(null);
+  };
+
+  const editCoinEntry = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    coin: PortfolioCoin
+  ) => {
+    setFormOpen(true);
+    setCoinSelectValue(coin.name);
+    setPurchaseDateValue(coin.purchaseDate.toISOString().split("T")[0]);
+    setPurchasedAmountValue(coin.totalAmount.toString());
   };
 
   return (
@@ -62,6 +70,7 @@ export default function Portfolio() {
             key={coin.name}
             portfolioCoins={portfolioCoins}
             setPortfolioCoins={setPortfolioCoins}
+            editCoinEntry={editCoinEntry}
           />
         ))}
       {formOpen && (

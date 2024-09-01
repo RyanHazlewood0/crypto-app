@@ -125,6 +125,10 @@ interface CoinEntryProps {
   coin: PortfolioCoin;
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
+  editCoinEntry: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    coin: PortfolioCoin
+  ) => void;
 }
 
 interface FetchedDataType {
@@ -139,6 +143,7 @@ const CoinEntry = ({
   coin,
   setPortfolioCoins,
   portfolioCoins,
+  editCoinEntry,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
   const { fiatCurrency } = useCoin();
@@ -181,7 +186,7 @@ const CoinEntry = ({
       );
       setPurchasePrice(thisPriceData.price);
     }
-  }, [priceData]);
+  }, [priceData, portfolioCoins]);
 
   const deleteEntry = (thisCoin: PortfolioCoin) => {
     const filteredPortfolio = portfolioCoins.filter(
@@ -263,7 +268,7 @@ const CoinEntry = ({
         <Row>
           <InnerRow>
             <TitleText>Your Coin</TitleText>
-            <Btn>
+            <Btn onClick={(e) => editCoinEntry(e, coin)}>
               <EditIcon />
             </Btn>
           </InnerRow>
