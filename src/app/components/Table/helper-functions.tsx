@@ -3,9 +3,12 @@ import { CoinTypes } from "types";
 
 export const abbreviateNumber = (num: number): number | string => {
   const prefixes = ["", "k", "M", "B", "T"];
-  if (num < 1) {
-    return num.toFixed(2);
+  if (num) {
+    if (num < 1) {
+      return num.toFixed(2);
+    }
   }
+
   const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
   const scaled = num / Math.pow(1000, magnitude);
   const formatted = scaled >= 100 ? scaled.toFixed(2) : scaled.toFixed(2);

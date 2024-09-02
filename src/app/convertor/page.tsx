@@ -164,6 +164,12 @@ const DropDown = styled.div`
   transform: translateY(90px) translateX(-100px);
 `;
 
+const LoadingMessage = styled.p`
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+`;
+
 type StyleProp = {
   sell?: boolean;
 };
@@ -180,6 +186,7 @@ export default function Converter() {
   const [sellQuantity, setSellQuantity] = useState<number | string>("");
   const [buyQuantity, setBuyQuantity] = useState<number | string>("");
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
   const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
@@ -188,16 +195,36 @@ export default function Converter() {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
+    setIsLoading(true);
     setHasError(false);
     const fetchCoinData = async () => {
       try {
-        const response: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        const response1: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData: CoinTypes[] = await response.json();
-        setCoins(fetchedData);
+        const fetchedPage1: CoinTypes[] = await response1.json();
+        const response2: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedPage2: CoinTypes[] = await response2.json();
+        const response3: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedPage3: CoinTypes[] = await response3.json();
+        const response4: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedPage4: CoinTypes[] = await response4.json();
+        setCoins([
+          ...fetchedPage1,
+          ...fetchedPage2,
+          ...fetchedPage3,
+          ...fetchedPage4,
+        ]);
+        setIsLoading(false);
       } catch {
         setHasError(true);
+        setIsLoading(false);
       }
     };
     fetchCoinData();
@@ -345,6 +372,10 @@ export default function Converter() {
     setSellDropdownOpen(false);
     setBuySearch("");
   };
+
+  if (isLoading) {
+    return <LoadingMessage>Fetching coin data...</LoadingMessage>;
+  }
 
   if (hasError) {
     return <p>Error fetching data...</p>;

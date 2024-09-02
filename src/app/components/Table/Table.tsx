@@ -114,12 +114,11 @@ const Table = () => {
     setHasError(false);
     const getCoinData = async () => {
       try {
-        const response: Response = await fetch(
+        const response1: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData: CoinTypes[] = await response.json();
-
-        setCoins(fetchedData);
+        const fetchedData1: CoinTypes[] = await response1.json();
+        setCoins(fetchedData1);
       } catch {
         setHasError(true);
       }

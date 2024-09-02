@@ -63,12 +63,14 @@ const ConverterChart = ({
   const [buyCoinPriceData, setBuyCoinPriceData] =
     useState<FetchedDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [dataSet, setDataSet] = useState(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
     setHasError(false);
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response: Response = await fetch(
@@ -79,10 +81,13 @@ const ConverterChart = ({
           `https://pro-api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData2: FetchedDataTypes = await response2.json();
+
         setSellCoinPriceData(fetchedData);
         setBuyCoinPriceData(fetchedData2);
+        setIsLoading(false);
       } catch {
         setHasError(true);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -91,12 +96,16 @@ const ConverterChart = ({
   useEffect(() => {
     const setData = () => {
       if (sellCoinPriceData && buyCoinPriceData) {
-        const convertedPrices = sellCoinPriceData.prices.map((price, index) => {
-          const sellPrice = price[1];
-          const buyPrice = buyCoinPriceData.prices[index][1];
-          return sellPrice / buyPrice;
-        });
-        setDataSet(convertedPrices);
+        if (buyCoinPriceData.prices.length > Number(dayCount)) {
+          const convertedPrices = sellCoinPriceData.prices.map(
+            (price, index) => {
+              const sellPrice = price[1];
+              const buyPrice = buyCoinPriceData.prices[index][1];
+              return sellPrice / buyPrice;
+            }
+          );
+          setDataSet(convertedPrices);
+        }
       }
     };
     setData();
@@ -160,13 +169,31 @@ const ConverterChart = ({
     tension: 0.5,
   } as any;
 
+  if (isLoading) {
+    return <p>Loading chart</p>;
+  }
+
+  if (sellCoinPriceData && buyCoinPriceData && !isLoading) {
+    if (
+      buyCoinPriceData.prices.length < Number(dayCount) ||
+      sellCoinPriceData.prices.length < Number(dayCount)
+    ) {
+      return (
+        <p>
+          Coin doesn{"'"}t have {dayCount} days long price history, select a
+          shorter chart history setting for this coin.
+        </p>
+      );
+    }
+  }
+
+  if (hasError) {
+    <p>error fetching coin data</p>;
+  }
+
   return (
     <>
       <ChartContainer>
-        {hasError && <ErrorText>Error fetching data for chart</ErrorText>}
-        {(!sellCoin || !buyCoin) && (
-          <ChartMessage>Select two coins to show chart</ChartMessage>
-        )}
         {buyCoin && sellCoin ? (
           <Line
             options={options}
