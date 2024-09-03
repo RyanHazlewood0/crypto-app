@@ -175,6 +175,7 @@ type StyleProp = {
 };
 
 export default function Converter() {
+  const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [buyCoin, setBuyCoin] = useState<CoinTypes | null>(null);
   const [sellCoin, setSellCoin] = useState<CoinTypes | null>(null);
   const [buySearch, setBuySearch] = useState("");
@@ -190,7 +191,7 @@ export default function Converter() {
   const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
   const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
-  const { coins, setCoins, fiatCurrency } = useCoin();
+  const { fiatCurrency } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -215,7 +216,7 @@ export default function Converter() {
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedPage4: CoinTypes[] = await response4.json();
-        setCoins([
+        setCoinsData([
           ...fetchedPage1,
           ...fetchedPage2,
           ...fetchedPage3,
@@ -231,11 +232,11 @@ export default function Converter() {
   }, [fiatCurrency]);
 
   useEffect(() => {
-    if (coins.length > 0) {
-      setSellCoin(coins[0]);
-      setBuyCoin(coins[1]);
+    if (coinsData.length > 0) {
+      setSellCoin(coinsData[0]);
+      setBuyCoin(coinsData[1]);
     }
-  }, [coins]);
+  }, [coinsData]);
 
   useEffect(() => {
     if (sellCoin && buyCoin) {
@@ -270,14 +271,14 @@ export default function Converter() {
     }
   };
 
-  const filteredBuyCoins = coins.filter(
+  const filteredBuyCoins = coinsData.filter(
     (coin) =>
       coin.id.includes(buySearch) ||
       coin.symbol.includes(buySearch) ||
       coin.name.includes(buySearch)
   );
 
-  const filteredSellCoins = coins.filter(
+  const filteredSellCoins = coinsData.filter(
     (coin) =>
       coin.id.includes(sellSearch) ||
       coin.symbol.includes(sellSearch) ||

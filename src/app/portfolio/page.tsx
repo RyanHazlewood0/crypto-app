@@ -5,6 +5,7 @@ import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 import { useCoin } from "../contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -26,6 +27,7 @@ const AddBtn = styled.button`
 `;
 
 export default function Portfolio() {
+  const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
   );
@@ -37,24 +39,36 @@ export default function Portfolio() {
   );
   const [hasError, setHasError] = useState(false);
 
-  const { fiatCurrency, setCoins } = useCoin();
+  const { fiatCurrency } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
     setHasError(false);
     const fetchData = async () => {
       try {
-        const fetchedData = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        const fetchedData1 = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        const coinData = await fetchedData.json();
-        setCoins(coinData);
+        const coinData1 = await fetchedData1.json();
+        const fetchedData2 = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const coinData2 = await fetchedData2.json();
+        const fetchedData3 = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const coinData3 = await fetchedData3.json();
+        const fetchedData4 = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const coinData4 = await fetchedData4.json();
+        setCoinsData([...coinData1, ...coinData2, ...coinData3, ...coinData4]);
       } catch {
         setHasError(true);
       }
     };
     fetchData();
-  }, []);
+  }, [fiatCurrency]);
 
   const handleFormOpen = () => {
     setFormOpen(true);
@@ -113,6 +127,7 @@ export default function Portfolio() {
           portfolioCoins={portfolioCoins}
           coinSelectValue={coinSelectValue}
           setCoinSelectValue={setCoinSelectValue}
+          coinsData={coinsData}
         />
       )}
     </>

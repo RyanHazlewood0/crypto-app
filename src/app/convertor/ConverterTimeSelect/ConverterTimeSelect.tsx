@@ -56,7 +56,7 @@ const ConverterTimeSelect = ({
       setDayCount("30");
       setTimeFrameSelected("1M");
     } else if (e.currentTarget.textContent === "1Q") {
-      setDayCount("89");
+      setDayCount("90");
       setTimeFrameSelected("1Q");
     } else if (e.currentTarget.textContent === "1Y") {
       setDayCount("365");

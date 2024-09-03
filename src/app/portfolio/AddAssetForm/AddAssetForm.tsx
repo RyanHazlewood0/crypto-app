@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 const ModalContainer = styled.div`
   width: 886px;
@@ -101,11 +101,11 @@ interface AddAssetFormProps {
   purchaseDateValue: string;
   setPurchasedAmountValue: Dispatch<SetStateAction<string>>;
   setPurchaseDateValue: Dispatch<SetStateAction<null | string>>;
-
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
   coinSelectValue: string;
   setCoinSelectValue: Dispatch<SetStateAction<string>>;
+  coinsData: CoinTypes[];
 }
 
 export interface PortfolioCoin {
@@ -134,9 +134,9 @@ const AddAssetForm = ({
   setPurchaseDateValue,
   portfolioCoins,
   setPortfolioCoins,
+  coinsData,
 }: AddAssetFormProps) => {
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
-  const { coins } = useCoin();
 
   const handleCoinSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -148,7 +148,7 @@ const AddAssetForm = ({
     }
   };
 
-  const filteredCoins = coins.filter(
+  const filteredCoins = coinsData.filter(
     (coin) =>
       coin.id.includes(coinSelectValue) ||
       coin.symbol.includes(coinSelectValue) ||
@@ -171,7 +171,7 @@ const AddAssetForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
+    const thisCoin = coinsData.find((coin) => coin.name === coinSelectValue);
     const newCoinsList = portfolioCoins.filter((coin) => {
       return coin.name !== thisCoin.name;
     });

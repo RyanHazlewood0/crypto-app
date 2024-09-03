@@ -42,10 +42,6 @@ const ChartContainer = styled.div`
 const ErrorText = styled.p`
   margin-bottom: 15px;
 `;
-const ChartMessage = styled.p`
-  font-weight: bold;
-  font-size: 18px;
-`;
 
 interface ConverterChartProps {
   dayCount: string;
@@ -123,7 +119,7 @@ const ConverterChart = ({
           buyCoin && sellCoin
             ? "1" + " " + sellCoin.name + " " + "to" + " " + `${buyCoin.name}`
             : "",
-        data: dataSet ? dataSet.map((price) => price.toFixed(2)) : [],
+        data: dataSet ? dataSet.map((price: number) => price.toFixed(2)) : [],
         borderColor: "#2d00f7",
         pointRadius: 0,
         backgroundColor: (context) => {
@@ -179,16 +175,16 @@ const ConverterChart = ({
       sellCoinPriceData.prices.length < Number(dayCount)
     ) {
       return (
-        <p>
+        <ErrorText>
           Coin doesn{"'"}t have {dayCount} days long price history, select a
-          shorter chart history setting for this coin.
-        </p>
+          shorter price history setting for this coin.
+        </ErrorText>
       );
     }
   }
 
   if (hasError) {
-    <p>error fetching coin data</p>;
+    <ErrorText>error fetching coin data</ErrorText>;
   }
 
   return (
