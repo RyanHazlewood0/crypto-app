@@ -227,6 +227,7 @@ const AddAssetForm = ({
                 onChange={(e) => handleCoinSearch(e)}
                 autoFocus
                 required
+                placeholder="Coin Name"
               />
               {nameDropdownOpen && (
                 <DropDown>
@@ -242,13 +243,16 @@ const AddAssetForm = ({
                 value={purchasedAmountValue}
                 onChange={(e) => handlePurchaseAmountInputChange(e)}
                 required
+                placeholder="Coin Amount"
               />
               <Input
-                type="date"
+                type="text"
+                onFocus={(e) => (e.target.type = "date")}
                 value={purchaseDateValue}
                 onChange={(e) => handlePurchaseDateInputChange(e)}
                 required
                 max={today.toISOString().split("T")[0]}
+                placeholder="Purchase Date"
               />
             </InputsContainer>
             <BtnContainer>
