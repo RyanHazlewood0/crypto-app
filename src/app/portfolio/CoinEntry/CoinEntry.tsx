@@ -188,17 +188,6 @@ const CoinEntry = ({
     }
   }, [priceData, portfolioCoins]);
 
-  const deleteEntry = (thisCoin: PortfolioCoin) => {
-    const filteredPortfolio = portfolioCoins.filter(
-      (coin) => coin.name !== thisCoin.name
-    );
-    setPortfolioCoins(filteredPortfolio);
-  };
-
-  if (error) {
-    return <p>error fetching data</p>;
-  }
-
   const getChangeFromPurchaseDate = () => {
     const currentPrice = coin.currentPrice;
     const biggerNum = Math.max(purchasePrice, currentPrice);
@@ -209,6 +198,17 @@ const CoinEntry = ({
     const percentDiff = diffByAvg * 100;
     return percentDiff;
   };
+
+  const deleteEntry = (thisCoin: PortfolioCoin) => {
+    const filteredPortfolio = portfolioCoins.filter(
+      (coin) => coin.name !== thisCoin.name
+    );
+    setPortfolioCoins(filteredPortfolio);
+  };
+
+  if (error) {
+    return <p>error fetching data</p>;
+  }
 
   return (
     <CoinEntryContainer>

@@ -26,6 +26,12 @@ const AddBtn = styled.button`
   background: #6161d6;
 `;
 
+const LoadingMessage = styled.p`
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+`;
+
 export default function Portfolio() {
   const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
@@ -38,12 +44,14 @@ export default function Portfolio() {
     null
   );
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { fiatCurrency } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
     setHasError(false);
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const fetchedData1 = await fetch(
@@ -63,8 +71,10 @@ export default function Portfolio() {
         );
         const coinData4 = await fetchedData4.json();
         setCoinsData([...coinData1, ...coinData2, ...coinData3, ...coinData4]);
+        setIsLoading(false);
       } catch {
         setHasError(true);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -95,8 +105,12 @@ export default function Portfolio() {
     (a, b) => b.totalValue - a.totalValue
   );
 
+  if (isLoading) {
+    return <LoadingMessage>Fetching coin data...</LoadingMessage>;
+  }
+
   if (hasError) {
-    return <p>Error loading coin data</p>;
+    return <p>Error fetching data...</p>;
   }
 
   return (

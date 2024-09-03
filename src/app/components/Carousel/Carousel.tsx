@@ -1,4 +1,5 @@
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
@@ -83,6 +84,11 @@ const CoinPricetext = styled.p`
   color: #d1d1d1;
 `;
 
+const MessageText = styled.p`
+  font-size: 35px;
+  font-weight: bold;
+`;
+
 type StylePropGreen = {
   green: boolean;
 };
@@ -97,15 +103,21 @@ interface CarouselProps {
 }
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
-  const { coins, fiatCurrency } = useCoin();
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { coins } = useCoin();
 
   const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);
   };
 
   useEffect(() => {
+    setHasError(false);
+    setIsLoading(true);
     if (coins.length > 0) {
       setSelectedCoin(coins[0]);
+      setHasError(false);
+      setIsLoading(false);
     }
   }, [coins]);
 
@@ -117,6 +129,14 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
     slidesToScroll: 6,
     variableWidth: true,
   };
+
+  if (isLoading) {
+    return <MessageText>Loading carousel coin data...</MessageText>;
+  }
+
+  if (hasError) {
+    return <MessageText>Error oading carousel coin data...</MessageText>;
+  }
 
   return (
     selectedCoin !== null && (
