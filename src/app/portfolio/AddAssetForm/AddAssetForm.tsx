@@ -150,9 +150,9 @@ const AddAssetForm = ({
 
   const filteredCoins = coinsData.filter(
     (coin) =>
-      coin.id.includes(coinSelectValue) ||
       coin.symbol.includes(coinSelectValue) ||
-      coin.name.includes(coinSelectValue)
+      coin.name.includes(coinSelectValue) ||
+      coin.id.includes(coinSelectValue)
   );
 
   const handlePurchaseAmountInputChange = (
@@ -224,7 +224,7 @@ const AddAssetForm = ({
               <Input
                 type="text"
                 value={coinSelectValue}
-                onChange={(e) => handleCoinSearch(e)}
+                onChange={handleCoinSearch}
                 autoFocus
                 required
                 placeholder="Coin Name"
@@ -241,7 +241,7 @@ const AddAssetForm = ({
               <Input
                 type="number"
                 value={purchasedAmountValue}
-                onChange={(e) => handlePurchaseAmountInputChange(e)}
+                onChange={handlePurchaseAmountInputChange}
                 required
                 placeholder="Coin Amount"
               />
@@ -249,7 +249,7 @@ const AddAssetForm = ({
                 type="text"
                 onFocus={(e) => (e.target.type = "date")}
                 value={purchaseDateValue}
-                onChange={(e) => handlePurchaseDateInputChange(e)}
+                onChange={handlePurchaseDateInputChange}
                 required
                 max={today.toISOString().split("T")[0]}
                 placeholder="Purchase Date"
