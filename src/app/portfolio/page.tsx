@@ -79,7 +79,6 @@ export default function Portfolio() {
           await api(links[i]);
         }
         setIsLoading(false);
-        setIsLoading(false);
       } catch {
         setHasError(true);
         setIsLoading(false);
@@ -88,6 +87,40 @@ export default function Portfolio() {
     };
     fetchData();
   }, [fiatCurrency]);
+
+  useEffect(() => {
+    localStorage.setItem("portCoins", JSON.stringify(portfolioCoins));
+  }, [portfolioCoins]);
+
+  // useEffect(() => {
+  //   setHasError(false);
+  //   setIsLoading(true);
+  //   const api = async (url: string) => {
+  //     const data = await fetch(url);
+  //     const json = await data.json();
+  //     setCoinsData((prevState) => [...prevState, ...json]);
+  //   };
+
+  //   const links = [
+  //     `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
+  //     `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
+  //     `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
+  //     `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
+  //   ];
+
+  //   const fetchData = async () => {
+  //     try {
+  //       for (let i = 0; i < links.length; i++) {
+  //         await api(links[i]);
+  //       }
+  //       setIsLoading(false);
+  //     } catch {
+  //       setHasError(true);
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [fiatCurrency]);
 
   useEffect(() => {
     localStorage.setItem("portCoins", JSON.stringify(portfolioCoins));
