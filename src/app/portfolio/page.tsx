@@ -88,10 +88,6 @@ export default function Portfolio() {
     fetchData();
   }, [fiatCurrency]);
 
-  useEffect(() => {
-    localStorage.setItem("portCoins", JSON.stringify(portfolioCoins));
-  }, [portfolioCoins]);
-
   // useEffect(() => {
   //   setHasError(false);
   //   setIsLoading(true);
