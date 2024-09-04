@@ -184,7 +184,9 @@ const CoinEntry = ({
       const thisPriceData = priceData.find(
         (el) => el.date === coin.purchaseDate.toISOString()
       );
-      setPurchasePrice(thisPriceData.price);
+      if (thisPriceData) {
+        setPurchasePrice(thisPriceData.price);
+      }
     }
   }, [priceData, portfolioCoins]);
 

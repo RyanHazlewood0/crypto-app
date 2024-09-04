@@ -246,13 +246,11 @@ const AddAssetForm = ({
                 placeholder="Coin Amount"
               />
               <Input
-                type="text"
-                onFocus={(e) => (e.target.type = "date")}
+                type="date"
                 value={purchaseDateValue}
                 onChange={handlePurchaseDateInputChange}
                 required
                 max={today.toISOString().split("T")[0]}
-                placeholder="Purchase Date"
               />
             </InputsContainer>
             <BtnContainer>
