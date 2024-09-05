@@ -41,8 +41,8 @@ const CurrencyOptionContainer = styled.div`
 `;
 
 const CurrencySelect = () => {
-  const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const { fiatCurrency, setFiatCurrency } = useCoin();
+  const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
 
   const handleToggleDropdown = () => {

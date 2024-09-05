@@ -125,6 +125,10 @@ interface CoinEntryProps {
   coin: PortfolioCoin;
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
+  editCoinEntry: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    coin: PortfolioCoin
+  ) => void;
 }
 
 interface FetchedDataType {
@@ -139,6 +143,7 @@ const CoinEntry = ({
   coin,
   setPortfolioCoins,
   portfolioCoins,
+  editCoinEntry,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
   const { fiatCurrency } = useCoin();
@@ -153,7 +158,7 @@ const CoinEntry = ({
       const fetchPriceData = async () => {
         try {
           const response: Response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=3000&interval=daily&x_cg_pro_api_key=${apiKey}`
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData: FetchedDataType = await response.json();
           setPriceData(
@@ -162,7 +167,7 @@ const CoinEntry = ({
               const thisPrice = el[1];
               return {
                 price: thisPrice,
-                date: thisDate.toLocaleDateString(),
+                date: thisDate.toISOString(),
               };
             })
           );
@@ -172,27 +177,18 @@ const CoinEntry = ({
       };
       fetchPriceData();
     }
-  }, []);
+  }, [fiatCurrency]);
 
   useEffect(() => {
     if (priceData) {
       const thisPriceData = priceData.find(
-        (el) => el.date === coin.purchaseDate.toLocaleDateString()
+        (el) => el.date === coin.purchaseDate.toISOString()
       );
-      setPurchasePrice(thisPriceData.price);
+      if (thisPriceData) {
+        setPurchasePrice(thisPriceData.price);
+      }
     }
-  }, [priceData]);
-
-  const deleteEntry = (thisCoin: PortfolioCoin) => {
-    const filteredPortfolio = portfolioCoins.filter(
-      (coin) => coin.name !== thisCoin.name
-    );
-    setPortfolioCoins(filteredPortfolio);
-  };
-
-  if (error) {
-    return <p>error fetching data</p>;
-  }
+  }, [priceData, portfolioCoins]);
 
   const getChangeFromPurchaseDate = () => {
     const currentPrice = coin.currentPrice;
@@ -204,6 +200,17 @@ const CoinEntry = ({
     const percentDiff = diffByAvg * 100;
     return percentDiff;
   };
+
+  const deleteEntry = (thisCoin: PortfolioCoin) => {
+    const filteredPortfolio = portfolioCoins.filter(
+      (coin) => coin.name !== thisCoin.name
+    );
+    setPortfolioCoins(filteredPortfolio);
+  };
+
+  if (error) {
+    return <p>error fetching data</p>;
+  }
 
   return (
     <CoinEntryContainer>
@@ -263,7 +270,7 @@ const CoinEntry = ({
         <Row>
           <InnerRow>
             <TitleText>Your Coin</TitleText>
-            <Btn>
+            <Btn onClick={(e) => editCoinEntry(e, coin)}>
               <EditIcon />
             </Btn>
           </InnerRow>
@@ -290,7 +297,9 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Purchase Date</SmallText>
-              <NumberText>{coin.purchaseDate.toLocaleDateString()}</NumberText>
+              <NumberText>
+                {coin.purchaseDate.toISOString().split("T")[0]}
+              </NumberText>
             </ValueBox>
           </InnerRow>
         </Row>

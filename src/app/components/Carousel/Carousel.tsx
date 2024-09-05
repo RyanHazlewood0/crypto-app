@@ -1,4 +1,5 @@
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
@@ -83,6 +84,11 @@ const CoinPricetext = styled.p`
   color: #d1d1d1;
 `;
 
+const MessageText = styled.p`
+  font-size: 35px;
+  font-weight: bold;
+`;
+
 type StylePropGreen = {
   green: boolean;
 };
@@ -97,17 +103,32 @@ interface CarouselProps {
 }
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
-  const { coins, fiatCurrency } = useCoin();
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [carouselCoins, setCarouselCoins] = useState([]);
+  const { fiatCurrency } = useCoin();
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);
   };
 
   useEffect(() => {
-    if (coins.length > 0) {
-      setSelectedCoin(coins[0]);
+    const fetchData = async () => {
+      const response = await fetch(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const data = await response.json();
+      setCarouselCoins(data);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (carouselCoins.length > 0) {
+      setSelectedCoin(carouselCoins[0]);
     }
-  }, [coins]);
+  }, [carouselCoins]);
 
   const settings = {
     dots: true,
@@ -118,12 +139,20 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
     variableWidth: true,
   };
 
+  if (isLoading) {
+    return <MessageText>Loading carousel coin data...</MessageText>;
+  }
+
+  if (hasError) {
+    return <MessageText>Error oading carousel coin data...</MessageText>;
+  }
+
   return (
     selectedCoin !== null && (
       <CarouselContainer>
         <HeaderText>Select the currency to view statistics</HeaderText>
         <StyledSlider {...settings}>
-          {coins.map((coin) => (
+          {carouselCoins.map((coin) => (
             <CarouselBox
               style={{ width: 210 }}
               key={coin.id}

@@ -12,6 +12,11 @@ const ChartsContainer = styled.div`
   margin: 40px 0 50px 0;
 `;
 
+const MessageText = styled.p`
+  font-size: 35px;
+  font-weight: bold;
+`;
+
 interface HomePageChartsProps {
   selectedCoin: CoinTypes;
   dayCount: String;
@@ -34,6 +39,7 @@ interface coinVolumeDataTypes {
 }
 
 const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState<
     CoinPriceDataTypes[] | null
@@ -47,14 +53,14 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
-    setHasError(false);
     const getCoinData = async () => {
+      setHasError(false);
+      setIsLoading(true);
       try {
         const response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: FetchedDataTypes = await response.json();
-
         setCoinPriceData(
           fetchedData.prices.map((price) => {
             const fromTimestamp = (timestamp: number): Date =>
@@ -75,15 +81,27 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
             };
           })
         );
+        setIsLoading(false);
       } catch {
-        setHasError(true);
+        if (selectedCoin && dayCount) {
+          setHasError(true);
+          setIsLoading(false);
+        }
       }
     };
     getCoinData();
   }, [selectedCoin, dayCount]);
+
+  if (isLoading) {
+    return <MessageText>Loading Charts...</MessageText>;
+  }
+
+  if (hasError) {
+    return <MessageText>Error loading chart data...</MessageText>;
+  }
+
   return (
     <ChartsContainer>
-      {hasError && <p>Error loading chart data...</p>}
       {coinPriceData && (
         <BtcPriceChart
           coinPriceData={coinPriceData}

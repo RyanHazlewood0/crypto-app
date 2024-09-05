@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { CoinTypes } from "types";
 
 const ModalContainer = styled.div`
   width: 886px;
@@ -95,23 +95,17 @@ const CoinOption = styled.p`
   }
 `;
 
-const DateTimeInput = styled.input`
-  height: 44px;
-  background: #191925;
-  width: 35%;
-`;
-
 interface AddAssetFormProps {
   handleFormClose: () => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
-  setPurchasedAmountValue: Dispatch<SetStateAction<null | string>>;
+  setPurchasedAmountValue: Dispatch<SetStateAction<string>>;
   setPurchaseDateValue: Dispatch<SetStateAction<null | string>>;
-
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
   coinSelectValue: string;
-  setCoinSelectValue: Dispatch<SetStateAction<null | string>>;
+  setCoinSelectValue: Dispatch<SetStateAction<string>>;
+  coinsData: CoinTypes[];
 }
 
 export interface PortfolioCoin {
@@ -120,7 +114,6 @@ export interface PortfolioCoin {
   purchaseDate: Date;
   currentPrice: number;
   totalValue: number;
-  priceChangeSincePurchase: number;
   image: string;
   circulating_supply: number;
   total_supply: number;
@@ -141,9 +134,9 @@ const AddAssetForm = ({
   setPurchaseDateValue,
   portfolioCoins,
   setPortfolioCoins,
+  coinsData,
 }: AddAssetFormProps) => {
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
-  const { coins } = useCoin();
 
   const handleCoinSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -155,11 +148,11 @@ const AddAssetForm = ({
     }
   };
 
-  const filteredCoins = coins.filter(
+  const filteredCoins = coinsData.filter(
     (coin) =>
-      coin.id.includes(coinSelectValue) ||
       coin.symbol.includes(coinSelectValue) ||
-      coin.name.includes(coinSelectValue)
+      coin.name.includes(coinSelectValue) ||
+      coin.id.includes(coinSelectValue)
   );
 
   const handlePurchaseAmountInputChange = (
@@ -178,7 +171,10 @@ const AddAssetForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
+    const thisCoin = coinsData.find((coin) => coin.name === coinSelectValue);
+    const newCoinsList = portfolioCoins.filter((coin) => {
+      return coin.name !== thisCoin.name;
+    });
 
     const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
@@ -188,7 +184,6 @@ const AddAssetForm = ({
       purchaseDate: buyDate,
       currentPrice: thisCoin.current_price,
       totalValue: thisCoin.current_price * Number(purchasedAmountValue),
-      priceChangeSincePurchase: 12,
       image: logo,
       circulating_supply: thisCoin.circulating_supply,
       total_volume: thisCoin.total_volume,
@@ -198,10 +193,9 @@ const AddAssetForm = ({
       symbol: thisCoin.symbol.toUpperCase(),
       id: thisCoin.id,
     };
-    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+    setPortfolioCoins([...newCoinsList, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
-
     setPurchasedAmountValue("");
     handleFormClose();
   };
@@ -211,6 +205,8 @@ const AddAssetForm = ({
     setCoinSelectValue(value);
     setNameDropdownOpen(false);
   };
+
+  const today = new Date();
 
   return (
     <>
@@ -228,8 +224,10 @@ const AddAssetForm = ({
               <Input
                 type="text"
                 value={coinSelectValue}
-                onChange={(e) => handleCoinSearch(e)}
+                onChange={handleCoinSearch}
                 autoFocus
+                required
+                placeholder="Coin Name"
               />
               {nameDropdownOpen && (
                 <DropDown>
@@ -241,14 +239,18 @@ const AddAssetForm = ({
                 </DropDown>
               )}
               <Input
-                type="text"
+                type="number"
                 value={purchasedAmountValue}
-                onChange={(e) => handlePurchaseAmountInputChange(e)}
+                onChange={handlePurchaseAmountInputChange}
+                required
+                placeholder="Coin Amount"
               />
-              <DateTimeInput
+              <Input
                 type="date"
                 value={purchaseDateValue}
-                onChange={(e) => handlePurchaseDateInputChange(e)}
+                onChange={handlePurchaseDateInputChange}
+                required
+                max={today.toISOString().split("T")[0]}
               />
             </InputsContainer>
             <BtnContainer>

@@ -8,6 +8,7 @@ import SearchIcon from "./svg/SearchIcon";
 import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { useState } from "react";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -76,20 +77,39 @@ type StyleProp = {
 
 const NavBar = () => {
   const { setSelectedBtn } = useCoin();
+  const [selectedNavLink, setSelectedNavLink] = useState("Home");
+
+  const handleSelectNavLink = (
+    e: React.MouseEvent<HTMLDivElement>,
+    LinkText: string
+  ) => {
+    setSelectedNavLink(LinkText);
+  };
+
   return (
     <NavBarContainer>
       <LeftDiv>
         <Logo />
         <Link href="/" onClick={() => setSelectedBtn("Coins")}>
-          <HomeWrapper>
-            <Home />
-            <HomeText>Home</HomeText>
+          <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
+            <Home selectedNavLink={selectedNavLink} />
+            {selectedNavLink === "Home" ? (
+              <HomeText>Home</HomeText>
+            ) : (
+              <HomeText gray>Home</HomeText>
+            )}
           </HomeWrapper>
         </Link>
         <Link href="/portfolio">
-          <PortfolioWrapper>
-            <Portfolio />
-            <HomeText gray>Portfolio</HomeText>
+          <PortfolioWrapper
+            onClick={(e) => handleSelectNavLink(e, "Portfolio")}
+          >
+            <Portfolio selectedNavLink={selectedNavLink} />
+            {selectedNavLink === "Portfolio" ? (
+              <HomeText>Portfolio</HomeText>
+            ) : (
+              <HomeText gray>Portfolio</HomeText>
+            )}
           </PortfolioWrapper>
         </Link>
       </LeftDiv>

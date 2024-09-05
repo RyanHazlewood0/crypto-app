@@ -176,23 +176,23 @@ interface CoinProps {
 
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
-  const [coinData, setCoinData] = useState<CoinDataTypes | null>(null);
+  const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { coins, fiatCurrency } = useCoin();
+
+  const { fiatCurrency } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
     const fetchData = async () => {
-      const thisCoin = coins.find((coin) => coin.id === params.coinId);
       setHasError(false);
       setIsLoading(true);
       try {
         const response: Response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${thisCoin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
+          `https://api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinDataTypes = await response.json();
-        setCoinData(fetchedData);
+        setThisCoinData(fetchedData);
         setIsLoading(false);
       } catch {
         setIsLoading(false);
@@ -217,33 +217,35 @@ export default function Coin({ params }: CoinProps) {
   }
 
   return (
-    coinData !== null && (
+    thisCoinData !== null && (
       <Container>
         <HeaderAndBtnContainer>
           <Link href="/">
             <BackBtn>←</BackBtn>
           </Link>
-          <Header>{coinData.name}</Header>
+          <Header>{thisCoinData.name}</Header>
         </HeaderAndBtnContainer>
         <TopHalfContainer>
           <InfoContainerOne>
             <NameAndLinkContainer>
               <CoinNameContainer>
-                <img src={coinData.image.small} />
+                <img src={thisCoinData.image.small} />
                 <h1 style={{ fontSize: "28px" }}>
-                  {coinData.name} ({coinData.symbol})
+                  {thisCoinData.name} ({thisCoinData.symbol})
                 </h1>
               </CoinNameContainer>
               <CoinLinkContainer>
                 <Link
-                  href={coinData.links.homepage[0]}
+                  href={thisCoinData.links.homepage[0]}
                   style={{ marginRight: "10px" }}
                 >
-                  {coinData.links.homepage[0]}
+                  {thisCoinData.links.homepage[0]}
                 </Link>
                 <div
                   onClick={() =>
-                    navigator.clipboard.writeText(coinData.links.homepage[0])
+                    navigator.clipboard.writeText(
+                      thisCoinData.links.homepage[0]
+                    )
                   }
                   style={{ cursor: "pointer" }}
                 >
@@ -255,7 +257,7 @@ export default function Coin({ params }: CoinProps) {
               <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                 $
                 {abbreviateNumber(
-                  coinData.market_data.current_price[fiatCurrency]
+                  thisCoinData.market_data.current_price[fiatCurrency]
                 )}
               </h1>
               <PriceInnerContainer>
@@ -272,11 +274,13 @@ export default function Coin({ params }: CoinProps) {
                     <p style={{ fontSize: "16px" }}>All time high:</p>
                     <p style={{ fontSize: "20px" }}>
                       $
-                      {abbreviateNumber(coinData.market_data.ath[fiatCurrency])}
+                      {abbreviateNumber(
+                        thisCoinData.market_data.ath[fiatCurrency]
+                      )}
                     </p>{" "}
                   </div>
                   <DateText>
-                    {formatDate(coinData.market_data.ath_date)}
+                    {formatDate(thisCoinData.market_data.ath_date)}
                   </DateText>
                 </div>
                 <div>
@@ -292,11 +296,13 @@ export default function Coin({ params }: CoinProps) {
                     <p style={{ fontSize: "16px" }}>All time low:</p>
                     <p style={{ fontSize: "20px" }}>
                       $
-                      {abbreviateNumber(coinData.market_data.atl[fiatCurrency])}
+                      {abbreviateNumber(
+                        thisCoinData.market_data.atl[fiatCurrency]
+                      )}
                     </p>{" "}
                   </div>
                   <DateText>
-                    {formatDate(coinData.market_data.atl_date)}
+                    {formatDate(thisCoinData.market_data.atl_date)}
                   </DateText>
                 </div>
               </PriceInnerContainer>
@@ -318,7 +324,7 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.market_cap[fiatCurrency]
+                      thisCoinData.market_data.market_cap[fiatCurrency]
                     )}
                   </RightText>
                 </StyledTd>
@@ -332,7 +338,9 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.fully_diluted_valuation[fiatCurrency]
+                      thisCoinData.market_data.fully_diluted_valuation[
+                        fiatCurrency
+                      ]
                     )}
                   </RightText>
                 </StyledTd>
@@ -346,7 +354,7 @@ export default function Coin({ params }: CoinProps) {
                   <RightText>
                     $
                     {abbreviateNumber(
-                      coinData.market_data.total_volume[fiatCurrency]
+                      thisCoinData.market_data.total_volume[fiatCurrency]
                     )}
                   </RightText>
                 </StyledTd>
@@ -376,7 +384,9 @@ export default function Coin({ params }: CoinProps) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    {abbreviateNumber(coinData.market_data.circulating_supply)}
+                    {abbreviateNumber(
+                      thisCoinData.market_data.circulating_supply
+                    )}
                   </RightText>
                 </StyledTd>
               </TableRow>
@@ -392,7 +402,7 @@ export default function Coin({ params }: CoinProps) {
                 </LeftContent>
                 <StyledTd>
                   <RightText>
-                    {abbreviateNumber(coinData.market_data.total_supply)}
+                    {abbreviateNumber(thisCoinData.market_data.total_supply)}
                   </RightText>
                 </StyledTd>
               </TableRow>
@@ -402,20 +412,20 @@ export default function Coin({ params }: CoinProps) {
         <BottomHalfContainer>
           <InfoContainerThree>
             <DescriptionHeader>Description</DescriptionHeader>
-            <DescriptionText>{coinData.description.en}</DescriptionText>
+            <DescriptionText>{thisCoinData.description.en}</DescriptionText>
           </InfoContainerThree>
           <InfoContainerFour>
             <LinkContainer>
               <Link
                 style={{ marginRight: "10px" }}
-                href={coinData.links.blockchain_site[0]}
+                href={thisCoinData.links.blockchain_site[0]}
               >
-                {coinData.links.blockchain_site[0]}
+                {thisCoinData.links.blockchain_site[0]}
               </Link>
               <div
                 onClick={() =>
                   navigator.clipboard.writeText(
-                    coinData.links.blockchain_site[0]
+                    thisCoinData.links.blockchain_site[0]
                   )
                 }
                 style={{ cursor: "pointer" }}
@@ -426,14 +436,14 @@ export default function Coin({ params }: CoinProps) {
             <LinkContainer>
               <Link
                 style={{ marginRight: "10px" }}
-                href={coinData.links.blockchain_site[1]}
+                href={thisCoinData.links.blockchain_site[1]}
               >
-                {coinData.links.blockchain_site[1]}
+                {thisCoinData.links.blockchain_site[1]}
               </Link>
               <div
                 onClick={() =>
                   navigator.clipboard.writeText(
-                    coinData.links.blockchain_site[1]
+                    thisCoinData.links.blockchain_site[1]
                   )
                 }
                 style={{ cursor: "pointer" }}
@@ -444,14 +454,14 @@ export default function Coin({ params }: CoinProps) {
             <LinkContainer>
               <Link
                 style={{ marginRight: "10px" }}
-                href={coinData.links.blockchain_site[2]}
+                href={thisCoinData.links.blockchain_site[2]}
               >
-                {coinData.links.blockchain_site[2]}
+                {thisCoinData.links.blockchain_site[2]}
               </Link>
               <div
                 onClick={() =>
                   navigator.clipboard.writeText(
-                    coinData.links.blockchain_site[2]
+                    thisCoinData.links.blockchain_site[2]
                   )
                 }
                 style={{ cursor: "pointer" }}
