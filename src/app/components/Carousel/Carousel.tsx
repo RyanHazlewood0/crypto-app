@@ -105,21 +105,30 @@ interface CarouselProps {
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { coins } = useCoin();
+  const [carouselCoins, setCarouselCoins] = useState([]);
+  const { fiatCurrency } = useCoin();
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);
   };
 
   useEffect(() => {
-    setHasError(false);
-    setIsLoading(true);
-    if (coins.length > 0) {
-      setSelectedCoin(coins[0]);
-      setHasError(false);
-      setIsLoading(false);
+    const fetchData = async () => {
+      const response = await fetch(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const data = await response.json();
+      setCarouselCoins(data);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (carouselCoins.length > 0) {
+      setSelectedCoin(carouselCoins[0]);
     }
-  }, [coins]);
+  }, [carouselCoins]);
 
   const settings = {
     dots: true,
@@ -143,7 +152,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
       <CarouselContainer>
         <HeaderText>Select the currency to view statistics</HeaderText>
         <StyledSlider {...settings}>
-          {coins.map((coin) => (
+          {carouselCoins.map((coin) => (
             <CarouselBox
               style={{ width: 210 }}
               key={coin.id}

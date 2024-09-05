@@ -96,6 +96,20 @@ const LineChartContainer = styled.div`
   max-height: 47px;
 `;
 
+const PageTurnBtn = styled.button`
+  width: 150px;
+  height: 40px;
+  background: #6161d6;
+  border-radius: 6px;
+`;
+
+const PageBtnContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+`;
+
 type StyleProp = {
   left?: boolean;
   green?: boolean;
@@ -105,6 +119,7 @@ type StyleProp = {
 const Table = () => {
   const [hasError, setHasError] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { coins, setCoins, fiatCurrency } = useCoin();
 
@@ -115,7 +130,7 @@ const Table = () => {
     const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData1: CoinTypes[] = await response1.json();
         setCoins(fetchedData1);
@@ -124,7 +139,7 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [sortOrder, fiatCurrency]);
+  }, [sortOrder, fiatCurrency, currentPage]);
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
@@ -179,190 +194,210 @@ const Table = () => {
     }
   });
 
+  const nextPage = (e) => {
+    setCurrentPage(currentPage + 1);
+    window.scrollTo(0, 1000);
+  };
+
+  const prevPage = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo(0, 1000);
+    }
+  };
+
   return hasError ? (
     <div>{"Error loading coin data"}</div>
   ) : (
-    <CoinTable>
-      <TableHeader>
-        <tr>
-          <StyledTh>
-            <p>
-              #
-              <ArrowSpan left onClick={(e) => getSortOption(e, "mcap-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>
-            <p>
-              Name{" "}
-              <ArrowSpan left onClick={(e) => getSortOption(e, "name-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>
-            <p>
-              Price{" "}
-              <ArrowSpan left onClick={(e) => getSortOption(e, "price-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>
-            <p>
-              1h%{" "}
-              <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>
-            <p>
-              24h%{" "}
-              <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>
-            <p>
-              7d%{" "}
-              <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
-                ▼
-              </ArrowSpan>
-              <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
-                ▲
-              </ArrowSpan>
-            </p>
-          </StyledTh>
-          <StyledTh>24h Volume / Market Cap</StyledTh>
-          <StyledTh>Circulating / Total Supply</StyledTh>
-          <StyledTh>Last 7d</StyledTh>
-        </tr>
-      </TableHeader>
-      <tbody>
-        {sortedCoins.map((coin) => (
-          <TableRow key={coin.id}>
-            <StyledTd left>{coin.market_cap_rank}</StyledTd>
-            <NameAndImageContainer>
-              <CoinImage src={coin.image} />
-              <Link href={`/coin/${coin.id}`}>
-                {coin.name} ({coin.symbol.toUpperCase()})
-              </Link>
-            </NameAndImageContainer>
-            <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
-            <StyledTd>
-              {coin.price_change_percentage_1h_in_currency && (
-                <ArrowAndPercentContainer>
-                  {Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                  1 ? (
-                    <RedArrow />
-                  ) : (
-                    <GreenArrow />
-                  )}
-                  <PriceChangeDiv
-                    green={
-                      Math.sign(coin.price_change_percentage_1h_in_currency) ===
-                      1
-                    }
-                  >
-                    {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                  </PriceChangeDiv>
-                </ArrowAndPercentContainer>
-              )}
-            </StyledTd>
-            <StyledTd>
-              {coin.price_change_percentage_24h_in_currency && (
-                <ArrowAndPercentContainer>
-                  {Math.sign(coin.price_change_percentage_24h_in_currency) !==
-                  1 ? (
-                    <RedArrow />
-                  ) : (
-                    <GreenArrow />
-                  )}
-                  <PriceChangeDiv
-                    green={
-                      Math.sign(
-                        coin.price_change_percentage_24h_in_currency
-                      ) === 1
-                    }
-                  >
-                    {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
-                  </PriceChangeDiv>
-                </ArrowAndPercentContainer>
-              )}
-            </StyledTd>
-            <StyledTd>
-              {coin.price_change_percentage_7d_in_currency && (
-                <ArrowAndPercentContainer>
-                  {Math.sign(coin.price_change_percentage_7d_in_currency) !==
-                  1 ? (
-                    <RedArrow />
-                  ) : (
-                    <GreenArrow />
-                  )}
-                  <PriceChangeDiv
-                    green={
-                      Math.sign(coin.price_change_percentage_7d_in_currency) ===
-                      1
-                    }
-                  >
-                    {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
-                  </PriceChangeDiv>
-                </ArrowAndPercentContainer>
-              )}
-            </StyledTd>
-            <StyledTd>
-              <NumberSeparator>
-                {coin.total_volume && coin.market_cap && (
-                  <>
-                    <div>{abbreviateNumber(coin.total_volume)}</div>
-                    <div>{abbreviateNumber(coin.market_cap)}</div>
-                  </>
+    <>
+      <CoinTable>
+        <TableHeader>
+          <tr>
+            <StyledTh>
+              <p>
+                #
+                <ArrowSpan left onClick={(e) => getSortOption(e, "mcap-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>
+              <p>
+                Name{" "}
+                <ArrowSpan left onClick={(e) => getSortOption(e, "name-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>
+              <p>
+                Price{" "}
+                <ArrowSpan left onClick={(e) => getSortOption(e, "price-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>
+              <p>
+                1h%{" "}
+                <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>
+              <p>
+                24h%{" "}
+                <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>
+              <p>
+                7d%{" "}
+                <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
+                  ▼
+                </ArrowSpan>
+                <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
+                  ▲
+                </ArrowSpan>
+              </p>
+            </StyledTh>
+            <StyledTh>24h Volume / Market Cap</StyledTh>
+            <StyledTh>Circulating / Total Supply</StyledTh>
+            <StyledTh>Last 7d</StyledTh>
+          </tr>
+        </TableHeader>
+        <tbody>
+          {sortedCoins.map((coin) => (
+            <TableRow key={coin.id}>
+              <StyledTd left>{coin.market_cap_rank}</StyledTd>
+              <NameAndImageContainer>
+                <CoinImage src={coin.image} />
+                <Link href={`/coin/${coin.id}`}>
+                  {coin.name} ({coin.symbol.toUpperCase()})
+                </Link>
+              </NameAndImageContainer>
+              <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
+              <StyledTd>
+                {coin.price_change_percentage_1h_in_currency && (
+                  <ArrowAndPercentContainer>
+                    {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                    1 ? (
+                      <RedArrow />
+                    ) : (
+                      <GreenArrow />
+                    )}
+                    <PriceChangeDiv
+                      green={
+                        Math.sign(
+                          coin.price_change_percentage_1h_in_currency
+                        ) === 1
+                      }
+                    >
+                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                    </PriceChangeDiv>
+                  </ArrowAndPercentContainer>
                 )}
-              </NumberSeparator>
-              <LevelIndicatorOuter>
-                <LevelIndicatorInner
-                  style={{ width: `${findVolumeLevel(coin)}%` }}
-                />
-              </LevelIndicatorOuter>
-            </StyledTd>
-            <StyledTd>
-              <NumberSeparator>
-                <div>{abbreviateNumber(coin.circulating_supply)}</div>
-                <div>{abbreviateNumber(coin.total_supply)}</div>
-              </NumberSeparator>
-              <LevelIndicatorOuter>
-                <LevelIndicatorInner
-                  style={{ width: `${findSupplyLevel(coin)}%` }}
-                />
-              </LevelIndicatorOuter>
-            </StyledTd>
-            <StyledTd right>
-              <LineChartContainer>
-                <TableLineChart coin={coin} />
-              </LineChartContainer>
-            </StyledTd>
-          </TableRow>
-        ))}
-      </tbody>
-    </CoinTable>
+              </StyledTd>
+              <StyledTd>
+                {coin.price_change_percentage_24h_in_currency && (
+                  <ArrowAndPercentContainer>
+                    {Math.sign(coin.price_change_percentage_24h_in_currency) !==
+                    1 ? (
+                      <RedArrow />
+                    ) : (
+                      <GreenArrow />
+                    )}
+                    <PriceChangeDiv
+                      green={
+                        Math.sign(
+                          coin.price_change_percentage_24h_in_currency
+                        ) === 1
+                      }
+                    >
+                      {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                    </PriceChangeDiv>
+                  </ArrowAndPercentContainer>
+                )}
+              </StyledTd>
+              <StyledTd>
+                {coin.price_change_percentage_7d_in_currency && (
+                  <ArrowAndPercentContainer>
+                    {Math.sign(coin.price_change_percentage_7d_in_currency) !==
+                    1 ? (
+                      <RedArrow />
+                    ) : (
+                      <GreenArrow />
+                    )}
+                    <PriceChangeDiv
+                      green={
+                        Math.sign(
+                          coin.price_change_percentage_7d_in_currency
+                        ) === 1
+                      }
+                    >
+                      {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
+                    </PriceChangeDiv>
+                  </ArrowAndPercentContainer>
+                )}
+              </StyledTd>
+              <StyledTd>
+                <NumberSeparator>
+                  {coin.total_volume && coin.market_cap && (
+                    <>
+                      <div>{abbreviateNumber(coin.total_volume)}</div>
+                      <div>{abbreviateNumber(coin.market_cap)}</div>
+                    </>
+                  )}
+                </NumberSeparator>
+                <LevelIndicatorOuter>
+                  <LevelIndicatorInner
+                    style={{ width: `${findVolumeLevel(coin)}%` }}
+                  />
+                </LevelIndicatorOuter>
+              </StyledTd>
+              <StyledTd>
+                <NumberSeparator>
+                  <div>{abbreviateNumber(coin.circulating_supply)}</div>
+                  <div>{abbreviateNumber(coin.total_supply)}</div>
+                </NumberSeparator>
+                <LevelIndicatorOuter>
+                  <LevelIndicatorInner
+                    style={{ width: `${findSupplyLevel(coin)}%` }}
+                  />
+                </LevelIndicatorOuter>
+              </StyledTd>
+              <StyledTd right>
+                <LineChartContainer>
+                  <TableLineChart coin={coin} />
+                </LineChartContainer>
+              </StyledTd>
+            </TableRow>
+          ))}
+        </tbody>
+      </CoinTable>
+      <PageBtnContainer>
+        <PageTurnBtn onClick={prevPage}>Previous Page</PageTurnBtn>
+        <PageTurnBtn onClick={nextPage}>Next Page</PageTurnBtn>
+      </PageBtnContainer>
+    </>
   );
 };
 
