@@ -33,12 +33,14 @@ const LoadingMessage = styled.p`
 `;
 
 export default function Portfolio() {
-  const storedCoins: PortfolioCoin[] =
-    JSON.parse(localStorage.getItem("portCoins")) || [];
-
-  const fixedDates = storedCoins.map((el) => {
-    return { ...el, purchaseDate: new Date(el.purchaseDate) };
-  });
+  let fixedDates: PortfolioCoin[];
+  if (typeof window !== "undefined") {
+    const storedCoins: PortfolioCoin[] =
+      JSON.parse(localStorage.getItem("portCoins")) || [];
+    fixedDates = storedCoins.map((el) => {
+      return { ...el, purchaseDate: new Date(el.purchaseDate) };
+    });
+  }
 
   const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
@@ -119,7 +121,9 @@ export default function Portfolio() {
   // }, [fiatCurrency]);
 
   useEffect(() => {
-    localStorage.setItem("portCoins", JSON.stringify(portfolioCoins));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("portCoins", JSON.stringify(portfolioCoins));
+    }
   }, [portfolioCoins]);
 
   const handleFormOpen = () => {
