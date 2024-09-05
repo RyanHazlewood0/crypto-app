@@ -96,24 +96,26 @@ const LineChartContainer = styled.div`
   max-height: 47px;
 `;
 
-const PageTurnBtn = styled.button`
+const PageTurnBtn = styled.button<StyleProp>`
   width: 150px;
   height: 40px;
-  background: #6161d6;
+  background: ${(props) => (props.gray ? "gray" : "#6161d6")};
   border-radius: 6px;
+  cursor: ${(props) => (props.gray ? "auto" : "arrow")};
 `;
 
 const PageBtnContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin: 10px auto 10px auto;
 `;
 
 type StyleProp = {
   left?: boolean;
   green?: boolean;
   right?: boolean;
+  gray?: boolean;
 };
 
 const Table = () => {
@@ -130,7 +132,7 @@ const Table = () => {
     const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=100&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData1: CoinTypes[] = await response1.json();
         setCoins(fetchedData1);
@@ -139,7 +141,7 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [sortOrder, fiatCurrency, currentPage]);
+  }, [sortOrder, fiatCurrency, currentPage, apiKey, setCoins]);
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
@@ -394,7 +396,9 @@ const Table = () => {
         </tbody>
       </CoinTable>
       <PageBtnContainer>
-        <PageTurnBtn onClick={prevPage}>Previous Page</PageTurnBtn>
+        <PageTurnBtn gray={currentPage === 1} onClick={prevPage}>
+          Previous Page
+        </PageTurnBtn>
         <PageTurnBtn onClick={nextPage}>Next Page</PageTurnBtn>
       </PageBtnContainer>
     </>

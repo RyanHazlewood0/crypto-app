@@ -44,7 +44,7 @@ export default function Portfolio() {
 
   const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
-    fixedDates
+    []
   );
   const [formOpen, setFormOpen] = useState(false);
   const [coinSelectValue, setCoinSelectValue] = useState("");
@@ -57,6 +57,12 @@ export default function Portfolio() {
 
   const { fiatCurrency } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    if (fixedDates) {
+      setPortfolioCoins(fixedDates);
+    }
+  }, []);
 
   useEffect(() => {
     const allData = [];
@@ -88,7 +94,7 @@ export default function Portfolio() {
       setCoinsData([...allData]);
     };
     fetchData();
-  }, [fiatCurrency]);
+  }, [fiatCurrency, apiKey]);
 
   // useEffect(() => {
   //   setHasError(false);
