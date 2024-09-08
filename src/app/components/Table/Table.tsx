@@ -111,6 +111,12 @@ const PageBtnContainer = styled.div`
   margin: 10px auto 10px auto;
 `;
 
+const LoadingMessage = styled.p`
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+`;
+
 type StyleProp = {
   left?: boolean;
   green?: boolean;
@@ -120,6 +126,7 @@ type StyleProp = {
 
 const Table = () => {
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -129,6 +136,7 @@ const Table = () => {
 
   useEffect(() => {
     setHasError(false);
+    setIsLoading(true);
     const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
@@ -136,8 +144,10 @@ const Table = () => {
         );
         const fetchedData1: CoinTypes[] = await response1.json();
         setCoins(fetchedData1);
+        setIsLoading(false);
       } catch {
         setHasError(true);
+        setIsLoading(false);
       }
     };
     getCoinData();
@@ -208,9 +218,15 @@ const Table = () => {
     }
   };
 
-  return hasError ? (
-    <div>{"Error loading coin data"}</div>
-  ) : (
+  if (isLoading) {
+    return <LoadingMessage>Loading coin data...</LoadingMessage>;
+  }
+
+  if (hasError) {
+    return <LoadingMessage>Error loading coin data...</LoadingMessage>;
+  }
+
+  return (
     <>
       <CoinTable>
         <TableHeader>
