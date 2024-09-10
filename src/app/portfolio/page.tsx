@@ -49,11 +49,14 @@ export default function Portfolio() {
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-  const storedCoins: PortfolioCoin[] =
-    JSON.parse(localStorage.getItem("portCoins")) || [];
-  const fixedDates = storedCoins.map((el) => {
-    return { ...el, purchaseDate: new Date(el.purchaseDate) };
-  });
+  let fixedDates: PortfolioCoin[];
+  if (typeof window !== "undefined") {
+    const storedCoins: PortfolioCoin[] =
+      JSON.parse(localStorage.getItem("portCoins")) || [];
+    fixedDates = storedCoins.map((el) => {
+      return { ...el, purchaseDate: new Date(el.purchaseDate) };
+    });
+  }
 
   useEffect(() => {
     if (fixedDates) {
