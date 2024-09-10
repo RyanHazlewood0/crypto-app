@@ -25,12 +25,14 @@ type useCoinProps = {
 };
 
 const getSavedValue = (key, initialValue) => {
-  const savedValue = JSON.parse(localStorage.getItem(key));
-  if (savedValue) {
-    return savedValue;
+  if (typeof window !== "undefined") {
+    const savedValue = JSON.parse(localStorage.getItem(key));
+    if (savedValue) {
+      return savedValue;
+    }
+    if (initialValue instanceof Function) return initialValue();
+    return initialValue;
   }
-  if (initialValue instanceof Function) return initialValue();
-  return initialValue;
 };
 
 const useCurrencyStorage = (key, initialvalue) => {
@@ -39,7 +41,9 @@ const useCurrencyStorage = (key, initialvalue) => {
   });
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
   }, [value]);
 
   return [value, setValue];
