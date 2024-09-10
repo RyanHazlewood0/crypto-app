@@ -114,15 +114,23 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
     const fetchData = async () => {
-      const response = await fetch(
-        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-      );
-      const data = await response.json();
-      setCarouselCoins(data);
+      try {
+        const response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        const data = await response.json();
+        setCarouselCoins(data);
+        setIsLoading(false);
+      } catch {
+        setHasError(true);
+        setIsLoading(false);
+      }
     };
     fetchData();
-  }, []);
+  }, [fiatCurrency, apiKey]);
 
   useEffect(() => {
     if (carouselCoins.length > 0) {
