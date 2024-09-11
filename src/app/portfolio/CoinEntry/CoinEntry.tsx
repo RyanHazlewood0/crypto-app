@@ -149,6 +149,10 @@ const CoinEntry = ({
   const { fiatCurrency } = useCoin();
   const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
   const [purchasePrice, setPurchasePrice] = useState<number | null>(null);
+  const [currentP, setCurrentP] = useState(coin.currentPrice);
+  const [totalVal, setTotalVal] = useState(coin.totalValue);
+  const [change24, setChange24] = useState();
+  const [changeSincePurchase, setChangeSincePurchase] = useState(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -180,26 +184,64 @@ const CoinEntry = ({
   }, [fiatCurrency]);
 
   useEffect(() => {
-    if (priceData) {
-      const thisPriceData = priceData.find(
-        (el) => el.date === coin.purchaseDate.toISOString()
-      );
-      if (thisPriceData) {
-        setPurchasePrice(thisPriceData.price);
+    const fetchData = async () => {
+      setError(false);
+      try {
+        const response = await fetch(
+          `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
+        );
+        const data = await response.json();
+        if (fiatCurrency === "usd") {
+          setCurrentP(data.market_data.current_price.usd);
+          setTotalVal(data.market_data.current_price.usd * coin.totalAmount);
+          setChange24(
+            data.market_data.price_change_percentage_24h_in_currency.usd
+          );
+        } else if (fiatCurrency === "nzd") {
+          setCurrentP(data.market_data.current_price.nzd);
+          setTotalVal(data.market_data.current_price.nzd * coin.totalAmount);
+          setChange24(
+            data.market_data.price_change_percentage_24h_in_currency.nzd
+          );
+        } else if (fiatCurrency === "gbp") {
+          setCurrentP(data.market_data.current_price.gbp);
+          setTotalVal(data.market_data.current_price.gbp * coin.totalAmount);
+          setChange24(
+            data.market_data.price_change_percentage_24h_in_currency.gbp
+          );
+        } else if (fiatCurrency === "aud") {
+          setCurrentP(data.market_data.current_price.aud);
+          setTotalVal(data.market_data.current_price.aud * coin.totalAmount);
+          setChange24(
+            data.market_data.price_change_percentage_24h_in_currency.aud
+          );
+        }
+        if (priceData) {
+          const thisPriceData = priceData.find(
+            (el) => el.date === coin.purchaseDate.toISOString()
+          );
+          if (thisPriceData) {
+            setPurchasePrice(thisPriceData.price);
+          }
+        }
+      } catch {
+        setError(true);
       }
-    }
-  }, [priceData, portfolioCoins]);
+    };
+    fetchData();
+  }, [fiatCurrency, priceData]);
 
-  const getChangeFromPurchaseDate = () => {
-    const currentPrice = coin.currentPrice;
-    const biggerNum = Math.max(purchasePrice, currentPrice);
-    const smallerNum = Math.min(purchasePrice, currentPrice);
-    const difference = biggerNum - smallerNum;
-    const average = (biggerNum + smallerNum) / 2;
-    const diffByAvg = difference / average;
-    const percentDiff = diffByAvg * 100;
-    return percentDiff;
-  };
+  useEffect(() => {
+    if (purchasePrice && currentP) {
+      const biggerNum = Math.max(purchasePrice, currentP);
+      const smallerNum = Math.min(purchasePrice, currentP);
+      const difference = biggerNum - smallerNum;
+      const average = (biggerNum + smallerNum) / 2;
+      const diffByAvg = difference / average;
+      const percentDiff = diffByAvg * 100;
+      setChangeSincePurchase(percentDiff);
+    }
+  }, [purchasePrice]);
 
   const deleteEntry = (thisCoin: PortfolioCoin) => {
     const filteredPortfolio = portfolioCoins.filter(
@@ -229,13 +271,13 @@ const CoinEntry = ({
           <InnerRow>
             <ValueBox>
               <SmallText>Current Price</SmallText>
-              <NumberText>${abbreviateNumber(coin.currentPrice)}</NumberText>
+              <NumberText>${abbreviateNumber(currentP)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change 24h</SmallText>
               <PriceChangeText green={coin.priceChange24h > 0}>
                 {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
-                {abbreviateNumber(coin.priceChange24h)}%
+                {abbreviateNumber(change24)}%
               </PriceChangeText>
             </ValueBox>
             <ValueBox>
@@ -281,18 +323,14 @@ const CoinEntry = ({
             </ValueBox>
             <ValueBox>
               <SmallText>Amount Value</SmallText>
-              <NumberText>${abbreviateNumber(coin.totalValue)}</NumberText>
+              <NumberText>${abbreviateNumber(totalVal)}</NumberText>
             </ValueBox>
             <ValueBox>
               <SmallText>Price Change Since Purchase</SmallText>
-              <PriceChangeText green={coin.currentPrice > purchasePrice}>
-                {coin.currentPrice > purchasePrice ? (
-                  <GreenArrow />
-                ) : (
-                  <RedArrow />
-                )}
-                {coin.currentPrice < purchasePrice && "- "}
-                {abbreviateNumber(getChangeFromPurchaseDate())}%
+              <PriceChangeText green={currentP > purchasePrice}>
+                {currentP > purchasePrice ? <GreenArrow /> : <RedArrow />}
+                {currentP < purchasePrice && "- "}
+                {abbreviateNumber(changeSincePurchase)}%
               </PriceChangeText>
             </ValueBox>
             <ValueBox>
