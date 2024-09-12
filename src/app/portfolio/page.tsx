@@ -105,6 +105,7 @@ export default function Portfolio() {
             portfolioCoins={portfolioCoins}
             setPortfolioCoins={setPortfolioCoins}
             editCoinEntry={editCoinEntry}
+            isEditOpen={isEditOpen}
           />
         ))}
       {formOpen && (

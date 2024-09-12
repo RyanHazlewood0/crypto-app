@@ -129,6 +129,7 @@ interface CoinEntryProps {
     e: React.MouseEvent<HTMLButtonElement>,
     coin: PortfolioCoin
   ) => void;
+  isEditOpen: any;
 }
 
 interface FetchedDataType {
@@ -144,6 +145,7 @@ const CoinEntry = ({
   setPortfolioCoins,
   portfolioCoins,
   editCoinEntry,
+  isEditOpen,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
   const { fiatCurrency } = useCoin();
@@ -181,7 +183,7 @@ const CoinEntry = ({
       };
       fetchPriceData();
     }
-  }, [fiatCurrency]);
+  }, [fiatCurrency, isEditOpen]);
 
   useEffect(() => {
     const fetchData = async () => {
