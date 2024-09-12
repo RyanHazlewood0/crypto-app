@@ -30,6 +30,8 @@ export const CoinProvider = ({ children }: useCoinProps) => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("fiat");
       return saved || "usd";
+    } else {
+      return "usd";
     }
   });
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
