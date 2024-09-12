@@ -76,7 +76,7 @@ const CurrencySelect = () => {
     <DropdownAndOptionContainer ref={wrapperRef}>
       <CurrencyContainer onClick={handleToggleDropdown}>
         <DollarSymbol />
-        <p>{fiatCurrency.toUpperCase()}</p>
+        <p suppressHydrationWarning={true}>{fiatCurrency.toUpperCase()}</p>
         <p>▼</p>
       </CurrencyContainer>
       {fiatDropownOpen && (
