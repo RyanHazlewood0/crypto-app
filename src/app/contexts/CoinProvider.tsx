@@ -10,6 +10,7 @@ interface CoinContextType {
   setSelectedBtn: Dispatch<SetStateAction<string>>;
   setFiatCurrency: any;
   fiatCurrency: any;
+  isClient: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -26,12 +27,17 @@ type useCoinProps = {
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
-  const [fiatCurrency, setFiatCurrency] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("fiat");
-      return saved || "usd";
+  const [fiatCurrency, setFiatCurrency] = useState("usd");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const savedFiat = localStorage.getItem("fiat");
+    if (savedFiat) {
+      setFiatCurrency(savedFiat);
     }
-  });
+  }, []);
+
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
@@ -61,7 +67,9 @@ export const CoinProvider = ({ children }: useCoinProps) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("fiat", fiatCurrency);
+      if (isClient) {
+        localStorage.setItem("fiat", fiatCurrency);
+      }
     }
   }, [fiatCurrency]);
 
@@ -74,6 +82,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setSelectedBtn,
         setFiatCurrency,
         fiatCurrency,
+        isClient,
       }}
     >
       {children}
