@@ -90,7 +90,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
       }
     };
     getCoinData();
-  }, [selectedCoin, dayCount]);
+  }, [selectedCoin, dayCount, fiatCurrency]);
 
   if (isLoading) {
     return <MessageText>Loading Charts...</MessageText>;

@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { CoinTypes } from "types";
 
@@ -8,8 +8,8 @@ interface CoinContextType {
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<CoinTypes[]>>;
   setSelectedBtn: Dispatch<SetStateAction<string>>;
-  fiatCurrency: string;
-  setFiatCurrency: Dispatch<SetStateAction<string>>;
+  setFiatCurrency: any;
+  fiatCurrency: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -26,7 +26,7 @@ type useCoinProps = {
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
-  const [fiatCurrency, setFiatCurrency] = useState<string>("usd");
+  const [fiatCurrency, setFiatCurrency] = useState("usd");
 
   return (
     <CoinContext.Provider
@@ -35,8 +35,8 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setCoins,
         selectedBtn,
         setSelectedBtn,
-        fiatCurrency,
         setFiatCurrency,
+        fiatCurrency,
       }}
     >
       {children}

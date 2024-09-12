@@ -33,15 +33,7 @@ const LoadingMessage = styled.p`
 `;
 
 export default function Portfolio() {
-  let fixedDates: PortfolioCoin[];
-  if (typeof window !== "undefined") {
-    const storedCoins: PortfolioCoin[] =
-      JSON.parse(localStorage.getItem("portCoins")) || [];
-    fixedDates = storedCoins.map((el) => {
-      return { ...el, purchaseDate: new Date(el.purchaseDate) };
-    });
-  }
-
+  const { fiatCurrency } = useCoin();
   const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
@@ -55,8 +47,16 @@ export default function Portfolio() {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { fiatCurrency } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  let fixedDates: PortfolioCoin[];
+  if (typeof window !== "undefined") {
+    const storedCoins: PortfolioCoin[] =
+      JSON.parse(localStorage.getItem("portCoins")) || [];
+    fixedDates = storedCoins.map((el) => {
+      return { ...el, purchaseDate: new Date(el.purchaseDate) };
+    });
+  }
 
   useEffect(() => {
     if (fixedDates) {
