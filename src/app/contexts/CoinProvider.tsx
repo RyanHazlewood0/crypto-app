@@ -26,7 +26,10 @@ type useCoinProps = {
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
-  const [fiatCurrency, setFiatCurrency] = useState("usd");
+  const [fiatCurrency, setFiatCurrency] = useState(() => {
+    const saved = localStorage.getItem("fiat");
+    return saved || "usd";
+  });
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
@@ -53,6 +56,10 @@ export const CoinProvider = ({ children }: useCoinProps) => {
     };
     fetchData();
   }, [fiatCurrency]);
+
+  useEffect(() => {
+    localStorage.setItem("fiat", fiatCurrency);
+  });
 
   return (
     <CoinContext.Provider
