@@ -45,6 +45,13 @@ const CurrencySelect = () => {
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("fiat", fiatCurrency);
+    }
+    setFiatCurrency(fiatCurrency);
+  }, [fiatCurrency]);
+
   const handleToggleDropdown = () => {
     setFiatDropdownOpen(!fiatDropownOpen);
   };
@@ -72,29 +79,27 @@ const CurrencySelect = () => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  if (typeof fiatCurrency === "string") {
-    return (
-      <DropdownAndOptionContainer ref={wrapperRef}>
-        <CurrencyContainer onClick={handleToggleDropdown}>
-          <DollarSymbol />
-          <p>{fiatCurrency.toUpperCase()}</p>
-          <p>▼</p>
-        </CurrencyContainer>
-        {fiatDropownOpen && (
-          <DropdownContainer>
-            {currencyOptions.map((currency) => (
-              <CurrencyOptionContainer
-                key={currency}
-                onClick={(e) => handleCurrencySelect(e)}
-              >
-                {currency.toUpperCase()}
-              </CurrencyOptionContainer>
-            ))}
-          </DropdownContainer>
-        )}
-      </DropdownAndOptionContainer>
-    );
-  }
+  return (
+    <DropdownAndOptionContainer ref={wrapperRef}>
+      <CurrencyContainer onClick={handleToggleDropdown}>
+        <DollarSymbol />
+        <p>{fiatCurrency.toUpperCase()}</p>
+        <p>▼</p>
+      </CurrencyContainer>
+      {fiatDropownOpen && (
+        <DropdownContainer>
+          {currencyOptions.map((currency) => (
+            <CurrencyOptionContainer
+              key={currency}
+              onClick={(e) => handleCurrencySelect(e)}
+            >
+              {currency.toUpperCase()}
+            </CurrencyOptionContainer>
+          ))}
+        </DropdownContainer>
+      )}
+    </DropdownAndOptionContainer>
+  );
 };
 
 export default CurrencySelect;
