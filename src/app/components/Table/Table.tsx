@@ -129,8 +129,9 @@ const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
   const [currentPage, setCurrentPage] = useState(1);
+  const [tableCoins, setTableCoins] = useState([]);
 
-  const { coins, setCoins, fiatCurrency } = useCoin();
+  const { fiatCurrency } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -143,7 +144,7 @@ const Table = () => {
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData1: CoinTypes[] = await response1.json();
-        setCoins(fetchedData1);
+        setTableCoins(fetchedData1);
         setIsLoading(false);
       } catch {
         setHasError(true);
@@ -151,7 +152,7 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [fiatCurrency, currentPage, apiKey, setCoins]);
+  }, [fiatCurrency, currentPage, apiKey, setTableCoins]);
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
@@ -160,7 +161,7 @@ const Table = () => {
     setSortOrder(order);
   };
 
-  const sortedCoins = [...coins].sort((a, b): number => {
+  const sortedCoins = [...tableCoins].sort((a, b): number => {
     if (sortOrder === "price-desc") {
       return a.current_price - b.current_price;
     } else if (sortOrder === "price-asc") {

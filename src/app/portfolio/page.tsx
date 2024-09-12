@@ -5,7 +5,6 @@ import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 import { useCoin } from "../contexts/CoinProvider";
-import { CoinTypes } from "types";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -33,8 +32,7 @@ const LoadingMessage = styled.p`
 `;
 
 export default function Portfolio() {
-  const { fiatCurrency } = useCoin();
-  const [coinsData, setCoinsData] = useState<CoinTypes[]>([]);
+  const { coins } = useCoin();
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
   );
@@ -44,10 +42,6 @@ export default function Portfolio() {
   const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
     null
   );
-  const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   let fixedDates: PortfolioCoin[];
   if (typeof window !== "undefined") {
@@ -63,38 +57,6 @@ export default function Portfolio() {
       setPortfolioCoins(fixedDates);
     }
   }, []);
-
-  useEffect(() => {
-    const api = async (url: string) => {
-      const data = await fetch(url);
-      const json: CoinTypes[] = await data.json();
-      return json;
-    };
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        setHasError(false);
-        const one = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const two = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const three = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const four = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        setCoinsData([...one, ...two, ...three, ...four]);
-        setIsLoading(false);
-      } catch {
-        setHasError(true);
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [fiatCurrency, apiKey]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -127,14 +89,6 @@ export default function Portfolio() {
     (a, b) => b.totalValue - a.totalValue
   );
 
-  if (isLoading) {
-    return <LoadingMessage>Fetching coin data...</LoadingMessage>;
-  }
-
-  if (hasError) {
-    return <p>Error fetching data...</p>;
-  }
-
   return (
     <>
       <HeaderContainer>
@@ -163,7 +117,6 @@ export default function Portfolio() {
           portfolioCoins={portfolioCoins}
           coinSelectValue={coinSelectValue}
           setCoinSelectValue={setCoinSelectValue}
-          coinsData={coinsData}
         />
       )}
     </>
