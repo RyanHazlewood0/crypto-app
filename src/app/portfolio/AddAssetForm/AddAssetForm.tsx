@@ -190,7 +190,7 @@ const AddAssetForm = ({
       market_cap: thisCoin.market_cap,
       total_supply: thisCoin.total_supply,
       priceChange24h: thisCoin.price_change_percentage_24h_in_currency,
-      symbol: thisCoin.symbol.toUpperCase(),
+      symbol: thisCoin.symbol,
       id: thisCoin.id,
     };
     setPortfolioCoins([...newCoinsList, newCoinEntry]);

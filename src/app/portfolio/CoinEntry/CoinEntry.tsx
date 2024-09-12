@@ -259,7 +259,7 @@ const CoinEntry = ({
       <CoinImageContainer>
         <Symbol src={coin.image} />
         <NameText>
-          {coin.name} ({coin.symbol})
+          {coin.name} ({coin.symbol.toUpperCase()})
         </NameText>
       </CoinImageContainer>
       <CoinInfoContainer>

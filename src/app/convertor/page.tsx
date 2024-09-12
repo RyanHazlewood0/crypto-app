@@ -382,7 +382,7 @@ export default function Converter() {
 
   return (
     <>
-      {sellCoin && (
+      {sellCoin && buyCoin && (
         <>
           <CoinsAndConverterBtns />
           <Title>Cryptocurrency Converter</Title>
