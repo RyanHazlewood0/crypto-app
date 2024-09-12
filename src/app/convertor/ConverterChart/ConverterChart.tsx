@@ -43,6 +43,12 @@ const ErrorText = styled.p`
   margin-bottom: 15px;
 `;
 
+const LoadingMessage = styled.p`
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+`;
+
 interface ConverterChartProps {
   dayCount: string;
   buyCoin: CoinTypes;
@@ -166,7 +172,7 @@ const ConverterChart = ({
   } as any;
 
   if (isLoading) {
-    return <p>Loading chart</p>;
+    return <LoadingMessage>Loading chart</LoadingMessage>;
   }
 
   if (sellCoinPriceData && buyCoinPriceData && !isLoading) {

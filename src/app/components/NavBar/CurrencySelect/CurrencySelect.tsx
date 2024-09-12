@@ -41,7 +41,7 @@ const CurrencyOptionContainer = styled.div`
 `;
 
 const CurrencySelect = () => {
-  const { setFiatCurrency, fiatCurrency } = useCoin();
+  const { setFiatCurrency, fiatCurrency, isClient } = useCoin();
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
 
@@ -76,7 +76,7 @@ const CurrencySelect = () => {
     <DropdownAndOptionContainer ref={wrapperRef}>
       <CurrencyContainer onClick={handleToggleDropdown}>
         <DollarSymbol />
-        <p>{fiatCurrency.toUpperCase()}</p>
+        <p>{isClient ? fiatCurrency.toUpperCase() : "usd"}</p>
         <p>▼</p>
       </CurrencyContainer>
       {fiatDropownOpen && (

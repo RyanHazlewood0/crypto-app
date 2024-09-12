@@ -10,6 +10,7 @@ interface CoinContextType {
   setSelectedBtn: Dispatch<SetStateAction<string>>;
   setFiatCurrency: any;
   fiatCurrency: any;
+  isClient: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -27,6 +28,50 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
   const [fiatCurrency, setFiatCurrency] = useState("usd");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const savedFiat = localStorage.getItem("fiat");
+    if (savedFiat) {
+      setFiatCurrency(savedFiat);
+    }
+  }, []);
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    const api = async (url: string) => {
+      const data = await fetch(url);
+      const json: CoinTypes[] = await data.json();
+      return json;
+    };
+
+    const fetchData = async () => {
+      const one = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const two = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const three = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const four = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      setCoins([...one, ...two, ...three, ...four]);
+    };
+    fetchData();
+  }, [fiatCurrency]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (isClient) {
+        localStorage.setItem("fiat", fiatCurrency);
+      }
+    }
+  }, [fiatCurrency]);
 
   return (
     <CoinContext.Provider
@@ -37,6 +82,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setSelectedBtn,
         setFiatCurrency,
         fiatCurrency,
+        isClient,
       }}
     >
       {children}
