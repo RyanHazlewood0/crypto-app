@@ -151,7 +151,7 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [sortOrder, fiatCurrency, currentPage, apiKey, setCoins]);
+  }, [fiatCurrency, currentPage, apiKey, setCoins]);
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
