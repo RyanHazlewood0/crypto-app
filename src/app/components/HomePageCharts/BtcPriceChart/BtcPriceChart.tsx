@@ -69,7 +69,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
     datasets: [
       {
         label: null,
-        data: coinPriceData.map((obj) => obj.price.toFixed()),
+        data: coinPriceData.map((obj) => obj.price.toFixed(2)),
         borderColor: "#2d00f7",
         pointRadius: 0,
         backgroundColor: (context) => {
