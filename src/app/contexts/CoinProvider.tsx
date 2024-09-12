@@ -58,7 +58,9 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   }, [fiatCurrency]);
 
   useEffect(() => {
-    localStorage.setItem("fiat", fiatCurrency);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("fiat", fiatCurrency);
+    }
   });
 
   return (
