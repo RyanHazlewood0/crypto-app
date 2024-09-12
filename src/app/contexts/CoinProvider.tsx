@@ -63,7 +63,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("fiat", fiatCurrency);
     }
-  });
+  }, [fiatCurrency]);
 
   return (
     <CoinContext.Provider
