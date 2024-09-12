@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { CoinTypes } from "types";
 
@@ -8,7 +8,7 @@ interface CoinContextType {
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<CoinTypes[]>>;
   setSelectedBtn: Dispatch<SetStateAction<string>>;
-  // useCurrencyStorage: any;
+  useCurrencyStorage: any;
   setFiatCurrency: any;
   fiatCurrency: any;
 }
@@ -24,35 +24,38 @@ type useCoinProps = {
   children: React.ReactNode;
 };
 
-// const getSavedValue = (key, initialValue) => {
-//   if (typeof window !== "undefined") {
-//     const savedValue = JSON.parse(localStorage.getItem(key));
-//     if (savedValue) {
-//       return savedValue;
-//     }
-//     if (initialValue instanceof Function) return initialValue();
-//     return initialValue;
-//   }
-// };
+const getSavedValue = (key, initialValue) => {
+  if (typeof window !== "undefined") {
+    const savedValue = JSON.parse(localStorage.getItem(key));
+    if (savedValue) {
+      return savedValue;
+    }
+    if (initialValue instanceof Function) return initialValue();
+    return initialValue;
+  }
+};
 
-// const useCurrencyStorage = (key, initialvalue) => {
-//   const [value, setValue] = useState(() => {
-//     return getSavedValue(key, initialvalue);
-//   });
+const useCurrencyStorage = (key, initialvalue) => {
+  const [value, setValue] = useState(() => {
+    return getSavedValue(key, initialvalue);
+  });
 
-//   useEffect(() => {
-//     if (typeof window !== "undefined") {
-//       localStorage.setItem(key, JSON.stringify(value));
-//     }
-//   }, [value]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+  }, [value]);
 
-//   return [value, setValue];
-// };
+  return [value, setValue];
+};
 
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
-  const [fiatCurrency, setFiatCurrency] = useState("usd");
+  const [fiatCurrency, setFiatCurrency] = useCurrencyStorage(
+    "fiatCurrency",
+    "usd"
+  );
 
   return (
     <CoinContext.Provider
@@ -61,7 +64,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setCoins,
         selectedBtn,
         setSelectedBtn,
-        // useCurrencyStorage,
+        useCurrencyStorage,
         setFiatCurrency,
         fiatCurrency,
       }}
