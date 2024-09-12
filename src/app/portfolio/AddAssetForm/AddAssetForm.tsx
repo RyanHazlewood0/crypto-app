@@ -105,6 +105,7 @@ interface AddAssetFormProps {
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
   coinSelectValue: string;
   setCoinSelectValue: Dispatch<SetStateAction<string>>;
+  isEditOpen: any;
 }
 
 export interface PortfolioCoin {
@@ -133,6 +134,7 @@ const AddAssetForm = ({
   setPurchaseDateValue,
   portfolioCoins,
   setPortfolioCoins,
+  isEditOpen,
 }: AddAssetFormProps) => {
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
 
@@ -228,6 +230,7 @@ const AddAssetForm = ({
                 autoFocus
                 required
                 placeholder="Coin Name"
+                readOnly={isEditOpen}
               />
               {nameDropdownOpen && (
                 <DropDown>

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
-import { useCoin } from "../contexts/CoinProvider";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -32,7 +31,6 @@ const LoadingMessage = styled.p`
 `;
 
 export default function Portfolio() {
-  const { coins } = useCoin();
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
   );
@@ -42,6 +40,7 @@ export default function Portfolio() {
   const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
     null
   );
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   let fixedDates: PortfolioCoin[];
   if (typeof window !== "undefined") {
@@ -73,6 +72,7 @@ export default function Portfolio() {
     setCoinSelectValue("");
     setPurchaseDateValue(null);
     setPurchasedAmountValue(null);
+    setIsEditOpen(false);
   };
 
   const editCoinEntry = (
@@ -83,6 +83,7 @@ export default function Portfolio() {
     setCoinSelectValue(coin.name);
     setPurchaseDateValue(coin.purchaseDate.toISOString().split("T")[0]);
     setPurchasedAmountValue(coin.totalAmount.toString());
+    setIsEditOpen(true);
   };
 
   const sortedPortfolioCoins: [] | PortfolioCoin[] = [...portfolioCoins].sort(
@@ -117,6 +118,7 @@ export default function Portfolio() {
           portfolioCoins={portfolioCoins}
           coinSelectValue={coinSelectValue}
           setCoinSelectValue={setCoinSelectValue}
+          isEditOpen={isEditOpen}
         />
       )}
     </>
