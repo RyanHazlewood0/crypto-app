@@ -27,8 +27,10 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
   const [fiatCurrency, setFiatCurrency] = useState(() => {
-    const saved = localStorage.getItem("fiat");
-    return saved || "usd";
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("fiat");
+      return saved || "usd";
+    }
   });
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
