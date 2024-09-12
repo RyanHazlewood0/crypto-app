@@ -26,9 +26,7 @@ type useCoinProps = {
 export const CoinProvider = ({ children }: useCoinProps) => {
   const [coins, setCoins] = useState<CoinTypes[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
-  const [fiatCurrency, setFiatCurrency] = useState(
-    localStorage.getItem("fiat") || "usd"
-  );
+  const [fiatCurrency, setFiatCurrency] = useState("usd");
 
   return (
     <CoinContext.Provider

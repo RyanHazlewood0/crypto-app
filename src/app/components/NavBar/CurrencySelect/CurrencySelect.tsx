@@ -45,13 +45,6 @@ const CurrencySelect = () => {
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("fiat", fiatCurrency);
-    }
-    setFiatCurrency(fiatCurrency);
-  }, [fiatCurrency]);
-
   const handleToggleDropdown = () => {
     setFiatDropdownOpen(!fiatDropownOpen);
   };
