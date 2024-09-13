@@ -9,6 +9,11 @@ const ModalContainer = styled.div`
   background: #13121a;
   padding: 48px;
   border-radius: 20px;
+  z-index: 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const FormHeader = styled.div`
@@ -33,6 +38,9 @@ const ImageContainer = styled.div`
   background: #191932;
   width: 297px;
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const CoinForm = styled.form`
   display: flex;
@@ -95,6 +103,10 @@ const CoinOption = styled.p`
   }
 `;
 
+const Image = styled.img`
+  width: 60%;
+`;
+
 interface AddAssetFormProps {
   handleFormClose: () => void;
   purchasedAmountValue: string;
@@ -137,6 +149,7 @@ const AddAssetForm = ({
   isEditOpen,
 }: AddAssetFormProps) => {
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
+  const [coinImg, setCoinImg] = useState(null);
 
   const { coins } = useCoin();
 
@@ -206,6 +219,12 @@ const AddAssetForm = ({
     const value = e.currentTarget.textContent;
     setCoinSelectValue(value);
     setNameDropdownOpen(false);
+    const thisCoin = coins.find((coin) => {
+      if (coin.name === value) {
+        return coin;
+      }
+    });
+    setCoinImg(thisCoin.image);
   };
 
   const today = new Date();
@@ -220,7 +239,9 @@ const AddAssetForm = ({
           </SvgContainer>
         </FormHeader>
         <InnerContainer>
-          <ImageContainer>image</ImageContainer>
+          <ImageContainer>
+            <Image src={coinImg} />
+          </ImageContainer>
           <CoinForm onSubmit={handleSubmit}>
             <InputsContainer>
               <Input
