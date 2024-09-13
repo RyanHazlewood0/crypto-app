@@ -43,12 +43,6 @@ const ErrorText = styled.p`
   margin-bottom: 15px;
 `;
 
-const LoadingMessage = styled.p`
-  font-size: 50px;
-  font-weight: bold;
-  text-align: center;
-`;
-
 interface ConverterChartProps {
   dayCount: string;
   buyCoin: CoinTypes;
@@ -65,14 +59,12 @@ const ConverterChart = ({
   const [buyCoinPriceData, setBuyCoinPriceData] =
     useState<FetchedDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [dataSet, setDataSet] = useState(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   useEffect(() => {
     setHasError(false);
-    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response: Response = await fetch(
@@ -86,10 +78,8 @@ const ConverterChart = ({
 
         setSellCoinPriceData(fetchedData);
         setBuyCoinPriceData(fetchedData2);
-        setIsLoading(false);
       } catch {
         setHasError(true);
-        setIsLoading(false);
       }
     };
     fetchData();
@@ -171,11 +161,7 @@ const ConverterChart = ({
     tension: 0.5,
   } as any;
 
-  if (isLoading) {
-    return <LoadingMessage>Loading chart</LoadingMessage>;
-  }
-
-  if (sellCoinPriceData && buyCoinPriceData && !isLoading) {
+  if (sellCoinPriceData && buyCoinPriceData) {
     if (
       buyCoinPriceData.prices.length < Number(dayCount) ||
       sellCoinPriceData.prices.length < Number(dayCount)

@@ -104,7 +104,6 @@ interface CarouselProps {
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
   const { fiatCurrency } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
@@ -114,7 +113,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     setHasError(false);
     const fetchData = async () => {
       try {
@@ -123,10 +121,8 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
         );
         const data = await response.json();
         setCarouselCoins(data);
-        setIsLoading(false);
       } catch {
         setHasError(true);
-        setIsLoading(false);
       }
     };
     fetchData();
@@ -146,10 +142,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
     slidesToScroll: 6,
     variableWidth: true,
   };
-
-  if (isLoading) {
-    return <MessageText>Loading carousel coin data...</MessageText>;
-  }
 
   if (hasError) {
     return <MessageText>Error oading carousel coin data...</MessageText>;

@@ -177,7 +177,6 @@ interface CoinProps {
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { fiatCurrency } = useCoin();
 
@@ -186,16 +185,13 @@ export default function Coin({ params }: CoinProps) {
   useEffect(() => {
     const fetchData = async () => {
       setHasError(false);
-      setIsLoading(true);
       try {
         const response: Response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinDataTypes = await response.json();
         setThisCoinData(fetchedData);
-        setIsLoading(false);
       } catch {
-        setIsLoading(false);
         setHasError(true);
       }
     };
@@ -207,10 +203,6 @@ export default function Coin({ params }: CoinProps) {
     const formattedDate = date.toLocaleDateString();
     return formattedDate;
   };
-
-  if (isLoading) {
-    return <p>Loading Data</p>;
-  }
 
   if (hasError) {
     return <p>Error loading data</p>;

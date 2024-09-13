@@ -24,12 +24,6 @@ const AddBtn = styled.button`
   background: #6161d6;
 `;
 
-const LoadingMessage = styled.p`
-  font-size: 50px;
-  font-weight: bold;
-  text-align: center;
-`;
-
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []

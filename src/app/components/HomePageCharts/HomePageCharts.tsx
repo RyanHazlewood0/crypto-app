@@ -39,7 +39,6 @@ interface coinVolumeDataTypes {
 }
 
 const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState<
     CoinPriceDataTypes[] | null
@@ -55,7 +54,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   useEffect(() => {
     const getCoinData = async () => {
       setHasError(false);
-      setIsLoading(true);
+
       try {
         const response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
@@ -81,23 +80,17 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
             };
           })
         );
-        setIsLoading(false);
       } catch {
         if (selectedCoin && dayCount) {
           setHasError(true);
-          setIsLoading(false);
         }
       }
     };
     getCoinData();
   }, [selectedCoin, dayCount, fiatCurrency]);
 
-  if (isLoading) {
-    return <MessageText>Loading Charts...</MessageText>;
-  }
-
   if (hasError) {
-    return <MessageText>Error loading chart data...</MessageText>;
+    return <MessageText>Error loading data...</MessageText>;
   }
 
   return (
