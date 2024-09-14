@@ -5,7 +5,8 @@ import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
-
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 const HeaderContainer = styled.div`
   width: 100%;
   height: 45px;
@@ -36,6 +37,8 @@ export default function Portfolio() {
     null
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const size = useWindowSize();
 
   let fixedDates: PortfolioCoin[];
   if (typeof window !== "undefined") {
@@ -87,10 +90,12 @@ export default function Portfolio() {
 
   return (
     <>
-      <HeaderContainer>
-        <HeaderText>Portfolio</HeaderText>
-        <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
-      </HeaderContainer>
+      {size.width > parseInt(breakpoints.mobile) && (
+        <HeaderContainer>
+          <HeaderText>Portfolio</HeaderText>
+          <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
+        </HeaderContainer>
+      )}
 
       {sortedPortfolioCoins &&
         sortedPortfolioCoins.map((coin: PortfolioCoin) => (
