@@ -8,6 +8,7 @@ import { useCoin } from "../contexts/CoinProvider";
 import { CoinTypes } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import MobileButtons from "../components/MobileButtons/MobileButtons";
 
 const ConverterContainer = styled.div`
   width: 100%;
@@ -185,20 +186,6 @@ const DropDown = styled.div`
   @media (max-width: ${breakpoints.mobile}) {
     z-index: 2;
   }
-`;
-
-const MobileBtnContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: #191932;
-  position: fixed;
-  bottom: 0;
-`;
-
-const MobileBtn = styled.button`
-  width: 106.33px;
-  height: 53px;
 `;
 
 type StyleProp = {
@@ -492,13 +479,6 @@ export default function Converter() {
                 )}
               </InnerContainer>
             </ConverterBox>
-            {size.width < parseInt(breakpoints.mobile) && (
-              <MobileBtnContainer>
-                <MobileBtn>Overview</MobileBtn>
-                <MobileBtn>Converter</MobileBtn>
-                <MobileBtn>Portfolio</MobileBtn>
-              </MobileBtnContainer>
-            )}
           </ConverterContainer>
           <ConverterChart
             dayCount={dayCount}
@@ -510,6 +490,7 @@ export default function Converter() {
             setTimeFrameSelected={setTimeFrameSelected}
             setDayCount={setDayCount}
           />
+          <MobileButtons />
         </>
       )}
     </>

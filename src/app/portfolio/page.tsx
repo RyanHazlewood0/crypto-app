@@ -4,6 +4,7 @@ import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
+import MobileButtons from "../components/MobileButtons/MobileButtons";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -116,6 +117,7 @@ export default function Portfolio() {
           isEditOpen={isEditOpen}
         />
       )}
+      <MobileButtons />
     </>
   );
 }
