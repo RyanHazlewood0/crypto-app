@@ -31,12 +31,12 @@ const SearchInput = styled.input`
 
 const DropDown = styled.div`
   margin-top: 5px;
-  position: absolute;
   width: 100%;
   background: #191925;
   padding: 10px;
   border-radius: 6px;
-  z-index: 1;
+  position: absolute;
+  z-index: 4;
 `;
 
 const LinkContainer = styled.div`
