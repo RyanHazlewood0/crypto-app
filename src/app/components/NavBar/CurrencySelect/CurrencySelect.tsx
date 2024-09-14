@@ -32,6 +32,10 @@ const DropdownContainer = styled.div`
   position: absolute;
   width: 108px;
   text-align: center;
+  border-radius: 6px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 80px;
+  }
 `;
 
 const DropdownAndOptionContainer = styled.div`
@@ -39,6 +43,8 @@ const DropdownAndOptionContainer = styled.div`
   @media (max-width: ${breakpoints.mobile}) {
     width: 80px;
     height: 36px;
+    position: relative;
+    z-index: 3;
   }
 `;
 
