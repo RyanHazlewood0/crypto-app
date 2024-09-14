@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useCoin } from "../contexts/CoinProvider";
 import { CoinTypes } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const ConverterContainer = styled.div`
   width: 100%;
@@ -13,6 +15,12 @@ const ConverterContainer = styled.div`
   justify-content: space-between;
   position: relative;
   margin-bottom: 70px;
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
 `;
 
 const ConverterBox = styled.div<StyleProp>`
@@ -24,6 +32,9 @@ const ConverterBox = styled.div<StyleProp>`
   align-items: center;
   background: ${(props) => (props.sell ? "#191932" : "#1E1932")};
   position: relative;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+  }
 `;
 
 const Title = styled.h1`
@@ -95,12 +106,18 @@ const SellAmountInput = styled.input`
   border: solid 1px gray;
   border-radius: 6px;
   background: #191932;
+  @media (max-width: ${breakpoints.mobile}) {
+    max-width: 40%;
+  }
 `;
 
 const BuyAmountInput = styled.input`
   border: solid 1px gray;
   border-radius: 6px;
   background: #191932;
+  @media (max-width: ${breakpoints.mobile}) {
+    max-width: 40%;
+  }
 `;
 
 const CoinContainer = styled.div`
@@ -147,6 +164,9 @@ const CoinSearchPopup = styled.div`
   margin-left: -100px;
   gap: 5px;
   top: 100%;
+  @media (max-width: ${breakpoints.mobile}) {
+    z-index: 2;
+  }
 `;
 
 const CoinSearchPopupHeader = styled.h1`
@@ -162,12 +182,23 @@ const DropDown = styled.div`
   position: absolute;
   top: 100%;
   transform: translateY(90px) translateX(-100px);
+  @media (max-width: ${breakpoints.mobile}) {
+    z-index: 2;
+  }
 `;
 
-const LoadingMessage = styled.p`
-  font-size: 50px;
-  font-weight: bold;
-  text-align: center;
+const MobileBtnContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #191932;
+  position: fixed;
+  bottom: 0;
+`;
+
+const MobileBtn = styled.button`
+  width: 106.33px;
+  height: 53px;
 `;
 
 type StyleProp = {
@@ -190,6 +221,8 @@ export default function Converter() {
 
   const { coins } = useCoin();
 
+  const size = useWindowSize();
+
   useEffect(() => {
     if (coins.length > 0) {
       setSellCoin(coins[0]);
@@ -203,7 +236,7 @@ export default function Converter() {
       const sellCoinValue = sellCoinPrice * Number(sellQuantity);
       const buyCoinPrice = buyCoin.current_price;
       const result = sellCoinValue / buyCoinPrice;
-      setBuyQuantity(parseFloat(result.toFixed(3)));
+      setBuyQuantity(parseFloat(result.toFixed(2)));
     }
   }, [sellCoin, buyCoin]);
 
@@ -272,7 +305,7 @@ export default function Converter() {
       const sellCoinValue = sellCoinPrice * number;
       const buyCoinPrice = buyCoin.current_price;
       const result = sellCoinValue / buyCoinPrice;
-      setBuyQuantity(parseFloat(result.toFixed(3)));
+      setBuyQuantity(parseFloat(result.toFixed(2)));
     }
   };
 
@@ -282,7 +315,7 @@ export default function Converter() {
       const buyCoinValue = buyCoinPrice * number;
       const sellCoinPrice = sellCoin.current_price;
       const result = buyCoinValue / sellCoinPrice;
-      setSellQuantity(parseFloat(result.toFixed(3)));
+      setSellQuantity(parseFloat(result.toFixed(2)));
     }
   };
 
@@ -337,7 +370,9 @@ export default function Converter() {
     <>
       {sellCoin && buyCoin && (
         <>
-          <CoinsAndConverterBtns />
+          {size.width > parseInt(breakpoints.mobile) && (
+            <CoinsAndConverterBtns />
+          )}
           <Title>Cryptocurrency Converter</Title>
           <DateText>{currentDate}</DateText>
           <ConverterContainer>
@@ -347,7 +382,9 @@ export default function Converter() {
                 <SearchAndValueContainer>
                   <CoinContainer>
                     <CoinLogo src={sellCoin.image} />
-                    <CoinText>{sellCoin.name}</CoinText>
+                    {size.width > parseInt(breakpoints.mobile) && (
+                      <CoinText>{sellCoin.name}</CoinText>
+                    )}
                     <CoinText>({sellCoin.symbol.toUpperCase()})</CoinText>
                     <ArrowText onClick={toggleSellPopup}>▼</ArrowText>
                   </CoinContainer>
@@ -405,7 +442,9 @@ export default function Converter() {
                 <SearchAndValueContainer>
                   <CoinContainer>
                     <CoinLogo src={buyCoin.image} />
-                    <CoinText>{buyCoin.name}</CoinText>
+                    {size.width > parseInt(breakpoints.mobile) && (
+                      <CoinText>{buyCoin.name}</CoinText>
+                    )}
                     <CoinText>({buyCoin.symbol.toUpperCase()})</CoinText>
                     <ArrowText onClick={toggleBuyPopup}>▼</ArrowText>
                   </CoinContainer>
@@ -453,6 +492,13 @@ export default function Converter() {
                 )}
               </InnerContainer>
             </ConverterBox>
+            {size.width < parseInt(breakpoints.mobile) && (
+              <MobileBtnContainer>
+                <MobileBtn>Overview</MobileBtn>
+                <MobileBtn>Converter</MobileBtn>
+                <MobileBtn>Portfolio</MobileBtn>
+              </MobileBtnContainer>
+            )}
           </ConverterContainer>
           <ConverterChart
             dayCount={dayCount}

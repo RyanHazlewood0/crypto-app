@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import { CoinTypes } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
+import { breakpoints } from "breakpoints";
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +37,11 @@ const ChartContainer = styled.div`
 
   canvas {
     width: 100% !important;
+  }
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+    margin-bottom: 16px;
+    padding: 10px;
   }
 `;
 

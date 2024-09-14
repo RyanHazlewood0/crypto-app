@@ -9,6 +9,8 @@ import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { useState } from "react";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -17,17 +19,25 @@ const NavBarContainer = styled.div`
   align-items: center;
   margin: 15px 0 10px 0;
   padding-bottom: 30px;
+  @media (max-width: ${breakpoints.mobile}) {
+    margin-bottom: 16px;
+    padding-bottom: 0;
+  }
 `;
 
 const SearchDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 36px;
+  }
 `;
 
 const SearchIconWrapper = styled.div`
   position: absolute;
   margin-left: 10px;
+  width: 36px;
 `;
 
 const HomeWrapper = styled.div`
@@ -52,6 +62,12 @@ const RightDiv = styled.div`
   align-items: center;
   width: 544px;
   justify-content: space-between;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    max-width: 168px;
+    height: 36px;
+    align-items: center;
+  }
 `;
 
 const ThemeIconContainer = styled.div`
@@ -64,6 +80,11 @@ const ThemeIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+  }
 `;
 
 const HomeText = styled.p<StyleProp>`
@@ -79,6 +100,8 @@ const NavBar = () => {
   const { setSelectedBtn } = useCoin();
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
 
+  const size = useWindowSize();
+
   const handleSelectNavLink = (
     e: React.MouseEvent<HTMLDivElement>,
     LinkText: string
@@ -90,28 +113,32 @@ const NavBar = () => {
     <NavBarContainer>
       <LeftDiv>
         <Logo />
-        <Link href="/" onClick={() => setSelectedBtn("Coins")}>
-          <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
-            <Home selectedNavLink={selectedNavLink} />
-            {selectedNavLink === "Home" ? (
-              <HomeText>Home</HomeText>
-            ) : (
-              <HomeText gray>Home</HomeText>
-            )}
-          </HomeWrapper>
-        </Link>
-        <Link href="/portfolio">
-          <PortfolioWrapper
-            onClick={(e) => handleSelectNavLink(e, "Portfolio")}
-          >
-            <Portfolio selectedNavLink={selectedNavLink} />
-            {selectedNavLink === "Portfolio" ? (
-              <HomeText>Portfolio</HomeText>
-            ) : (
-              <HomeText gray>Portfolio</HomeText>
-            )}
-          </PortfolioWrapper>
-        </Link>
+        {size.width > parseInt(breakpoints.mobile) && (
+          <>
+            <Link href="/" onClick={() => setSelectedBtn("Coins")}>
+              <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
+                <Home selectedNavLink={selectedNavLink} />
+                {selectedNavLink === "Home" ? (
+                  <HomeText>Home</HomeText>
+                ) : (
+                  <HomeText gray>Home</HomeText>
+                )}
+              </HomeWrapper>
+            </Link>
+            <Link href="/portfolio">
+              <PortfolioWrapper
+                onClick={(e) => handleSelectNavLink(e, "Portfolio")}
+              >
+                <Portfolio selectedNavLink={selectedNavLink} />
+                {selectedNavLink === "Portfolio" ? (
+                  <HomeText>Portfolio</HomeText>
+                ) : (
+                  <HomeText gray>Portfolio</HomeText>
+                )}
+              </PortfolioWrapper>
+            </Link>
+          </>
+        )}
       </LeftDiv>
       <RightDiv>
         <SearchDiv>

@@ -4,10 +4,16 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { CoinTypes } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const SearchContainer = styled.div`
   display: column;
   width: 356px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -16,6 +22,11 @@ const SearchInput = styled.input`
   border-radius: 6px;
   width: 100%;
   border: solid 1px gray;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+  }
 `;
 
 const DropDown = styled.div`
@@ -39,6 +50,7 @@ const Search = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const { coins } = useCoin();
   const router = useRouter();
+  const size = useWindowSize();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -69,7 +81,9 @@ const Search = () => {
     <SearchContainer onBlur={handleBlur}>
       <SearchInput
         type="text"
-        placeholder="Search..."
+        placeholder={
+          size.width > parseInt(breakpoints.mobile) ? "Search..." : ""
+        }
         value={searchValue}
         onChange={(e) => handleSearch(e)}
       />
