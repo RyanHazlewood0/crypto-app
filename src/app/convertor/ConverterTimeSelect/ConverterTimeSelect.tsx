@@ -1,5 +1,6 @@
 import { SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
+import { breakpoints } from "breakpoints";
 
 const Container = styled.div`
   display: flex;
@@ -11,6 +12,9 @@ const Container = styled.div`
   border-radius: 6px;
   padding: 4px;
   margin-bottom: 70px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+  }
 `;
 
 const SelectBtn = styled.div<SelectBtnProps>`

@@ -8,6 +8,8 @@ import TotalVol from "./svg/TotalVol";
 import { useState, useEffect } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { CurrencyValue } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const MarketDataBarWrapper = styled.div`
   background: #1e1932;
@@ -23,6 +25,10 @@ const MarketDataBarInnerWrapper = styled.div`
   width: 50%;
   justify-content: space-between;
   margin: auto;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+    justify-content: space-between;
+  }
 `;
 
 const IndividualMarketDataWrapper = styled.div`
@@ -59,6 +65,7 @@ const MarketDataBar = () => {
   const [hasError, setHasError] = useState(false);
 
   const { fiatCurrency } = useCoin();
+  const size = useWindowSize();
 
   function abbreviateNumber(num: number): string {
     const prefixes = ["", "k", "M", "B", "T"];
@@ -108,15 +115,20 @@ const MarketDataBar = () => {
   ) : (
     <MarketDataBarWrapper>
       <MarketDataBarInnerWrapper>
-        <IndividualMarketDataWrapper>
-          <SvgWrapper>
-            <CoinCount />
-          </SvgWrapper>
-          <div>Coins {marketData.coins}</div>
-        </IndividualMarketDataWrapper>
-        <IndividualMarketDataWrapper>
-          <div>${marketData.totalMarketCap}</div>
-        </IndividualMarketDataWrapper>
+        {size.width > parseInt(breakpoints.mobile) && (
+          <>
+            <IndividualMarketDataWrapper>
+              <SvgWrapper>
+                <CoinCount />
+              </SvgWrapper>
+              <div>Coins {marketData.coins}</div>
+            </IndividualMarketDataWrapper>
+            <IndividualMarketDataWrapper>
+              <div>${marketData.totalMarketCap}</div>
+            </IndividualMarketDataWrapper>
+          </>
+        )}
+
         <IndividualMarketDataWrapper>
           <SvgWrapper>
             <TotalVol />

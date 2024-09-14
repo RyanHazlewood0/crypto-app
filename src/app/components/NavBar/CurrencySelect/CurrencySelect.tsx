@@ -2,6 +2,8 @@ import styled from "styled-components";
 import DollarSymbol from "../svg/DollarSymbol";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { useState, useRef, useEffect } from "react";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const CurrencyContainer = styled.div`
   display: flex;
@@ -15,6 +17,10 @@ const CurrencyContainer = styled.div`
   justify-content: center;
   gap: 10px;
   position: relative;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+    height: 36px;
+  }
 `;
 
 const DropdownContainer = styled.div`
@@ -30,6 +36,10 @@ const DropdownContainer = styled.div`
 
 const DropdownAndOptionContainer = styled.div`
   width: 108px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 80px;
+    height: 36px;
+  }
 `;
 
 const CurrencyOptionContainer = styled.div`
@@ -44,6 +54,7 @@ const CurrencySelect = () => {
   const { setFiatCurrency, fiatCurrency, isClient } = useCoin();
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
+  const size = useWindowSize();
 
   const handleToggleDropdown = () => {
     setFiatDropdownOpen(!fiatDropownOpen);
@@ -75,7 +86,8 @@ const CurrencySelect = () => {
   return (
     <DropdownAndOptionContainer ref={wrapperRef}>
       <CurrencyContainer onClick={handleToggleDropdown}>
-        <DollarSymbol />
+        {size.width > parseInt(breakpoints.mobile) && <DollarSymbol />}
+
         <p>{isClient ? fiatCurrency.toUpperCase() : "usd"}</p>
         <p>▼</p>
       </CurrencyContainer>
