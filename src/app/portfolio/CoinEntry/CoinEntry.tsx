@@ -11,6 +11,8 @@ import {
   findSupplyLevel,
   findVolumeLevel,
 } from "@/app/components/Table/helper-functions";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const CoinEntryContainer = styled.div`
   width: 100%;
@@ -117,6 +119,57 @@ const NumberAndLevelBox = styled.div`
   justify-content: space-between;
 `;
 
+const MobEntryContainer = styled.div`
+  width: 100%;
+  height: 315px;
+  display: flex;
+  flex-direction: column;
+  background: #191932;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  justify-content: space-between;
+`;
+
+const MobNameDateImgContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MobNameDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const MobValueRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MobileValueContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 155.5px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  align-items: center;
+  padding: 10px;
+`;
+
+const MobNameAndNumtext = styled.div`
+  font-size: 16px;
+`;
+const MobDatetext = styled.div`
+  font-size: 12px;
+`;
+const MobPrictext = styled.div`
+  font-size: 20px;
+`;
+const MobSmallText = styled.div`
+  font-size: 12px;
+  color: #e8e8e8;
+`;
+
 type TextColor = {
   green: boolean;
 };
@@ -157,6 +210,7 @@ const CoinEntry = ({
   const [changeSincePurchase, setChangeSincePurchase] = useState(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const size = useWindowSize();
 
   useEffect(() => {
     setError(false);
@@ -257,96 +311,143 @@ const CoinEntry = ({
   }
 
   if (coin) {
-    return (
-      <CoinEntryContainer>
-        <CoinImageContainer>
-          <Symbol src={coin.image} />
-          <NameText>
-            {coin.name} ({coin.symbol.toUpperCase()})
-          </NameText>
-        </CoinImageContainer>
-        <CoinInfoContainer>
-          <Row>
-            <InnerRow>
-              <TitleText>Market Price</TitleText>
-              <Btn onClick={() => deleteEntry(coin)}>X</Btn>
-            </InnerRow>
-            <InnerRow>
-              <ValueBox>
-                <SmallText>Current Price</SmallText>
-                <NumberText>${abbreviateNumber(currentP)}</NumberText>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>Price Change 24h</SmallText>
+    if (size.width < parseInt(breakpoints.mobile)) {
+      return (
+        <>
+          <MobEntryContainer>
+            <MobNameDateImgContainer>
+              <MobNameDateContainer>
+                <MobNameAndNumtext>{coin.name}</MobNameAndNumtext>
+                <MobDatetext>
+                  {coin.purchaseDate.toISOString().split("T")[0]}
+                </MobDatetext>
+              </MobNameDateContainer>
+              <Symbol src={coin.image} style={{ width: "43px" }} />
+            </MobNameDateImgContainer>
+            <MobPrictext>${abbreviateNumber(totalVal)}</MobPrictext>
+            <MobValueRow>
+              <MobileValueContainer>
+                <MobNameAndNumtext>
+                  ${abbreviateNumber(currentP)}
+                </MobNameAndNumtext>
+                <MobSmallText>Current Price</MobSmallText>
+              </MobileValueContainer>
+              <MobileValueContainer>
                 <PriceChangeText green={coin.priceChange24h > 0}>
                   {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(change24)}%
                 </PriceChangeText>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>24h Vol Vs M-Cap</SmallText>
-                <NumberAndLevelBox>
-                  <NumberText>
-                    <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
-                  </NumberText>
-                  <LevelIndicatorOuter>
-                    <LevelIndicatorInner
-                      style={{ width: `${findVolumeLevel(coin)}%` }}
-                    />
-                  </LevelIndicatorOuter>
-                </NumberAndLevelBox>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>Circ vs Total Supply</SmallText>
-                <NumberAndLevelBox>
-                  <NumberText>
-                    <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
-                  </NumberText>
-                  <LevelIndicatorOuter>
-                    <LevelIndicatorInner
-                      style={{ width: `${findSupplyLevel(coin)}%` }}
-                    />
-                  </LevelIndicatorOuter>
-                </NumberAndLevelBox>
-              </ValueBox>
-            </InnerRow>
-          </Row>
-          <Line />
-          <Row>
-            <InnerRow>
-              <TitleText>Your Coin</TitleText>
-              <Btn onClick={(e) => editCoinEntry(e, coin)}>
-                <EditIcon />
-              </Btn>
-            </InnerRow>
-            <InnerRow>
-              <ValueBox>
-                <SmallText>Current Amount</SmallText>
-                <NumberText>{coin.totalAmount}</NumberText>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>Amount Value</SmallText>
-                <NumberText>${abbreviateNumber(totalVal)}</NumberText>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>Price Change Since Purchase</SmallText>
-                <PriceChangeText green={currentP > purchasePrice}>
-                  {currentP > purchasePrice ? <GreenArrow /> : <RedArrow />}
-                  {currentP < purchasePrice && "- "}
+                <MobSmallText>24h%</MobSmallText>
+              </MobileValueContainer>
+            </MobValueRow>
+            <MobValueRow>
+              <MobileValueContainer>
+                <PriceChangeText green={coin.priceChange24h > 0}>
+                  {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(changeSincePurchase)}%
                 </PriceChangeText>
-              </ValueBox>
-              <ValueBox>
-                <SmallText>Purchase Date</SmallText>
-                <NumberText>
-                  {coin.purchaseDate.toISOString().split("T")[0]}
-                </NumberText>
-              </ValueBox>
-            </InnerRow>
-          </Row>
-        </CoinInfoContainer>
-      </CoinEntryContainer>
-    );
+                <MobSmallText>% Since Purchase</MobSmallText>
+              </MobileValueContainer>
+              <MobileValueContainer>
+                <MobNameAndNumtext>{coin.totalAmount}</MobNameAndNumtext>
+                <MobSmallText>Coin Amount</MobSmallText>
+              </MobileValueContainer>
+            </MobValueRow>
+          </MobEntryContainer>
+        </>
+      );
+    } else {
+      return (
+        <CoinEntryContainer>
+          <CoinImageContainer>
+            <Symbol src={coin.image} />
+            <NameText>
+              {coin.name} ({coin.symbol.toUpperCase()})
+            </NameText>
+          </CoinImageContainer>
+          <CoinInfoContainer>
+            <Row>
+              <InnerRow>
+                <TitleText>Market Price</TitleText>
+                <Btn onClick={() => deleteEntry(coin)}>X</Btn>
+              </InnerRow>
+              <InnerRow>
+                <ValueBox>
+                  <SmallText>Current Price</SmallText>
+                  <NumberText>${abbreviateNumber(currentP)}</NumberText>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>Price Change 24h</SmallText>
+                  <PriceChangeText green={coin.priceChange24h > 0}>
+                    {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
+                    {abbreviateNumber(change24)}%
+                  </PriceChangeText>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>24h Vol Vs M-Cap</SmallText>
+                  <NumberAndLevelBox>
+                    <NumberText>
+                      <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
+                    </NumberText>
+                    <LevelIndicatorOuter>
+                      <LevelIndicatorInner
+                        style={{ width: `${findVolumeLevel(coin)}%` }}
+                      />
+                    </LevelIndicatorOuter>
+                  </NumberAndLevelBox>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>Circ vs Total Supply</SmallText>
+                  <NumberAndLevelBox>
+                    <NumberText>
+                      <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
+                    </NumberText>
+                    <LevelIndicatorOuter>
+                      <LevelIndicatorInner
+                        style={{ width: `${findSupplyLevel(coin)}%` }}
+                      />
+                    </LevelIndicatorOuter>
+                  </NumberAndLevelBox>
+                </ValueBox>
+              </InnerRow>
+            </Row>
+            <Line />
+            <Row>
+              <InnerRow>
+                <TitleText>Your Coin</TitleText>
+                <Btn onClick={(e) => editCoinEntry(e, coin)}>
+                  <EditIcon />
+                </Btn>
+              </InnerRow>
+              <InnerRow>
+                <ValueBox>
+                  <SmallText>Current Amount</SmallText>
+                  <NumberText>{coin.totalAmount}</NumberText>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>Amount Value</SmallText>
+                  <NumberText>${abbreviateNumber(totalVal)}</NumberText>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>Price Change Since Purchase</SmallText>
+                  <PriceChangeText green={currentP > purchasePrice}>
+                    {currentP > purchasePrice ? <GreenArrow /> : <RedArrow />}
+                    {currentP < purchasePrice && "- "}
+                    {abbreviateNumber(changeSincePurchase)}%
+                  </PriceChangeText>
+                </ValueBox>
+                <ValueBox>
+                  <SmallText>Purchase Date</SmallText>
+                  <NumberText>
+                    {coin.purchaseDate.toISOString().split("T")[0]}
+                  </NumberText>
+                </ValueBox>
+              </InnerRow>
+            </Row>
+          </CoinInfoContainer>
+        </CoinEntryContainer>
+      );
+    }
   }
 };
 
