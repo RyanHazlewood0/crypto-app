@@ -33,7 +33,6 @@ const MobileButtons = () => {
         <MobileBtnContainer>
           <BtnContainer>
             <OverviewIcon />
-
             <button>Overview</button>
           </BtnContainer>
           <BtnContainer>

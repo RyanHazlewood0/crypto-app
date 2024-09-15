@@ -2,6 +2,8 @@ import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const ModalContainer = styled.div`
   width: 886px;
@@ -14,6 +16,9 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+  }
 `;
 
 const FormHeader = styled.div`
@@ -32,6 +37,9 @@ const InnerContainer = styled.div`
   height: 241px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -47,6 +55,9 @@ const CoinForm = styled.form`
   flex-direction: column;
   justify-content: space-between;
   width: 461px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+  }
 `;
 const BtnContainer = styled.div`
   width: 100%;
@@ -59,6 +70,9 @@ const CancelBtn = styled.button`
   height: 45px;
   background: #232336;
   border-radius: 6px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 45%;
+  }
 `;
 
 const SaveBtn = styled.button`
@@ -66,6 +80,9 @@ const SaveBtn = styled.button`
   height: 45px;
   background: #6161d6;
   border-radius: 6px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 45%;
+  }
 `;
 
 const InputsContainer = styled.div`
@@ -94,6 +111,9 @@ const DropDown = styled.div`
   background: ##191925;
   position: absolute;
   top: 45px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+  }
 `;
 
 const CoinOption = styled.p`
@@ -152,6 +172,8 @@ const AddAssetForm = ({
   const [coinImg, setCoinImg] = useState(null);
 
   const { coins } = useCoin();
+
+  const size = useWindowSize();
 
   const handleCoinSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -239,9 +261,12 @@ const AddAssetForm = ({
           </SvgContainer>
         </FormHeader>
         <InnerContainer>
-          <ImageContainer>
-            <Image src={coinImg} />
-          </ImageContainer>
+          {size.width > parseInt(breakpoints.mobile) && (
+            <ImageContainer>
+              <Image src={coinImg} />
+            </ImageContainer>
+          )}
+
           <CoinForm onSubmit={handleSubmit}>
             <InputsContainer>
               <Input
@@ -279,7 +304,13 @@ const AddAssetForm = ({
             </InputsContainer>
             <BtnContainer>
               <CancelBtn onClick={handleFormClose}>Cancel</CancelBtn>
-              <SaveBtn type="submit">Save and Continue</SaveBtn>
+              <SaveBtn type="submit">
+                {size.width > parseInt(breakpoints.mobile) ? (
+                  <p>Save and Continue</p>
+                ) : (
+                  <p>Save</p>
+                )}
+              </SaveBtn>
             </BtnContainer>
           </CoinForm>
         </InnerContainer>

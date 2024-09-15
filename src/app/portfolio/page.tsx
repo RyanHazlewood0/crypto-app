@@ -26,6 +26,18 @@ const AddBtn = styled.button`
   background: #6161d6;
 `;
 
+const MobileAddBtn = styled.button`
+  width: 56px;
+  height: 56px;
+  background: #6161d6;
+  border-radius: 50%;
+  position: fixed;
+  z-index: 1;
+  bottom: 75px;
+  font-size: 30px;
+  right: 10px;
+`;
+
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
@@ -96,7 +108,6 @@ export default function Portfolio() {
           <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
         </HeaderContainer>
       )}
-
       {sortedPortfolioCoins &&
         sortedPortfolioCoins.map((coin: PortfolioCoin) => (
           <CoinEntry
@@ -122,6 +133,10 @@ export default function Portfolio() {
           isEditOpen={isEditOpen}
         />
       )}
+      {size.width < parseInt(breakpoints.mobile) && (
+        <MobileAddBtn onClick={handleFormOpen}>+</MobileAddBtn>
+      )}
+
       <MobileButtons />
     </>
   );
