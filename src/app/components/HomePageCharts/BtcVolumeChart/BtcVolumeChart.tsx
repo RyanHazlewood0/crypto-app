@@ -137,7 +137,7 @@ const BtcVolumeChart = ({
           <MobileCoinText>{selectedCoin.name}</MobileCoinText>
           <MobileVolDateContainer>
             <VolumeText>
-              ${abbreviateNumber(selectedCoin.current_price)}
+              ${abbreviateNumber(selectedCoin.total_volume)}
             </VolumeText>
             <MobileDateText>{new Date().toDateString()}</MobileDateText>
           </MobileVolDateContainer>
