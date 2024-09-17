@@ -30,9 +30,6 @@ const TableRow = styled.tr`
   background: #191925;
   font-size: 14px;
   height: 77px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-  }
 `;
 
 const TableHeader = styled.thead`
@@ -45,8 +42,11 @@ const NameAndImageContainer = styled.td`
   display: flex;
   align-items: center;
   padding: 15px;
-  max-width: 175px;
+  width: 175px;
   height: 77px;
+  @media (max-width: ${breakpoints.mobile}) {
+    max-width: 125px;
+  }
 `;
 
 const StyledTd = styled.td<StyleProp>`
@@ -54,6 +54,9 @@ const StyledTd = styled.td<StyleProp>`
   height: 77px;
   border-radius: ${(props) =>
     props.left ? "10px 0 0 10px" : props.right ? "0 10px 10px 0" : "none"};
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 16px;
+  }
 `;
 
 const StyledTh = styled.th`
@@ -86,6 +89,9 @@ const NumberSeparator = styled.div`
 
 const PriceChangeDiv = styled.div<StyleProp>`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 12px;
+  }
 `;
 
 const ArrowSpan = styled.span<StyleProp>`
@@ -101,6 +107,14 @@ const CoinImage = styled.img`
 const LineChartContainer = styled.div`
   width: 150px;
   max-height: 47px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100px;
+  }
+`;
+
+const TextAndArrowText = styled.p`
+  display: flex;
+  margin-bottom: 10px;
 `;
 
 const PageTurnBtn = styled.button<StyleProp>`
@@ -122,6 +136,11 @@ const LoadingMessage = styled.p`
   font-size: 50px;
   font-weight: bold;
   text-align: center;
+`;
+
+const MobilePriceAnd24hContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 type StyleProp = {
@@ -238,120 +257,162 @@ const Table = () => {
   return (
     <>
       <CoinTable>
-        <TableHeader>
-          <tr>
-            <StyledTh>
-              <p>
-                #
-                <ArrowSpan left onClick={(e) => getSortOption(e, "mcap-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>
-              <p>
-                Name{" "}
-                <ArrowSpan left onClick={(e) => getSortOption(e, "name-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>
-              <p>
-                Price{" "}
-                <ArrowSpan left onClick={(e) => getSortOption(e, "price-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>
-              <p>
-                1h%{" "}
-                <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>
-              <p>
-                24h%{" "}
-                <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>
-              <p>
-                7d%{" "}
-                <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
-                  ▼
-                </ArrowSpan>
-                <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
-                  ▲
-                </ArrowSpan>
-              </p>
-            </StyledTh>
-            <StyledTh>24h Volume / Market Cap</StyledTh>
-            <StyledTh>Circulating / Total Supply</StyledTh>
-            <StyledTh>Last 7d</StyledTh>
-          </tr>
-        </TableHeader>
+        {size.width > parseInt(breakpoints.mobile) && (
+          <TableHeader>
+            <tr>
+              <StyledTh>
+                <TextAndArrowText>
+                  #
+                  <ArrowSpan
+                    left
+                    onClick={(e) => getSortOption(e, "mcap-desc")}
+                  >
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  Name{" "}
+                  <ArrowSpan
+                    left
+                    onClick={(e) => getSortOption(e, "name-desc")}
+                  >
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  Price{" "}
+                  <ArrowSpan
+                    left
+                    onClick={(e) => getSortOption(e, "price-desc")}
+                  >
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  1h%{" "}
+                  <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  24h%{" "}
+                  <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  7d%{" "}
+                  <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <p style={{ marginBottom: "10px" }}>24h Volume / Market Cap</p>
+              </StyledTh>
+              <StyledTh>
+                {" "}
+                <p style={{ marginBottom: "10px" }}>
+                  Circulating / Total Supply
+                </p>
+              </StyledTh>
+              <StyledTh>
+                {" "}
+                <p style={{ marginBottom: "10px" }}>Last 7d</p>
+              </StyledTh>
+            </tr>
+          </TableHeader>
+        )}
+        {size.width < parseInt(breakpoints.mobile) && (
+          <TableHeader>
+            <tr>
+              <StyledTh>
+                <TextAndArrowText>
+                  Name{" "}
+                  <ArrowSpan
+                    left
+                    onClick={(e) => getSortOption(e, "name-desc")}
+                  >
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                <TextAndArrowText>
+                  Price{" "}
+                  <ArrowSpan
+                    left
+                    onClick={(e) => getSortOption(e, "price-desc")}
+                  >
+                    ▼
+                  </ArrowSpan>
+                  <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
+                    ▲
+                  </ArrowSpan>
+                </TextAndArrowText>
+              </StyledTh>
+              <StyledTh>
+                {" "}
+                <p style={{ marginBottom: "10px" }}>Last 7d</p>
+              </StyledTh>
+            </tr>
+          </TableHeader>
+        )}
+
         <tbody>
           {sortedCoins.map((coin) => (
             <TableRow key={coin.id}>
-              <StyledTd left>{coin.market_cap_rank}</StyledTd>
+              {size.width > parseInt(breakpoints.mobile) && (
+                <StyledTd left>{coin.market_cap_rank}</StyledTd>
+              )}
               <NameAndImageContainer>
                 <CoinImage src={coin.image} />
                 <Link href={`/coin/${coin.id}`}>
-                  {coin.name} ({coin.symbol.toUpperCase()})
+                  <div style={{ display: "flex" }}>
+                    {size.width > parseInt(breakpoints.mobile)
+                      ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
+                      : coin.symbol.toUpperCase()}
+                  </div>
                 </Link>
               </NameAndImageContainer>
-              <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
-              <StyledTd>
-                {coin.price_change_percentage_1h_in_currency && (
-                  <ArrowAndPercentContainer>
-                    {Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                    1 ? (
-                      <RedArrow />
-                    ) : (
-                      <GreenArrow />
-                    )}
-                    <PriceChangeDiv
-                      green={
-                        Math.sign(
-                          coin.price_change_percentage_1h_in_currency
-                        ) === 1
-                      }
-                    >
-                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                    </PriceChangeDiv>
-                  </ArrowAndPercentContainer>
-                )}
-              </StyledTd>
-              <StyledTd>
-                {coin.price_change_percentage_24h_in_currency && (
-                  <ArrowAndPercentContainer>
-                    {Math.sign(coin.price_change_percentage_24h_in_currency) !==
-                    1 ? (
-                      <RedArrow />
-                    ) : (
-                      <GreenArrow />
-                    )}
+              {size.width > parseInt(breakpoints.mobile) && (
+                <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
+              )}
+              {size.width < parseInt(breakpoints.mobile) && (
+                <StyledTd>
+                  <MobilePriceAnd24hContainer>
+                    ${abbreviateNumber(coin.current_price)}
                     <PriceChangeDiv
                       green={
                         Math.sign(
@@ -359,58 +420,136 @@ const Table = () => {
                         ) === 1
                       }
                     >
-                      {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                      <ArrowAndPercentContainer>
+                        {Math.sign(
+                          coin.price_change_percentage_24h_in_currency
+                        ) !== 1 ? (
+                          <RedArrow />
+                        ) : (
+                          <GreenArrow />
+                        )}
+                        <PriceChangeDiv
+                          green={
+                            Math.sign(
+                              coin.price_change_percentage_24h_in_currency
+                            ) === 1
+                          }
+                        >
+                          {coin.price_change_percentage_24h_in_currency.toFixed(
+                            2
+                          )}
+                          %
+                        </PriceChangeDiv>
+                      </ArrowAndPercentContainer>
                     </PriceChangeDiv>
-                  </ArrowAndPercentContainer>
-                )}
-              </StyledTd>
-              <StyledTd>
-                {coin.price_change_percentage_7d_in_currency && (
-                  <ArrowAndPercentContainer>
-                    {Math.sign(coin.price_change_percentage_7d_in_currency) !==
-                    1 ? (
-                      <RedArrow />
-                    ) : (
-                      <GreenArrow />
+                  </MobilePriceAnd24hContainer>
+                </StyledTd>
+              )}
+              {size.width > parseInt(breakpoints.mobile) && (
+                <>
+                  <StyledTd>
+                    {coin.price_change_percentage_1h_in_currency && (
+                      <ArrowAndPercentContainer>
+                        {Math.sign(
+                          coin.price_change_percentage_1h_in_currency
+                        ) !== 1 ? (
+                          <RedArrow />
+                        ) : (
+                          <GreenArrow />
+                        )}
+                        <PriceChangeDiv
+                          green={
+                            Math.sign(
+                              coin.price_change_percentage_1h_in_currency
+                            ) === 1
+                          }
+                        >
+                          {coin.price_change_percentage_1h_in_currency.toFixed(
+                            2
+                          )}
+                          %
+                        </PriceChangeDiv>
+                      </ArrowAndPercentContainer>
                     )}
-                    <PriceChangeDiv
-                      green={
-                        Math.sign(
+                  </StyledTd>
+                  <StyledTd>
+                    {coin.price_change_percentage_24h_in_currency && (
+                      <ArrowAndPercentContainer>
+                        {Math.sign(
+                          coin.price_change_percentage_24h_in_currency
+                        ) !== 1 ? (
+                          <RedArrow />
+                        ) : (
+                          <GreenArrow />
+                        )}
+                        <PriceChangeDiv
+                          green={
+                            Math.sign(
+                              coin.price_change_percentage_24h_in_currency
+                            ) === 1
+                          }
+                        >
+                          {coin.price_change_percentage_24h_in_currency.toFixed(
+                            2
+                          )}
+                          %
+                        </PriceChangeDiv>
+                      </ArrowAndPercentContainer>
+                    )}
+                  </StyledTd>
+                  <StyledTd>
+                    {coin.price_change_percentage_7d_in_currency && (
+                      <ArrowAndPercentContainer>
+                        {Math.sign(
                           coin.price_change_percentage_7d_in_currency
-                        ) === 1
-                      }
-                    >
-                      {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
-                    </PriceChangeDiv>
-                  </ArrowAndPercentContainer>
-                )}
-              </StyledTd>
-              <StyledTd>
-                <NumberSeparator>
-                  {coin.total_volume && coin.market_cap && (
-                    <>
-                      <div>{abbreviateNumber(coin.total_volume)}</div>
-                      <div>{abbreviateNumber(coin.market_cap)}</div>
-                    </>
-                  )}
-                </NumberSeparator>
-                <LevelIndicatorOuter>
-                  <LevelIndicatorInner
-                    style={{ width: `${findVolumeLevel(coin)}%` }}
-                  />
-                </LevelIndicatorOuter>
-              </StyledTd>
-              <StyledTd>
-                <NumberSeparator>
-                  <div>{abbreviateNumber(coin.circulating_supply)}</div>
-                  <div>{abbreviateNumber(coin.total_supply)}</div>
-                </NumberSeparator>
-                <LevelIndicatorOuter>
-                  <LevelIndicatorInner
-                    style={{ width: `${findSupplyLevel(coin)}%` }}
-                  />
-                </LevelIndicatorOuter>
-              </StyledTd>
+                        ) !== 1 ? (
+                          <RedArrow />
+                        ) : (
+                          <GreenArrow />
+                        )}
+                        <PriceChangeDiv
+                          green={
+                            Math.sign(
+                              coin.price_change_percentage_7d_in_currency
+                            ) === 1
+                          }
+                        >
+                          {coin.price_change_percentage_7d_in_currency.toFixed(
+                            2
+                          )}
+                          %
+                        </PriceChangeDiv>
+                      </ArrowAndPercentContainer>
+                    )}
+                  </StyledTd>
+                  <StyledTd>
+                    <NumberSeparator>
+                      {coin.total_volume && coin.market_cap && (
+                        <>
+                          <div>{abbreviateNumber(coin.total_volume)}</div>
+                          <div>{abbreviateNumber(coin.market_cap)}</div>
+                        </>
+                      )}
+                    </NumberSeparator>
+                    <LevelIndicatorOuter>
+                      <LevelIndicatorInner
+                        style={{ width: `${findVolumeLevel(coin)}%` }}
+                      />
+                    </LevelIndicatorOuter>
+                  </StyledTd>
+                  <StyledTd>
+                    <NumberSeparator>
+                      <div>{abbreviateNumber(coin.circulating_supply)}</div>
+                      <div>{abbreviateNumber(coin.total_supply)}</div>
+                    </NumberSeparator>
+                    <LevelIndicatorOuter>
+                      <LevelIndicatorInner
+                        style={{ width: `${findSupplyLevel(coin)}%` }}
+                      />
+                    </LevelIndicatorOuter>
+                  </StyledTd>
+                </>
+              )}
               <StyledTd right>
                 <LineChartContainer>
                   <TableLineChart coin={coin} />
