@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { breakpoints } from "breakpoints";
 
 const BtnsContainer = styled.div`
   display: flex;
   margin-bottom: 30px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+  }
 `;
 
 const Btn = styled.div<StyleProp>`
@@ -17,6 +21,9 @@ const Btn = styled.div<StyleProp>`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 187.5px;
+  }
 `;
 
 type StyleProp = {
