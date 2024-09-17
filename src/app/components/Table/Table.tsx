@@ -12,13 +12,17 @@ import Link from "next/link";
 import styled from "styled-components";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const CoinTable = styled.table`
-  max-width: 100%;
   width: 100%;
   margin: 0 auto 0 auto;
   border-collapse: separate;
   border-spacing: 0 6px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+  }
 `;
 
 const TableRow = styled.tr`
@@ -26,6 +30,9 @@ const TableRow = styled.tr`
   background: #191925;
   font-size: 14px;
   height: 77px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+  }
 `;
 
 const TableHeader = styled.thead`
@@ -132,6 +139,7 @@ const Table = () => {
   const [tableCoins, setTableCoins] = useState([]);
 
   const { fiatCurrency } = useCoin();
+  const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
