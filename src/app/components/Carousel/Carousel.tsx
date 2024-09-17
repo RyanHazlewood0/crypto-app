@@ -32,7 +32,7 @@ const CarouselBox = styled.div<StylePropSelected>`
   cursor: pointer;
   width: 210px !important;
   @media (max-width: ${breakpoints.mobile}) {
-    width: 180px !important;
+    width: 175px !important;
   }
 `;
 
@@ -55,7 +55,7 @@ const StyledSlider = styled(Slider)`
   .slick-slide {
     margin: 0 18.625px 0 18.625px;
     @media (max-width: ${breakpoints.mobile}) {
-      margin: 0 7.5px 0 7.5px;
+      margin: 0 12px 0 12px;
     }
   }
   .slick-next {
