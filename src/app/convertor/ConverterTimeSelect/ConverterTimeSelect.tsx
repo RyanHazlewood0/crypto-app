@@ -14,6 +14,7 @@ const Container = styled.div`
   margin-bottom: 70px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 375px;
+    margin-bottom: 82px;
   }
 `;
 

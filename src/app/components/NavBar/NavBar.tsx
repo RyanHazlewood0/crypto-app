@@ -62,7 +62,6 @@ const RightDiv = styled.div`
   align-items: center;
   width: 544px;
   justify-content: space-between;
-
   @media (max-width: ${breakpoints.mobile}) {
     max-width: 168px;
     height: 36px;

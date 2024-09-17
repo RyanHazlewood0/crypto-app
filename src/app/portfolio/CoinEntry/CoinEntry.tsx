@@ -133,7 +133,17 @@ const MobEntryContainer = styled.div`
 
 const MobNameDateImgContainer = styled.div`
   display: flex;
+  justify-content: left;
+  width: 50%;
+  gap: 20px;
+`;
+
+const EditDeleteBtnContainer = styled.div`
+  display: flex;
   justify-content: space-between;
+  width: 50%;
+  justify-content: right;
+  gap: 20px;
 `;
 
 const MobNameDateContainer = styled.div`
@@ -168,6 +178,10 @@ const MobPrictext = styled.div`
 const MobSmallText = styled.div`
   font-size: 12px;
   color: #e8e8e8;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
 `;
 
 type TextColor = {
@@ -315,16 +329,27 @@ const CoinEntry = ({
       return (
         <>
           <MobEntryContainer>
-            <MobNameDateImgContainer>
-              <MobNameDateContainer>
-                <MobNameAndNumtext>{coin.name}</MobNameAndNumtext>
-                <MobDatetext>
-                  {coin.purchaseDate.toISOString().split("T")[0]}
-                </MobDatetext>
-              </MobNameDateContainer>
-              <Symbol src={coin.image} style={{ width: "43px" }} />
-            </MobNameDateImgContainer>
-            <MobPrictext>${abbreviateNumber(totalVal)}</MobPrictext>
+            <HeaderContainer>
+              <MobNameDateImgContainer>
+                <MobNameDateContainer>
+                  <MobNameAndNumtext>{coin.name}</MobNameAndNumtext>
+                  <MobDatetext>
+                    {coin.purchaseDate.toISOString().split("T")[0]}
+                  </MobDatetext>
+                </MobNameDateContainer>
+                <Symbol src={coin.image} style={{ width: "43px" }} />
+              </MobNameDateImgContainer>
+              <EditDeleteBtnContainer>
+                <Btn onClick={(e) => editCoinEntry(e, coin)}>
+                  <EditIcon />
+                </Btn>
+                <Btn onClick={() => deleteEntry(coin)}>X</Btn>
+              </EditDeleteBtnContainer>
+            </HeaderContainer>
+            <MobPrictext>
+              {" "}
+              <SmallText>Total Value</SmallText>${abbreviateNumber(totalVal)}
+            </MobPrictext>
             <MobValueRow>
               <MobileValueContainer>
                 <MobNameAndNumtext>

@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import { abbreviateNumber } from "../../Table/helper-functions";
 import { CoinTypes } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 ChartJS.register(
   CategoryScale,
@@ -31,6 +33,10 @@ const ChartContainer = styled.div`
   border-radius: 6px;
   height: 400px;
   align-items: flex-end;
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 200px;
+    width: 100%;
+  }
 `;
 
 const HeaderTextContainer = styled.div`
@@ -53,6 +59,27 @@ const DateText = styled.h3`
   color: gray;
 `;
 
+const MobileHeaderTextContainer = styled.div`
+  height: 30%;
+  padding: 2.5% 0 0 2.5%;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const MobilePriceDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const MobileDateText = styled.div`
+  font-size: 12px;
+`;
+
+const MobileCoinText = styled.div`
+  font-size: 18px;
+`;
+
 type CoinPriceDataTypes = {
   price: number;
   date: string;
@@ -64,6 +91,8 @@ type BtcPriceChartProps = {
 };
 
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
+  const size = useWindowSize();
+
   const lineChartData = {
     labels: coinPriceData.map((obj) => obj.date),
     datasets: [
@@ -116,11 +145,24 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
 
   return (
     <ChartContainer>
-      <HeaderTextContainer>
-        <CoinText>{selectedCoin.name}</CoinText>
-        <PriceText>${abbreviateNumber(selectedCoin.current_price)}</PriceText>
-        <DateText>{new Date().toDateString()}</DateText>
-      </HeaderTextContainer>
+      {size.width < parseInt(breakpoints.mobile) && (
+        <MobileHeaderTextContainer>
+          <MobileCoinText>{selectedCoin.name}</MobileCoinText>
+          <MobilePriceDateContainer>
+            <PriceText>
+              ${abbreviateNumber(selectedCoin.current_price)}
+            </PriceText>
+            <MobileDateText>{new Date().toDateString()}</MobileDateText>
+          </MobilePriceDateContainer>
+        </MobileHeaderTextContainer>
+      )}
+      {size.width > parseInt(breakpoints.mobile) && (
+        <HeaderTextContainer>
+          <CoinText>{selectedCoin.name}</CoinText>
+          <PriceText>${abbreviateNumber(selectedCoin.current_price)}</PriceText>
+          <DateText>{new Date().toDateString()}</DateText>
+        </HeaderTextContainer>
+      )}
       {coinPriceData && (
         <Line
           options={options}

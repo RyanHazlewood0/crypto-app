@@ -10,10 +10,14 @@ import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import { CoinTypes } from "types";
 import { useEffect } from "react";
+import { breakpoints } from "breakpoints";
 
 const CarouselContainer = styled.div`
   width: 100%;
   margin-top: 80px;
+  @media (max-width: ${breakpoints.mobile}) {
+    margin-top: 40px;
+  }
 `;
 
 const CarouselBox = styled.div<StylePropSelected>`
@@ -26,6 +30,10 @@ const CarouselBox = styled.div<StylePropSelected>`
   justify-content: space-around;
   border: ${(props) => (props.selected ? "solid 1px #a7a7cc" : "none")};
   cursor: pointer;
+  width: 210px !important;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 180px !important;
+  }
 `;
 
 const ArrowAndPercentContainer = styled.div`
@@ -45,7 +53,10 @@ const HeaderText = styled.p`
 
 const StyledSlider = styled(Slider)`
   .slick-slide {
-    margin: 0 3.6px 0 3.6px;
+    margin: 0 18.625px 0 18.625px;
+    @media (max-width: ${breakpoints.mobile}) {
+      margin: 0 7.5px 0 7.5px;
+    }
   }
   .slick-next {
     position: absolute;
@@ -67,6 +78,13 @@ const StyledSlider = styled(Slider)`
   }
   .slick-list {
     margin-bottom: 30px;
+  }
+
+  .slick-track {
+    @media (max-width: ${breakpoints.mobile}) {
+      max-width: 375px;
+      display: flex;
+    }
   }
 `;
 
@@ -135,16 +153,15 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   }, [carouselCoins]);
 
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
+    slidesToShow: breakpoints.mobile ? 2 : 6,
+    slidesToScroll: 1,
     variableWidth: true,
   };
 
   if (hasError) {
-    return <MessageText>Error oading carousel coin data...</MessageText>;
+    return <MessageText>Error loading carousel coin data...</MessageText>;
   }
 
   return (
@@ -154,7 +171,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
         <StyledSlider {...settings}>
           {carouselCoins.map((coin) => (
             <CarouselBox
-              style={{ width: 210 }}
+              style={{ width: breakpoints.mobile ? 180 : 210 }}
               key={coin.id}
               selected={coin.id === selectedCoin.id}
               onClick={() => handleSelectCoin(coin)}

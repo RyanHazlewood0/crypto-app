@@ -4,12 +4,20 @@ import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
 import { CoinTypes } from "types";
 import { useCoin } from "@/app/contexts/CoinProvider";
+import { breakpoints } from "breakpoints";
 
 const ChartsContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 40px 0 50px 0;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 375px;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
 `;
 
 const MessageText = styled.p`

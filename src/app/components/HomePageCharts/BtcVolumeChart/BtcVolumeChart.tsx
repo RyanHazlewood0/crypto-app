@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { abbreviateNumber } from "../../Table/helper-functions";
 import { CoinTypes } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +29,10 @@ const ChartContainer = styled.div`
   border-radius: 6px;
   height: 400px;
   align-items: flex-end;
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 200px;
+    width: 100%;
+  }
 `;
 
 const HeaderTextContainer = styled.div`
@@ -49,6 +55,27 @@ const DateText = styled.h3`
   color: gray;
 `;
 
+const MobileHeaderTextContainer = styled.div`
+  height: 30%;
+  padding: 2.5% 0 0 2.5%;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const MobileVolDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const MobileDateText = styled.div`
+  font-size: 12px;
+`;
+
+const MobileCoinText = styled.div`
+  font-size: 18px;
+`;
+
 interface CoinVolumeDataTypes {
   volume: number;
   date: string;
@@ -63,6 +90,7 @@ const BtcVolumeChart = ({
   coinVolumeData,
   selectedCoin,
 }: BtcVolumeChartProps) => {
+  const size = useWindowSize();
   const barChartData = {
     labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
@@ -104,11 +132,26 @@ const BtcVolumeChart = ({
 
   return (
     <ChartContainer>
-      <HeaderTextContainer>
-        <CoinText>{selectedCoin.name}</CoinText>
-        <VolumeText>${abbreviateNumber(selectedCoin.total_volume)}</VolumeText>
-        <DateText>{new Date().toDateString()}</DateText>
-      </HeaderTextContainer>
+      {size.width < parseInt(breakpoints.mobile) && (
+        <MobileHeaderTextContainer>
+          <MobileCoinText>{selectedCoin.name}</MobileCoinText>
+          <MobileVolDateContainer>
+            <VolumeText>
+              ${abbreviateNumber(selectedCoin.current_price)}
+            </VolumeText>
+            <MobileDateText>{new Date().toDateString()}</MobileDateText>
+          </MobileVolDateContainer>
+        </MobileHeaderTextContainer>
+      )}
+      {size.width > parseInt(breakpoints.mobile) && (
+        <HeaderTextContainer>
+          <CoinText>{selectedCoin.name}</CoinText>
+          <VolumeText>
+            ${abbreviateNumber(selectedCoin.total_volume)}
+          </VolumeText>
+          <DateText>{new Date().toDateString()}</DateText>
+        </HeaderTextContainer>
+      )}
       <Bar
         options={options}
         data={barChartData}

@@ -490,9 +490,9 @@ export default function Converter() {
             setTimeFrameSelected={setTimeFrameSelected}
             setDayCount={setDayCount}
           />
-          <MobileButtons />
         </>
       )}
+      <MobileButtons />
     </>
   );
 }

@@ -5,44 +5,73 @@ import useWindowSize from "windowSizeHook";
 import { OverviewIcon } from "./svg/overview";
 import { PortfolioIcon } from "./svg/portfolio";
 import { ConverterIcon } from "./svg/converter";
+import Link from "next/link";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 const MobileBtnContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background: #191932;
   position: fixed;
   bottom: 0;
-  padding: 10px 0 10px 0;
+  padding: 0;
+  background: #232336;
+  width: 375px;
 `;
 
-const BtnContainer = styled.div`
+const MobileBtnInnerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #232336;
+`;
+
+const BtnContainer = styled.div<StyleProp>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 106.33px;
+  background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
+  padding: 10px;
+  border-radius: 6px;
 `;
+
+const Btn = styled.button``;
+
+type StyleProp = {
+  selected: boolean;
+};
 
 const MobileButtons = () => {
   const size = useWindowSize();
-
+  const { selectedMobileBtn, setSelectedMobileBtn } = useCoin();
   return (
     <>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileBtnContainer>
-          <BtnContainer>
-            <OverviewIcon />
-            <button>Overview</button>
-          </BtnContainer>
-          <BtnContainer>
-            <ConverterIcon />
-            <button>Converter</button>
-          </BtnContainer>
-          <BtnContainer>
-            <PortfolioIcon />
-            <button>Portfolio</button>
-          </BtnContainer>
+          <MobileBtnInnerContainer>
+            <Link href="/" onClick={() => setSelectedMobileBtn("Overview")}>
+              <BtnContainer selected={selectedMobileBtn === "Overview"}>
+                <OverviewIcon />
+                <Btn>Overview</Btn>
+              </BtnContainer>
+            </Link>
+            <Link
+              href="/convertor"
+              onClick={() => setSelectedMobileBtn("Converter")}
+            >
+              <BtnContainer selected={selectedMobileBtn === "Converter"}>
+                <ConverterIcon />
+                <Btn>Converter</Btn>
+              </BtnContainer>
+            </Link>
+            <Link
+              href="/portfolio"
+              onClick={() => setSelectedMobileBtn("Portfolio")}
+            >
+              <BtnContainer selected={selectedMobileBtn === "Portfolio"}>
+                <PortfolioIcon />
+                <Btn>Portfolio</Btn>
+              </BtnContainer>
+            </Link>
+          </MobileBtnInnerContainer>
         </MobileBtnContainer>
       )}
     </>
