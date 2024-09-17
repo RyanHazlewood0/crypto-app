@@ -1,4 +1,4 @@
-import { PortfolioCoin } from "@/app/portfolio/AddAssetForm/AddAssetForm";
+import { PortfolioCoin } from "@/app/portfolio/[url]/AddAssetForm/AddAssetForm";
 import { CoinTypes } from "types";
 
 export const abbreviateNumber = (num: number): number | string => {

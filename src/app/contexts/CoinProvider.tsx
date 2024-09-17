@@ -11,6 +11,8 @@ interface CoinContextType {
   setFiatCurrency: any;
   fiatCurrency: any;
   isClient: any;
+  selectedMobileBtn: any;
+  setSelectedMobileBtn: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -29,6 +31,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
   const [fiatCurrency, setFiatCurrency] = useState("usd");
   const [isClient, setIsClient] = useState(false);
+  const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
 
   useEffect(() => {
     setIsClient(true);
@@ -83,6 +86,8 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setFiatCurrency,
         fiatCurrency,
         isClient,
+        selectedMobileBtn,
+        setSelectedMobileBtn,
       }}
     >
       {children}

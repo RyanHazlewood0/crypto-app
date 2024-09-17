@@ -7,6 +7,7 @@ import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeS
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import { useState } from "react";
 import { CoinTypes } from "types";
+import MobileButtons from "./components/MobileButtons/MobileButtons";
 
 export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState<CoinTypes | null>(null);
@@ -24,6 +25,7 @@ export default function Home() {
         setDayCount={setDayCount}
       />
       <Table />
+      <MobileButtons />
     </>
   );
 }

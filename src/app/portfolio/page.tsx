@@ -7,6 +7,7 @@ import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+
 const HeaderContainer = styled.div`
   width: 100%;
   height: 45px;
@@ -134,10 +135,11 @@ export default function Portfolio() {
         />
       )}
       {size.width < parseInt(breakpoints.mobile) && (
-        <MobileAddBtn onClick={handleFormOpen}>+</MobileAddBtn>
+        <>
+          <MobileAddBtn onClick={handleFormOpen}>+</MobileAddBtn>
+          <MobileButtons />
+        </>
       )}
-
-      <MobileButtons />
     </>
   );
 }
