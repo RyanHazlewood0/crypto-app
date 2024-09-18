@@ -256,46 +256,48 @@ const CoinEntry = ({
   useEffect(() => {
     const fetchData = async () => {
       setError(false);
-      try {
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
-        );
-        const data = await response.json();
-        if (fiatCurrency === "usd") {
-          setCurrentP(data.market_data.current_price.usd);
-          setTotalVal(data.market_data.current_price.usd * coin.totalAmount);
-          setChange24(
-            data.market_data.price_change_percentage_24h_in_currency.usd
+      if (coin) {
+        try {
+          const response = await fetch(
+            `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
           );
-        } else if (fiatCurrency === "nzd") {
-          setCurrentP(data.market_data.current_price.nzd);
-          setTotalVal(data.market_data.current_price.nzd * coin.totalAmount);
-          setChange24(
-            data.market_data.price_change_percentage_24h_in_currency.nzd
-          );
-        } else if (fiatCurrency === "gbp") {
-          setCurrentP(data.market_data.current_price.gbp);
-          setTotalVal(data.market_data.current_price.gbp * coin.totalAmount);
-          setChange24(
-            data.market_data.price_change_percentage_24h_in_currency.gbp
-          );
-        } else if (fiatCurrency === "aud") {
-          setCurrentP(data.market_data.current_price.aud);
-          setTotalVal(data.market_data.current_price.aud * coin.totalAmount);
-          setChange24(
-            data.market_data.price_change_percentage_24h_in_currency.aud
-          );
-        }
-        if (priceData) {
-          const thisPriceData = priceData.find(
-            (el) => el.date === coin.purchaseDate.toISOString()
-          );
-          if (thisPriceData) {
-            setPurchasePrice(thisPriceData.price);
+          const data = await response.json();
+          if (fiatCurrency === "usd") {
+            setCurrentP(data.market_data.current_price.usd);
+            setTotalVal(data.market_data.current_price.usd * coin.totalAmount);
+            setChange24(
+              data.market_data.price_change_percentage_24h_in_currency.usd
+            );
+          } else if (fiatCurrency === "nzd") {
+            setCurrentP(data.market_data.current_price.nzd);
+            setTotalVal(data.market_data.current_price.nzd * coin.totalAmount);
+            setChange24(
+              data.market_data.price_change_percentage_24h_in_currency.nzd
+            );
+          } else if (fiatCurrency === "gbp") {
+            setCurrentP(data.market_data.current_price.gbp);
+            setTotalVal(data.market_data.current_price.gbp * coin.totalAmount);
+            setChange24(
+              data.market_data.price_change_percentage_24h_in_currency.gbp
+            );
+          } else if (fiatCurrency === "aud") {
+            setCurrentP(data.market_data.current_price.aud);
+            setTotalVal(data.market_data.current_price.aud * coin.totalAmount);
+            setChange24(
+              data.market_data.price_change_percentage_24h_in_currency.aud
+            );
           }
+          if (priceData) {
+            const thisPriceData = priceData.find(
+              (el) => el.date === coin.purchaseDate.toISOString()
+            );
+            if (thisPriceData) {
+              setPurchasePrice(thisPriceData.price);
+            }
+          }
+        } catch {
+          setError(true);
         }
-      } catch {
-        setError(true);
       }
     };
     fetchData();
@@ -311,7 +313,7 @@ const CoinEntry = ({
       const percentDiff = diffByAvg * 100;
       setChangeSincePurchase(percentDiff);
     }
-  }, [purchasePrice]);
+  }, [purchasePrice, currentP]);
 
   const deleteEntry = (thisCoin: PortfolioCoin) => {
     const filteredPortfolio = portfolioCoins.filter(

@@ -7,6 +7,7 @@ import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { useCoin } from "../contexts/CoinProvider";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -51,6 +52,8 @@ export default function Portfolio() {
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
 
+  const { setSelectedMobileBtn } = useCoin();
+
   const size = useWindowSize();
 
   let fixedDates: PortfolioCoin[];
@@ -61,6 +64,10 @@ export default function Portfolio() {
       return { ...el, purchaseDate: new Date(el.purchaseDate) };
     });
   }
+
+  useEffect(() => {
+    setSelectedMobileBtn("Portfolio");
+  }, []);
 
   useEffect(() => {
     if (fixedDates) {

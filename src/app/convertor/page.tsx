@@ -206,9 +206,14 @@ export default function Converter() {
   const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
   const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
-  const { coins } = useCoin();
+  const { coins, setSelectedMobileBtn, setSelectedBtn } = useCoin();
 
   const size = useWindowSize();
+
+  useEffect(() => {
+    setSelectedMobileBtn("Converter");
+    setSelectedBtn("Converter");
+  }, []);
 
   useEffect(() => {
     if (coins.length > 0) {
