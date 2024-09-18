@@ -35,7 +35,6 @@ const TableRow = styled.tr`
 const TableHeader = styled.thead`
   color: #d1d1d1;
   font-size: 12px;
-  text-align: left;
 `;
 
 const NameAndImageContainer = styled.td`
@@ -56,11 +55,17 @@ const StyledTd = styled.td<StyleProp>`
     props.left ? "10px 0 0 10px" : props.right ? "0 10px 10px 0" : "none"};
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 16px;
+    padding: 0;
   }
 `;
 
 const StyledTh = styled.th`
   padding: 5px 15px 5px 15px;
+  text-align: left;
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0;
+    text-align: center;
+  }
 `;
 
 const ArrowAndPercentContainer = styled.div`
@@ -108,7 +113,8 @@ const LineChartContainer = styled.div`
   width: 150px;
   max-height: 47px;
   @media (max-width: ${breakpoints.mobile}) {
-    width: 100px;
+    width: 120px;
+    margin-left: 20px;
   }
 `;
 
@@ -396,16 +402,32 @@ const Table = () => {
               {size.width > parseInt(breakpoints.mobile) && (
                 <StyledTd left>{coin.market_cap_rank}</StyledTd>
               )}
-              <NameAndImageContainer>
-                <CoinImage src={coin.image} />
-                <Link href={`/coin/${coin.id}`}>
-                  <div style={{ display: "flex" }}>
-                    {size.width > parseInt(breakpoints.mobile)
-                      ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
-                      : coin.symbol.toUpperCase()}
-                  </div>
-                </Link>
-              </NameAndImageContainer>
+              {size.width > parseInt(breakpoints.mobile) ? (
+                <NameAndImageContainer>
+                  <CoinImage src={coin.image} />
+                  <Link href={`/coin/${coin.id}`}>
+                    <div style={{ display: "flex" }}>
+                      {size.width > parseInt(breakpoints.mobile)
+                        ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
+                        : coin.symbol.toUpperCase()}
+                    </div>
+                  </Link>
+                </NameAndImageContainer>
+              ) : (
+                <StyledTd left>
+                  <NameAndImageContainer>
+                    <CoinImage src={coin.image} />
+                    <Link href={`/coin/${coin.id}`}>
+                      <div style={{ display: "flex" }}>
+                        {size.width > parseInt(breakpoints.mobile)
+                          ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
+                          : coin.symbol.toUpperCase()}
+                      </div>
+                    </Link>
+                  </NameAndImageContainer>
+                </StyledTd>
+              )}
+
               {size.width > parseInt(breakpoints.mobile) && (
                 <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
               )}
