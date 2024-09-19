@@ -154,12 +154,10 @@ const Table = () => {
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-  let getCoinData;
-
   useEffect(() => {
     setHasError(false);
     setIsLoading(true);
-    getCoinData = async () => {
+    const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
