@@ -14,6 +14,7 @@ import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const CoinTable = styled.table`
   width: 100%;
@@ -123,21 +124,6 @@ const TextAndArrowText = styled.p`
   margin-bottom: 10px;
 `;
 
-const PageTurnBtn = styled.button<StyleProp>`
-  width: 150px;
-  height: 40px;
-  background: ${(props) => (props.gray ? "gray" : "#6161d6")};
-  border-radius: 6px;
-  cursor: ${(props) => (props.gray ? "auto" : "arrow")};
-`;
-
-const PageBtnContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 10px auto 10px auto;
-`;
-
 const LoadingMessage = styled.p`
   font-size: 50px;
   font-weight: bold;
@@ -174,7 +160,7 @@ const Table = () => {
     const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData1: CoinTypes[] = await response1.json();
         setTableCoins(fetchedData1);
@@ -185,7 +171,17 @@ const Table = () => {
       }
     };
     getCoinData();
-  }, [fiatCurrency, currentPage, apiKey, setTableCoins]);
+    setCurrentPage(currentPage + 1);
+  }, [fiatCurrency, apiKey, setTableCoins]);
+
+  const getMoreData = async () => {
+    const response: Response = await fetch(
+      `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+    );
+    const data: CoinTypes[] = await response.json();
+    setTableCoins([...tableCoins, ...data]);
+    setCurrentPage(currentPage + 1);
+  };
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
@@ -239,18 +235,6 @@ const Table = () => {
       return a.name.localeCompare(b.name);
     }
   });
-
-  const nextPage = (e) => {
-    setCurrentPage(currentPage + 1);
-    window.scrollTo(0, 1000);
-  };
-
-  const prevPage = () => {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-      window.scrollTo(0, 1000);
-    }
-  };
 
   if (isLoading) {
     return <LoadingMessage>Loading coin data...</LoadingMessage>;
@@ -581,12 +565,16 @@ const Table = () => {
           ))}
         </tbody>
       </CoinTable>
-      <PageBtnContainer>
-        <PageTurnBtn gray={currentPage === 1} onClick={prevPage}>
-          Previous Page
-        </PageTurnBtn>
-        <PageTurnBtn onClick={nextPage}>Next Page</PageTurnBtn>
-      </PageBtnContainer>
+      <div>
+        <InfiniteScroll
+          dataLength={tableCoins.length}
+          next={getMoreData}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          {""}
+        </InfiniteScroll>
+      </div>
     </>
   );
 };
