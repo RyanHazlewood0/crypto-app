@@ -573,7 +573,9 @@ const Table = () => {
           next={getMoreData}
           hasMore={true}
           loader={<h4>Loading...</h4>}
-        ></InfiniteScroll>
+        >
+          {""}
+        </InfiniteScroll>
       </div>
     </>
   );
