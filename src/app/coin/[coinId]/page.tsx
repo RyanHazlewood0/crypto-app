@@ -9,6 +9,8 @@ import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import { CoinDataTypes } from "types";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const Container = styled.div`
   width: 100%;
@@ -31,15 +33,17 @@ const HeaderAndBtnContainer = styled.div`
 const TopHalfContainer = styled.div`
   width: 100%;
   display: flex;
-  height: 420px;
   justify-content: space-between;
   margin-bottom: 100px;
+  @media (max-width: ${breakpoints.mobile}) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const BottomHalfContainer = styled.div`
   width: 100%;
   display: flex;
-  height: 250px;
   justify-content: space-between;
 `;
 
@@ -47,11 +51,14 @@ const InfoContainerOne = styled.div`
   width: 692px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
 
 const NameAndLinkContainer = styled.div`
   width: 305px;
-  height: 333px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -59,7 +66,7 @@ const NameAndLinkContainer = styled.div`
 
 const CoinNameContainer = styled.div`
   width: 305px;
-  height: 265px;
+  padding: 20% 0 20% 0;
   background: brown;
   display: flex;
   flex-direction: column;
@@ -68,35 +75,47 @@ const CoinNameContainer = styled.div`
   background: #1e1932;
   border-radius: 12px;
   gap: 20px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+    gap: 5px;
+    padding: 7.5% 0 7.5% 0;
+  }
 `;
 
 const PriceInfoContainer = styled.div`
   width: 355px;
-  height: 333px;
-  background: pink;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
-  gap: 20px;
+  gap: 10px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px 0 15px 0;
+  }
 `;
 
 const CoinLinkContainer = styled.div`
   width: 305px;
-  height: 52px;
+  padding: 10px 0 10px 0;
   background: red;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #1e1932;
   border-radius: 12px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+  }
 `;
 
 const InfoContainerThree = styled.div`
   width: 692px;
-  height: 250px;
 `;
 
 const DescriptionHeader = styled.h2`
@@ -109,7 +128,7 @@ const DescriptionText = styled.p`
 
 const InfoContainerFour = styled.div`
   width: 544px;
-  height: 204px;
+  gap: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -118,7 +137,7 @@ const InfoContainerFour = styled.div`
 
 const LinkContainer = styled.div`
   width: 100%;
-  height: 52px;
+  padding: 10px;
   background: black;
   display: flex;
   justify-content: center;
@@ -130,17 +149,20 @@ const LinkContainer = styled.div`
 const TableRow = styled.tr`
   background: #1e1932;
   font-size: 14px;
-  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 544px;
-  padding: 0 35px;
+  padding: 5px 15px 5px 15px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 355px;
+  }
 `;
 
 const StyledTd = styled.td`
   display: flex;
   align-items: center;
+  padding: 10px 0 10px 0;
 `;
 
 const LeftContent = styled.div`
@@ -153,9 +175,7 @@ const RightText = styled.p`
   font-size: 20px;
 `;
 
-const TableContainer = styled.div`
-  height: 420px;
-`;
+const TableContainer = styled.div``;
 
 const PriceInnerContainer = styled.div`
   display: flex;
@@ -170,6 +190,15 @@ const DateText = styled.p`
   text-align: center;
 `;
 
+const MobileContainer = styled.div`
+  width: 375px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px;
+`;
+
 interface CoinProps {
   params: { coinId: string };
 }
@@ -179,6 +208,8 @@ export default function Coin({ params }: CoinProps) {
   const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
 
   const { fiatCurrency } = useCoin();
+
+  const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -208,18 +239,265 @@ export default function Coin({ params }: CoinProps) {
     return <p>Error loading data</p>;
   }
 
-  return (
-    thisCoinData !== null && (
+  if (size.width > parseInt(breakpoints.mobile)) {
+    return (
       <Container>
-        <HeaderAndBtnContainer>
-          <Link href="/">
-            <BackBtn>←</BackBtn>
-          </Link>
-          <Header>{thisCoinData.name}</Header>
-        </HeaderAndBtnContainer>
-        <TopHalfContainer>
-          <InfoContainerOne>
-            <NameAndLinkContainer>
+        {thisCoinData !== null && (
+          <>
+            <HeaderAndBtnContainer>
+              <Link href="/">
+                <BackBtn>←</BackBtn>
+              </Link>
+              <Header>{thisCoinData.name}</Header>
+            </HeaderAndBtnContainer>
+            <TopHalfContainer>
+              <InfoContainerOne>
+                <NameAndLinkContainer>
+                  <CoinNameContainer>
+                    <img src={thisCoinData.image.small} />
+                    <h1 style={{ fontSize: "28px" }}>
+                      {thisCoinData.name} ({thisCoinData.symbol})
+                    </h1>
+                  </CoinNameContainer>
+                  <CoinLinkContainer>
+                    <Link
+                      href={thisCoinData.links.homepage[0]}
+                      style={{ marginRight: "10px" }}
+                    >
+                      {thisCoinData.links.homepage[0]}
+                    </Link>
+                    <div
+                      onClick={() =>
+                        navigator.clipboard.writeText(
+                          thisCoinData.links.homepage[0]
+                        )
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      <CopyIcon />
+                    </div>
+                  </CoinLinkContainer>
+                </NameAndLinkContainer>
+                <PriceInfoContainer>
+                  <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
+                    $
+                    {abbreviateNumber(
+                      thisCoinData.market_data.current_price[fiatCurrency]
+                    )}
+                  </h1>
+                  <PriceInnerContainer>
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "15px",
+                          marginBottom: "7px",
+                        }}
+                      >
+                        <GreenArrow />
+                        <p style={{ fontSize: "16px" }}>All time high:</p>
+                        <p style={{ fontSize: "20px" }}>
+                          $
+                          {abbreviateNumber(
+                            thisCoinData.market_data.ath[fiatCurrency]
+                          )}
+                        </p>{" "}
+                      </div>
+                      <DateText>
+                        {formatDate(thisCoinData.market_data.ath_date)}
+                      </DateText>
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "15px",
+                          marginBottom: "7px",
+                        }}
+                      >
+                        <RedArrow />
+                        <p style={{ fontSize: "16px" }}>All time low:</p>
+                        <p style={{ fontSize: "20px" }}>
+                          $
+                          {abbreviateNumber(
+                            thisCoinData.market_data.atl[fiatCurrency]
+                          )}
+                        </p>{" "}
+                      </div>
+                      <DateText>
+                        {formatDate(thisCoinData.market_data.atl_date)}
+                      </DateText>
+                    </div>
+                  </PriceInnerContainer>
+                </PriceInfoContainer>
+              </InfoContainerOne>
+              <TableContainer>
+                <table>
+                  <TableRow
+                    style={{
+                      borderTopLeftRadius: "12px",
+                      borderTopRightRadius: "12px",
+                    }}
+                  >
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Market Cap</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.market_cap[fiatCurrency]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Fully Diluted Valuation</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.fully_diluted_valuation[
+                            fiatCurrency
+                          ]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Volume 24h</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.total_volume[fiatCurrency]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Circulating Supply</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        {abbreviateNumber(
+                          thisCoinData.market_data.circulating_supply
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow
+                    style={{
+                      borderBottomLeftRadius: "12px",
+                      borderBottomRightRadius: "12px",
+                    }}
+                  >
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Total Supply</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        {abbreviateNumber(
+                          thisCoinData.market_data.total_supply
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                </table>
+              </TableContainer>
+            </TopHalfContainer>
+            <BottomHalfContainer>
+              <InfoContainerThree>
+                <DescriptionHeader>Description</DescriptionHeader>
+                <DescriptionText>{thisCoinData.description.en}</DescriptionText>
+              </InfoContainerThree>
+              <InfoContainerFour>
+                <LinkContainer>
+                  <Link
+                    style={{ marginRight: "10px" }}
+                    href={thisCoinData.links.blockchain_site[0]}
+                  >
+                    {thisCoinData.links.blockchain_site[0]}
+                  </Link>
+                  <div
+                    onClick={() =>
+                      navigator.clipboard.writeText(
+                        thisCoinData.links.blockchain_site[0]
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CopyIcon />
+                  </div>
+                </LinkContainer>
+                <LinkContainer>
+                  <Link
+                    style={{ marginRight: "10px" }}
+                    href={thisCoinData.links.blockchain_site[1]}
+                  >
+                    {thisCoinData.links.blockchain_site[1]}
+                  </Link>
+                  <div
+                    onClick={() =>
+                      navigator.clipboard.writeText(
+                        thisCoinData.links.blockchain_site[1]
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CopyIcon />
+                  </div>
+                </LinkContainer>
+                <LinkContainer>
+                  <Link
+                    style={{ marginRight: "10px" }}
+                    href={thisCoinData.links.blockchain_site[2]}
+                  >
+                    {thisCoinData.links.blockchain_site[2]}
+                  </Link>
+                  <div
+                    onClick={() =>
+                      navigator.clipboard.writeText(
+                        thisCoinData.links.blockchain_site[2]
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CopyIcon />
+                  </div>
+                </LinkContainer>
+              </InfoContainerFour>
+            </BottomHalfContainer>
+          </>
+        )}
+      </Container>
+    );
+  } else {
+    return (
+      <>
+        <MobileContainer>
+          {thisCoinData !== null && (
+            <>
+              <HeaderAndBtnContainer>
+                <Link href="/">
+                  <BackBtn>←</BackBtn>
+                </Link>
+                <Header>{thisCoinData.name}</Header>
+              </HeaderAndBtnContainer>
+
               <CoinNameContainer>
                 <img src={thisCoinData.image.small} />
                 <h1 style={{ fontSize: "28px" }}>
@@ -244,226 +522,206 @@ export default function Coin({ params }: CoinProps) {
                   <CopyIcon />
                 </div>
               </CoinLinkContainer>
-            </NameAndLinkContainer>
-            <PriceInfoContainer>
-              <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
-                $
-                {abbreviateNumber(
-                  thisCoinData.market_data.current_price[fiatCurrency]
-                )}
-              </h1>
-              <PriceInnerContainer>
-                <div>
-                  <div
+
+              <PriceInfoContainer>
+                <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
+                  $
+                  {abbreviateNumber(
+                    thisCoinData.market_data.current_price[fiatCurrency]
+                  )}
+                </h1>
+                <PriceInnerContainer>
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        marginBottom: "7px",
+                      }}
+                    >
+                      <GreenArrow />
+                      <p style={{ fontSize: "16px" }}>All time high:</p>
+                      <p style={{ fontSize: "20px" }}>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.ath[fiatCurrency]
+                        )}
+                      </p>{" "}
+                    </div>
+                    <DateText>
+                      {formatDate(thisCoinData.market_data.ath_date)}
+                    </DateText>
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        marginBottom: "7px",
+                      }}
+                    >
+                      <RedArrow />
+                      <p style={{ fontSize: "16px" }}>All time low:</p>
+                      <p style={{ fontSize: "20px" }}>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.atl[fiatCurrency]
+                        )}
+                      </p>{" "}
+                    </div>
+                    <DateText>
+                      {formatDate(thisCoinData.market_data.atl_date)}
+                    </DateText>
+                  </div>
+                </PriceInnerContainer>
+              </PriceInfoContainer>
+              <TableContainer>
+                <table>
+                  <TableRow
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "15px",
-                      marginBottom: "7px",
+                      borderTopLeftRadius: "12px",
+                      borderTopRightRadius: "12px",
                     }}
                   >
-                    <GreenArrow />
-                    <p style={{ fontSize: "16px" }}>All time high:</p>
-                    <p style={{ fontSize: "20px" }}>
-                      $
-                      {abbreviateNumber(
-                        thisCoinData.market_data.ath[fiatCurrency]
-                      )}
-                    </p>{" "}
-                  </div>
-                  <DateText>
-                    {formatDate(thisCoinData.market_data.ath_date)}
-                  </DateText>
-                </div>
-                <div>
-                  <div
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Market Cap</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.market_cap[fiatCurrency]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Fully Diluted Valuation</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.fully_diluted_valuation[
+                            fiatCurrency
+                          ]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Volume 24h</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        $
+                        {abbreviateNumber(
+                          thisCoinData.market_data.total_volume[fiatCurrency]
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+
+                  <TableRow>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Circulating Supply</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        {abbreviateNumber(
+                          thisCoinData.market_data.circulating_supply
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                  <TableRow
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "15px",
-                      marginBottom: "7px",
+                      borderBottomLeftRadius: "12px",
+                      borderBottomRightRadius: "12px",
                     }}
                   >
-                    <RedArrow />
-                    <p style={{ fontSize: "16px" }}>All time low:</p>
-                    <p style={{ fontSize: "20px" }}>
-                      $
-                      {abbreviateNumber(
-                        thisCoinData.market_data.atl[fiatCurrency]
-                      )}
-                    </p>{" "}
-                  </div>
-                  <DateText>
-                    {formatDate(thisCoinData.market_data.atl_date)}
-                  </DateText>
+                    <LeftContent>
+                      <RoundIcon />
+                      <p>Total Supply</p>
+                    </LeftContent>
+                    <StyledTd>
+                      <RightText>
+                        {abbreviateNumber(
+                          thisCoinData.market_data.total_supply
+                        )}
+                      </RightText>
+                    </StyledTd>
+                  </TableRow>
+                </table>
+              </TableContainer>
+              <DescriptionHeader>Description</DescriptionHeader>
+              <DescriptionText>{thisCoinData.description.en}</DescriptionText>
+              <LinkContainer>
+                <Link
+                  style={{ marginRight: "10px" }}
+                  href={thisCoinData.links.blockchain_site[0]}
+                >
+                  {thisCoinData.links.blockchain_site[0]}
+                </Link>
+                <div
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      thisCoinData.links.blockchain_site[0]
+                    )
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <CopyIcon />
                 </div>
-              </PriceInnerContainer>
-            </PriceInfoContainer>
-          </InfoContainerOne>
-          <TableContainer>
-            <table>
-              <TableRow
-                style={{
-                  borderTopLeftRadius: "12px",
-                  borderTopRightRadius: "12px",
-                }}
-              >
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Market Cap</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.market_cap[fiatCurrency]
-                    )}
-                  </RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow>
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Fully Diluted Valuation</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.fully_diluted_valuation[
-                        fiatCurrency
-                      ]
-                    )}
-                  </RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow>
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Volume 24h</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.total_volume[fiatCurrency]
-                    )}
-                  </RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow>
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Volume / Market</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>*Volume / Market*</RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow>
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Total Volume</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>*Total Volume*</RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow>
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Circulating Supply</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>
-                    {abbreviateNumber(
-                      thisCoinData.market_data.circulating_supply
-                    )}
-                  </RightText>
-                </StyledTd>
-              </TableRow>
-              <TableRow
-                style={{
-                  borderBottomLeftRadius: "12px",
-                  borderBottomRightRadius: "12px",
-                }}
-              >
-                <LeftContent>
-                  <RoundIcon />
-                  <p>Total Supply</p>
-                </LeftContent>
-                <StyledTd>
-                  <RightText>
-                    {abbreviateNumber(thisCoinData.market_data.total_supply)}
-                  </RightText>
-                </StyledTd>
-              </TableRow>
-            </table>
-          </TableContainer>
-        </TopHalfContainer>
-        <BottomHalfContainer>
-          <InfoContainerThree>
-            <DescriptionHeader>Description</DescriptionHeader>
-            <DescriptionText>{thisCoinData.description.en}</DescriptionText>
-          </InfoContainerThree>
-          <InfoContainerFour>
-            <LinkContainer>
-              <Link
-                style={{ marginRight: "10px" }}
-                href={thisCoinData.links.blockchain_site[0]}
-              >
-                {thisCoinData.links.blockchain_site[0]}
-              </Link>
-              <div
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    thisCoinData.links.blockchain_site[0]
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <CopyIcon />
-              </div>
-            </LinkContainer>
-            <LinkContainer>
-              <Link
-                style={{ marginRight: "10px" }}
-                href={thisCoinData.links.blockchain_site[1]}
-              >
-                {thisCoinData.links.blockchain_site[1]}
-              </Link>
-              <div
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    thisCoinData.links.blockchain_site[1]
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <CopyIcon />
-              </div>
-            </LinkContainer>
-            <LinkContainer>
-              <Link
-                style={{ marginRight: "10px" }}
-                href={thisCoinData.links.blockchain_site[2]}
-              >
-                {thisCoinData.links.blockchain_site[2]}
-              </Link>
-              <div
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    thisCoinData.links.blockchain_site[2]
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <CopyIcon />
-              </div>
-            </LinkContainer>
-          </InfoContainerFour>
-        </BottomHalfContainer>
-      </Container>
-    )
-  );
+              </LinkContainer>
+              <LinkContainer>
+                <Link
+                  style={{ marginRight: "10px" }}
+                  href={thisCoinData.links.blockchain_site[1]}
+                >
+                  {thisCoinData.links.blockchain_site[1]}
+                </Link>
+                <div
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      thisCoinData.links.blockchain_site[1]
+                    )
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <CopyIcon />
+                </div>
+              </LinkContainer>
+              <LinkContainer>
+                <Link
+                  style={{ marginRight: "10px" }}
+                  href={thisCoinData.links.blockchain_site[2]}
+                >
+                  {thisCoinData.links.blockchain_site[2]}
+                </Link>
+                <div
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      thisCoinData.links.blockchain_site[2]
+                    )
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <CopyIcon />
+                </div>
+              </LinkContainer>
+            </>
+          )}
+        </MobileContainer>
+      </>
+    );
+  }
 }
