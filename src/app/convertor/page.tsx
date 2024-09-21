@@ -188,6 +188,11 @@ const DropDown = styled.div`
   }
 `;
 
+const LoadingText = styled.p`
+  font-size: 35px;
+  text-align: center;
+`;
+
 type StyleProp = {
   sell?: boolean;
 };
@@ -357,6 +362,10 @@ export default function Converter() {
     setSellDropdownOpen(false);
     setBuySearch("");
   };
+
+  if (coins.length < 1) {
+    return <LoadingText>Loading coin data</LoadingText>;
+  }
 
   return (
     <>

@@ -323,7 +323,7 @@ const CoinEntry = ({
   };
 
   if (error) {
-    return <p>error fetching data</p>;
+    return <p>error fetching portfolio entry data</p>;
   }
 
   if (coin) {

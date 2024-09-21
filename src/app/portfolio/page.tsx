@@ -40,6 +40,16 @@ const MobileAddBtn = styled.button`
   right: 10px;
 `;
 
+const NoCoinsMessage = styled.p`
+  font-size: 35px;
+  text-align: center;
+`;
+
+const LoadingText = styled.p`
+  font-size: 35px;
+  text-align: center;
+`;
+
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
@@ -52,7 +62,7 @@ export default function Portfolio() {
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const { setSelectedMobileBtn } = useCoin();
+  const { setSelectedMobileBtn, setSelectedNavLink, coins } = useCoin();
 
   const size = useWindowSize();
 
@@ -67,6 +77,7 @@ export default function Portfolio() {
 
   useEffect(() => {
     setSelectedMobileBtn("Portfolio");
+    setSelectedNavLink("Portfolio");
   }, []);
 
   useEffect(() => {
@@ -108,6 +119,10 @@ export default function Portfolio() {
     (a, b) => b.totalValue - a.totalValue
   );
 
+  if (coins.length < 1) {
+    return <LoadingText>Loading coin data</LoadingText>;
+  }
+
   return (
     <>
       {size.width > parseInt(breakpoints.mobile) && (
@@ -115,6 +130,9 @@ export default function Portfolio() {
           <HeaderText>Portfolio</HeaderText>
           <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
         </HeaderContainer>
+      )}
+      {portfolioCoins.length < 1 && (
+        <NoCoinsMessage>No coins added yet</NoCoinsMessage>
       )}
       {sortedPortfolioCoins &&
         sortedPortfolioCoins.map((coin: PortfolioCoin) => (
