@@ -237,7 +237,7 @@ const Table = () => {
   });
 
   if (isLoading) {
-    return <LoadingMessage>Loading coin data...</LoadingMessage>;
+    return <LoadingMessage>Loading coin table data...</LoadingMessage>;
   }
 
   if (hasError) {
