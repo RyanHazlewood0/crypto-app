@@ -18,7 +18,6 @@ const CoinEntryContainer = styled.div`
   width: 100%;
   height: 292px;
   display: flex;
-  margin-bottom: 25px;
 `;
 
 const CoinImageContainer = styled.div`
@@ -125,7 +124,6 @@ const MobEntryContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: #191932;
-  margin-bottom: 16px;
   padding: 16px;
   border-radius: 16px;
   justify-content: space-between;

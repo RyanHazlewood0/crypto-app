@@ -50,6 +50,16 @@ const LoadingText = styled.p`
   text-align: center;
 `;
 
+const EntrysContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  @media (max-width: ${breakpoints.mobile}) {
+    margin-bottom: 65px;
+    gap: 16px;
+  }
+`;
+
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
@@ -134,17 +144,19 @@ export default function Portfolio() {
       {portfolioCoins.length < 1 && (
         <NoCoinsMessage>No coins added yet</NoCoinsMessage>
       )}
-      {sortedPortfolioCoins &&
-        sortedPortfolioCoins.map((coin: PortfolioCoin) => (
-          <CoinEntry
-            coin={coin}
-            key={coin.name}
-            portfolioCoins={portfolioCoins}
-            setPortfolioCoins={setPortfolioCoins}
-            editCoinEntry={editCoinEntry}
-            isEditOpen={isEditOpen}
-          />
-        ))}
+      <EntrysContainer>
+        {sortedPortfolioCoins &&
+          sortedPortfolioCoins.map((coin: PortfolioCoin) => (
+            <CoinEntry
+              coin={coin}
+              key={coin.name}
+              portfolioCoins={portfolioCoins}
+              setPortfolioCoins={setPortfolioCoins}
+              editCoinEntry={editCoinEntry}
+              isEditOpen={isEditOpen}
+            />
+          ))}
+      </EntrysContainer>
       {formOpen && (
         <AddAssetForm
           handleFormClose={handleFormClose}
