@@ -54,6 +54,7 @@ const EntrysContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  margin-bottom: 25px;
   @media (max-width: ${breakpoints.mobile}) {
     margin-bottom: 65px;
     gap: 16px;
