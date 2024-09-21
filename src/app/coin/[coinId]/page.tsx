@@ -131,7 +131,7 @@ const InfoContainerFour = styled.div`
   gap: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `;
 
