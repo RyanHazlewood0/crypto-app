@@ -162,11 +162,12 @@ const CoinSearchPopup = styled.div`
   padding: 15px;
   height: 90px;
   position: absolute;
-  margin-left: -100px;
+  margin-left: -290px;
   gap: 5px;
   top: 100%;
   @media (max-width: ${breakpoints.mobile}) {
     z-index: 2;
+    margin-left: -190px;
   }
 `;
 
@@ -176,15 +177,15 @@ const CoinSearchPopupHeader = styled.h1`
 
 const DropDown = styled.div`
   width: 200px;
-  background: #191925;
   padding: 10px;
   border-radius: 6px;
-  background: ##191925;
+  background: #191925;
   position: absolute;
   top: 100%;
-  transform: translateY(90px) translateX(-100px);
+  transform: translateY(90px) translateX(-290px);
   @media (max-width: ${breakpoints.mobile}) {
     z-index: 2;
+    transform: translateY(90px) translateX(-190px);
   }
 `;
 
