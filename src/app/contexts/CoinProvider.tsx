@@ -13,6 +13,8 @@ interface CoinContextType {
   isClient: any;
   selectedMobileBtn: any;
   setSelectedMobileBtn: any;
+  selectedNavLink: any;
+  setSelectedNavLink: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -32,6 +34,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [fiatCurrency, setFiatCurrency] = useState("usd");
   const [isClient, setIsClient] = useState(false);
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
+  const [selectedNavLink, setSelectedNavLink] = useState("Home");
 
   useEffect(() => {
     setIsClient(true);
@@ -88,6 +91,8 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         isClient,
         selectedMobileBtn,
         setSelectedMobileBtn,
+        selectedNavLink,
+        setSelectedNavLink,
       }}
     >
       {children}

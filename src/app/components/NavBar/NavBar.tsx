@@ -11,6 +11,7 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { useState } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { useEffect } from "react";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -96,8 +97,9 @@ type StyleProp = {
 };
 
 const NavBar = () => {
-  const { setSelectedBtn } = useCoin();
-  const [selectedNavLink, setSelectedNavLink] = useState("Home");
+  const { setSelectedBtn, selectedNavLink, setSelectedNavLink } = useCoin();
+
+  useEffect(() => {}, []);
 
   const size = useWindowSize();
 

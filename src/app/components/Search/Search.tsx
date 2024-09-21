@@ -37,6 +37,9 @@ const DropDown = styled.div`
   border-radius: 6px;
   position: absolute;
   z-index: 4;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 168px;
+  }
 `;
 
 const LinkContainer = styled.div`
