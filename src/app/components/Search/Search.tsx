@@ -16,8 +16,8 @@ const SearchContainer = styled.div`
   }
 `;
 
-const SearchInput = styled.input`
-  background: #191925;
+const SearchInput = styled.input<ThemeProp>`
+  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
   padding: 10px 10px 10px 35px;
   border-radius: 6px;
   width: 100%;
@@ -48,10 +48,14 @@ const LinkContainer = styled.div`
   }
 `;
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
-  const { coins } = useCoin();
+  const { coins, theme } = useCoin();
   const router = useRouter();
   const size = useWindowSize();
 
@@ -89,6 +93,7 @@ const Search = () => {
         }
         value={searchValue}
         onChange={(e) => handleSearch(e)}
+        light={theme === "light"}
       />
       {dropDownOpen && (
         <DropDown>

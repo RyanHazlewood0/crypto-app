@@ -54,7 +54,7 @@ const MobileButtons = () => {
               </BtnContainer>
             </Link>
             <Link
-              href="/convertor"
+              href="/converter"
               onClick={() => setSelectedMobileBtn("Converter")}
             >
               <BtnContainer selected={selectedMobileBtn === "Converter"}>

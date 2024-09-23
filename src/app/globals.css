@@ -17,8 +17,13 @@
 }
 
 body {
-  color: white;;
-  background: #03071e ;
+  color: white;
+  background: #03071e;
+}
+
+body.light-mode {
+  color: #353570;
+  background: #e9ecef;
 }
 
 @layer utilities {

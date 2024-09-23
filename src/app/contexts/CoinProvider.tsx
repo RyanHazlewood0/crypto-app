@@ -15,6 +15,9 @@ interface CoinContextType {
   setSelectedMobileBtn: any;
   selectedNavLink: any;
   setSelectedNavLink: any;
+  theme: string;
+  setTheme: any;
+  toggleTheme: any;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -35,6 +38,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [isClient, setIsClient] = useState(false);
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     setIsClient(true);
@@ -79,6 +83,16 @@ export const CoinProvider = ({ children }: useCoinProps) => {
     }
   }, [fiatCurrency]);
 
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      setTheme("light");
+      document.body.classList.add("light-mode");
+    } else if (theme === "light") {
+      setTheme("dark");
+      document.body.classList.remove("light-mode");
+    }
+  };
+
   return (
     <CoinContext.Provider
       value={{
@@ -93,6 +107,9 @@ export const CoinProvider = ({ children }: useCoinProps) => {
         setSelectedMobileBtn,
         selectedNavLink,
         setSelectedNavLink,
+        theme,
+        setTheme,
+        toggleTheme,
       }}
     >
       {children}

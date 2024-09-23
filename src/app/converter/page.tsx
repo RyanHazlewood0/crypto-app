@@ -24,14 +24,14 @@ const ConverterContainer = styled.div`
   }
 `;
 
-const ConverterBox = styled.div<StyleProp>`
+const ConverterBox = styled.div<ThemeProp>`
   width: 636px;
   height: 200px;
   border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${(props) => (props.sell ? "#191932" : "#1E1932")};
+  background: ${(props) => (props.light ? "white" : "#191932")};
   position: relative;
   @media (max-width: ${breakpoints.mobile}) {
     width: 375px;
@@ -42,8 +42,8 @@ const Title = styled.h1`
   font-size: 20px;
 `;
 
-const DateText = styled.p`
-  color: #9e9e9e;
+const DateText = styled.p<ThemeProp>`
+  color: ${(props) => (props.light ? "#424286" : "#9e9e9e")};
   font-size: 16px;
   margin-bottom: 15px;
 `;
@@ -63,11 +63,11 @@ const InnerContainer = styled.div`
   padding: 20px;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.input<ThemeProp>`
   width: 100%;
   border: solid 1px gray;
   border-radius: 6px;
-  background: #191932;
+  background: ${(props) => (props.light ? "#8D8DB1" : "#191932")};
 `;
 
 const SearchAndValueContainer = styled.div`
@@ -86,27 +86,27 @@ const CurrencyAndPriceText = styled.p`
   font-size: 14px;
 `;
 
-const ReverseConvertBtn = styled.div`
-  background: white;
+const ReverseConvertBtn = styled.div<ThemeProp>`
+  background: ${(props) => (props.light ? "#6161D6" : "white")};
   border-radius: 50px;
   width: 48px;
   height: 48px;
-  color: black;
+  color: ${(props) => (props.light ? "white" : "black")};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: absolute;
   left: 50%;
-  transform: translate(-24px, -24px);
   top: 50%;
+  transform: translate(-24px, -24px);
   z-index: 1;
 `;
 
 const SellAmountInput = styled.input`
   border: solid 1px gray;
   border-radius: 6px;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   @media (max-width: ${breakpoints.mobile}) {
     max-width: 40%;
   }
@@ -115,7 +115,7 @@ const SellAmountInput = styled.input`
 const BuyAmountInput = styled.input`
   border: solid 1px gray;
   border-radius: 6px;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   @media (max-width: ${breakpoints.mobile}) {
     max-width: 40%;
   }
@@ -155,7 +155,7 @@ const DropdownAndPopupContainer = styled.div`
 
 const CoinSearchPopup = styled.div`
   width: 200px;
-  background: #191925;
+  background: ${(props) => (props.light ? "#8D8DB1" : "#191925")};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,7 +179,7 @@ const DropDown = styled.div`
   width: 200px;
   padding: 10px;
   border-radius: 6px;
-  background: #191925;
+  background: ${(props) => (props.light ? "#8D8DB1" : "#191925")};
   position: absolute;
   top: 100%;
   transform: translateY(90px) translateX(-290px);
@@ -194,8 +194,8 @@ const LoadingText = styled.p`
   text-align: center;
 `;
 
-type StyleProp = {
-  sell?: boolean;
+type ThemeProp = {
+  light: boolean;
 };
 
 export default function Converter() {
@@ -212,7 +212,7 @@ export default function Converter() {
   const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
   const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
-  const { coins, setSelectedMobileBtn, setSelectedBtn } = useCoin();
+  const { coins, setSelectedMobileBtn, setSelectedBtn, theme } = useCoin();
 
   const size = useWindowSize();
 
@@ -376,9 +376,9 @@ export default function Converter() {
             <CoinsAndConverterBtns />
           )}
           <Title>Cryptocurrency Converter</Title>
-          <DateText>{currentDate}</DateText>
+          <DateText light={theme === "light"}>{currentDate}</DateText>
           <ConverterContainer>
-            <ConverterBox sell>
+            <ConverterBox light={theme === "light"}>
               <InnerContainer>
                 <BuySellText>You Sell</BuySellText>
                 <SearchAndValueContainer>
@@ -392,7 +392,7 @@ export default function Converter() {
                   </CoinContainer>
                   <DropdownAndPopupContainer>
                     {searchSellPopupOpen && (
-                      <CoinSearchPopup>
+                      <CoinSearchPopup light={theme === "light"}>
                         <CoinSearchPopupHeader>
                           Search Coin
                         </CoinSearchPopupHeader>
@@ -401,11 +401,12 @@ export default function Converter() {
                           onChange={(e) => handleSellSearch(e)}
                           placeholder="Search Coin..."
                           autoFocus
+                          light={theme === "light"}
                         />
                       </CoinSearchPopup>
                     )}
                     {sellDropdownOpen && (
-                      <DropDown>
+                      <DropDown light={theme === "light"}>
                         {filteredSellCoins.map((coin) => (
                           <CoinOption
                             key={coin.id}
@@ -422,6 +423,7 @@ export default function Converter() {
                     value={sellQuantity}
                     onChange={(e) => handleSellQuantity(e)}
                     type="number"
+                    light={theme === "light"}
                   />
                 </SearchAndValueContainer>
                 <HorizontalLine />
@@ -435,10 +437,13 @@ export default function Converter() {
                 )}
               </InnerContainer>
             </ConverterBox>
-            <ReverseConvertBtn onClick={() => reverseConvert()}>
+            <ReverseConvertBtn
+              light={theme === "light"}
+              onClick={() => reverseConvert()}
+            >
               <p>↑↓</p>
             </ReverseConvertBtn>
-            <ConverterBox>
+            <ConverterBox light={theme === "light"}>
               <InnerContainer>
                 <BuySellText>You Buy</BuySellText>
                 <SearchAndValueContainer>
@@ -452,7 +457,7 @@ export default function Converter() {
                   </CoinContainer>
                   <DropdownAndPopupContainer>
                     {searchBuyPopupOpen && (
-                      <CoinSearchPopup>
+                      <CoinSearchPopup light={theme === "light"}>
                         <CoinSearchPopupHeader>
                           Search Coin
                         </CoinSearchPopupHeader>
@@ -461,11 +466,12 @@ export default function Converter() {
                           onChange={(e) => handleBuySearch(e)}
                           placeholder="Search Coin..."
                           autoFocus
+                          light={theme === "light"}
                         />
                       </CoinSearchPopup>
                     )}
                     {buyDropdownOpen && (
-                      <DropDown>
+                      <DropDown light={theme === "light"}>
                         {filteredBuyCoins.map((coin) => (
                           <CoinOption
                             key={coin.id}
@@ -482,6 +488,7 @@ export default function Converter() {
                     value={buyQuantity}
                     onChange={(e) => handleBuyQuantity(e)}
                     type="number"
+                    light={theme === "light"}
                   />
                 </SearchAndValueContainer>
                 <HorizontalLine />
