@@ -195,7 +195,7 @@ const LoadingText = styled.p`
 `;
 
 type ThemeProp = {
-  light: boolean;
+  light?: boolean;
 };
 
 export default function Converter() {
