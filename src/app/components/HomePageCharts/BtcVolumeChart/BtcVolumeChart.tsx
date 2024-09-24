@@ -97,14 +97,31 @@ const BtcVolumeChart = ({
 }: BtcVolumeChartProps) => {
   const size = useWindowSize();
   const { theme } = useCoin();
+
+  const findBackground = () => {
+    if (theme === "light") {
+      return "#a100f2";
+    } else {
+      return "#240046";
+    }
+  };
+
+  const findBorder = () => {
+    if (theme === "light") {
+      return "#0c0a3e";
+    } else {
+      return "#a663cc";
+    }
+  };
+
   const barChartData = {
     labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
       {
         label: null,
         data: coinVolumeData.map((obj) => obj.volume),
-        backgroundColor: "#240046",
-        borderColor: "#a663cc",
+        backgroundColor: findBackground(),
+        borderColor: findBorder(),
         borderWidth: 2,
       },
     ],
