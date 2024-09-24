@@ -22,6 +22,7 @@ const CarouselContainer = styled.div`
 
 const CarouselBox = styled.div<StylePropSelected>`
   display: flex !important;
+   width: 210px !important;
   height: 78px;
   border-radius: 6px;
   padding: 10px;
@@ -37,7 +38,6 @@ const CarouselBox = styled.div<StylePropSelected>`
     }
   }};
   cursor: pointer;
-  width: 210px !important;
    background: ${(props) => {
      if (props.selected) {
        if (props.light) {
@@ -53,8 +53,8 @@ const CarouselBox = styled.div<StylePropSelected>`
        }
      }
    }}};
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 175px !important;
+    @media (max-width: ${breakpoints.mobile}) {
+    width: 180px !important;
   }
 `;
 
@@ -75,7 +75,7 @@ const HeaderText = styled.p<ThemeProp>`
 
 const StyledSlider = styled(Slider)`
   .slick-slide {
-    margin: 0 18.625px 0 18.625px;
+    margin: 0 18.626px 0 18.626px;
     @media (max-width: ${breakpoints.mobile}) {
       margin: 0 12px 0 12px;
     }

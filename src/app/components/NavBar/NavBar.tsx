@@ -5,6 +5,7 @@ import ThemeIcon from "./svg/ThemeIcon";
 import Home from "./svg/Home";
 import Portfolio from "./svg/Portfolio";
 import SearchIcon from "./svg/SearchIcon";
+import Moon from "./svg/Moon";
 import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -160,7 +161,7 @@ const NavBar = () => {
         </SearchDiv>
         <CurrencySelect />
         <ThemeIconContainer light={theme === "light"} onClick={toggleTheme}>
-          <ThemeIcon />
+          {theme === "light" ? <Moon /> : <ThemeIcon />}
         </ThemeIconContainer>
       </RightDiv>
     </NavBarContainer>
