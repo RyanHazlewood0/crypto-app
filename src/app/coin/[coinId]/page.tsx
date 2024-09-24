@@ -196,6 +196,23 @@ const MobileContainer = styled.div`
   padding: 10px;
 `;
 
+const StyledLink = styled.a`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const CopiedMessageContainer = styled.div`
+  background: black;
+  border-radius: 6px;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 interface CoinProps {
   params: { coinId: string };
 }
@@ -207,6 +224,7 @@ type ThemeProp = {
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
+  const [copyClicked, setCopyClicked] = useState(false);
 
   const { fiatCurrency, theme } = useCoin();
 
@@ -236,6 +254,12 @@ export default function Coin({ params }: CoinProps) {
     return formattedDate;
   };
 
+  const handleCopyTrue = () => {
+    navigator.clipboard.writeText(thisCoinData.links.homepage[0]);
+    setCopyClicked(true);
+    setTimeout(() => setCopyClicked(false), 2000);
+  };
+
   if (hasError) {
     return <p>Error loading data</p>;
   }
@@ -246,9 +270,9 @@ export default function Coin({ params }: CoinProps) {
         {thisCoinData !== null && (
           <>
             <HeaderAndBtnContainer>
-              <Link href="/">
+              <StyledLink href="/">
                 <BackBtn>←</BackBtn>
-              </Link>
+              </StyledLink>
               <Header>{thisCoinData.name}</Header>
             </HeaderAndBtnContainer>
             <TopHalfContainer>
@@ -261,23 +285,21 @@ export default function Coin({ params }: CoinProps) {
                     </h1>
                   </CoinNameContainer>
                   <CoinLinkContainer light={theme === "light"}>
-                    <Link
+                    <StyledLink
                       href={thisCoinData.links.homepage[0]}
                       style={{ marginRight: "10px" }}
                     >
                       {thisCoinData.links.homepage[0]}
-                    </Link>
-                    <div
-                      onClick={() =>
-                        navigator.clipboard.writeText(
-                          thisCoinData.links.homepage[0]
-                        )
-                      }
-                      style={{ cursor: "pointer" }}
-                    >
+                    </StyledLink>
+                    <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                       <CopyIcon />
                     </div>
                   </CoinLinkContainer>
+                  {copyClicked === true && (
+                    <CopiedMessageContainer>
+                      Link has been copied!
+                    </CopiedMessageContainer>
+                  )}
                 </NameAndLinkContainer>
                 <PriceInfoContainer light={theme === "light"}>
                   <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
@@ -306,7 +328,9 @@ export default function Coin({ params }: CoinProps) {
                         </p>{" "}
                       </div>
                       <DateText light={theme === "light"}>
-                        {formatDate(thisCoinData.market_data.ath_date)}
+                        {formatDate(
+                          thisCoinData.market_data.ath_date[fiatCurrency]
+                        )}
                       </DateText>
                     </div>
                     <div>
@@ -328,7 +352,9 @@ export default function Coin({ params }: CoinProps) {
                         </p>{" "}
                       </div>
                       <DateText light={theme === "light"}>
-                        {formatDate(thisCoinData.market_data.atl_date)}
+                        {formatDate(
+                          thisCoinData.market_data.atl_date[fiatCurrency]
+                        )}
                       </DateText>
                     </div>
                   </PriceInnerContainer>
@@ -425,62 +451,60 @@ export default function Coin({ params }: CoinProps) {
             <BottomHalfContainer>
               <InfoContainerThree>
                 <DescriptionHeader>Description</DescriptionHeader>
-                <DescriptionText>{thisCoinData.description.en}</DescriptionText>
+                <DescriptionText
+                  dangerouslySetInnerHTML={{
+                    __html: thisCoinData.description.en,
+                  }}
+                />
               </InfoContainerThree>
               <InfoContainerFour>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[0]}
                   >
                     {thisCoinData.links.blockchain_site[0]}
-                  </Link>
-                  <div
-                    onClick={() =>
-                      navigator.clipboard.writeText(
-                        thisCoinData.links.blockchain_site[0]
-                      )
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
+                  </StyledLink>
+                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                     <CopyIcon />
                   </div>
+                  {copyClicked === true && (
+                    <CopiedMessageContainer>
+                      Link has been copied!
+                    </CopiedMessageContainer>
+                  )}
                 </LinkContainer>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[1]}
                   >
                     {thisCoinData.links.blockchain_site[1]}
-                  </Link>
-                  <div
-                    onClick={() =>
-                      navigator.clipboard.writeText(
-                        thisCoinData.links.blockchain_site[1]
-                      )
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
+                  </StyledLink>
+                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                     <CopyIcon />
                   </div>
+                  {copyClicked === true && (
+                    <CopiedMessageContainer>
+                      Link has been copied!
+                    </CopiedMessageContainer>
+                  )}
                 </LinkContainer>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[2]}
                   >
                     {thisCoinData.links.blockchain_site[2]}
-                  </Link>
-                  <div
-                    onClick={() =>
-                      navigator.clipboard.writeText(
-                        thisCoinData.links.blockchain_site[2]
-                      )
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
+                  </StyledLink>
+                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                     <CopyIcon />
                   </div>
+                  {copyClicked === true && (
+                    <CopiedMessageContainer>
+                      Link has been copied!
+                    </CopiedMessageContainer>
+                  )}
                 </LinkContainer>
               </InfoContainerFour>
             </BottomHalfContainer>
@@ -508,22 +532,20 @@ export default function Coin({ params }: CoinProps) {
                 </h1>
               </CoinNameContainer>
               <CoinLinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   href={thisCoinData.links.homepage[0]}
                   style={{ marginRight: "10px" }}
                 >
                   {thisCoinData.links.homepage[0]}
-                </Link>
-                <div
-                  onClick={() =>
-                    navigator.clipboard.writeText(
-                      thisCoinData.links.homepage[0]
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
+                </StyledLink>
+                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                   <CopyIcon />
                 </div>
+                {copyClicked === true && (
+                  <CopiedMessageContainer>
+                    Link has been copied!
+                  </CopiedMessageContainer>
+                )}
               </CoinLinkContainer>
               <PriceInfoContainer light={theme === "light"}>
                 <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
@@ -552,7 +574,9 @@ export default function Coin({ params }: CoinProps) {
                       </p>{" "}
                     </div>
                     <DateText light={theme === "light"}>
-                      {formatDate(thisCoinData.market_data.ath_date)}
+                      {formatDate(
+                        thisCoinData.market_data.ath_date[fiatCurrency]
+                      )}
                     </DateText>
                   </div>
                   <div>
@@ -574,7 +598,9 @@ export default function Coin({ params }: CoinProps) {
                       </p>{" "}
                     </div>
                     <DateText light={theme === "light"}>
-                      {formatDate(thisCoinData.market_data.atl_date)}
+                      {formatDate(
+                        thisCoinData.market_data.atl_date[fiatCurrency]
+                      )}
                     </DateText>
                   </div>
                 </PriceInnerContainer>
@@ -668,58 +694,52 @@ export default function Coin({ params }: CoinProps) {
               <DescriptionHeader>Description</DescriptionHeader>
               <DescriptionText>{thisCoinData.description.en}</DescriptionText>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[0]}
                 >
                   {thisCoinData.links.blockchain_site[0]}
-                </Link>
-                <div
-                  onClick={() =>
-                    navigator.clipboard.writeText(
-                      thisCoinData.links.blockchain_site[0]
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
+                </StyledLink>
+                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                   <CopyIcon />
                 </div>
+                {copyClicked === true && (
+                  <CopiedMessageContainer>
+                    Link has been copied!
+                  </CopiedMessageContainer>
+                )}
               </LinkContainer>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[1]}
                 >
                   {thisCoinData.links.blockchain_site[1]}
-                </Link>
-                <div
-                  onClick={() =>
-                    navigator.clipboard.writeText(
-                      thisCoinData.links.blockchain_site[1]
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
+                </StyledLink>
+                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                   <CopyIcon />
                 </div>
+                {copyClicked === true && (
+                  <CopiedMessageContainer>
+                    Link has been copied!
+                  </CopiedMessageContainer>
+                )}
               </LinkContainer>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[2]}
                 >
                   {thisCoinData.links.blockchain_site[2]}
-                </Link>
-                <div
-                  onClick={() =>
-                    navigator.clipboard.writeText(
-                      thisCoinData.links.blockchain_site[2]
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
+                </StyledLink>
+                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                   <CopyIcon />
                 </div>
+                {copyClicked === true && (
+                  <CopiedMessageContainer>
+                    Link has been copied!
+                  </CopiedMessageContainer>
+                )}
               </LinkContainer>
             </>
           )}

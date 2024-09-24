@@ -6,9 +6,7 @@ import { breakpoints } from "breakpoints";
 const BtnsContainer = styled.div`
   display: flex;
   margin-bottom: 30px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-  }
+  gap: 10px;
 `;
 
 const Btn = styled.div<StyleProp>`
