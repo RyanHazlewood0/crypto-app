@@ -23,10 +23,11 @@ const CurrencyContainer = styled.div<ThemeProp>`
   }
 `;
 
-const DropdownContainer = styled.div`
+const DropdownContainer = styled.div<ThemeProp>`
+  color: ${(props) => (props.light ? "#353570" : "white")};
   display: flex;
   flex-direction: column;
-  background: #191925;
+  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
   padding: 10px;
   border: solid 1px gray;
   position: absolute;
@@ -105,7 +106,7 @@ const CurrencySelect = () => {
         <p>▼</p>
       </CurrencyContainer>
       {fiatDropownOpen && (
-        <DropdownContainer>
+        <DropdownContainer light={theme === "light"}>
           {currencyOptions.map((currency) => (
             <CurrencyOptionContainer
               key={currency}
