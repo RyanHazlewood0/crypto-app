@@ -64,15 +64,14 @@ const NameAndLinkContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CoinNameContainer = styled.div`
+const CoinNameContainer = styled.div<ThemeProp>`
   width: 305px;
   padding: 20% 0 20% 0;
-  background: brown;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #1e1932;
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   border-radius: 12px;
   gap: 20px;
   @media (max-width: ${breakpoints.mobile}) {
@@ -82,13 +81,13 @@ const CoinNameContainer = styled.div`
   }
 `;
 
-const PriceInfoContainer = styled.div`
+const PriceInfoContainer = styled.div<ThemeProp>`
   width: 355px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #1e1932;
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   border-radius: 12px;
   gap: 10px;
   @media (max-width: ${breakpoints.mobile}) {
@@ -100,14 +99,13 @@ const PriceInfoContainer = styled.div`
   }
 `;
 
-const CoinLinkContainer = styled.div`
+const CoinLinkContainer = styled.div<ThemeProp>`
   width: 305px;
   padding: 10px 0 10px 0;
-  background: red;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #1e1932;
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   border-radius: 12px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
@@ -135,19 +133,18 @@ const InfoContainerFour = styled.div`
   align-items: center;
 `;
 
-const LinkContainer = styled.div`
+const LinkContainer = styled.div<ThemeProp>`
   width: 100%;
   padding: 10px;
-  background: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #1e1932;
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   border-radius: 12px;
 `;
 
-const TableRow = styled.tr`
-  background: #1e1932;
+const TableRow = styled.tr<ThemeProp>`
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   font-size: 14px;
   display: flex;
   justify-content: space-between;
@@ -184,9 +181,9 @@ const PriceInnerContainer = styled.div`
   gap: 20px;
 `;
 
-const DateText = styled.p`
+const DateText = styled.p<ThemeProp>`
   font-size: 14px;
-  color: #b9b9ba;
+  color: ${(props) => (props.light ? "#353570" : "#b9b9ba")};
   text-align: center;
 `;
 
@@ -203,11 +200,15 @@ interface CoinProps {
   params: { coinId: string };
 }
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
 
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency, theme } = useCoin();
 
   const size = useWindowSize();
 
@@ -253,13 +254,13 @@ export default function Coin({ params }: CoinProps) {
             <TopHalfContainer>
               <InfoContainerOne>
                 <NameAndLinkContainer>
-                  <CoinNameContainer>
+                  <CoinNameContainer light={theme === "light"}>
                     <img src={thisCoinData.image.small} />
                     <h1 style={{ fontSize: "28px" }}>
                       {thisCoinData.name} ({thisCoinData.symbol})
                     </h1>
                   </CoinNameContainer>
-                  <CoinLinkContainer>
+                  <CoinLinkContainer light={theme === "light"}>
                     <Link
                       href={thisCoinData.links.homepage[0]}
                       style={{ marginRight: "10px" }}
@@ -278,7 +279,7 @@ export default function Coin({ params }: CoinProps) {
                     </div>
                   </CoinLinkContainer>
                 </NameAndLinkContainer>
-                <PriceInfoContainer>
+                <PriceInfoContainer light={theme === "light"}>
                   <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                     $
                     {abbreviateNumber(
@@ -304,7 +305,7 @@ export default function Coin({ params }: CoinProps) {
                           )}
                         </p>{" "}
                       </div>
-                      <DateText>
+                      <DateText light={theme === "light"}>
                         {formatDate(thisCoinData.market_data.ath_date)}
                       </DateText>
                     </div>
@@ -326,7 +327,7 @@ export default function Coin({ params }: CoinProps) {
                           )}
                         </p>{" "}
                       </div>
-                      <DateText>
+                      <DateText light={theme === "light"}>
                         {formatDate(thisCoinData.market_data.atl_date)}
                       </DateText>
                     </div>
@@ -340,6 +341,7 @@ export default function Coin({ params }: CoinProps) {
                       borderTopLeftRadius: "12px",
                       borderTopRightRadius: "12px",
                     }}
+                    light={theme === "light"}
                   >
                     <LeftContent>
                       <RoundIcon />
@@ -354,7 +356,7 @@ export default function Coin({ params }: CoinProps) {
                       </RightText>
                     </StyledTd>
                   </TableRow>
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Fully Diluted Valuation</p>
@@ -370,7 +372,7 @@ export default function Coin({ params }: CoinProps) {
                       </RightText>
                     </StyledTd>
                   </TableRow>
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Volume 24h</p>
@@ -385,7 +387,7 @@ export default function Coin({ params }: CoinProps) {
                     </StyledTd>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Circulating Supply</p>
@@ -403,6 +405,7 @@ export default function Coin({ params }: CoinProps) {
                       borderBottomLeftRadius: "12px",
                       borderBottomRightRadius: "12px",
                     }}
+                    light={theme === "light"}
                   >
                     <LeftContent>
                       <RoundIcon />
@@ -425,7 +428,7 @@ export default function Coin({ params }: CoinProps) {
                 <DescriptionText>{thisCoinData.description.en}</DescriptionText>
               </InfoContainerThree>
               <InfoContainerFour>
-                <LinkContainer>
+                <LinkContainer light={theme === "light"}>
                   <Link
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[0]}
@@ -443,7 +446,7 @@ export default function Coin({ params }: CoinProps) {
                     <CopyIcon />
                   </div>
                 </LinkContainer>
-                <LinkContainer>
+                <LinkContainer light={theme === "light"}>
                   <Link
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[1]}
@@ -461,7 +464,7 @@ export default function Coin({ params }: CoinProps) {
                     <CopyIcon />
                   </div>
                 </LinkContainer>
-                <LinkContainer>
+                <LinkContainer light={theme === "light"}>
                   <Link
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[2]}
@@ -498,13 +501,13 @@ export default function Coin({ params }: CoinProps) {
                 <Header>{thisCoinData.name}</Header>
               </HeaderAndBtnContainer>
 
-              <CoinNameContainer>
+              <CoinNameContainer light={theme === "light"}>
                 <img src={thisCoinData.image.small} />
                 <h1 style={{ fontSize: "28px" }}>
                   {thisCoinData.name} ({thisCoinData.symbol})
                 </h1>
               </CoinNameContainer>
-              <CoinLinkContainer>
+              <CoinLinkContainer light={theme === "light"}>
                 <Link
                   href={thisCoinData.links.homepage[0]}
                   style={{ marginRight: "10px" }}
@@ -522,8 +525,7 @@ export default function Coin({ params }: CoinProps) {
                   <CopyIcon />
                 </div>
               </CoinLinkContainer>
-
-              <PriceInfoContainer>
+              <PriceInfoContainer light={theme === "light"}>
                 <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                   $
                   {abbreviateNumber(
@@ -549,7 +551,7 @@ export default function Coin({ params }: CoinProps) {
                         )}
                       </p>{" "}
                     </div>
-                    <DateText>
+                    <DateText light={theme === "light"}>
                       {formatDate(thisCoinData.market_data.ath_date)}
                     </DateText>
                   </div>
@@ -571,7 +573,7 @@ export default function Coin({ params }: CoinProps) {
                         )}
                       </p>{" "}
                     </div>
-                    <DateText>
+                    <DateText light={theme === "light"}>
                       {formatDate(thisCoinData.market_data.atl_date)}
                     </DateText>
                   </div>
@@ -584,6 +586,7 @@ export default function Coin({ params }: CoinProps) {
                       borderTopLeftRadius: "12px",
                       borderTopRightRadius: "12px",
                     }}
+                    light={theme === "light"}
                   >
                     <LeftContent>
                       <RoundIcon />
@@ -598,7 +601,7 @@ export default function Coin({ params }: CoinProps) {
                       </RightText>
                     </StyledTd>
                   </TableRow>
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Fully Diluted Valuation</p>
@@ -614,7 +617,7 @@ export default function Coin({ params }: CoinProps) {
                       </RightText>
                     </StyledTd>
                   </TableRow>
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Volume 24h</p>
@@ -628,8 +631,7 @@ export default function Coin({ params }: CoinProps) {
                       </RightText>
                     </StyledTd>
                   </TableRow>
-
-                  <TableRow>
+                  <TableRow light={theme === "light"}>
                     <LeftContent>
                       <RoundIcon />
                       <p>Circulating Supply</p>
@@ -647,6 +649,7 @@ export default function Coin({ params }: CoinProps) {
                       borderBottomLeftRadius: "12px",
                       borderBottomRightRadius: "12px",
                     }}
+                    light={theme === "light"}
                   >
                     <LeftContent>
                       <RoundIcon />
@@ -664,7 +667,7 @@ export default function Coin({ params }: CoinProps) {
               </TableContainer>
               <DescriptionHeader>Description</DescriptionHeader>
               <DescriptionText>{thisCoinData.description.en}</DescriptionText>
-              <LinkContainer>
+              <LinkContainer light={theme === "light"}>
                 <Link
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[0]}
@@ -682,7 +685,7 @@ export default function Coin({ params }: CoinProps) {
                   <CopyIcon />
                 </div>
               </LinkContainer>
-              <LinkContainer>
+              <LinkContainer light={theme === "light"}>
                 <Link
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[1]}
@@ -700,7 +703,7 @@ export default function Coin({ params }: CoinProps) {
                   <CopyIcon />
                 </div>
               </LinkContainer>
-              <LinkContainer>
+              <LinkContainer light={theme === "light"}>
                 <Link
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[2]}

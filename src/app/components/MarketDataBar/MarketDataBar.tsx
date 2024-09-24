@@ -11,12 +11,13 @@ import { CurrencyValue } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const MarketDataBarWrapper = styled.div`
-  background: #1e1932;
+const MarketDataBarWrapper = styled.div<ThemeProp>`
+  background: ${(props) => (props.light ? "#353570" : "#1e1932")};
   width: 100%;
   height: 48px;
   display: flex;
   align-items: center;
+  color: white;
 `;
 
 const MarketDataBarInnerWrapper = styled.div`
@@ -60,11 +61,15 @@ export interface MarketDataTypes {
   ethPercent: number;
 }
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 const MarketDataBar = () => {
   const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
 
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency, theme } = useCoin();
   const size = useWindowSize();
 
   function abbreviateNumber(num: number): string {
@@ -108,12 +113,18 @@ const MarketDataBar = () => {
   }, [fiatCurrency]);
 
   if (!marketData) {
-    return <MarketDataBarWrapper>Loading...</MarketDataBarWrapper>;
+    return (
+      <MarketDataBarWrapper light={theme === "light"}>
+        Loading...
+      </MarketDataBarWrapper>
+    );
   }
   return hasError ? (
-    <MarketDataBarWrapper>Market Data Loading Error</MarketDataBarWrapper>
+    <MarketDataBarWrapper light={theme === "light"}>
+      Market Data Loading Error
+    </MarketDataBarWrapper>
   ) : (
-    <MarketDataBarWrapper>
+    <MarketDataBarWrapper light={theme === "light"}>
       <MarketDataBarInnerWrapper>
         {size.width > parseInt(breakpoints.mobile) && (
           <>

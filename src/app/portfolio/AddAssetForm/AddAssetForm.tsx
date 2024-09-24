@@ -5,10 +5,10 @@ import { useCoin } from "@/app/contexts/CoinProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<ThemeProp>`
   width: 886px;
   height: 393px;
-  background: #13121a;
+  background: ${(props) => (props.light ? "#ced4da" : "#13121a")};
   padding: 48px;
   border-radius: 20px;
   z-index: 1;
@@ -42,8 +42,8 @@ const InnerContainer = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
-  background: #191932;
+const ImageContainer = styled.div<ThemeProp>`
+  background: ${(props) => (props.light ? "white" : "#191932")};
   width: 297px;
   border-radius: 8px;
   display: flex;
@@ -65,20 +65,20 @@ const BtnContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CancelBtn = styled.button`
+const CancelBtn = styled.button<ThemeProp>`
   width: 222.5px;
   height: 45px;
-  background: #232336;
+  background: ${(props) => (props.light ? "white" : "#232336")};
   border-radius: 6px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
   }
 `;
 
-const SaveBtn = styled.button`
+const SaveBtn = styled.button<ThemeProp>`
   width: 222.5px;
   height: 45px;
-  background: #6161d6;
+  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
   border-radius: 6px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
@@ -93,19 +93,19 @@ const InputsContainer = styled.div`
   position: relative;
 `;
 
-const Input = styled.input`
+const Input = styled.input<ThemeProp>`
   width: 100%;
   height: 44px;
-  background: #191925;
+  background: ${(props) => (props.light ? "white" : "#191925")};
 `;
 
 const SvgContainer = styled.div`
   cursor: pointer;
 `;
 
-const DropDown = styled.div`
+const DropDown = styled.div<ThemeProp>`
   width: 200px;
-  background: #191925;
+  background: ${(props) => (props.light ? "white" : "#191925")};
   padding: 10px;
   border-radius: 6px;
   background: ##191925;
@@ -140,6 +140,10 @@ interface AddAssetFormProps {
   isEditOpen: any;
 }
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 export interface PortfolioCoin {
   name: string;
   totalAmount: number;
@@ -171,7 +175,7 @@ const AddAssetForm = ({
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
   const [coinImg, setCoinImg] = useState(null);
 
-  const { coins } = useCoin();
+  const { coins, theme } = useCoin();
 
   const size = useWindowSize();
 
@@ -253,7 +257,7 @@ const AddAssetForm = ({
 
   return (
     <>
-      <ModalContainer>
+      <ModalContainer light={theme === "light"}>
         <FormHeader>
           <HeaderText>Select Coins</HeaderText>
           <SvgContainer onClick={handleFormClose}>
@@ -262,7 +266,7 @@ const AddAssetForm = ({
         </FormHeader>
         <InnerContainer>
           {size.width > parseInt(breakpoints.mobile) && (
-            <ImageContainer>
+            <ImageContainer light={theme === "light"}>
               <Image src={coinImg} />
             </ImageContainer>
           )}
@@ -277,9 +281,10 @@ const AddAssetForm = ({
                 required
                 placeholder="Coin Name"
                 readOnly={isEditOpen}
+                light={theme === "light"}
               />
               {nameDropdownOpen && (
-                <DropDown>
+                <DropDown light={theme === "light"}>
                   {filteredCoins.map((coin) => (
                     <CoinOption key={coin.id} onClick={selectCoin}>
                       {coin.name}
@@ -293,6 +298,7 @@ const AddAssetForm = ({
                 onChange={handlePurchaseAmountInputChange}
                 required
                 placeholder="Coin Amount"
+                light={theme === "light"}
               />
               <Input
                 type="date"
@@ -300,11 +306,14 @@ const AddAssetForm = ({
                 onChange={handlePurchaseDateInputChange}
                 required
                 max={today.toISOString().split("T")[0]}
+                light={theme === "light"}
               />
             </InputsContainer>
             <BtnContainer>
-              <CancelBtn onClick={handleFormClose}>Cancel</CancelBtn>
-              <SaveBtn type="submit">
+              <CancelBtn light={theme === "light"} onClick={handleFormClose}>
+                Cancel
+              </CancelBtn>
+              <SaveBtn light={theme === "light"} type="submit">
                 {size.width > parseInt(breakpoints.mobile) ? (
                   <p>Save and Continue</p>
                 ) : (

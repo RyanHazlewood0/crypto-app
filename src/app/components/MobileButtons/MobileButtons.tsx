@@ -16,10 +16,10 @@ const MobileBtnContainer = styled.div`
   width: 375px;
 `;
 
-const MobileBtnInnerContainer = styled.div`
+const MobileBtnInnerContainer = styled.div<StyleProp>`
   display: flex;
   justify-content: space-between;
-  background: #232336;
+  background: ${(prop) => (prop.light ? "white" : "#232336")};
 `;
 
 const BtnContainer = styled.div<StyleProp>`
@@ -28,7 +28,21 @@ const BtnContainer = styled.div<StyleProp>`
   align-items: center;
   justify-content: center;
   width: 106.33px;
-  background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
+  background: ${(props) => {
+    if (props.light) {
+      if (props.selected) {
+        return "#B0B0EB";
+      } else {
+        return "white";
+      }
+    } else {
+      if (props.selected) {
+        return "#6161d6";
+      } else {
+        return "#232336";
+      }
+    }
+  }};
   padding: 10px;
   border-radius: 6px;
 `;
@@ -36,28 +50,35 @@ const BtnContainer = styled.div<StyleProp>`
 const Btn = styled.button``;
 
 type StyleProp = {
-  selected: boolean;
+  selected?: boolean;
+  light?: boolean;
 };
 
 const MobileButtons = () => {
   const size = useWindowSize();
-  const { selectedMobileBtn, setSelectedMobileBtn } = useCoin();
+  const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCoin();
   return (
     <>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileBtnContainer>
-          <MobileBtnInnerContainer>
+          <MobileBtnInnerContainer light={theme === "light"}>
             <Link href="/" onClick={() => setSelectedMobileBtn("Overview")}>
-              <BtnContainer selected={selectedMobileBtn === "Overview"}>
+              <BtnContainer
+                light={theme === "light"}
+                selected={selectedMobileBtn === "Overview"}
+              >
                 <OverviewIcon />
                 <Btn>Overview</Btn>
               </BtnContainer>
             </Link>
             <Link
-              href="/convertor"
+              href="/converter"
               onClick={() => setSelectedMobileBtn("Converter")}
             >
-              <BtnContainer selected={selectedMobileBtn === "Converter"}>
+              <BtnContainer
+                light={theme === "light"}
+                selected={selectedMobileBtn === "Converter"}
+              >
                 <ConverterIcon />
                 <Btn>Converter</Btn>
               </BtnContainer>
@@ -66,7 +87,10 @@ const MobileButtons = () => {
               href="/portfolio"
               onClick={() => setSelectedMobileBtn("Portfolio")}
             >
-              <BtnContainer selected={selectedMobileBtn === "Portfolio"}>
+              <BtnContainer
+                light={theme === "light"}
+                selected={selectedMobileBtn === "Portfolio"}
+              >
                 <PortfolioIcon />
                 <Btn>Portfolio</Btn>
               </BtnContainer>

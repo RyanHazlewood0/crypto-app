@@ -26,9 +26,9 @@ const CoinTable = styled.table`
   }
 `;
 
-const TableRow = styled.tr`
+const TableRow = styled.tr<StyleProp>`
   width: 100%;
-  background: #191925;
+  background: ${(props) => (props.light ? "white" : "#191925")};
   font-size: 14px;
   height: 77px;
 `;
@@ -60,9 +60,10 @@ const StyledTd = styled.td<StyleProp>`
   }
 `;
 
-const StyledTh = styled.th`
+const StyledTh = styled.th<StyleProp>`
   padding: 5px 15px 5px 15px;
   text-align: left;
+  color: ${(props) => (props.light ? "#353570" : "#D1D1D1")};
   @media (max-width: ${breakpoints.mobile}) {
     padding: 0;
     text-align: center;
@@ -119,9 +120,10 @@ const LineChartContainer = styled.div`
   }
 `;
 
-const TextAndArrowText = styled.p`
+const TextAndArrowText = styled.p<StyleProp>`
   display: flex;
   margin-bottom: 10px;
+  color: ${(props) => (props.light ? "#353570" : "#D1D1D1")};
 `;
 
 const LoadingMessage = styled.p`
@@ -140,6 +142,7 @@ type StyleProp = {
   green?: boolean;
   right?: boolean;
   gray?: boolean;
+  light?: boolean;
 };
 
 const Table = () => {
@@ -149,7 +152,7 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tableCoins, setTableCoins] = useState([]);
 
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency, theme } = useCoin();
   const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
@@ -250,8 +253,8 @@ const Table = () => {
         {size.width > parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
-              <StyledTh>
-                <TextAndArrowText>
+              <StyledTh light={theme === "light"}>
+                <TextAndArrowText light={theme === "light"}>
                   #
                   <ArrowSpan
                     left
@@ -265,7 +268,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   Name{" "}
                   <ArrowSpan
                     left
@@ -279,7 +282,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   Price{" "}
                   <ArrowSpan
                     left
@@ -293,7 +296,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   1h%{" "}
                   <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
                     ▼
@@ -304,7 +307,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   24h%{" "}
                   <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
                     ▼
@@ -315,7 +318,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   7d%{" "}
                   <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
                     ▼
@@ -325,16 +328,16 @@ const Table = () => {
                   </ArrowSpan>
                 </TextAndArrowText>
               </StyledTh>
-              <StyledTh>
+              <StyledTh light={theme === "light"}>
                 <p style={{ marginBottom: "10px" }}>24h Volume / Market Cap</p>
               </StyledTh>
-              <StyledTh>
+              <StyledTh light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>
                   Circulating / Total Supply
                 </p>
               </StyledTh>
-              <StyledTh>
+              <StyledTh light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>Last 7d</p>
               </StyledTh>
@@ -345,7 +348,7 @@ const Table = () => {
           <TableHeader>
             <tr>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   Name{" "}
                   <ArrowSpan
                     left
@@ -359,7 +362,7 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText>
+                <TextAndArrowText light={theme === "light"}>
                   Price{" "}
                   <ArrowSpan
                     left
@@ -372,7 +375,7 @@ const Table = () => {
                   </ArrowSpan>
                 </TextAndArrowText>
               </StyledTh>
-              <StyledTh>
+              <StyledTh light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>Last 7d</p>
               </StyledTh>
@@ -382,7 +385,7 @@ const Table = () => {
 
         <tbody>
           {sortedCoins.map((coin) => (
-            <TableRow key={coin.id}>
+            <TableRow key={coin.id} light={theme === "light"}>
               {size.width > parseInt(breakpoints.mobile) && (
                 <StyledTd left>{coin.market_cap_rank}</StyledTd>
               )}

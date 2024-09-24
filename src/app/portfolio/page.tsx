@@ -21,11 +21,11 @@ const HeaderText = styled.h1`
   font-size: 20px;
 `;
 
-const AddBtn = styled.button`
+const AddBtn = styled.button<ThemeProp>`
   width: 244px;
   height: 100%;
   border-radius: 6px;
-  background: #6161d6;
+  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
 `;
 
 const MobileAddBtn = styled.button`
@@ -61,6 +61,10 @@ const EntrysContainer = styled.div`
   }
 `;
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
@@ -73,7 +77,7 @@ export default function Portfolio() {
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const { setSelectedMobileBtn, setSelectedNavLink, coins } = useCoin();
+  const { setSelectedMobileBtn, setSelectedNavLink, coins, theme } = useCoin();
 
   const size = useWindowSize();
 
@@ -139,7 +143,9 @@ export default function Portfolio() {
       {size.width > parseInt(breakpoints.mobile) && (
         <HeaderContainer>
           <HeaderText>Portfolio</HeaderText>
-          <AddBtn onClick={handleFormOpen}>Add Asset</AddBtn>
+          <AddBtn light={theme === "light"} onClick={handleFormOpen}>
+            Add Asset
+          </AddBtn>
         </HeaderContainer>
       )}
       {portfolioCoins.length < 1 && (

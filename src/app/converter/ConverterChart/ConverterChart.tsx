@@ -15,6 +15,7 @@ import {
 import { CoinTypes } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
 import { breakpoints } from "breakpoints";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -27,10 +28,10 @@ ChartJS.register(
   Filler
 );
 
-const ChartContainer = styled.div`
+const ChartContainer = styled.div<ThemeProp>`
   width: 100%;
   height: 293px;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 35px;
@@ -55,6 +56,10 @@ interface ConverterChartProps {
   sellCoin: CoinTypes;
 }
 
+type ThemeProp = {
+  light: boolean;
+};
+
 const ConverterChart = ({
   dayCount,
   buyCoin,
@@ -66,6 +71,8 @@ const ConverterChart = ({
     useState<FetchedDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
   const [dataSet, setDataSet] = useState(null);
+
+  const { theme } = useCoin();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -187,7 +194,7 @@ const ConverterChart = ({
 
   return (
     <>
-      <ChartContainer>
+      <ChartContainer light={theme === "light"}>
         {buyCoin && sellCoin ? (
           <Line
             options={options}

@@ -23,14 +23,36 @@ const CarouselContainer = styled.div`
 const CarouselBox = styled.div<StylePropSelected>`
   display: flex !important;
   height: 78px;
-  background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
   border-radius: 6px;
   padding: 10px;
   align-items: center;
   justify-content: space-around;
-  border: ${(props) => (props.selected ? "solid 1px #a7a7cc" : "none")};
+  border: ${(props) => {
+    if (props.selected) {
+      if (props.light) {
+        return "solid 1px #232336";
+      } else {
+        return "solid 1px #a7a7cc";
+      }
+    }
+  }};
   cursor: pointer;
   width: 210px !important;
+   background: ${(props) => {
+     if (props.selected) {
+       if (props.light) {
+         return "#A7A7CC";
+       } else {
+         return "#6161d6";
+       }
+     } else {
+       if (props.light) {
+         return "white";
+       } else {
+         return "#232336";
+       }
+     }
+   }}};
   @media (max-width: ${breakpoints.mobile}) {
     width: 175px !important;
   }
@@ -45,8 +67,8 @@ const PriceChangeDiv = styled.div<StylePropGreen>`
   color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
 `;
 
-const HeaderText = styled.p`
-  color: #d1d1d1;
+const HeaderText = styled.p<ThemeProp>`
+  color: ${(props) => (props.light ? "#424286" : "#d1d1d1")};
   font-size: 14px;
   margin-bottom: 20px;
 `;
@@ -96,10 +118,10 @@ const CoinImage = styled.img`
 const CoinNameText = styled.p`
   font-size: 16px;
 `;
-const CoinPricetext = styled.p`
+const CoinPricetext = styled.p<ThemeProp>`
   font-size: 14px;
   margin-right: 10px;
-  color: #d1d1d1;
+  color: ${(props) => (props.light ? "#424286" : "#d1d1d1")};
 `;
 
 const MessageText = styled.p`
@@ -113,6 +135,11 @@ type StylePropGreen = {
 
 type StylePropSelected = {
   selected: boolean;
+  light: boolean;
+};
+
+type ThemeProp = {
+  light: boolean;
 };
 
 interface CarouselProps {
@@ -123,7 +150,7 @@ interface CarouselProps {
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency, theme } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   const handleSelectCoin = (coin: CoinTypes) => {
@@ -167,10 +194,13 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   return (
     selectedCoin !== null && (
       <CarouselContainer>
-        <HeaderText>Select the currency to view statistics</HeaderText>
+        <HeaderText light={theme === "light"}>
+          Select the currency to view statistics
+        </HeaderText>
         <StyledSlider {...settings}>
           {carouselCoins.map((coin) => (
             <CarouselBox
+              light={theme === "light"}
               style={{ width: breakpoints.mobile ? 180 : 210 }}
               key={coin.id}
               selected={coin.id === selectedCoin.id}
@@ -182,7 +212,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
                   {coin.name}({coin.symbol.toUpperCase()})
                 </CoinNameText>
                 <ArrowAndPercentContainer>
-                  <CoinPricetext>
+                  <CoinPricetext light={theme === "light"}>
                     ${abbreviateNumber(coin.current_price)}
                   </CoinPricetext>
                   {Math.sign(coin.price_change_percentage_1h_in_currency) !==

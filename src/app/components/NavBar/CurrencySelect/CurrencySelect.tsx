@@ -5,9 +5,9 @@ import { useState, useRef, useEffect } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const CurrencyContainer = styled.div`
+const CurrencyContainer = styled.div<ThemeProp>`
   display: flex;
-  background: #191925;
+  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
   width: 100%;
   border: solid 1px gray;
   border-radius: 6px;
@@ -56,8 +56,12 @@ const CurrencyOptionContainer = styled.div`
   }
 `;
 
+type ThemeProp = {
+  light?: boolean;
+};
+
 const CurrencySelect = () => {
-  const { setFiatCurrency, fiatCurrency, isClient } = useCoin();
+  const { setFiatCurrency, fiatCurrency, isClient, theme } = useCoin();
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
   const size = useWindowSize();
@@ -91,7 +95,10 @@ const CurrencySelect = () => {
 
   return (
     <DropdownAndOptionContainer ref={wrapperRef}>
-      <CurrencyContainer onClick={handleToggleDropdown}>
+      <CurrencyContainer
+        onClick={handleToggleDropdown}
+        light={theme === "light"}
+      >
         {size.width > parseInt(breakpoints.mobile) && <DollarSymbol />}
 
         <p>{isClient ? fiatCurrency.toUpperCase() : "usd"}</p>

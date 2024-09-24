@@ -8,10 +8,8 @@ import SearchIcon from "./svg/SearchIcon";
 import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
-import { useState } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import { useEffect } from "react";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -70,8 +68,8 @@ const RightDiv = styled.div`
   }
 `;
 
-const ThemeIconContainer = styled.div`
-  background: #191925;
+const ThemeIconContainer = styled.div<StyleProp>`
+  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
   border: solid 1px gray;
   border-radius: 6px;
   cursor: pointer;
@@ -80,7 +78,6 @@ const ThemeIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   @media (max-width: ${breakpoints.mobile}) {
     width: 36px;
     height: 36px;
@@ -89,17 +86,28 @@ const ThemeIconContainer = styled.div`
 
 const HomeText = styled.p<StyleProp>`
   margin-left: 10px;
-  color: ${(props) => (props.gray ? "gray" : "white")};
+  color: ${(props) => {
+    if (props.light) {
+      return props.selected ? "#353570" : "gray";
+    } else {
+      return props.selected ? "white" : "gray";
+    }
+  }};
 `;
 
 type StyleProp = {
-  gray?: boolean;
+  selected?: boolean;
+  light?: boolean;
 };
 
 const NavBar = () => {
-  const { setSelectedBtn, selectedNavLink, setSelectedNavLink } = useCoin();
-
-  useEffect(() => {}, []);
+  const {
+    setSelectedBtn,
+    selectedNavLink,
+    setSelectedNavLink,
+    theme,
+    toggleTheme,
+  } = useCoin();
 
   const size = useWindowSize();
 
@@ -119,11 +127,12 @@ const NavBar = () => {
             <Link href="/" onClick={() => setSelectedBtn("Coins")}>
               <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
                 <Home selectedNavLink={selectedNavLink} />
-                {selectedNavLink === "Home" ? (
-                  <HomeText>Home</HomeText>
-                ) : (
-                  <HomeText gray>Home</HomeText>
-                )}
+                <HomeText
+                  selected={selectedNavLink === "Home"}
+                  light={theme === "light"}
+                >
+                  Home
+                </HomeText>
               </HomeWrapper>
             </Link>
             <Link href="/portfolio">
@@ -131,11 +140,12 @@ const NavBar = () => {
                 onClick={(e) => handleSelectNavLink(e, "Portfolio")}
               >
                 <Portfolio selectedNavLink={selectedNavLink} />
-                {selectedNavLink === "Portfolio" ? (
-                  <HomeText>Portfolio</HomeText>
-                ) : (
-                  <HomeText gray>Portfolio</HomeText>
-                )}
+                <HomeText
+                  selected={selectedNavLink === "Portfolio"}
+                  light={theme === "light"}
+                >
+                  Portfolio
+                </HomeText>
               </PortfolioWrapper>
             </Link>
           </>
@@ -149,7 +159,7 @@ const NavBar = () => {
           <Search />
         </SearchDiv>
         <CurrencySelect />
-        <ThemeIconContainer>
+        <ThemeIconContainer light={theme === "light"} onClick={toggleTheme}>
           <ThemeIcon />
         </ThemeIconContainer>
       </RightDiv>
