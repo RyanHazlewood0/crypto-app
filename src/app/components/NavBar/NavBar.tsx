@@ -10,6 +10,7 @@ import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import Moon from "./svg/moon";
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -160,7 +161,7 @@ const NavBar = () => {
         </SearchDiv>
         <CurrencySelect />
         <ThemeIconContainer light={theme === "light"} onClick={toggleTheme}>
-          <ThemeIcon />
+          {theme === "light" ? <Moon /> : <ThemeIcon />}
         </ThemeIconContainer>
       </RightDiv>
     </NavBarContainer>

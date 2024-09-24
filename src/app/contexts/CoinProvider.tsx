@@ -38,7 +38,11 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [isClient, setIsClient] = useState(false);
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    document.body.classList.add("light-mode");
+  }, []);
 
   useEffect(() => {
     setIsClient(true);

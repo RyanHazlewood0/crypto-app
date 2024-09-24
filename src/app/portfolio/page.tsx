@@ -28,10 +28,10 @@ const AddBtn = styled.button<ThemeProp>`
   background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
 `;
 
-const MobileAddBtn = styled.button`
+const MobileAddBtn = styled.button<ThemeProp>`
   width: 56px;
   height: 56px;
-  background: #6161d6;
+  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
   border-radius: 50%;
   position: fixed;
   z-index: 1;
@@ -180,7 +180,9 @@ export default function Portfolio() {
       )}
       {size.width < parseInt(breakpoints.mobile) && (
         <>
-          <MobileAddBtn onClick={handleFormOpen}>+</MobileAddBtn>
+          <MobileAddBtn light={theme === "light"} onClick={handleFormOpen}>
+            +
+          </MobileAddBtn>
           <MobileButtons />
         </>
       )}
