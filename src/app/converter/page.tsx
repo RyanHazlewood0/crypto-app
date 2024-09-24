@@ -103,7 +103,7 @@ const ReverseConvertBtn = styled.div<ThemeProp>`
   z-index: 1;
 `;
 
-const SellAmountInput = styled.input`
+const SellAmountInput = styled.input<ThemeProp>`
   border: solid 1px gray;
   border-radius: 6px;
   background: ${(props) => (props.light ? "white" : "#191932")};
@@ -112,7 +112,7 @@ const SellAmountInput = styled.input`
   }
 `;
 
-const BuyAmountInput = styled.input`
+const BuyAmountInput = styled.input<ThemeProp>`
   border: solid 1px gray;
   border-radius: 6px;
   background: ${(props) => (props.light ? "white" : "#191932")};
@@ -153,7 +153,7 @@ const DropdownAndPopupContainer = styled.div`
   position: relative;
 `;
 
-const CoinSearchPopup = styled.div`
+const CoinSearchPopup = styled.div<ThemeProp>`
   width: 200px;
   background: ${(props) => (props.light ? "#8D8DB1" : "#191925")};
   display: flex;
@@ -175,7 +175,7 @@ const CoinSearchPopupHeader = styled.h1`
   font-size: 25px;
 `;
 
-const DropDown = styled.div`
+const DropDown = styled.div<ThemeProp>`
   width: 200px;
   padding: 10px;
   border-radius: 6px;
