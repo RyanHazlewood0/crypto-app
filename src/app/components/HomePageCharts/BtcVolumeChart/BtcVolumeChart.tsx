@@ -13,6 +13,7 @@ import { abbreviateNumber } from "../../Table/helper-functions";
 import { CoinTypes } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -23,9 +24,9 @@ ChartJS.register(
   Legend
 );
 
-const ChartContainer = styled.div`
+const ChartContainer = styled.div<ThemeProp>`
   width: 49%;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   border-radius: 6px;
   height: 400px;
   align-items: flex-end;
@@ -86,11 +87,16 @@ interface BtcVolumeChartProps {
   coinVolumeData: CoinVolumeDataTypes[];
 }
 
+type ThemeProp = {
+  light: boolean;
+};
+
 const BtcVolumeChart = ({
   coinVolumeData,
   selectedCoin,
 }: BtcVolumeChartProps) => {
   const size = useWindowSize();
+  const { theme } = useCoin();
   const barChartData = {
     labels: coinVolumeData.map((obj) => obj.date),
     datasets: [
@@ -131,7 +137,7 @@ const BtcVolumeChart = ({
   };
 
   return (
-    <ChartContainer>
+    <ChartContainer light={theme === "light"}>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileHeaderTextContainer>
           <MobileCoinText>{selectedCoin.name}</MobileCoinText>

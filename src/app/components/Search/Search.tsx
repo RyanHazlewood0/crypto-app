@@ -29,10 +29,10 @@ const SearchInput = styled.input<ThemeProp>`
   }
 `;
 
-const DropDown = styled.div`
+const DropDown = styled.div<ThemeProp>`
   margin-top: 5px;
   width: 100%;
-  background: #191925;
+  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
   padding: 10px;
   border-radius: 6px;
   position: absolute;
@@ -96,7 +96,7 @@ const Search = () => {
         light={theme === "light"}
       />
       {dropDownOpen && (
-        <DropDown>
+        <DropDown light={theme === "light"}>
           {filteredCoins.map((coin) => (
             <LinkContainer
               key={coin.id}

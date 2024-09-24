@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
 import { breakpoints } from "breakpoints";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
-const Container = styled.div`
+const Container = styled.div<StyleProp>`
   display: flex;
   width: 463px;
   height: 42px;
   justify-content: space-between;
-  background: #232336;
+  background: ${(props) => (props.light ? "white" : "#232336")};
   align-items: center;
   border-radius: 6px;
   padding: 4px;
@@ -23,9 +24,25 @@ const SelectBtn = styled.div<StyleProp>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: #a7a7cc;
-  background: ${(props) => (props.selected ? "#6161d6" : "#232336")};
-  border: ${(props) => (props.selected ? "solid 1px #a7a7cc" : "none")};
+  color: ${(props) => (props.light ? "#424286" : "#a7a7cc")};
+  background: ${(props) => {
+    if (props.selected) {
+      if (props.light) {
+        return "#CCCCFA";
+      } else {
+        return "#6262d6";
+      }
+    }
+  }};
+  border: ${(props) => {
+    if (props.selected) {
+      if (props.light) {
+        return "solid 1px #232336";
+      } else {
+        return "solid 1px #a7a7cc";
+      }
+    }
+  }};
   width: 55px;
   height: 34px;
   border-radius: 6px;
@@ -33,7 +50,8 @@ const SelectBtn = styled.div<StyleProp>`
 `;
 
 type StyleProp = {
-  selected: boolean;
+  selected?: boolean;
+  light?: boolean;
 };
 
 type HomeChartTimeSelectProps = {
@@ -47,6 +65,8 @@ const HomeChartTimeSelect = ({
   setTimeFrameSelected,
   setDayCount,
 }: HomeChartTimeSelectProps) => {
+  const { theme } = useCoin();
+
   const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.textContent === "1D") {
       setDayCount("1");
@@ -73,26 +93,54 @@ const HomeChartTimeSelect = ({
   };
 
   return (
-    <Container>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1D"}>
+    <Container light={theme === "light"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "1D"}
+      >
         1D
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "7D"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "7D"}
+      >
         7D
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "14D"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "14D"}
+      >
         14D
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1M"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "1M"}
+      >
         1M
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1Q"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "1Q"}
+      >
         1Q
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "1Y"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "1Y"}
+      >
         1Y
       </SelectBtn>
-      <SelectBtn onClick={findDayCount} selected={timeFrameSelected === "5Y"}>
+      <SelectBtn
+        light={theme === "light"}
+        onClick={findDayCount}
+        selected={timeFrameSelected === "5Y"}
+      >
         5Y
       </SelectBtn>
     </Container>

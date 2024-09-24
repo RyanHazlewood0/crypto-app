@@ -15,6 +15,7 @@ import { abbreviateNumber } from "../../Table/helper-functions";
 import { CoinTypes } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { useCoin } from "@/app/contexts/CoinProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -27,9 +28,9 @@ ChartJS.register(
   Filler
 );
 
-const ChartContainer = styled.div`
+const ChartContainer = styled.div<ThemeProp>`
   width: 49%;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   border-radius: 6px;
   height: 400px;
   align-items: flex-end;
@@ -90,8 +91,13 @@ type BtcPriceChartProps = {
   coinPriceData: CoinPriceDataTypes[];
 };
 
+type ThemeProp = {
+  light: boolean;
+};
+
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
   const size = useWindowSize();
+  const { theme } = useCoin();
 
   const lineChartData = {
     labels: coinPriceData.map((obj) => obj.date),
@@ -144,7 +150,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
   };
 
   return (
-    <ChartContainer>
+    <ChartContainer light={theme === "light"}>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileHeaderTextContainer>
           <MobileCoinText>{selectedCoin.name}</MobileCoinText>

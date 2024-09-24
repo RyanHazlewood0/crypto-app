@@ -20,20 +20,20 @@ const CoinEntryContainer = styled.div`
   display: flex;
 `;
 
-const CoinImageContainer = styled.div`
+const CoinImageContainer = styled.div<ThemeProp>`
   width: 258px;
   height: 100%;
-  background: #1e1932;
+  background: ${(props) => (props.light ? "white" : "#1e1932")};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const CoinInfoContainer = styled.div`
+const CoinInfoContainer = styled.div<ThemeProp>`
   width: 1038px;
   height: 100%;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -53,12 +53,13 @@ const InnerRow = styled.div`
   justify-content: space-between;
 `;
 
-const Btn = styled.button`
-  background: #3a3978;
+const Btn = styled.button<ThemeProp>`
+  background: ${(props) => (props.light ? "#B0B0EB" : "#3a3978")};
   padding: 10px;
   border-radius: 4px;
   height: 40px;
   width: 40px;
+  color: white;
 `;
 
 const Symbol = styled.img`
@@ -118,12 +119,12 @@ const NumberAndLevelBox = styled.div`
   justify-content: space-between;
 `;
 
-const MobEntryContainer = styled.div`
+const MobEntryContainer = styled.div<ThemeProp>`
   width: 100%;
   height: 315px;
   display: flex;
   flex-direction: column;
-  background: #191932;
+  background: ${(props) => (props.light ? "white" : "#191932")};
   padding: 16px;
   border-radius: 16px;
   justify-content: space-between;
@@ -173,9 +174,9 @@ const MobDatetext = styled.div`
 const MobPrictext = styled.div`
   font-size: 20px;
 `;
-const MobSmallText = styled.div`
+const MobSmallText = styled.div<ThemeProp>`
   font-size: 12px;
-  color: #e8e8e8;
+  color: ${(props) => (props.light ? "#353570" : "#e8e8e8")};
 `;
 
 const HeaderContainer = styled.div`
@@ -184,6 +185,10 @@ const HeaderContainer = styled.div`
 
 type TextColor = {
   green: boolean;
+};
+
+type ThemeProp = {
+  light?: boolean;
 };
 
 interface CoinEntryProps {
@@ -213,7 +218,7 @@ const CoinEntry = ({
   isEditOpen,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency, theme } = useCoin();
   const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
   const [purchasePrice, setPurchasePrice] = useState<number | null>(null);
   const [currentP, setCurrentP] = useState(coin.currentPrice);
@@ -328,7 +333,7 @@ const CoinEntry = ({
     if (size.width < parseInt(breakpoints.mobile)) {
       return (
         <>
-          <MobEntryContainer>
+          <MobEntryContainer light={theme === "light"}>
             <HeaderContainer>
               <MobNameDateImgContainer>
                 <MobNameDateContainer>
@@ -340,10 +345,18 @@ const CoinEntry = ({
                 <Symbol src={coin.image} style={{ width: "43px" }} />
               </MobNameDateImgContainer>
               <EditDeleteBtnContainer>
-                <Btn onClick={(e) => editCoinEntry(e, coin)}>
+                <Btn
+                  light={theme === "light"}
+                  onClick={(e) => editCoinEntry(e, coin)}
+                >
                   <EditIcon />
                 </Btn>
-                <Btn onClick={() => deleteEntry(coin)}>X</Btn>
+                <Btn
+                  light={theme === "light"}
+                  onClick={() => deleteEntry(coin)}
+                >
+                  X
+                </Btn>
               </EditDeleteBtnContainer>
             </HeaderContainer>
             <MobPrictext>
@@ -355,14 +368,16 @@ const CoinEntry = ({
                 <MobNameAndNumtext>
                   ${abbreviateNumber(currentP)}
                 </MobNameAndNumtext>
-                <MobSmallText>Current Price</MobSmallText>
+                <MobSmallText light={theme === "light"}>
+                  Current Price
+                </MobSmallText>
               </MobileValueContainer>
               <MobileValueContainer>
                 <PriceChangeText green={coin.priceChange24h > 0}>
                   {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(change24)}%
                 </PriceChangeText>
-                <MobSmallText>24h%</MobSmallText>
+                <MobSmallText light={theme === "light"}>24h%</MobSmallText>
               </MobileValueContainer>
             </MobValueRow>
             <MobValueRow>
@@ -371,11 +386,15 @@ const CoinEntry = ({
                   {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(changeSincePurchase)}%
                 </PriceChangeText>
-                <MobSmallText>% Since Purchase</MobSmallText>
+                <MobSmallText light={theme === "light"}>
+                  % Since Purchase
+                </MobSmallText>
               </MobileValueContainer>
               <MobileValueContainer>
                 <MobNameAndNumtext>{coin.totalAmount}</MobNameAndNumtext>
-                <MobSmallText>Coin Amount</MobSmallText>
+                <MobSmallText light={theme === "light"}>
+                  Coin Amount
+                </MobSmallText>
               </MobileValueContainer>
             </MobValueRow>
           </MobEntryContainer>
@@ -384,17 +403,22 @@ const CoinEntry = ({
     } else {
       return (
         <CoinEntryContainer>
-          <CoinImageContainer>
+          <CoinImageContainer light={theme === "light"}>
             <Symbol src={coin.image} />
             <NameText>
               {coin.name} ({coin.symbol.toUpperCase()})
             </NameText>
           </CoinImageContainer>
-          <CoinInfoContainer>
+          <CoinInfoContainer light={theme === "light"}>
             <Row>
               <InnerRow>
                 <TitleText>Market Price</TitleText>
-                <Btn onClick={() => deleteEntry(coin)}>X</Btn>
+                <Btn
+                  light={theme === "light"}
+                  onClick={() => deleteEntry(coin)}
+                >
+                  X
+                </Btn>
               </InnerRow>
               <InnerRow>
                 <ValueBox>
@@ -440,7 +464,10 @@ const CoinEntry = ({
             <Row>
               <InnerRow>
                 <TitleText>Your Coin</TitleText>
-                <Btn onClick={(e) => editCoinEntry(e, coin)}>
+                <Btn
+                  light={theme === "light"}
+                  onClick={(e) => editCoinEntry(e, coin)}
+                >
                   <EditIcon />
                 </Btn>
               </InnerRow>
