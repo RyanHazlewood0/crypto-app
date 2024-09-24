@@ -196,6 +196,12 @@ const MobileContainer = styled.div`
   padding: 10px;
 `;
 
+const StyledLink = styled.a`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
 interface CoinProps {
   params: { coinId: string };
 }
@@ -246,9 +252,9 @@ export default function Coin({ params }: CoinProps) {
         {thisCoinData !== null && (
           <>
             <HeaderAndBtnContainer>
-              <Link href="/">
+              <StyledLink href="/">
                 <BackBtn>←</BackBtn>
-              </Link>
+              </StyledLink>
               <Header>{thisCoinData.name}</Header>
             </HeaderAndBtnContainer>
             <TopHalfContainer>
@@ -261,12 +267,12 @@ export default function Coin({ params }: CoinProps) {
                     </h1>
                   </CoinNameContainer>
                   <CoinLinkContainer light={theme === "light"}>
-                    <Link
+                    <StyledLink
                       href={thisCoinData.links.homepage[0]}
                       style={{ marginRight: "10px" }}
                     >
                       {thisCoinData.links.homepage[0]}
-                    </Link>
+                    </StyledLink>
                     <div
                       onClick={() =>
                         navigator.clipboard.writeText(
@@ -429,16 +435,20 @@ export default function Coin({ params }: CoinProps) {
             <BottomHalfContainer>
               <InfoContainerThree>
                 <DescriptionHeader>Description</DescriptionHeader>
-                <DescriptionText>{thisCoinData.description.en}</DescriptionText>
+                <DescriptionText
+                  dangerouslySetInnerHTML={{
+                    __html: thisCoinData.description.en,
+                  }}
+                />
               </InfoContainerThree>
               <InfoContainerFour>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[0]}
                   >
                     {thisCoinData.links.blockchain_site[0]}
-                  </Link>
+                  </StyledLink>
                   <div
                     onClick={() =>
                       navigator.clipboard.writeText(
@@ -451,12 +461,12 @@ export default function Coin({ params }: CoinProps) {
                   </div>
                 </LinkContainer>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[1]}
                   >
                     {thisCoinData.links.blockchain_site[1]}
-                  </Link>
+                  </StyledLink>
                   <div
                     onClick={() =>
                       navigator.clipboard.writeText(
@@ -469,12 +479,12 @@ export default function Coin({ params }: CoinProps) {
                   </div>
                 </LinkContainer>
                 <LinkContainer light={theme === "light"}>
-                  <Link
+                  <StyledLink
                     style={{ marginRight: "10px" }}
                     href={thisCoinData.links.blockchain_site[2]}
                   >
                     {thisCoinData.links.blockchain_site[2]}
-                  </Link>
+                  </StyledLink>
                   <div
                     onClick={() =>
                       navigator.clipboard.writeText(
@@ -512,12 +522,12 @@ export default function Coin({ params }: CoinProps) {
                 </h1>
               </CoinNameContainer>
               <CoinLinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   href={thisCoinData.links.homepage[0]}
                   style={{ marginRight: "10px" }}
                 >
                   {thisCoinData.links.homepage[0]}
-                </Link>
+                </StyledLink>
                 <div
                   onClick={() =>
                     navigator.clipboard.writeText(
@@ -676,12 +686,12 @@ export default function Coin({ params }: CoinProps) {
               <DescriptionHeader>Description</DescriptionHeader>
               <DescriptionText>{thisCoinData.description.en}</DescriptionText>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[0]}
                 >
                   {thisCoinData.links.blockchain_site[0]}
-                </Link>
+                </StyledLink>
                 <div
                   onClick={() =>
                     navigator.clipboard.writeText(
@@ -694,12 +704,12 @@ export default function Coin({ params }: CoinProps) {
                 </div>
               </LinkContainer>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[1]}
                 >
                   {thisCoinData.links.blockchain_site[1]}
-                </Link>
+                </StyledLink>
                 <div
                   onClick={() =>
                     navigator.clipboard.writeText(
@@ -712,12 +722,12 @@ export default function Coin({ params }: CoinProps) {
                 </div>
               </LinkContainer>
               <LinkContainer light={theme === "light"}>
-                <Link
+                <StyledLink
                   style={{ marginRight: "10px" }}
                   href={thisCoinData.links.blockchain_site[2]}
                 >
                   {thisCoinData.links.blockchain_site[2]}
-                </Link>
+                </StyledLink>
                 <div
                   onClick={() =>
                     navigator.clipboard.writeText(
