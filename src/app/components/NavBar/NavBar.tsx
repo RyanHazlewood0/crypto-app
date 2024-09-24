@@ -122,7 +122,9 @@ const NavBar = () => {
   return (
     <NavBarContainer>
       <LeftDiv>
-        <Logo />
+        <Link href="/" onClick={() => setSelectedBtn("Coins")}>
+          <Logo />
+        </Link>
         {size.width > parseInt(breakpoints.mobile) && (
           <>
             <Link href="/" onClick={() => setSelectedBtn("Coins")}>

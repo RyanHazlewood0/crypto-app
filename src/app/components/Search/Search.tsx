@@ -68,12 +68,14 @@ const Search = () => {
     }
   };
 
-  const filteredCoins = coins.filter(
-    (coin) =>
-      coin.id.includes(searchValue) ||
-      coin.symbol.includes(searchValue) ||
-      coin.name.includes(searchValue)
-  );
+  const filteredCoins = coins
+    .filter(
+      (coin) =>
+        coin.id.includes(searchValue) ||
+        coin.symbol.includes(searchValue) ||
+        coin.name.includes(searchValue)
+    )
+    .slice(0, 10);
 
   const handleBlur = () => {
     setDropDownOpen(false);

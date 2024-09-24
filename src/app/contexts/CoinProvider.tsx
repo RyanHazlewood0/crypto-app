@@ -41,8 +41,27 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    document.body.classList.add("light-mode");
+    const storedTheme = localStorage.getItem("themeStyle");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (isClient) {
+        localStorage.setItem("themeStyle", theme);
+      }
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.classList.add("light-mode");
+    } else {
+      document.body.classList.remove("light-mode");
+    }
+  }, [theme]);
 
   useEffect(() => {
     setIsClient(true);
