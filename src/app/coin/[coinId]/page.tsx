@@ -306,7 +306,9 @@ export default function Coin({ params }: CoinProps) {
                         </p>{" "}
                       </div>
                       <DateText light={theme === "light"}>
-                        {formatDate(thisCoinData.market_data.ath_date)}
+                        {formatDate(
+                          thisCoinData.market_data.ath_date[fiatCurrency]
+                        )}
                       </DateText>
                     </div>
                     <div>
@@ -328,7 +330,9 @@ export default function Coin({ params }: CoinProps) {
                         </p>{" "}
                       </div>
                       <DateText light={theme === "light"}>
-                        {formatDate(thisCoinData.market_data.atl_date)}
+                        {formatDate(
+                          thisCoinData.market_data.atl_date[fiatCurrency]
+                        )}
                       </DateText>
                     </div>
                   </PriceInnerContainer>
@@ -552,7 +556,9 @@ export default function Coin({ params }: CoinProps) {
                       </p>{" "}
                     </div>
                     <DateText light={theme === "light"}>
-                      {formatDate(thisCoinData.market_data.ath_date)}
+                      {formatDate(
+                        thisCoinData.market_data.ath_date[fiatCurrency]
+                      )}
                     </DateText>
                   </div>
                   <div>
@@ -574,7 +580,9 @@ export default function Coin({ params }: CoinProps) {
                       </p>{" "}
                     </div>
                     <DateText light={theme === "light"}>
-                      {formatDate(thisCoinData.market_data.atl_date)}
+                      {formatDate(
+                        thisCoinData.market_data.atl_date[fiatCurrency]
+                      )}
                     </DateText>
                   </div>
                 </PriceInnerContainer>
