@@ -1,14 +1,13 @@
 "use client";
-import CoinsAndConverterBtns from "../components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useCoin } from "../contexts/CoinProvider";
+import { useCoin } from "../../contexts/CoinProvider";
 import { CoinTypes } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import MobileButtons from "../components/MobileButtons/MobileButtons";
+import MobileButtons from "../MobileButtons/MobileButtons";
 
 const ConverterContainer = styled.div`
   width: 100%;
@@ -154,6 +153,7 @@ const DropdownAndPopupContainer = styled.div`
 `;
 
 const CoinSearchPopup = styled.div<ThemeProp>`
+  border-radius: 6px;
   width: 200px;
   background: ${(props) => (props.light ? "#8D8DB1" : "#191925")};
   display: flex;
@@ -261,19 +261,23 @@ export default function Converter() {
     }
   };
 
-  const filteredBuyCoins = coins.filter(
-    (coin) =>
-      coin.id.includes(buySearch) ||
-      coin.symbol.includes(buySearch) ||
-      coin.name.includes(buySearch)
-  );
+  const filteredBuyCoins = coins
+    .filter(
+      (coin) =>
+        coin.id.includes(buySearch) ||
+        coin.symbol.includes(buySearch) ||
+        coin.name.includes(buySearch)
+    )
+    .slice(0, 10);
 
-  const filteredSellCoins = coins.filter(
-    (coin) =>
-      coin.id.includes(sellSearch) ||
-      coin.symbol.includes(sellSearch) ||
-      coin.name.includes(sellSearch)
-  );
+  const filteredSellCoins = coins
+    .filter(
+      (coin) =>
+        coin.id.includes(sellSearch) ||
+        coin.symbol.includes(sellSearch) ||
+        coin.name.includes(sellSearch)
+    )
+    .slice(0, 10);
 
   const handleSellQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -372,9 +376,6 @@ export default function Converter() {
     <>
       {sellCoin && buyCoin && (
         <>
-          {size.width > parseInt(breakpoints.mobile) && (
-            <CoinsAndConverterBtns />
-          )}
           <Title>Cryptocurrency Converter</Title>
           <DateText light={theme === "light"}>{currentDate}</DateText>
           <ConverterContainer>

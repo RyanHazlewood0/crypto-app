@@ -56,28 +56,29 @@ type StyleProp = {
 
 const MobileButtons = () => {
   const size = useWindowSize();
-  const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCoin();
+  const { selectedMobileBtn, setSelectedMobileBtn, theme, selectedNavLink } =
+    useCoin();
+
   return (
     <>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileBtnContainer>
           <MobileBtnInnerContainer light={theme === "light"}>
-            <Link href="/" onClick={() => setSelectedMobileBtn("Overview")}>
+            <Link href="/">
               <BtnContainer
                 light={theme === "light"}
                 selected={selectedMobileBtn === "Overview"}
+                onClick={() => setSelectedMobileBtn("Overview")}
               >
                 <OverviewIcon />
                 <Btn>Overview</Btn>
               </BtnContainer>
             </Link>
-            <Link
-              href="/converter"
-              onClick={() => setSelectedMobileBtn("Converter")}
-            >
+            <Link href="/">
               <BtnContainer
                 light={theme === "light"}
                 selected={selectedMobileBtn === "Converter"}
+                onClick={() => setSelectedMobileBtn("Converter")}
               >
                 <ConverterIcon />
                 <Btn>Converter</Btn>

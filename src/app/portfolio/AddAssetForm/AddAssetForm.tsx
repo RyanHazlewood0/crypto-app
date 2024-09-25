@@ -189,12 +189,14 @@ const AddAssetForm = ({
     }
   };
 
-  const filteredCoins = coins.filter(
-    (coin) =>
-      coin.symbol.includes(coinSelectValue) ||
-      coin.name.includes(coinSelectValue) ||
-      coin.id.includes(coinSelectValue)
-  );
+  const filteredCoins = coins
+    .filter(
+      (coin) =>
+        coin.symbol.includes(coinSelectValue) ||
+        coin.name.includes(coinSelectValue) ||
+        coin.id.includes(coinSelectValue)
+    )
+    .slice(0, 10);
 
   const handlePurchaseAmountInputChange = (
     e: React.ChangeEvent<HTMLInputElement>

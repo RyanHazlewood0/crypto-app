@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { breakpoints } from "breakpoints";
 
@@ -10,6 +9,7 @@ const BtnsContainer = styled.div`
 `;
 
 const Btn = styled.div<StyleProp>`
+  cursor: pointer;
   background: ${(props) => {
     if (props.light) {
       return props.selected ? "#a7a7cc" : "white";
@@ -40,24 +40,21 @@ const CoinsAndConverterBtns = () => {
 
   return (
     <BtnsContainer>
-      <Link href="/">
-        <Btn
-          selected={selectedBtn === "Coins"}
-          onClick={() => setSelectedBtn("Coins")}
-          light={theme === "light"}
-        >
-          Coins
-        </Btn>
-      </Link>
-      <Link href="/converter">
-        <Btn
-          selected={selectedBtn === "Converter"}
-          onClick={() => setSelectedBtn("Converter")}
-          light={theme === "light"}
-        >
-          Converter
-        </Btn>
-      </Link>
+      <Btn
+        selected={selectedBtn === "Coins"}
+        onClick={() => setSelectedBtn("Coins")}
+        light={theme === "light"}
+      >
+        Coins
+      </Btn>
+
+      <Btn
+        selected={selectedBtn === "Converter"}
+        onClick={() => setSelectedBtn("Converter")}
+        light={theme === "light"}
+      >
+        Converter
+      </Btn>
     </BtnsContainer>
   );
 };
