@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Link from "next/link";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { breakpoints } from "breakpoints";
 

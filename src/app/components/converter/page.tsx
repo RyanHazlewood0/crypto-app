@@ -3,11 +3,11 @@ import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useCoin } from "../contexts/CoinProvider";
+import { useCoin } from "../../contexts/CoinProvider";
 import { CoinTypes } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import MobileButtons from "../components/MobileButtons/MobileButtons";
+import MobileButtons from "../MobileButtons/MobileButtons";
 
 const ConverterContainer = styled.div`
   width: 100%;
