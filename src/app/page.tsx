@@ -17,13 +17,13 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState<CoinTypes | null>(null);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
-  const { selectedBtn } = useCoin();
+  const { selectedBtn, selectedMobileBtn } = useCoin();
   const size = useWindowSize();
 
   return (
     <>
       {size.width > parseInt(breakpoints.mobile) && <CoinsAndConverterBtns />}
-      {selectedBtn === "Coins" && (
+      {selectedBtn === "Coins" && size.width > parseInt(breakpoints.mobile) && (
         <>
           <Carousel
             setSelectedCoin={setSelectedCoin}
@@ -37,11 +37,33 @@ export default function Home() {
           />
         </>
       )}
-      {selectedBtn === "Converter" && (
-        <>
-          <Converter />
-        </>
-      )}
+      {selectedMobileBtn === "Overview" &&
+        size.width < parseInt(breakpoints.mobile) && (
+          <>
+            <Carousel
+              setSelectedCoin={setSelectedCoin}
+              selectedCoin={selectedCoin}
+            />
+            <HomePageCharts selectedCoin={selectedCoin} dayCount={dayCount} />
+            <HomeChartTimeSelect
+              timeFrameSelected={timeFrameSelected}
+              setTimeFrameSelected={setTimeFrameSelected}
+              setDayCount={setDayCount}
+            />
+          </>
+        )}
+      {selectedBtn === "Converter" &&
+        size.width > parseInt(breakpoints.mobile) && (
+          <>
+            <Converter />
+          </>
+        )}
+      {selectedMobileBtn === "Converter" &&
+        size.width < parseInt(breakpoints.mobile) && (
+          <>
+            <Converter />
+          </>
+        )}
       <Table />
       <MobileButtons />
     </>
