@@ -11,6 +11,7 @@ import GreenArrow from "./svg/GreenArrow";
 import { CoinTypes } from "types";
 import { useEffect } from "react";
 import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -21,8 +22,11 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselBox = styled.div<StylePropSelected>`
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 181px !important;
+
+    }
   display: flex !important;
-   width: 210px !important;
   height: 78px;
   border-radius: 6px;
   padding: 10px;
@@ -53,9 +57,7 @@ const CarouselBox = styled.div<StylePropSelected>`
        }
      }
    }}};
-    @media (max-width: ${breakpoints.mobile}) {
-    width: 180px !important;
-  }
+ 
 `;
 
 const ArrowAndPercentContainer = styled.div`
@@ -75,9 +77,10 @@ const HeaderText = styled.p<ThemeProp>`
 
 const StyledSlider = styled(Slider)`
   .slick-slide {
-    margin: 0 18.626px 0 18.626px;
+    margin: 0 6.51px 0 6.51px;
+    width: 205px;
     @media (max-width: ${breakpoints.mobile}) {
-      margin: 0 12px 0 12px;
+      margin: 0 6.25px 0 6.25px;
     }
   }
   .slick-next {
@@ -152,6 +155,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [carouselCoins, setCarouselCoins] = useState([]);
   const { fiatCurrency, theme } = useCoin();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const size = useWindowSize();
 
   const handleSelectCoin = (coin: CoinTypes) => {
     setSelectedCoin(coin);
@@ -201,7 +205,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
           {carouselCoins.map((coin) => (
             <CarouselBox
               light={theme === "light"}
-              style={{ width: breakpoints.mobile ? 180 : 210 }}
               key={coin.id}
               selected={coin.id === selectedCoin.id}
               onClick={() => handleSelectCoin(coin)}
