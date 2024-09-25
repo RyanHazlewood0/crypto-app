@@ -14,7 +14,7 @@ const ConverterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   position: relative;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
   @media (max-width: ${breakpoints.mobile}) {
     flex-direction: column;
     align-items: center;
@@ -165,6 +165,7 @@ const CoinSearchPopup = styled.div<ThemeProp>`
   margin-left: -290px;
   gap: 5px;
   top: 100%;
+  justify-content: center;
   @media (max-width: ${breakpoints.mobile}) {
     z-index: 2;
     margin-left: -190px;

@@ -8,7 +8,7 @@ const Container = styled.div<SelectBtnProps>`
   width: 463px;
   height: 42px;
   justify-content: space-between;
-  background: ${(props) => (props.light ? "#a7a7cc" : "#232336")};
+  background: ${(prop) => (prop.light ? "white" : "#232336")};
   align-items: center;
   border-radius: 6px;
   padding: 4px;
@@ -24,13 +24,23 @@ const SelectBtn = styled.div<SelectBtnProps>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: ${(props) => (props.light ? "#424286" : "white")};
-  background: ${(props) => props.selected && "#6161d6"};
+  color: ${(props) => (props.light ? "#424286" : "#a7a7cc")};
+  background: ${(props) => {
+    if (props.selected) {
+      if (props.light) {
+        return "#CCCCFA";
+      } else {
+        return "#6262d6";
+      }
+    }
+  }};
   border: ${(props) => {
     if (props.selected) {
-      return props.light ? "solid 1px black" : "solid 1px #a7a7cc";
-    } else {
-      return "none";
+      if (props.light) {
+        return "solid 1px #232336";
+      } else {
+        return "solid 1px #a7a7cc";
+      }
     }
   }};
   width: 55px;
