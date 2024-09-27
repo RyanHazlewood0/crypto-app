@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
-import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
+import { PortfolioCoin } from "types";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
