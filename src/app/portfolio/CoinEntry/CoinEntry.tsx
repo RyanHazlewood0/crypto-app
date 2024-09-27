@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
-import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
+import { PortfolioCoin } from "types";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
 import { abbreviateNumber } from "@/app/components/Table/helper-functions";
