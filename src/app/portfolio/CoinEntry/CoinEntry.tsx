@@ -69,6 +69,7 @@ const Symbol = styled.img`
 const NameText = styled.p`
   font-size: 28px;
   font-weight: bold;
+  text-align: center;
 `;
 
 const Line = styled.hr`

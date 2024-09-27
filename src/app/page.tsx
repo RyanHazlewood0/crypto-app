@@ -17,8 +17,12 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState<CoinTypes | null>(null);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
-  const { selectedBtn, selectedMobileBtn } = useCoin();
+  const { selectedBtn, selectedMobileBtn, setSelectedNavLink } = useCoin();
   const size = useWindowSize();
+
+  if (selectedMobileBtn !== "Portfolio") {
+    setSelectedNavLink("Home");
+  }
 
   return (
     <>

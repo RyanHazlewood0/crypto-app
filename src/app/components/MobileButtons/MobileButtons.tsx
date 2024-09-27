@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -56,8 +55,7 @@ type StyleProp = {
 
 const MobileButtons = () => {
   const size = useWindowSize();
-  const { selectedMobileBtn, setSelectedMobileBtn, theme, selectedNavLink } =
-    useCoin();
+  const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCoin();
 
   return (
     <>

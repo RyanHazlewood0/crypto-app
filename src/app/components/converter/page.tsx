@@ -122,7 +122,7 @@ const BuyAmountInput = styled.input<ThemeProp>`
 
 const CoinContainer = styled.div`
   display: flex;
-  width: 150px;
+  max-width: 350px;
   align-items: center;
   gap: 5px;
 `;
