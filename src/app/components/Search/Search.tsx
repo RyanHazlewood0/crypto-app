@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCoin } from "@/app/contexts/CoinProvider";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
@@ -81,7 +81,7 @@ const Search = () => {
     setDropDownOpen(false);
   };
 
-  const handleNavLink = (coin: CoinTypes) => {
+  const handleNavLink = (coin: Coin) => {
     router.push(`/coin/${coin.id}`);
     setSearchValue("");
   };

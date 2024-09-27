@@ -12,7 +12,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
 import { breakpoints } from "breakpoints";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -52,8 +52,8 @@ const ErrorText = styled.p`
 
 interface ConverterChartProps {
   dayCount: string;
-  buyCoin: CoinTypes;
-  sellCoin: CoinTypes;
+  buyCoin: Coin;
+  sellCoin: Coin;
 }
 
 type ThemeProp = {

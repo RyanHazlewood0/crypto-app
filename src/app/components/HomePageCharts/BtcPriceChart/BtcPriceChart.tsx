@@ -12,7 +12,7 @@ import {
   Filler,
 } from "chart.js";
 import { abbreviateNumber } from "../../Table/helper-functions";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -87,7 +87,7 @@ type CoinPriceDataTypes = {
 };
 
 type BtcPriceChartProps = {
-  selectedCoin: CoinTypes;
+  selectedCoin: Coin;
   coinPriceData: CoinPriceDataTypes[];
 };
 

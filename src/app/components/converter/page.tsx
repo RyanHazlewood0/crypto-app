@@ -4,7 +4,7 @@ import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useCoin } from "../../contexts/CoinProvider";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import MobileButtons from "../MobileButtons/MobileButtons";
@@ -200,8 +200,8 @@ type ThemeProp = {
 };
 
 export default function Converter() {
-  const [buyCoin, setBuyCoin] = useState<CoinTypes | null>(null);
-  const [sellCoin, setSellCoin] = useState<CoinTypes | null>(null);
+  const [buyCoin, setBuyCoin] = useState<Coin | null>(null);
+  const [sellCoin, setSellCoin] = useState<Coin | null>(null);
   const [buySearch, setBuySearch] = useState("");
   const [sellSearch, setSellSearch] = useState("");
   const [timeFrameSelected, setTimeFrameSelected] = useState("1Y");
@@ -351,7 +351,7 @@ export default function Converter() {
     }
   };
 
-  const handleSetSellCoin = (coin: CoinTypes) => {
+  const handleSetSellCoin = (coin: Coin) => {
     setSellCoin(coin);
     setSearchBuyPopupOpen(false);
     setSearchSellPopupOpen(false);
@@ -360,7 +360,7 @@ export default function Converter() {
     setSellSearch("");
   };
 
-  const handleSetBuyCoin = (coin: CoinTypes) => {
+  const handleSetBuyCoin = (coin: Coin) => {
     setBuyCoin(coin);
     setSearchSellPopupOpen(false);
     setSearchBuyPopupOpen(false);

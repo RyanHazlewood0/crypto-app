@@ -10,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { abbreviateNumber } from "../../Table/helper-functions";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCoin } from "@/app/contexts/CoinProvider";
@@ -83,7 +83,7 @@ interface CoinVolumeDataTypes {
 }
 
 interface BtcVolumeChartProps {
-  selectedCoin: CoinTypes;
+  selectedCoin: Coin;
   coinVolumeData: CoinVolumeDataTypes[];
 }
 
