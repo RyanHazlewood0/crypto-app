@@ -1,7 +1,7 @@
 import { SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
 import { breakpoints } from "breakpoints";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 const Container = styled.div<SelectBtnProps>`
   display: flex;
@@ -65,7 +65,7 @@ const ConverterTimeSelect = ({
   setTimeFrameSelected,
   setDayCount,
 }: ConverterTimeSelectProps) => {
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
   const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.textContent === "1D") {
       setDayCount("1");

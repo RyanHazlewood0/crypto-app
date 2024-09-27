@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import {
   abbreviateNumber,
   findSupplyLevel,
@@ -152,7 +152,7 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tableCoins, setTableCoins] = useState([]);
 
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;

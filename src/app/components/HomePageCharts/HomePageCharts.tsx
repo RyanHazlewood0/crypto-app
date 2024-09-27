@@ -3,7 +3,7 @@ import BtcPriceChart from "./BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
 import { Coin } from "types";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 
 const ChartsContainer = styled.div`
@@ -55,7 +55,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
     coinVolumeDataTypes[] | null
   >(null);
 
-  const { fiatCurrency } = useCoin();
+  const { fiatCurrency } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 

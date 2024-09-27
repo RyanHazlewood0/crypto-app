@@ -1,4 +1,4 @@
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import Slider from "react-slick";
@@ -153,7 +153,7 @@ interface CarouselProps {
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const size = useWindowSize();
 

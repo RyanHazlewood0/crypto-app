@@ -1,10 +1,10 @@
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 interface HomeProps {
   selectedNavLink: string;
 }
 
 const Home = ({ selectedNavLink }: HomeProps) => {
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const getStyle = () => {
     if (selectedNavLink === "Home") {

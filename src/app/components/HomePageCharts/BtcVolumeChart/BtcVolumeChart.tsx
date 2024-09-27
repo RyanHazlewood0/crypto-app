@@ -13,7 +13,7 @@ import { abbreviateNumber } from "../../Table/helper-functions";
 import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -96,7 +96,7 @@ const BtcVolumeChart = ({
   selectedCoin,
 }: BtcVolumeChartProps) => {
   const size = useWindowSize();
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const findBackground = () => {
     if (theme === "light") {

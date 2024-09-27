@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { PortfolioCoin } from "types";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
@@ -219,7 +219,7 @@ const CoinEntry = ({
   isEditOpen,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
   const [purchasePrice, setPurchasePrice] = useState<number | null>(null);
   const [currentP, setCurrentP] = useState(coin.currentPrice);

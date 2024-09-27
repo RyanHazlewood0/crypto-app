@@ -3,7 +3,7 @@ import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useCoin } from "../../contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -213,7 +213,8 @@ export default function Converter() {
   const [searchBuyPopupOpen, setSearchBuyPopupOpen] = useState(false);
   const [searchSellPopupOpen, setSearchSellPopupOpen] = useState(false);
 
-  const { coins, setSelectedMobileBtn, setSelectedBtn, theme } = useCoin();
+  const { coins, setSelectedMobileBtn, setSelectedBtn, theme } =
+    useCryptoContext();
 
   const size = useWindowSize();
 

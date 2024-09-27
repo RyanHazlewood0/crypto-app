@@ -8,7 +8,7 @@ import SearchIcon from "./svg/SearchIcon";
 import Moon from "./svg/Moon";
 import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
@@ -108,7 +108,7 @@ const NavBar = () => {
     setSelectedNavLink,
     theme,
     toggleTheme,
-  } = useCoin();
+  } = useCryptoContext();
 
   const size = useWindowSize();
 

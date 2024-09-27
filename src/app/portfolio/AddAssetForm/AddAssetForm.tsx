@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { PortfolioCoin } from "types";
@@ -160,7 +160,7 @@ const AddAssetForm = ({
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
   const [coinImg, setCoinImg] = useState(null);
 
-  const { coins, theme } = useCoin();
+  const { coins, theme } = useCryptoContext();
 
   const size = useWindowSize();
 

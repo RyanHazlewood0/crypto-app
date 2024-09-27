@@ -1,7 +1,7 @@
 "use client";
 import styled from "styled-components";
 import Link from "next/link";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useEffect } from "react";
 import { abbreviateNumber } from "@/app/components/Table/helper-functions";
 import CopyIcon from "./svg/CopyIcon";
@@ -226,7 +226,7 @@ export default function Coin({ params }: CoinProps) {
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
 
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
 
   const size = useWindowSize();
 

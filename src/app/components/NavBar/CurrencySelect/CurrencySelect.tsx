@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import DollarSymbol from "../svg/DollarSymbol";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useRef, useEffect } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -62,7 +62,7 @@ type ThemeProp = {
 };
 
 const CurrencySelect = () => {
-  const { setFiatCurrency, fiatCurrency, isClient, theme } = useCoin();
+  const { setFiatCurrency, fiatCurrency, isClient, theme } = useCryptoContext();
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
   const currencyOptions: string[] = ["usd", "nzd", "aud", "gbp"];
   const size = useWindowSize();

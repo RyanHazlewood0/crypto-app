@@ -1,5 +1,5 @@
 "use client";
-import { CoinProvider } from "./contexts/CoinProvider";
+import { CryptoProvider } from "./contexts/CryptoProvider";
 import "./globals.css";
 import styled from "styled-components";
 import MarketDataBar from "./components/MarketDataBar/MarketDataBar";
@@ -23,13 +23,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
-        <CoinProvider>
+        <CryptoProvider>
           <MarketDataBar />
           <MainContainer>
             <NavBar />
             {children}
           </MainContainer>
-        </CoinProvider>
+        </CryptoProvider>
       </body>
     </html>
   );

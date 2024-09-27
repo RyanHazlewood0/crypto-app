@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useLayoutEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { Coin } from "types";
 
-interface CoinContextType {
+interface CryptoContextType {
   coins: Coin[];
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<Coin[]>>;
@@ -20,18 +20,18 @@ interface CoinContextType {
   toggleTheme: any;
 }
 
-const CoinContext = createContext<CoinContextType | null>(null);
+const CryptoContext = createContext<CryptoContextType | null>(null);
 
-export const useCoin = (): CoinContextType => {
-  const value = useContext(CoinContext);
+export const useCryptoContext = (): CryptoContextType => {
+  const value = useContext(CryptoContext);
   return value;
 };
 
-type useCoinProps = {
+type useCryptoContextProps = {
   children: React.ReactNode;
 };
 
-export const CoinProvider = ({ children }: useCoinProps) => {
+export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   const [coins, setCoins] = useState<Coin[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
   const [fiatCurrency, setFiatCurrency] = useState("usd");
@@ -117,7 +117,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   };
 
   return (
-    <CoinContext.Provider
+    <CryptoContext.Provider
       value={{
         coins,
         setCoins,
@@ -136,6 +136,6 @@ export const CoinProvider = ({ children }: useCoinProps) => {
       }}
     >
       {children}
-    </CoinContext.Provider>
+    </CryptoContext.Provider>
   );
 };
