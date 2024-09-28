@@ -5,7 +5,7 @@ import {
   abbreviateNumber,
   findSupplyLevel,
   findVolumeLevel,
-} from "./helper-functions";
+} from "helper-functions";
 import { Coin } from "types";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";

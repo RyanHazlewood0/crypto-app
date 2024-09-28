@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useEffect } from "react";
-import { abbreviateNumber } from "@/app/components/Table/helper-functions";
+import { abbreviateNumber } from "helper-functions";
 import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";

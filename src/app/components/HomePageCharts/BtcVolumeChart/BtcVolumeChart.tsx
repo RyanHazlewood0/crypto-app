@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { abbreviateNumber } from "../../Table/helper-functions";
+import { abbreviateNumber } from "helper-functions";
 import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";

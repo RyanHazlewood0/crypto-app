@@ -4,13 +4,14 @@ import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { PortfolioCoin } from "types";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
-import { abbreviateNumber } from "@/app/components/Table/helper-functions";
-import RedArrow from "../svg/RedArrow";
-import GreenArrow from "../svg/GreenArrow";
 import {
+  abbreviateNumber,
   findSupplyLevel,
   findVolumeLevel,
-} from "@/app/components/Table/helper-functions";
+} from "helper-functions";
+import RedArrow from "../svg/RedArrow";
+import GreenArrow from "../svg/GreenArrow";
+
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
