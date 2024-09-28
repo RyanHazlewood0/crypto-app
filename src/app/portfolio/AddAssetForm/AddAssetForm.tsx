@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import CloseIcon from "../svg/close-circle";
 import { SetStateAction, Dispatch, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { PortfolioCoin } from "types";
 
 const ModalContainer = styled.div<ThemeProp>`
   width: 886px;
@@ -144,22 +145,6 @@ type ThemeProp = {
   light?: boolean;
 };
 
-export interface PortfolioCoin {
-  name: string;
-  totalAmount: number;
-  purchaseDate: Date;
-  currentPrice: number;
-  totalValue: number;
-  image: string;
-  circulating_supply: number;
-  total_supply: number;
-  total_volume: number;
-  market_cap: number;
-  priceChange24h: number;
-  symbol: string;
-  id: string;
-}
-
 const AddAssetForm = ({
   handleFormClose,
   purchasedAmountValue,
@@ -175,7 +160,7 @@ const AddAssetForm = ({
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
   const [coinImg, setCoinImg] = useState(null);
 
-  const { coins, theme } = useCoin();
+  const { coins, theme } = useCryptoContext();
 
   const size = useWindowSize();
 

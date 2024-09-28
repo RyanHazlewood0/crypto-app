@@ -1,12 +1,12 @@
 "use client";
 import { createContext, useContext, useEffect, useLayoutEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 
-interface CoinContextType {
-  coins: CoinTypes[];
+interface CryptoContextType {
+  coins: Coin[];
   selectedBtn: string;
-  setCoins: Dispatch<SetStateAction<CoinTypes[]>>;
+  setCoins: Dispatch<SetStateAction<Coin[]>>;
   setSelectedBtn: Dispatch<SetStateAction<string>>;
   setFiatCurrency: any;
   fiatCurrency: any;
@@ -20,19 +20,19 @@ interface CoinContextType {
   toggleTheme: any;
 }
 
-const CoinContext = createContext<CoinContextType | null>(null);
+const CryptoContext = createContext<CryptoContextType | null>(null);
 
-export const useCoin = (): CoinContextType => {
-  const value = useContext(CoinContext);
+export const useCryptoContext = (): CryptoContextType => {
+  const value = useContext(CryptoContext);
   return value;
 };
 
-type useCoinProps = {
+type useCryptoContextProps = {
   children: React.ReactNode;
 };
 
-export const CoinProvider = ({ children }: useCoinProps) => {
-  const [coins, setCoins] = useState<CoinTypes[]>([]);
+export const CryptoProvider = ({ children }: useCryptoContextProps) => {
+  const [coins, setCoins] = useState<Coin[]>([]);
   const [selectedBtn, setSelectedBtn] = useState<string>("Coins");
   const [fiatCurrency, setFiatCurrency] = useState("usd");
   const [isClient, setIsClient] = useState(false);
@@ -76,7 +76,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   useEffect(() => {
     const api = async (url: string) => {
       const data = await fetch(url);
-      const json: CoinTypes[] = await data.json();
+      const json: Coin[] = await data.json();
       return json;
     };
 
@@ -117,7 +117,7 @@ export const CoinProvider = ({ children }: useCoinProps) => {
   };
 
   return (
-    <CoinContext.Provider
+    <CryptoContext.Provider
       value={{
         coins,
         setCoins,
@@ -136,6 +136,6 @@ export const CoinProvider = ({ children }: useCoinProps) => {
       }}
     >
       {children}
-    </CoinContext.Provider>
+    </CryptoContext.Provider>
   );
 };

@@ -1,6 +1,6 @@
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 const ThemeIcon = () => {
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
   return (
     <svg
       width="24"

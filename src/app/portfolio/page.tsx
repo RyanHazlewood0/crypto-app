@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
-import { PortfolioCoin } from "./AddAssetForm/AddAssetForm";
+import { PortfolioCoin } from "types";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import { useCoin } from "../contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -77,7 +77,8 @@ export default function Portfolio() {
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const { setSelectedMobileBtn, setSelectedNavLink, coins, theme } = useCoin();
+  const { setSelectedMobileBtn, setSelectedNavLink, coins, theme } =
+    useCryptoContext();
 
   const size = useWindowSize();
 

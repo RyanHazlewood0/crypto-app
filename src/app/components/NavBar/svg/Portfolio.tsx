@@ -1,11 +1,11 @@
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 interface PortfolioProps {
   selectedNavLink: string;
 }
 
 const Portfolio = ({ selectedNavLink }: PortfolioProps) => {
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const getStyle = () => {
     if (selectedNavLink === "Portfolio") {

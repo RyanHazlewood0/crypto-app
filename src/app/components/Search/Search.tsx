@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
@@ -55,7 +55,7 @@ type ThemeProp = {
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
-  const { coins, theme } = useCoin();
+  const { coins, theme } = useCryptoContext();
   const router = useRouter();
   const size = useWindowSize();
 
@@ -81,7 +81,7 @@ const Search = () => {
     setDropDownOpen(false);
   };
 
-  const handleNavLink = (coin: CoinTypes) => {
+  const handleNavLink = (coin: Coin) => {
     router.push(`/coin/${coin.id}`);
     setSearchValue("");
   };

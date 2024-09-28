@@ -11,11 +11,11 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { abbreviateNumber } from "../../Table/helper-functions";
-import { CoinTypes } from "types";
+import { abbreviateNumber } from "helper-functions";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -87,7 +87,7 @@ type CoinPriceDataTypes = {
 };
 
 type BtcPriceChartProps = {
-  selectedCoin: CoinTypes;
+  selectedCoin: Coin;
   coinPriceData: CoinPriceDataTypes[];
 };
 
@@ -97,7 +97,7 @@ type ThemeProp = {
 
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
   const size = useWindowSize();
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const lineChartData = {
     labels: coinPriceData.map((obj) => obj.date),

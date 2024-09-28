@@ -5,7 +5,7 @@ import { OverviewIcon } from "./svg/overview";
 import { PortfolioIcon } from "./svg/portfolio";
 import { ConverterIcon } from "./svg/converter";
 import Link from "next/link";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 const MobileBtnContainer = styled.div`
   position: fixed;
@@ -55,7 +55,7 @@ type StyleProp = {
 
 const MobileButtons = () => {
   const size = useWindowSize();
-  const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCoin();
+  const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCryptoContext();
 
   return (
     <>

@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
-import { PortfolioCoin } from "../AddAssetForm/AddAssetForm";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
+import { PortfolioCoin } from "types";
 import { Dispatch, SetStateAction } from "react";
 import EditIcon from "../svg/edit-2";
-import { abbreviateNumber } from "@/app/components/Table/helper-functions";
-import RedArrow from "../svg/RedArrow";
-import GreenArrow from "../svg/GreenArrow";
 import {
+  abbreviateNumber,
   findSupplyLevel,
   findVolumeLevel,
-} from "@/app/components/Table/helper-functions";
+} from "helper-functions";
+import RedArrow from "../svg/RedArrow";
+import GreenArrow from "../svg/GreenArrow";
+
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
@@ -219,7 +220,7 @@ const CoinEntry = ({
   isEditOpen,
 }: CoinEntryProps) => {
   const [error, setError] = useState(false);
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
   const [purchasePrice, setPurchasePrice] = useState<number | null>(null);
   const [currentP, setCurrentP] = useState(coin.currentPrice);

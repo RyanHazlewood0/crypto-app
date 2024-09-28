@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 
 ChartJS.register(
   CategoryScale,
@@ -22,7 +22,7 @@ ChartJS.register(
 );
 
 interface TableLineChartProps {
-  coin: CoinTypes;
+  coin: Coin;
 }
 
 const TableLineChart = ({ coin }: TableLineChartProps) => {

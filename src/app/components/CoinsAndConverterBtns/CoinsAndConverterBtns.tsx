@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 
 const BtnsContainer = styled.div`
@@ -36,7 +36,7 @@ type StyleProp = {
 };
 
 const CoinsAndConverterBtns = () => {
-  const { setSelectedBtn, selectedBtn, theme } = useCoin();
+  const { setSelectedBtn, selectedBtn, theme } = useCryptoContext();
 
   return (
     <BtnsContainer>

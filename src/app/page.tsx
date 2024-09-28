@@ -7,17 +7,18 @@ import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeS
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import Converter from "./components/converter/page";
 import { useState } from "react";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import MobileButtons from "./components/MobileButtons/MobileButtons";
 import useWindowSize from "windowSizeHook";
 import { breakpoints } from "breakpoints";
-import { useCoin } from "./contexts/CoinProvider";
+import { useCryptoContext } from "./contexts/CryptoProvider";
 
 export default function Home() {
-  const [selectedCoin, setSelectedCoin] = useState<CoinTypes | null>(null);
+  const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
-  const { selectedBtn, selectedMobileBtn, setSelectedNavLink } = useCoin();
+  const { selectedBtn, selectedMobileBtn, setSelectedNavLink } =
+    useCryptoContext();
   const size = useWindowSize();
 
   if (selectedMobileBtn !== "Portfolio") {

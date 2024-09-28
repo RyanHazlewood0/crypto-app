@@ -1,14 +1,14 @@
 "use client";
 import styled from "styled-components";
 import Link from "next/link";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useEffect } from "react";
-import { abbreviateNumber } from "@/app/components/Table/helper-functions";
+import { abbreviateNumber } from "helper-functions";
 import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import { CoinDataTypes } from "types";
+import { CoinPageObject } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
@@ -223,10 +223,10 @@ type ThemeProp = {
 
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
-  const [thisCoinData, setThisCoinData] = useState<CoinDataTypes | null>(null);
+  const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
 
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
 
   const size = useWindowSize();
 
@@ -239,7 +239,7 @@ export default function Coin({ params }: CoinProps) {
         const response: Response = await fetch(
           `https://api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData: CoinDataTypes = await response.json();
+        const fetchedData: CoinPageObject = await response.json();
         setThisCoinData(fetchedData);
       } catch {
         setHasError(true);

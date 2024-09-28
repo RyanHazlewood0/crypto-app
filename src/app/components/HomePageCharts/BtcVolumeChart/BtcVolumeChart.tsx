@@ -9,11 +9,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { abbreviateNumber } from "../../Table/helper-functions";
-import { CoinTypes } from "types";
+import { abbreviateNumber } from "helper-functions";
+import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -83,7 +83,7 @@ interface CoinVolumeDataTypes {
 }
 
 interface BtcVolumeChartProps {
-  selectedCoin: CoinTypes;
+  selectedCoin: Coin;
   coinVolumeData: CoinVolumeDataTypes[];
 }
 
@@ -96,7 +96,7 @@ const BtcVolumeChart = ({
   selectedCoin,
 }: BtcVolumeChartProps) => {
   const size = useWindowSize();
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const findBackground = () => {
     if (theme === "light") {

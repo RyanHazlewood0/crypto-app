@@ -1,14 +1,14 @@
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { abbreviateNumber } from "../Table/helper-functions";
+import { abbreviateNumber } from "helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { useEffect } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -146,18 +146,18 @@ type ThemeProp = {
 };
 
 interface CarouselProps {
-  selectedCoin: CoinTypes | null;
-  setSelectedCoin: Dispatch<SetStateAction<CoinTypes | null>>;
+  selectedCoin: Coin | null;
+  setSelectedCoin: Dispatch<SetStateAction<Coin | null>>;
 }
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
   const size = useWindowSize();
 
-  const handleSelectCoin = (coin: CoinTypes) => {
+  const handleSelectCoin = (coin: Coin) => {
     setSelectedCoin(coin);
   };
 

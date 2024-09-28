@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import {
   abbreviateNumber,
   findSupplyLevel,
   findVolumeLevel,
-} from "./helper-functions";
-import { CoinTypes } from "types";
+} from "helper-functions";
+import { Coin } from "types";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
 import styled from "styled-components";
@@ -152,7 +152,7 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tableCoins, setTableCoins] = useState([]);
 
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
@@ -165,7 +165,7 @@ const Table = () => {
         const response1: Response = await fetch(
           `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        const fetchedData1: CoinTypes[] = await response1.json();
+        const fetchedData1: Coin[] = await response1.json();
         setTableCoins(fetchedData1);
         setIsLoading(false);
       } catch {
@@ -181,7 +181,7 @@ const Table = () => {
     const response: Response = await fetch(
       `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
     );
-    const data: CoinTypes[] = await response.json();
+    const data: Coin[] = await response.json();
     setTableCoins([...tableCoins, ...data]);
     setCurrentPage(currentPage + 1);
   };

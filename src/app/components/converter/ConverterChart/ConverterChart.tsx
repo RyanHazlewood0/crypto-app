@@ -12,10 +12,10 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { CoinTypes } from "types";
+import { Coin } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
 import { breakpoints } from "breakpoints";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 ChartJS.register(
   CategoryScale,
@@ -52,8 +52,8 @@ const ErrorText = styled.p`
 
 interface ConverterChartProps {
   dayCount: string;
-  buyCoin: CoinTypes;
-  sellCoin: CoinTypes;
+  buyCoin: Coin;
+  sellCoin: Coin;
 }
 
 type ThemeProp = {
@@ -72,7 +72,7 @@ const ConverterChart = ({
   const [hasError, setHasError] = useState(false);
   const [dataSet, setDataSet] = useState(null);
 
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 

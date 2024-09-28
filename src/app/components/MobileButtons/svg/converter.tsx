@@ -1,7 +1,7 @@
 import React from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 export const ConverterIcon = () => {
-  const { theme } = useCoin();
+  const { theme } = useCryptoContext();
 
   return (
     <svg

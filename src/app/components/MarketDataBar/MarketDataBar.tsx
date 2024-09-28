@@ -6,7 +6,7 @@ import Btc from "./svg/Btc";
 import Eth from "./svg/Eth";
 import TotalVol from "./svg/TotalVol";
 import { useState, useEffect } from "react";
-import { useCoin } from "@/app/contexts/CoinProvider";
+import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { CurrencyValue } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -69,7 +69,7 @@ const MarketDataBar = () => {
   const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
   const [hasError, setHasError] = useState(false);
 
-  const { fiatCurrency, theme } = useCoin();
+  const { fiatCurrency, theme } = useCryptoContext();
   const size = useWindowSize();
 
   function abbreviateNumber(num: number): string {
