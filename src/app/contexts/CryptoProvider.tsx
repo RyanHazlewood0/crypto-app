@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useLayoutEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { Coin } from "types";
 
@@ -8,15 +8,15 @@ interface CryptoContextType {
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<Coin[]>>;
   setSelectedBtn: Dispatch<SetStateAction<string>>;
-  setFiatCurrency: any;
-  fiatCurrency: any;
+  setFiatCurrency: Dispatch<SetStateAction<string>>;
+  fiatCurrency: string;
   isClient: any;
-  selectedMobileBtn: any;
-  setSelectedMobileBtn: any;
-  selectedNavLink: any;
-  setSelectedNavLink: any;
+  selectedMobileBtn: string;
+  setSelectedMobileBtn: Dispatch<SetStateAction<string>>;
+  selectedNavLink: string;
+  setSelectedNavLink: Dispatch<SetStateAction<string>>;
   theme: string;
-  setTheme: any;
+  setTheme: Dispatch<SetStateAction<string>>;
   toggleTheme: any;
 }
 

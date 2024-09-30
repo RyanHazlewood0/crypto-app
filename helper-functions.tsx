@@ -1,6 +1,6 @@
 import { Coin, PortfolioCoin } from "types";
 
-export const abbreviateNumber = (num: number): number | string => {
+export const abbreviateNumber = (num: number): string => {
   const prefixes = ["", "k", "M", "B", "T"];
   if (num) {
     if (num < 1) {

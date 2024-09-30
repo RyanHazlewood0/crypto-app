@@ -200,10 +200,10 @@ const AddAssetForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
-    const newCoinsList = portfolioCoins.filter((coin) => {
-      return coin.name !== thisCoin.name;
-    });
-
+    if (portfolioCoins.some((coin) => coin.name === coinSelectValue)) {
+      alert("Coin already in portfolio!");
+      return;
+    }
     const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
     const newCoinEntry: PortfolioCoin = {
@@ -221,7 +221,7 @@ const AddAssetForm = ({
       symbol: thisCoin.symbol,
       id: thisCoin.id,
     };
-    setPortfolioCoins([...newCoinsList, newCoinEntry]);
+    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
     setPurchasedAmountValue("");
