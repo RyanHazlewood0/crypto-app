@@ -14,7 +14,7 @@ import { breakpoints } from "breakpoints";
 import { useCryptoContext } from "./contexts/CryptoProvider";
 
 export default function Home() {
-  const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+  const [selectedCoin, setSelectedCoin] = useState<Coin[] | []>([]);
   const [timeFrameSelected, setTimeFrameSelected] = useState("1M");
   const [dayCount, setDayCount] = useState("30");
   const { selectedBtn, selectedMobileBtn, setSelectedNavLink } =
