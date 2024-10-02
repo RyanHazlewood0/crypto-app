@@ -41,7 +41,7 @@ interface CoinPriceDataTypes {
   date: string;
 }
 
-interface coinVolumeDataTypes {
+interface CoinVolumeDataTypes {
   volume: number;
   date: string;
 }
@@ -49,10 +49,10 @@ interface coinVolumeDataTypes {
 const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState<
-    CoinPriceDataTypes[] | null
+    CoinPriceDataTypes[][] | null
   >(null);
   const [coinVolumeData, setCoinVolumeData] = useState<
-    coinVolumeDataTypes[] | null
+    CoinVolumeDataTypes[][] | null
   >(null);
 
   const { fiatCurrency } = useCryptoContext();
