@@ -194,7 +194,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
 
   useEffect(() => {
     if (carouselCoins.length > 0) {
-      setSelectedCoin([carouselCoins[0], carouselCoins[1]]);
+      setSelectedCoin([carouselCoins[0]]);
     }
   }, [carouselCoins]);
 

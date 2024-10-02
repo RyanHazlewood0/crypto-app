@@ -70,7 +70,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
           );
           const fetchedData = await response.json();
 
-          const result = fetchedData.prices.map((price) => {
+          const priceResult = fetchedData.prices.map((price) => {
             const fromTimestamp = (timestamp: number): Date =>
               new Date(timestamp);
             return {
@@ -79,17 +79,18 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
             };
           });
 
-          setCoinPriceData([result]);
-          setCoinVolumeData(
-            fetchedData.total_volumes.map((volume) => {
-              const fromTimestamp = (timestamp: number): Date =>
-                new Date(timestamp);
-              return {
-                volume: volume[1],
-                date: fromTimestamp(volume[0]).toDateString(),
-              };
-            })
-          );
+          setCoinPriceData([priceResult]);
+
+          const volResult = fetchedData.total_volumes.map((volume) => {
+            const fromTimestamp = (timestamp: number): Date =>
+              new Date(timestamp);
+            return {
+              volume: volume[1],
+              date: fromTimestamp(volume[0]).toDateString(),
+            };
+          });
+
+          setCoinVolumeData([volResult]);
         } catch {
           if (selectedCoin && dayCount) {
             setHasError(true);
@@ -108,7 +109,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
           const fetchedDataOne = await response1.json();
           const fetchedDataTwo = await response2.json();
 
-          const partOne = fetchedDataOne.prices.map((price) => {
+          const partOnePrice = fetchedDataOne.prices.map((price) => {
             const newTimeStampOne = (timestamp) => {
               return new Date(timestamp);
             };
@@ -118,7 +119,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
             };
           });
 
-          const partTwo = fetchedDataTwo.prices.map((price) => {
+          const partTwoPrice = fetchedDataTwo.prices.map((price) => {
             const newTimeStampTwo = (timestamp) => {
               return new Date(timestamp);
             };
@@ -128,18 +129,28 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
             };
           });
 
-          setCoinPriceData([partOne, partTwo]);
+          setCoinPriceData([partOnePrice, partTwoPrice]);
+          const partOneVol = fetchedDataOne.total_volumes.map((volume) => {
+            const fromTimeStamp = (timetamp) => {
+              return new Date(timetamp);
+            };
+            return {
+              volume: volume[1],
+              date: fromTimeStamp(volume[0]).toDateString(),
+            };
+          });
 
-          setCoinVolumeData(
-            fetchedDataTwo.total_volumes.map((volume) => {
-              const fromTimestamp = (timestamp: number): Date =>
-                new Date(timestamp);
-              return {
-                volume: volume[1],
-                date: fromTimestamp(volume[0]).toDateString(),
-              };
-            })
-          );
+          const partTwoVol = fetchedDataTwo.total_volumes.map((volume) => {
+            const fromTimeStamp = (timetamp) => {
+              return new Date(timetamp);
+            };
+            return {
+              volume: volume[1],
+              date: fromTimeStamp(volume[0]).toDateString(),
+            };
+          });
+
+          setCoinVolumeData([partOneVol, partTwoVol]);
         } catch {
           if (selectedCoin && dayCount) {
             setHasError(true);

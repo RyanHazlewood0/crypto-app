@@ -56,6 +56,9 @@ const CoinText = styled.h1`
 
 const PriceText = styled.h2`
   font-size: 28px;
+  @media (max-width: ${breakpoints.mobile}) {
+    font-size: 20px;
+  }
 `;
 
 const DateText = styled.h3`
@@ -76,13 +79,14 @@ const MobilePriceDateContainer = styled.div`
   justify-content: space-around;
 `;
 
-const MobileDateText = styled.div<DoubleProp>`
-  font-size:  font-size: ${(props) => (props.double ? "28px" : "12px")};;
+const MobileDateText = styled.div`
+  font-size: 12px;
   margin-right: auto;
 `;
 
 const MobileCoinText = styled.div`
   font-size: 18px;
+  font-weight: bold;
 `;
 
 const TwoCoinsNameCont = styled.div`
@@ -106,22 +110,26 @@ const TwoCoinsText = styled.p`
   }
 `;
 
+const coinColor1 = "#ff0054";
+
 const CoinOneColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: #ff0054;
+  background: ${coinColor1};
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
   }
 `;
 
+const coinColor2 = "#2d00f7";
+
 const CoinTwoColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: #2d00f7;
+  background: ${coinColor2};
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
@@ -141,15 +149,11 @@ type CoinPriceDataTypes = {
 
 type BtcPriceChartProps = {
   selectedCoin: Coin[];
-  coinPriceData: CoinPriceDataTypes[];
+  coinPriceData: CoinPriceDataTypes[][];
 };
 
 type ThemeProp = {
   light: boolean;
-};
-
-type DoubleProp = {
-  double?: boolean;
 };
 
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
@@ -164,7 +168,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[0].map((obj) => obj.price),
-              borderColor: "#2d00f7",
+              borderColor: coinColor2,
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
@@ -178,7 +182,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[1].map((obj) => obj.price),
-              borderColor: "#ff0054",
+              borderColor: coinColor1,
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
@@ -194,7 +198,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[0].map((obj) => obj.price),
-              borderColor: "#2d00f7",
+              borderColor: coinColor2,
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
@@ -264,9 +268,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
         selectedCoin.length === 2 && (
           <>
             <MobileHeaderTextContainer>
-              <MobileDateText double={selectedCoin.length === 2}>
-                {new Date().toDateString()}
-              </MobileDateText>
+              <MobileDateText>{new Date().toDateString()}</MobileDateText>
               <MobilePriceDateContainer></MobilePriceDateContainer>
             </MobileHeaderTextContainer>
             <Line
