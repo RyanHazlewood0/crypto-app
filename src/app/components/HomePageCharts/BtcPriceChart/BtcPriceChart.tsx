@@ -113,7 +113,7 @@ const CoinOneColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: "#ff0054";
+  background: #ff0054;
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
@@ -124,7 +124,7 @@ const CoinTwoColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: "#2d00f7";
+  background: #2d00f7;
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
