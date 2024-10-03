@@ -278,7 +278,7 @@ const BtcVolumeChart = ({
               {selectedCoin[0].name +
                 " " +
                 "$" +
-                abbreviateNumber(selectedCoin[0].current_price)}
+                abbreviateNumber(selectedCoin[0].total_volume)}
             </TwoCoinsText>
             <CoinTwoColor color={coinColor1} />
           </CoinAndColorCont>
@@ -287,7 +287,7 @@ const BtcVolumeChart = ({
               {selectedCoin[1].name +
                 " " +
                 "$" +
-                abbreviateNumber(selectedCoin[1].current_price)}
+                abbreviateNumber(selectedCoin[1].total_volume)}
             </TwoCoinsText>
             <CoinOneColor color={coinColor2} />
           </CoinAndColorCont>
