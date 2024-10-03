@@ -62,6 +62,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   useEffect(() => {
     const getCoinData = async () => {
       setHasError(false);
+
       if (selectedCoin.length === 1) {
         const singleCoin = selectedCoin[0];
         try {
@@ -78,7 +79,6 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
               date: fromTimestamp(price[0]).toDateString(),
             };
           });
-
           setCoinPriceData([priceResult]);
 
           const volResult = fetchedData.total_volumes.map((volume) => {
@@ -89,7 +89,6 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
               date: fromTimestamp(volume[0]).toDateString(),
             };
           });
-
           setCoinVolumeData([volResult]);
         } catch {
           if (selectedCoin && dayCount) {

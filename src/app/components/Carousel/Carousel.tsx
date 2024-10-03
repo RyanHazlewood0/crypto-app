@@ -155,7 +155,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-  const findCoin = (coin) => {
+  const selectCoin = (coin) => {
     if (selectedCoin.length === 2)
       if (coin.id === selectedCoin[0].id) {
         const updatedSelection = [...selectedCoin].pop();
@@ -230,7 +230,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
                         coin.id === selectedCoin[0].id
                     : null
                 }
-                onClick={() => findCoin(coin)}
+                onClick={() => selectCoin(coin)}
               >
                 <CoinImage src={coin.image} />
                 <div>

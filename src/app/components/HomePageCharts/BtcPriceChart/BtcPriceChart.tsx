@@ -16,7 +16,6 @@ import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import Head from "next/head";
 
 ChartJS.register(
   CategoryScale,
@@ -110,26 +109,22 @@ const TwoCoinsText = styled.p`
   }
 `;
 
-const coinColor1 = "#ff0054";
-
 const CoinOneColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: ${coinColor1};
+  background: "#ff0054";
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
   }
 `;
 
-const coinColor2 = "#2d00f7";
-
 const CoinTwoColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  background: ${coinColor2};
+  background: "#2d00f7";
   @media (max-width: ${breakpoints.mobile}) {
     width: 14px;
     height: 14px;
@@ -168,7 +163,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[0].map((obj) => obj.price),
-              borderColor: coinColor2,
+              borderColor: "#2d00f7",
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
@@ -182,7 +177,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[1].map((obj) => obj.price),
-              borderColor: coinColor1,
+              borderColor: "#ff0054",
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
@@ -198,7 +193,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
             {
               label: null,
               data: coinPriceData[0].map((obj) => obj.price),
-              borderColor: coinColor2,
+              borderColor: "#2d00f7",
               pointRadius: 0,
               backgroundColor: (context) => {
                 const ctx = context.chart.ctx;
