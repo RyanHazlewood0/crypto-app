@@ -158,14 +158,14 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const selectCoin = (coin) => {
     if (selectedCoin.length === 2)
       if (coin.id === selectedCoin[0].id) {
-        const updatedSelection = [...selectedCoin].pop();
-        setSelectedCoin([updatedSelection]);
+        const updatedSelection = [...selectedCoin].slice(1);
+        setSelectedCoin(updatedSelection);
       } else if (coin.id === selectedCoin[1].id) {
-        const updatedSelection = [...selectedCoin].shift();
-        setSelectedCoin([updatedSelection]);
+        const updatedSelection = [...selectedCoin].slice(0, 1);
+        setSelectedCoin(updatedSelection);
       } else {
-        const updatedSelection = [...selectedCoin].pop();
-        setSelectedCoin([updatedSelection, coin]);
+        const updatedSelection = [...selectedCoin].slice(1);
+        setSelectedCoin([...updatedSelection, coin]);
       }
     if (selectedCoin.length === 1) {
       if (selectedCoin[0].id === coin.id) {
@@ -222,14 +222,9 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
               <CarouselBox
                 light={theme === "light"}
                 key={coin.id}
-                selected={
-                  selectedCoin.length !== 0
-                    ? selectedCoin.length === 1
-                      ? coin.id === selectedCoin[0].id
-                      : coin.id === selectedCoin[1].id ||
-                        coin.id === selectedCoin[0].id
-                    : null
-                }
+                selected={selectedCoin.some(
+                  (selected) => selected.id === coin.id
+                )}
                 onClick={() => selectCoin(coin)}
               >
                 <CoinImage src={coin.image} />

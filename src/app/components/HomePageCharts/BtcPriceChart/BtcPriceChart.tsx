@@ -16,6 +16,7 @@ import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
+import TwoCoinsText from "./TwoCoinsText";
 
 ChartJS.register(
   CategoryScale,
@@ -35,7 +36,7 @@ const ChartContainer = styled.div<ThemeProp>`
   height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   @media (max-width: ${breakpoints.mobile}) {
     height: 200px;
     width: 100%;
@@ -88,53 +89,10 @@ const MobileCoinText = styled.div`
   font-weight: bold;
 `;
 
-const TwoCoinsNameCont = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  padding-left: 2.5%;
-`;
-
 const TwoCoinsHeader = styled.p<ThemeProp>`
   font-size: 24px;
   color: ${(props) => (props.light ? "#353570" : "white")};
-  padding: 2.5% 0 0 2.5%;
-`;
-
-const TwoCoinsText = styled.p`
-  color: gray;
-  font-size: 20px;
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 16px;
-  }
-`;
-
-const CoinOneColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: #ff0054;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 14px;
-    height: 14px;
-  }
-`;
-
-const CoinTwoColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: #2d00f7;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 14px;
-    height: 14px;
-  }
-`;
-
-const CoinAndColorCont = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  margin: 2.5% 0 0 2.5%;
 `;
 
 type CoinPriceDataTypes = {
@@ -271,26 +229,6 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
               data={lineChartData}
               style={{ maxHeight: "70%", padding: "2.5%" }}
             />
-            <TwoCoinsNameCont>
-              <CoinAndColorCont>
-                <TwoCoinsText>
-                  {selectedCoin[0].name +
-                    " " +
-                    "$" +
-                    abbreviateNumber(selectedCoin[0].current_price)}
-                </TwoCoinsText>
-                <CoinTwoColor />
-              </CoinAndColorCont>
-              <CoinAndColorCont>
-                <TwoCoinsText>
-                  {selectedCoin[1].name +
-                    " " +
-                    "$" +
-                    abbreviateNumber(selectedCoin[1].current_price)}
-                </TwoCoinsText>
-                <CoinOneColor />
-              </CoinAndColorCont>
-            </TwoCoinsNameCont>
           </>
         )}
 
@@ -326,28 +264,10 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
                 padding: "2.5%",
               }}
             />
-            <TwoCoinsNameCont>
-              <CoinAndColorCont>
-                <TwoCoinsText>
-                  {selectedCoin[0].name +
-                    " " +
-                    "$" +
-                    abbreviateNumber(selectedCoin[0].current_price)}
-                </TwoCoinsText>
-                <CoinTwoColor />
-              </CoinAndColorCont>
-              <CoinAndColorCont>
-                <TwoCoinsText>
-                  {selectedCoin[1].name +
-                    " " +
-                    "$" +
-                    abbreviateNumber(selectedCoin[1].current_price)}
-                </TwoCoinsText>
-                <CoinOneColor />
-              </CoinAndColorCont>
-            </TwoCoinsNameCont>
           </>
         )}
+
+      <TwoCoinsText selectedCoin={selectedCoin} />
     </ChartContainer>
   );
 };
