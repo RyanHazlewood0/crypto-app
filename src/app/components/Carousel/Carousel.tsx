@@ -11,7 +11,6 @@ import GreenArrow from "./svg/GreenArrow";
 import { Coin } from "types";
 import { useEffect } from "react";
 import { breakpoints } from "breakpoints";
-import useWindowSize from "windowSizeHook";
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -146,8 +145,8 @@ type ThemeProp = {
 };
 
 interface CarouselProps {
-  selectedCoin: Coin | null;
-  setSelectedCoin: Dispatch<SetStateAction<Coin | null>>;
+  selectedCoin: Coin[] | [];
+  setSelectedCoin: Dispatch<SetStateAction<Coin[] | null>>;
 }
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
@@ -155,10 +154,26 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [carouselCoins, setCarouselCoins] = useState([]);
   const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const size = useWindowSize();
 
-  const handleSelectCoin = (coin: Coin) => {
-    setSelectedCoin(coin);
+  const selectCoin = (coin) => {
+    if (selectedCoin.length === 2)
+      if (coin.id === selectedCoin[0].id) {
+        const updatedSelection = [...selectedCoin].slice(1);
+        setSelectedCoin(updatedSelection);
+      } else if (coin.id === selectedCoin[1].id) {
+        const updatedSelection = [...selectedCoin].slice(0, 1);
+        setSelectedCoin(updatedSelection);
+      } else {
+        const updatedSelection = [...selectedCoin].slice(1);
+        setSelectedCoin([...updatedSelection, coin]);
+      }
+    if (selectedCoin.length === 1) {
+      if (selectedCoin[0].id === coin.id) {
+        return;
+      } else {
+        setSelectedCoin([...selectedCoin, coin]);
+      }
+    }
   };
 
   useEffect(() => {
@@ -179,7 +194,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
 
   useEffect(() => {
     if (carouselCoins.length > 0) {
-      setSelectedCoin(carouselCoins[0]);
+      setSelectedCoin([carouselCoins[0]]);
     }
   }, [carouselCoins]);
 
@@ -196,46 +211,50 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   }
 
   return (
-    selectedCoin !== null && (
+    carouselCoins !== null && (
       <CarouselContainer>
         <HeaderText light={theme === "light"}>
-          Select the currency to view statistics
+          Select 1 - 2 currencies to view statistics
         </HeaderText>
         <StyledSlider {...settings}>
-          {carouselCoins.map((coin) => (
-            <CarouselBox
-              light={theme === "light"}
-              key={coin.id}
-              selected={coin.id === selectedCoin.id}
-              onClick={() => handleSelectCoin(coin)}
-            >
-              <CoinImage src={coin.image} />
-              <div>
-                <CoinNameText>
-                  {coin.name}({coin.symbol.toUpperCase()})
-                </CoinNameText>
-                <ArrowAndPercentContainer>
-                  <CoinPricetext light={theme === "light"}>
-                    ${abbreviateNumber(coin.current_price)}
-                  </CoinPricetext>
-                  {Math.sign(coin.price_change_percentage_1h_in_currency) !==
-                  1 ? (
-                    <RedArrow />
-                  ) : (
-                    <GreenArrow />
-                  )}
-                  <PriceChangeDiv
-                    green={
-                      Math.sign(coin.price_change_percentage_1h_in_currency) ===
-                      1
-                    }
-                  >
-                    {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
-                  </PriceChangeDiv>
-                </ArrowAndPercentContainer>
-              </div>
-            </CarouselBox>
-          ))}
+          {carouselCoins.length > 0 &&
+            carouselCoins.map((coin) => (
+              <CarouselBox
+                light={theme === "light"}
+                key={coin.id}
+                selected={selectedCoin.some(
+                  (selected) => selected.id === coin.id
+                )}
+                onClick={() => selectCoin(coin)}
+              >
+                <CoinImage src={coin.image} />
+                <div>
+                  <CoinNameText>
+                    {coin.name}({coin.symbol.toUpperCase()})
+                  </CoinNameText>
+                  <ArrowAndPercentContainer>
+                    <CoinPricetext light={theme === "light"}>
+                      ${abbreviateNumber(coin.current_price)}
+                    </CoinPricetext>
+                    {Math.sign(coin.price_change_percentage_1h_in_currency) !==
+                    1 ? (
+                      <RedArrow />
+                    ) : (
+                      <GreenArrow />
+                    )}
+                    <PriceChangeDiv
+                      green={
+                        Math.sign(
+                          coin.price_change_percentage_1h_in_currency
+                        ) === 1
+                      }
+                    >
+                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                    </PriceChangeDiv>
+                  </ArrowAndPercentContainer>
+                </div>
+              </CarouselBox>
+            ))}
         </StyledSlider>
       </CarouselContainer>
     )

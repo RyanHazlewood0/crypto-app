@@ -26,7 +26,7 @@ const MessageText = styled.p`
 `;
 
 interface HomePageChartsProps {
-  selectedCoin: Coin;
+  selectedCoin: Coin[];
   dayCount: String;
 }
 
@@ -41,7 +41,7 @@ interface CoinPriceDataTypes {
   date: string;
 }
 
-interface coinVolumeDataTypes {
+interface CoinVolumeDataTypes {
   volume: number;
   date: string;
 }
@@ -49,10 +49,10 @@ interface coinVolumeDataTypes {
 const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   const [hasError, setHasError] = useState(false);
   const [coinPriceData, setCoinPriceData] = useState<
-    CoinPriceDataTypes[] | null
+    CoinPriceDataTypes[][] | null
   >(null);
   const [coinVolumeData, setCoinVolumeData] = useState<
-    coinVolumeDataTypes[] | null
+    CoinVolumeDataTypes[][] | null
   >(null);
 
   const { fiatCurrency } = useCryptoContext();
@@ -63,34 +63,97 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
     const getCoinData = async () => {
       setHasError(false);
 
-      try {
-        const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
-        );
-        const fetchedData: FetchedDataTypes = await response.json();
-        setCoinPriceData(
-          fetchedData.prices.map((price) => {
+      if (selectedCoin.length === 1) {
+        const singleCoin = selectedCoin[0];
+        try {
+          const response = await fetch(
+            `https://pro-api.coingecko.com/api/v3/coins/${singleCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          );
+          const fetchedData = await response.json();
+
+          const priceResult = fetchedData.prices.map((price) => {
             const fromTimestamp = (timestamp: number): Date =>
               new Date(timestamp);
             return {
               price: price[1],
               date: fromTimestamp(price[0]).toDateString(),
             };
-          })
-        );
-        setCoinVolumeData(
-          fetchedData.total_volumes.map((volume) => {
+          });
+          setCoinPriceData([priceResult]);
+
+          const volResult = fetchedData.total_volumes.map((volume) => {
             const fromTimestamp = (timestamp: number): Date =>
               new Date(timestamp);
             return {
               volume: volume[1],
               date: fromTimestamp(volume[0]).toDateString(),
             };
-          })
-        );
-      } catch {
-        if (selectedCoin && dayCount) {
-          setHasError(true);
+          });
+          setCoinVolumeData([volResult]);
+        } catch {
+          if (selectedCoin && dayCount) {
+            setHasError(true);
+          }
+        }
+      } else if (selectedCoin.length === 2) {
+        const coinOne = selectedCoin[0];
+        const coinTwo = selectedCoin[1];
+        try {
+          const response1 = await fetch(
+            `https://pro-api.coingecko.com/api/v3/coins/${coinOne.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          );
+          const response2 = await fetch(
+            `https://pro-api.coingecko.com/api/v3/coins/${coinTwo.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          );
+          const fetchedDataOne = await response1.json();
+          const fetchedDataTwo = await response2.json();
+
+          const partOnePrice = fetchedDataOne.prices.map((price) => {
+            const newTimeStampOne = (timestamp) => {
+              return new Date(timestamp);
+            };
+            return {
+              price: price[1],
+              date: newTimeStampOne(price[0]).toDateString(),
+            };
+          });
+
+          const partTwoPrice = fetchedDataTwo.prices.map((price) => {
+            const newTimeStampTwo = (timestamp) => {
+              return new Date(timestamp);
+            };
+            return {
+              price: price[1],
+              date: newTimeStampTwo(price[0]).toDateString(),
+            };
+          });
+
+          setCoinPriceData([partOnePrice, partTwoPrice]);
+          const partOneVol = fetchedDataOne.total_volumes.map((volume) => {
+            const fromTimeStamp = (timetamp) => {
+              return new Date(timetamp);
+            };
+            return {
+              volume: volume[1],
+              date: fromTimeStamp(volume[0]).toDateString(),
+            };
+          });
+
+          const partTwoVol = fetchedDataTwo.total_volumes.map((volume) => {
+            const fromTimeStamp = (timetamp) => {
+              return new Date(timetamp);
+            };
+            return {
+              volume: volume[1],
+              date: fromTimeStamp(volume[0]).toDateString(),
+            };
+          });
+
+          setCoinVolumeData([partOneVol, partTwoVol]);
+        } catch {
+          if (selectedCoin && dayCount) {
+            setHasError(true);
+          }
         }
       }
     };
