@@ -128,6 +128,23 @@ const Image = styled.img`
   width: 60%;
 `;
 
+const AlertModal = styled.div<ThemeProp>`
+  background: ${(props) => (props.light ? "black" : "white")};
+  color: ${(props) => (props.light ? "white" : "black")};
+  width: 325px;
+  height: 70px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+`;
+
 interface AddAssetFormProps {
   handleFormClose: () => void;
   purchasedAmountValue: string;
@@ -159,6 +176,7 @@ const AddAssetForm = ({
 }: AddAssetFormProps) => {
   const [nameDropdownOpen, setNameDropdownOpen] = useState(false);
   const [coinImg, setCoinImg] = useState(null);
+  const [alertTrue, setAlertTrue] = useState(false);
 
   const { coins, theme } = useCryptoContext();
 
@@ -197,6 +215,11 @@ const AddAssetForm = ({
     setPurchaseDateValue(value);
   };
 
+  const toggleAlert = () => {
+    setAlertTrue(true);
+    setTimeout(() => setAlertTrue(false), 3000);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const thisCoin = coins.find((coin) => coin.name === coinSelectValue);
@@ -205,9 +228,10 @@ const AddAssetForm = ({
         (coin) => coin.name === coinSelectValue && isEditOpen === false
       )
     ) {
-      alert("Coin already in portfolio!");
+      toggleAlert();
       return;
     }
+
     const logo = thisCoin.image;
     const buyDate = new Date(purchaseDateValue);
     const newCoinEntry: PortfolioCoin = {
@@ -253,6 +277,11 @@ const AddAssetForm = ({
 
   return (
     <>
+      {alertTrue && (
+        <AlertModal light={theme === "light"}>
+          <p>Coin already exists in portfolio!</p>
+        </AlertModal>
+      )}
       <ModalContainer light={theme === "light"}>
         <FormHeader>
           <HeaderText>Select Coins</HeaderText>
