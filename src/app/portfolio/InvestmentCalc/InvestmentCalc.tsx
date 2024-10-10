@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import { init } from "next/dist/compiled/webpack/webpack";
+import { CoinPriceDataTypes } from "../CoinEntry/CoinEntry";
 
 const CalcModal = styled.div`
   width: 886px;
@@ -183,15 +183,54 @@ interface InvestmentCalcProps {
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [dcaSelected, setDcaSelected] = useState<boolean>(true);
   const [vcaSelected, setVcaSelected] = useState<boolean>(false);
-  const [searchVal, setSearchVal] = useState("");
-  const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [searchVal, setSearchVal] = useState<string>("");
+  const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
   const [selectedCoin, setSelectedCoin] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [finishDate, setFinishDate] = useState(null);
-  const [interval, setInterval] = useState(null);
-  const [initialInvestment, setInitialInvestment] = useState(null);
-  const [weeklyInvestment, setWeeklyInvestment] = useState(null);
-  const { coins } = useCryptoContext();
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [finishDate, setFinishDate] = useState<string | null>(null);
+  const [intervalDays, setIntervalDays] = useState<number | null>(null);
+  const [initialInvestment, setInitialInvestment] = useState<number | null>(
+    null
+  );
+  const [periodicInvestment, setPeriodicInvestment] = useState<number | null>(
+    null
+  );
+  const [intervalCount, setIntervalCount] = useState<number | null>(null);
+  const [totalSpent, setTotalSpent] = useState<number>(0);
+  const [totalValue, setTotalValue] = useState(0);
+  const [dayDifference, setDayDifference] = useState<number | null>(null);
+  const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
+  const [error, setError] = useState(false);
+  const { coins, fiatCurrency } = useCryptoContext();
+
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    if (selectedCoin) {
+      try {
+        setError(false);
+        const getPriceData = async () => {
+          const response = await fetch(
+            `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayDifference}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          );
+          const fetchedData = await response.json();
+          setPriceData(
+            fetchedData.prices.map((el) => {
+              const thisDate = new Date(el[0]);
+              const thisPrice = el[1];
+              return {
+                price: thisPrice,
+                date: thisDate,
+              };
+            })
+          );
+        };
+        getPriceData();
+      } catch {
+        setError(true);
+      }
+    }
+  }, [selectedCoin, fiatCurrency, dayDifference]);
 
   const handleCalcModalClose = () => {
     setCalcMocalOpen(false);
@@ -232,15 +271,15 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   };
 
   const handleIntervalChange = (e) => {
-    setInterval(e.target.value);
+    setIntervalDays(Number(e.target.value));
   };
 
   const handleInitialChange = (e) => {
-    setInitialInvestment(e.target.value);
+    setInitialInvestment(Number(e.target.value));
   };
 
-  const handleWeeklyChange = (e) => {
-    setWeeklyInvestment(e.target.value);
+  const handlePeriodicChange = (e) => {
+    setPeriodicInvestment(Number(e.target.value));
   };
 
   const handleStartDate = (e) => {
@@ -251,7 +290,23 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     setFinishDate(e.target.value);
   };
 
-  const calculateDca = () => {};
+  const calculateDca = (e) => {
+    e.preventDefault();
+    setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
+  };
+
+  useEffect(() => {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const diffDays = Math.round(
+      Math.abs((Date.parse(startDate) - Date.parse(finishDate)) / oneDay)
+    );
+    setIntervalCount(diffDays / intervalDays);
+    setDayDifference(diffDays);
+  }, [intervalDays]);
+
+  if (error) {
+    <p>error..</p>;
+  }
 
   return (
     <CalcModal>
@@ -259,103 +314,109 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         <HeaderText>Investment Calculator</HeaderText>
         <QuitBtn onClick={handleCalcModalClose}>x</QuitBtn>
       </HeaderContainer>
-      <CoinContainer>
-        <CoinDisplay>
-          {!selectedCoin && <p>Your Coin</p>}
-          {selectedCoin && (
-            <>
-              {" "}
-              <CoinImage src={selectedCoin.image} />
-              <CoinText>{selectedCoin.name}</CoinText>
-              <CoinText>{selectedCoin.symbol.toUpperCase()}</CoinText>
-            </>
-          )}
-        </CoinDisplay>
-        <div>
-          <CoinSelect
-            type="text"
-            placeholder="Select coin"
-            onChange={handleSearch}
-            value={searchVal}
-          />
-          {searchModalOpen && (
-            <SearchModal>
-              {filteredCoins.map((coin) => (
-                <CoinOption
-                  key={coin.id}
-                  onClick={() => handleSelectCoin(coin)}
-                >
-                  {coin.name}
-                </CoinOption>
-              ))}
-            </SearchModal>
-          )}
-        </div>
-      </CoinContainer>
-      <ButtonContainer>
-        <InvestmentBtn
-          onClick={toggleVcaSelected}
-          selected={vcaSelected === true}
-        >
-          Value Cost Average
-        </InvestmentBtn>
-        <InvestmentBtn
-          onClick={toggleDcaSelected}
-          selected={dcaSelected === true}
-        >
-          Dollar Cost Average
-        </InvestmentBtn>
-      </ButtonContainer>
-      <DatesContainer>
-        <DatesInnerContainer>
-          <DateInput type="date" value={startDate} onChange={handleStartDate} />
-          <DateInput
-            type="date"
-            value={finishDate}
-            onChange={handleFinishDate}
-          />
-        </DatesInnerContainer>
-        <QuantitySymbol>Q-ty</QuantitySymbol>
-      </DatesContainer>
-      <InfoContainer>
-        <InfoRow>
-          <InfoText>Contribution interval, days</InfoText>
-          <NumberInput
-            placeholder="Type Number"
-            value={interval}
-            onChange={handleIntervalChange}
-          />
-        </InfoRow>
-        <Line />
-        <InfoRow>
-          <InfoText>Initial investment, $</InfoText>
-          <NumberInput
-            placeholder="Type Number"
-            value={initialInvestment}
-            onChange={handleInitialChange}
-          />
-        </InfoRow>
-        <Line />
-        <InfoRow>
-          <InfoText>investment added each week, $</InfoText>
-          <NumberInput
-            placeholder="Type Number"
-            value={weeklyInvestment}
-            onChange={handleWeeklyChange}
-          />
-        </InfoRow>
-        <Line />
-        <InfoRow>
-          <InfoText>Total amount spent, $</InfoText>
-          <NumText>$</NumText>
-        </InfoRow>
-        <Line />
-        <InfoRow>
-          <InfoText>Investment total value, $</InfoText>
-          <NumText>$</NumText>
-        </InfoRow>
-      </InfoContainer>
-      <CalculateBtn>Calculate</CalculateBtn>
+      <form onSubmit={calculateDca}>
+        <CoinContainer>
+          <CoinDisplay>
+            {!selectedCoin && <p>Your Coin</p>}
+            {selectedCoin && (
+              <>
+                {" "}
+                <CoinImage src={selectedCoin.image} />
+                <CoinText>{selectedCoin.name}</CoinText>
+                <CoinText>{selectedCoin.symbol.toUpperCase()}</CoinText>
+              </>
+            )}
+          </CoinDisplay>
+          <div>
+            <CoinSelect
+              type="text"
+              placeholder="Select coin"
+              onChange={handleSearch}
+              value={searchVal}
+            />
+            {searchModalOpen && (
+              <SearchModal>
+                {filteredCoins.map((coin) => (
+                  <CoinOption
+                    key={coin.id}
+                    onClick={() => handleSelectCoin(coin)}
+                  >
+                    {coin.name}
+                  </CoinOption>
+                ))}
+              </SearchModal>
+            )}
+          </div>
+        </CoinContainer>
+        <ButtonContainer>
+          <InvestmentBtn
+            onClick={toggleVcaSelected}
+            selected={vcaSelected === true}
+          >
+            Value Cost Average
+          </InvestmentBtn>
+          <InvestmentBtn
+            onClick={toggleDcaSelected}
+            selected={dcaSelected === true}
+          >
+            Dollar Cost Average
+          </InvestmentBtn>
+        </ButtonContainer>
+        <DatesContainer>
+          <DatesInnerContainer>
+            <DateInput
+              type="date"
+              value={startDate}
+              onChange={handleStartDate}
+            />
+            <DateInput
+              type="date"
+              value={finishDate}
+              onChange={handleFinishDate}
+            />
+          </DatesInnerContainer>
+          <QuantitySymbol>Q-ty</QuantitySymbol>
+        </DatesContainer>
+        <InfoContainer>
+          <InfoRow>
+            <InfoText>Contribution interval, days</InfoText>
+            <NumberInput
+              placeholder="Type Number"
+              value={intervalDays}
+              onChange={handleIntervalChange}
+            />
+          </InfoRow>
+          <Line />
+          <InfoRow>
+            <InfoText>Initial investment, $</InfoText>
+            <NumberInput
+              placeholder="Type Number"
+              value={initialInvestment}
+              onChange={handleInitialChange}
+            />
+          </InfoRow>
+          <Line />
+          <InfoRow>
+            <InfoText>investment added each interval, $</InfoText>
+            <NumberInput
+              placeholder="Type Number"
+              value={periodicInvestment}
+              onChange={handlePeriodicChange}
+            />
+          </InfoRow>
+          <Line />
+          <InfoRow>
+            <InfoText>Total amount spent, $</InfoText>
+            <NumText>${totalSpent}</NumText>
+          </InfoRow>
+          <Line />
+          <InfoRow>
+            <InfoText>Investment total value, $</InfoText>
+            <NumText>${totalValue}</NumText>
+          </InfoRow>
+        </InfoContainer>
+        <CalculateBtn type="submit">Calculate</CalculateBtn>
+      </form>
     </CalcModal>
   );
 };
