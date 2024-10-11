@@ -181,6 +181,7 @@ interface InvestmentCalcProps {
 }
 
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
+  const [error, setError] = useState(false);
   const [dcaSelected, setDcaSelected] = useState<boolean>(true);
   const [vcaSelected, setVcaSelected] = useState<boolean>(false);
   const [searchVal, setSearchVal] = useState<string>("");
@@ -195,15 +196,20 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [periodicInvestment, setPeriodicInvestment] = useState<number | null>(
     null
   );
-  const [intervalCount, setIntervalCount] = useState<number | null>(null);
   const [totalSpent, setTotalSpent] = useState<number>(0);
   const [totalValue, setTotalValue] = useState(0);
-  const [dayDifference, setDayDifference] = useState<number | null>(null);
+  const [dayDifference, setDayDifference] = useState<number>(0);
   const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
-  const [error, setError] = useState(false);
+  const [intervalDates, setIntervalDates] = useState<[] | Date[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const { coins, fiatCurrency } = useCryptoContext();
 
+  const dates = [];
+
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  let intervalCount: number;
 
   useEffect(() => {
     if (selectedCoin) {
@@ -290,23 +296,41 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     setFinishDate(e.target.value);
   };
 
-  const calculateDca = (e) => {
-    e.preventDefault();
-    setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
-  };
-
-  useEffect(() => {
+  const getDays = () => {
     const oneDay = 24 * 60 * 60 * 1000;
     const diffDays = Math.round(
       Math.abs((Date.parse(startDate) - Date.parse(finishDate)) / oneDay)
     );
-    setIntervalCount(diffDays / intervalDays);
+    intervalCount = diffDays / intervalDays;
     setDayDifference(diffDays);
-  }, [intervalDays]);
+    let currentDate = new Date(startDate);
+    for (let i = 0; i < intervalCount; i++) {
+      if (dates.length < 1) {
+        dates.push(currentDate);
+      } else {
+        const futureDate = new Date(currentDate);
+        futureDate.setDate(currentDate.getDate() + intervalDays);
+        dates.push(futureDate);
+        currentDate = futureDate;
+      }
+    }
+    const lastElement = dates[dates.length - 1];
+    const endDate = new Date(finishDate);
+    const diff = Math.round(
+      Math.abs((lastElement.getTime() - endDate.getTime()) / oneDay)
+    );
 
-  if (error) {
-    <p>error..</p>;
-  }
+    const finalDate = new Date(currentDate);
+    finalDate.setDate(currentDate.getDate() + diff);
+    dates.push(finalDate);
+    setIntervalDates(dates);
+  };
+
+  const calculateDca = (e) => {
+    e.preventDefault();
+    getDays();
+    setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
+  };
 
   return (
     <CalcModal>
@@ -318,6 +342,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         <CoinContainer>
           <CoinDisplay>
             {!selectedCoin && <p>Your Coin</p>}
+            {error && <p>error fetching coin data..</p>}
             {selectedCoin && (
               <>
                 {" "}
