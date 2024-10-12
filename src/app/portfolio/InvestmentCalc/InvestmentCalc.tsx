@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import { CoinPriceDataTypes } from "../CoinEntry/CoinEntry";
 
 const CalcModal = styled.div`
   width: 886px;
@@ -199,13 +198,10 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [totalSpent, setTotalSpent] = useState<number>(0);
   const [totalValue, setTotalValue] = useState(0);
   const [dayDifference, setDayDifference] = useState<number>(0);
-  const [priceData, setPriceData] = useState<CoinPriceDataTypes[] | null>(null);
-  const [intervalDates, setIntervalDates] = useState<[] | Date[]>([]);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [priceData, setPriceData] = useState(null);
+  const [totalCoins, setTotalCoins] = useState([]);
 
   const { coins, fiatCurrency } = useCryptoContext();
-
-  const dates = [];
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -226,7 +222,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               const thisPrice = el[1];
               return {
                 price: thisPrice,
-                date: thisDate,
+                date: new Date(thisDate),
               };
             })
           );
@@ -296,7 +292,9 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     setFinishDate(e.target.value);
   };
 
-  const getDays = () => {
+  const calculateDca = (e) => {
+    e.preventDefault();
+    const dates = [];
     const oneDay = 24 * 60 * 60 * 1000;
     const diffDays = Math.round(
       Math.abs((Date.parse(startDate) - Date.parse(finishDate)) / oneDay)
@@ -314,22 +312,23 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         currentDate = futureDate;
       }
     }
-    const lastElement = dates[dates.length - 1];
-    const endDate = new Date(finishDate);
-    const diff = Math.round(
-      Math.abs((lastElement.getTime() - endDate.getTime()) / oneDay)
-    );
-
-    const finalDate = new Date(currentDate);
-    finalDate.setDate(currentDate.getDate() + diff);
-    dates.push(finalDate);
-    setIntervalDates(dates);
-  };
-
-  const calculateDca = (e) => {
-    e.preventDefault();
-    getDays();
+    dates.push(new Date(finishDate));
     setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
+    const purchaseDateObjects = priceData.filter((priceObj) => {
+      const priceDate = priceObj.date.toISOString().split("T")[0];
+      return dates.some(
+        (date) => date.toISOString().split("T")[0] === priceDate
+      );
+    });
+    let totalHolding = 0;
+    for (let i = 0; i < purchaseDateObjects.length; i++) {
+      if (i === 0) {
+        totalHolding += initialInvestment / purchaseDateObjects[i].price;
+      } else {
+        totalHolding += periodicInvestment / purchaseDateObjects[i].price;
+      }
+    }
+    setTotalValue(totalHolding * selectedCoin.current_price);
   };
 
   return (
