@@ -199,7 +199,6 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [totalValue, setTotalValue] = useState(0);
   const [dayDifference, setDayDifference] = useState<number>(0);
   const [priceData, setPriceData] = useState(null);
-  const [totalCoins, setTotalCoins] = useState([]);
 
   const { coins, fiatCurrency } = useCryptoContext();
 
@@ -320,15 +319,15 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         (date) => date.toISOString().split("T")[0] === priceDate
       );
     });
-    let totalHolding = 0;
+    let totalCoinHolding = 0;
     for (let i = 0; i < purchaseDateObjects.length; i++) {
       if (i === 0) {
-        totalHolding += initialInvestment / purchaseDateObjects[i].price;
+        totalCoinHolding += initialInvestment / purchaseDateObjects[i].price;
       } else {
-        totalHolding += periodicInvestment / purchaseDateObjects[i].price;
+        totalCoinHolding += periodicInvestment / purchaseDateObjects[i].price;
       }
     }
-    setTotalValue(totalHolding * selectedCoin.current_price);
+    setTotalValue(totalCoinHolding * selectedCoin.current_price);
   };
 
   return (
