@@ -198,16 +198,16 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [totalSpent, setTotalSpent] = useState<number>(0);
   const [totalValue, setTotalValue] = useState(0);
   const [dayDifference, setDayDifference] = useState<number>(0);
-  const [priceData, setPriceData] = useState(null);
+  const [priceData, setPriceData] = useState([]);
 
   const { coins, fiatCurrency } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-  let intervalCount: number;
+  const [intervalCount, setIntervalCount] = useState(0);
 
   useEffect(() => {
-    if (selectedCoin) {
+    if (selectedCoin && dayDifference > 0) {
       try {
         setError(false);
         const getPriceData = async () => {
@@ -291,15 +291,19 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     setFinishDate(e.target.value);
   };
 
-  const calculateDca = (e) => {
-    e.preventDefault();
-    const dates = [];
+  useEffect(() => {
     const oneDay = 24 * 60 * 60 * 1000;
     const diffDays = Math.round(
       Math.abs((Date.parse(startDate) - Date.parse(finishDate)) / oneDay)
     );
-    intervalCount = diffDays / intervalDays;
-    setDayDifference(diffDays);
+    if (intervalDays !== 0) {
+      setIntervalCount(diffDays / intervalDays);
+      setDayDifference(diffDays);
+    }
+  }, [intervalDays, startDate, finishDate]);
+
+  const handleSubmit = (e) => {
+    const dates = [];
     let currentDate = new Date(startDate);
     for (let i = 0; i < intervalCount; i++) {
       if (dates.length < 1) {
@@ -312,13 +316,20 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
       }
     }
     dates.push(new Date(finishDate));
+    getTotalVal(e, dates);
+  };
+
+  const getTotalVal = (e, dates) => {
+    e.preventDefault();
     setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
     const purchaseDateObjects = priceData.filter((priceObj) => {
-      const priceDate = priceObj.date.toISOString().split("T")[0];
       return dates.some(
-        (date) => date.toISOString().split("T")[0] === priceDate
+        (date) =>
+          new Date(date).toISOString().split("T")[0] ===
+          priceObj.date.toISOString().split("T")[0]
       );
     });
+
     let totalCoinHolding = 0;
     for (let i = 0; i < purchaseDateObjects.length; i++) {
       if (i === 0) {
@@ -336,7 +347,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         <HeaderText>Investment Calculator</HeaderText>
         <QuitBtn onClick={handleCalcModalClose}>x</QuitBtn>
       </HeaderContainer>
-      <form onSubmit={calculateDca}>
+      <form onSubmit={handleSubmit}>
         <CoinContainer>
           <CoinDisplay>
             {!selectedCoin && <p>Your Coin</p>}
