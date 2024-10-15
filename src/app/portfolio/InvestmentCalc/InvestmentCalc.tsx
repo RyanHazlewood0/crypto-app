@@ -329,13 +329,14 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
           priceObj.date.toISOString().split("T")[0]
       );
     });
-
-    let totalCoinHolding = 0;
-    for (let i = 0; i < purchaseDateObjects.length; i++) {
-      if (i === 0) {
-        totalCoinHolding += initialInvestment / purchaseDateObjects[i].price;
-      } else {
-        totalCoinHolding += periodicInvestment / purchaseDateObjects[i].price;
+    let totalCoinHolding;
+    if (purchaseDateObjects) {
+      for (let i = 0; i < purchaseDateObjects.length; i++) {
+        if (i === 0) {
+          totalCoinHolding = initialInvestment / purchaseDateObjects[i].price;
+        } else {
+          totalCoinHolding += periodicInvestment / purchaseDateObjects[i].price;
+        }
       }
     }
     setTotalValue(totalCoinHolding * selectedCoin.current_price);
