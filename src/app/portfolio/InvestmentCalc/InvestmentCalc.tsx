@@ -61,18 +61,6 @@ const CoinSelect = styled.input`
   padding: 8px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-`;
-const InvestmentBtn = styled.button<SelectedProp>`
-  background: ${(props) => (props.selected ? "#B0B0EB" : "#EBEBFD")};
-  width: 50%;
-  padding: 12px;
-  border-radius: 6px;
-  color: ${(props) => (props.selected ? "white" : "#B0B0EB")};
-`;
-
 const DatesContainer = styled.div`
   display: flex;
   margin-bottom: 16px;
@@ -171,23 +159,17 @@ const NumberInput = styled.input`
   padding: 0 5px 0 5px;
 `;
 
-type SelectedProp = {
-  selected?: boolean;
-};
-
 interface InvestmentCalcProps {
   setCalcMocalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [error, setError] = useState(false);
-  const [dcaSelected, setDcaSelected] = useState<boolean>(true);
-  const [vcaSelected, setVcaSelected] = useState<boolean>(false);
   const [searchVal, setSearchVal] = useState<string>("");
   const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
   const [selectedCoin, setSelectedCoin] = useState(null);
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [finishDate, setFinishDate] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [intervalDays, setIntervalDays] = useState<number | null>(null);
   const [initialInvestment, setInitialInvestment] = useState<number | null>(
     null
@@ -197,22 +179,25 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   );
   const [totalSpent, setTotalSpent] = useState<number>(0);
   const [totalValue, setTotalValue] = useState(0);
-  const [dayDifference, setDayDifference] = useState<number>(0);
   const [priceData, setPriceData] = useState([]);
 
   const { coins, fiatCurrency } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-  const [intervalCount, setIntervalCount] = useState(0);
-
   useEffect(() => {
-    if (selectedCoin && dayDifference > 0) {
+    if (selectedCoin && startDate && finishDate) {
       try {
         setError(false);
         const getPriceData = async () => {
           const response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${selectedCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayDifference}&interval=daily&x_cg_pro_api_key=${apiKey}`
+            `https://pro-api.coingecko.com/api/v3/coins/${
+              selectedCoin.id
+            }/market_chart/range?vs_currency=${fiatCurrency}&from=${Math.floor(
+              startDate.getTime() / 1000
+            )}&to=${Math.floor(
+              finishDate.getTime() / 1000
+            )}&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData = await response.json();
           setPriceData(
@@ -231,20 +216,10 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         setError(true);
       }
     }
-  }, [selectedCoin, fiatCurrency, dayDifference]);
+  }, [selectedCoin, fiatCurrency, startDate, finishDate]);
 
   const handleCalcModalClose = () => {
     setCalcMocalOpen(false);
-  };
-
-  const toggleDcaSelected = () => {
-    setVcaSelected(false);
-    setDcaSelected(true);
-  };
-
-  const toggleVcaSelected = () => {
-    setDcaSelected(false);
-    setVcaSelected(true);
   };
 
   const handleSearch = (e) => {
@@ -284,68 +259,33 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   };
 
   const handleStartDate = (e) => {
-    setStartDate(e.target.value);
+    setStartDate(new Date(e.target.value));
   };
 
   const handleFinishDate = (e) => {
-    setFinishDate(e.target.value);
+    setFinishDate(new Date(e.target.value));
   };
-
-  useEffect(() => {
-    const oneDay = 24 * 60 * 60 * 1000;
-    const diffDays = Math.round(
-      Math.abs((Date.parse(startDate) - Date.parse(finishDate)) / oneDay)
-    );
-    if (intervalDays !== 0) {
-      setIntervalCount(diffDays / intervalDays);
-      setDayDifference(diffDays);
-    }
-  }, [intervalDays, startDate, finishDate]);
 
   const handleSubmit = (e) => {
-    const dates = [];
-    let currentDate = new Date(startDate);
-    for (let i = 0; i < intervalCount; i++) {
-      if (dates.length < 1) {
-        dates.push(currentDate);
-      } else {
-        const futureDate = new Date(currentDate);
-        futureDate.setDate(currentDate.getDate() + intervalDays);
-        dates.push(futureDate);
-        currentDate = futureDate;
-      }
-    }
-    dates.push(new Date(finishDate));
-    getTotalVal(e, dates);
-  };
-
-  const getTotalVal = (e, dates) => {
     e.preventDefault();
-    setTotalSpent((intervalCount - 1) * periodicInvestment + initialInvestment);
-    const purchaseDateObjects = priceData.filter((priceObj) => {
-      return dates.some(
-        (date) =>
-          new Date(date).toISOString().split("T")[0] ===
-          priceObj.date.toISOString().split("T")[0]
-      );
-    });
-    let totalCoinHolding;
-    if (purchaseDateObjects) {
-      for (let i = 0; i < purchaseDateObjects.length; i++) {
-        if (i === 0) {
-          totalCoinHolding = initialInvestment / purchaseDateObjects[i].price;
-        } else {
-          totalCoinHolding += periodicInvestment / purchaseDateObjects[i].price;
+    let spent = initialInvestment;
+    if (priceData) {
+      let totalCoinHolding = initialInvestment / priceData[0].price;
+      for (let i = 1; i < priceData.length; i += intervalDays) {
+        if (i <= priceData.length - intervalDays) {
+          totalCoinHolding += periodicInvestment / priceData[i].price;
+          spent += periodicInvestment;
         }
       }
+      setTotalValue(totalCoinHolding * selectedCoin.current_price);
+      setTotalSpent(spent);
     }
-    setTotalValue(totalCoinHolding * selectedCoin.current_price);
   };
 
   return (
     <CalcModal>
       <HeaderContainer>
-        <HeaderText>Investment Calculator</HeaderText>
+        <HeaderText>Investment Calculator (Dollar Cost Average)</HeaderText>
         <QuitBtn onClick={handleCalcModalClose}>x</QuitBtn>
       </HeaderContainer>
       <form onSubmit={handleSubmit}>
@@ -383,30 +323,16 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
             )}
           </div>
         </CoinContainer>
-        <ButtonContainer>
-          <InvestmentBtn
-            onClick={toggleVcaSelected}
-            selected={vcaSelected === true}
-          >
-            Value Cost Average
-          </InvestmentBtn>
-          <InvestmentBtn
-            onClick={toggleDcaSelected}
-            selected={dcaSelected === true}
-          >
-            Dollar Cost Average
-          </InvestmentBtn>
-        </ButtonContainer>
         <DatesContainer>
           <DatesInnerContainer>
             <DateInput
               type="date"
-              value={startDate}
+              value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={handleStartDate}
             />
             <DateInput
               type="date"
-              value={finishDate}
+              value={finishDate ? finishDate.toISOString().split("T")[0] : ""}
               onChange={handleFinishDate}
             />
           </DatesInnerContainer>
