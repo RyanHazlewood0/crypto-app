@@ -11,7 +11,6 @@ import {
 } from "helper-functions";
 import RedArrow from "../svg/RedArrow";
 import GreenArrow from "../svg/GreenArrow";
-
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 

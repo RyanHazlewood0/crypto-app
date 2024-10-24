@@ -8,6 +8,7 @@ import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
+import InvestmentCalc from "./InvestmentCalc/InvestmentCalc";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -26,6 +27,30 @@ const AddBtn = styled.button<ThemeProp>`
   height: 100%;
   border-radius: 6px;
   background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+`;
+
+const CalcBtn = styled.button<ThemeProp>`
+  width: 244px;
+  height: 100%;
+  border-radius: 6px;
+  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 56px;
+    height: 56px;
+    background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+    border-radius: 50%;
+    position: fixed;
+    z-index: 1;
+    bottom: 75px;
+    font-size: 30px;
+    left: 10px;
+    font-size: 18px;
+  }
+`;
+
+const BtnContainer = styled.div`
+  gap: 15px;
+  display: flex;
 `;
 
 const MobileAddBtn = styled.button<ThemeProp>`
@@ -69,13 +94,14 @@ export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
     []
   );
-  const [formOpen, setFormOpen] = useState(false);
+  const [assetFormOpen, setAssetFormOpen] = useState(false);
   const [coinSelectValue, setCoinSelectValue] = useState("");
   const [purchasedAmountValue, setPurchasedAmountValue] = useState<string>("");
   const [purchaseDateValue, setPurchaseDateValue] = useState<null | string>(
     null
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [calcModalOpen, setCalcMocalOpen] = useState(false);
 
   const { setSelectedMobileBtn, setSelectedNavLink, coins, theme } =
     useCryptoContext();
@@ -108,23 +134,27 @@ export default function Portfolio() {
     }
   }, [portfolioCoins]);
 
-  const handleFormOpen = () => {
-    setFormOpen(true);
+  const handleAssetFormOpen = () => {
+    setAssetFormOpen(true);
   };
 
   const handleFormClose = () => {
-    setFormOpen(false);
+    setAssetFormOpen(false);
     setCoinSelectValue("");
     setPurchaseDateValue(null);
     setPurchasedAmountValue(null);
     setIsEditOpen(false);
   };
 
+  const handleCalcModalOpen = () => {
+    setCalcMocalOpen(true);
+  };
+
   const editCoinEntry = (
     e: React.MouseEvent<HTMLButtonElement>,
     coin: PortfolioCoin
   ) => {
-    setFormOpen(true);
+    setAssetFormOpen(true);
     setCoinSelectValue(coin.name);
     setPurchaseDateValue(coin.purchaseDate.toISOString().split("T")[0]);
     setPurchasedAmountValue(coin.totalAmount.toString());
@@ -144,9 +174,22 @@ export default function Portfolio() {
       {size.width > parseInt(breakpoints.mobile) && (
         <HeaderContainer>
           <HeaderText>Portfolio</HeaderText>
-          <AddBtn light={theme === "light"} onClick={handleFormOpen}>
-            Add Asset
-          </AddBtn>
+          <BtnContainer>
+            <CalcBtn
+              light={theme === "light"}
+              onClick={handleCalcModalOpen}
+              disabled={assetFormOpen ? true : false}
+            >
+              Investment Calculator (DCA)
+            </CalcBtn>
+            <AddBtn
+              light={theme === "light"}
+              onClick={handleAssetFormOpen}
+              disabled={calcModalOpen ? true : false}
+            >
+              Add Asset
+            </AddBtn>
+          </BtnContainer>
         </HeaderContainer>
       )}
       {portfolioCoins.length < 1 && (
@@ -165,7 +208,7 @@ export default function Portfolio() {
             />
           ))}
       </EntrysContainer>
-      {formOpen && (
+      {assetFormOpen && (
         <AddAssetForm
           handleFormClose={handleFormClose}
           purchasedAmountValue={purchasedAmountValue}
@@ -179,14 +222,27 @@ export default function Portfolio() {
           isEditOpen={isEditOpen}
         />
       )}
-      {size.width < parseInt(breakpoints.mobile) && (
-        <>
-          <MobileAddBtn light={theme === "light"} onClick={handleFormOpen}>
-            +
-          </MobileAddBtn>
-          <MobileButtons />
-        </>
-      )}
+      {calcModalOpen && <InvestmentCalc setCalcMocalOpen={setCalcMocalOpen} />}
+      {size.width < parseInt(breakpoints.mobile) &&
+        !assetFormOpen &&
+        !calcModalOpen && (
+          <>
+            <CalcBtn
+              light={theme === "light"}
+              onClick={handleCalcModalOpen}
+              disabled={assetFormOpen ? true : false}
+            >
+              DCA
+            </CalcBtn>
+            <MobileAddBtn
+              light={theme === "light"}
+              onClick={handleAssetFormOpen}
+            >
+              +
+            </MobileAddBtn>
+            <MobileButtons />
+          </>
+        )}
     </>
   );
 }
