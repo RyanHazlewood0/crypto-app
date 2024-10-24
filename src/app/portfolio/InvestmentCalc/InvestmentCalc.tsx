@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
+import { breakpoints } from "breakpoints";
+import useWindowSize from "windowSizeHook";
 
-const CalcModal = styled.div`
+const CalcModal = styled.div<ThemeProp>`
   width: 886px;
   display: flex;
   flex-direction: column;
@@ -11,26 +13,40 @@ const CalcModal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
-  background: white;
+  z-index: 3;
+  background: ${(props) => (props.light ? "#ced4da" : "#13121a")};
   border-radius: 20px;
   padding: 48px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+    align-items: center;
+  }
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 32px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+    align-items: center;
+    padding: 0 10px 0 10px;
+    margin-bottom: 20px;
+  }
 `;
 
 const HeaderText = styled.h1`
   font-size: 24px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+    align-items: center;
+  }
 `;
 
-const QuitBtn = styled.button`
+const QuitBtn = styled.button<ThemeProp>`
   width: 24px;
   height: 24px;
-  border: solid 1px black;
+  border: ${(props) => (props.light ? "solid 1px black" : "solid 1px white")};
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -41,59 +57,86 @@ const CoinContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 32px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+    padding: 0 10px 0 10px;
+    margin-bottom: 20px;
+  }
 `;
-const CoinDisplay = styled.div`
+const CoinDisplay = styled.div<ThemeProp>`
   display: flex;
   padding: 8px;
-  background: #ebebfd;
+  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
   width: 170px;
   height: 44px;
   border-radius: 4px;
   justify-content: space-around;
   align-items: center;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 30%;
+  }
 `;
 
-const CoinSelect = styled.input`
-  background: #ebebfd;
+const CoinSelect = styled.input<ThemeProp>`
+  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
   width: 588px;
   height: 44px;
   border-radius: 4px;
   padding: 8px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 60%;
+  }
 `;
 
 const DatesContainer = styled.div`
   display: flex;
   margin-bottom: 16px;
   justify-content: space-between;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+  }
 `;
 const DatesInnerContainer = styled.div`
   display: flex;
   width: 499px;
   justify-content: space-between;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+    padding: 0 10px 0 10px;
+  }
 `;
-const DateInput = styled.input`
-  background: #f3f5f9;
+const DateInput = styled.input<ThemeProp>`
+  background: ${(props) => (props.light ? "white" : "#191925")};
   width: 238px;
   padding: 8px 24px 8px 8px;
   border-radius: 8px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 150px;
+  }
 `;
 
-const QuantitySymbol = styled.div`
+const QuantitySymbol = styled.div<ThemeProp>`
   width: 83px;
   border-radius: 8px;
   padding: 8px;
-  background: #ebebfd;
+  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
   text-align: center;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled.div<ThemeProp>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: #f3f5f9;
+  background: ${(props) => (props.light ? "#f3f5f9" : "#191925")};
   padding: 32px;
   margin-bottom: 32px;
   gap: 12px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 330px;
+    padding: 10px;
+    margin: 0 0 20px 10px;
+    border-radius: 4px;
+  }
 `;
 
 const InfoRow = styled.div`
@@ -115,13 +158,17 @@ const Line = styled.hr`
   width: 100%;
 `;
 
-const CalculateBtn = styled.button`
+const CalculateBtn = styled.button<ThemeProp>`
   width: 100%;
-  background: #b0b0eb;
+  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
   padding: 12px;
   font-size: 16px;
   color: white;
   border-radius: 6px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 330px;
+    margin-left: 10px;
+  }
 `;
 
 const SearchModal = styled.div`
@@ -133,6 +180,9 @@ const SearchModal = styled.div`
   position: absolute;
   z-index: 2;
   width: 588px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 350px;
+  }
 `;
 
 const CoinOption = styled.div`
@@ -151,17 +201,25 @@ const CoinText = styled.p`
   font-size: 16px;
 `;
 
-const NumberInput = styled.input`
+const NumberInput = styled.input<ThemeProp>`
   width: 110px;
-  background: #f3f5f9;
-  border: solid 1px black;
+  background: ${(props) => (props.light ? "#f3f5f9" : "#191925")};
+  border: ${(props) =>
+    props.light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
   border-radius: 4px;
   padding: 0 5px 0 5px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 60px;
+  }
 `;
 
 interface InvestmentCalcProps {
   setCalcMocalOpen: Dispatch<SetStateAction<boolean>>;
 }
+
+type ThemeProp = {
+  light?: boolean;
+};
 
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [error, setError] = useState(false);
@@ -181,7 +239,9 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const [totalValue, setTotalValue] = useState(0);
   const [priceData, setPriceData] = useState([]);
 
-  const { coins, fiatCurrency } = useCryptoContext();
+  const { coins, fiatCurrency, theme } = useCryptoContext();
+
+  const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -282,32 +342,39 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     }
   };
 
+  const today = new Date();
+
   return (
-    <CalcModal>
+    <CalcModal light={theme === "light"}>
       <HeaderContainer>
-        <HeaderText>Investment Calculator (Dollar Cost Average)</HeaderText>
-        <QuitBtn onClick={handleCalcModalClose}>x</QuitBtn>
+        <HeaderText>Investment Calculator (DCA)</HeaderText>
+        <QuitBtn onClick={handleCalcModalClose} light={theme === "light"}>
+          x
+        </QuitBtn>
       </HeaderContainer>
       <form onSubmit={handleSubmit}>
         <CoinContainer>
-          <CoinDisplay>
+          <CoinDisplay light={theme === "light"}>
             {!selectedCoin && <p>Your Coin</p>}
             {error && <p>error fetching coin data..</p>}
             {selectedCoin && (
               <>
                 {" "}
                 <CoinImage src={selectedCoin.image} />
-                <CoinText>{selectedCoin.name}</CoinText>
+                {size.width > parseInt(breakpoints.mobile) && (
+                  <CoinText>{selectedCoin.name}</CoinText>
+                )}
                 <CoinText>{selectedCoin.symbol.toUpperCase()}</CoinText>
               </>
             )}
           </CoinDisplay>
-          <div>
+          <>
             <CoinSelect
               type="text"
               placeholder="Select coin"
               onChange={handleSearch}
               value={searchVal}
+              light={theme === "light"}
             />
             {searchModalOpen && (
               <SearchModal>
@@ -321,7 +388,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
                 ))}
               </SearchModal>
             )}
-          </div>
+          </>
         </CoinContainer>
         <DatesContainer>
           <DatesInnerContainer>
@@ -329,40 +396,60 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               type="date"
               value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={handleStartDate}
+              light={theme === "light"}
             />
             <DateInput
               type="date"
               value={finishDate ? finishDate.toISOString().split("T")[0] : ""}
               onChange={handleFinishDate}
+              max={today.toISOString().split("T")[0]}
+              light={theme === "light"}
             />
           </DatesInnerContainer>
-          <QuantitySymbol>Q-ty</QuantitySymbol>
+          {size.width > parseInt(breakpoints.mobile) && (
+            <QuantitySymbol light={theme === "light"}>Q-ty</QuantitySymbol>
+          )}
         </DatesContainer>
-        <InfoContainer>
+        <InfoContainer light={theme === "light"}>
           <InfoRow>
             <InfoText>Contribution interval, days</InfoText>
             <NumberInput
-              placeholder="Type Number"
+              placeholder={
+                size.width > parseInt(breakpoints.mobile)
+                  ? "Type Number"
+                  : "Num"
+              }
               value={intervalDays}
               onChange={handleIntervalChange}
+              light={theme === "light"}
             />
           </InfoRow>
           <Line />
           <InfoRow>
             <InfoText>Initial investment, $</InfoText>
             <NumberInput
-              placeholder="Type Number"
+              placeholder={
+                size.width > parseInt(breakpoints.mobile)
+                  ? "Type Number"
+                  : "Num"
+              }
               value={initialInvestment}
               onChange={handleInitialChange}
+              light={theme === "light"}
             />
           </InfoRow>
           <Line />
           <InfoRow>
-            <InfoText>investment added each interval, $</InfoText>
+            <InfoText>investment each interval, $</InfoText>
             <NumberInput
-              placeholder="Type Number"
+              placeholder={
+                size.width > parseInt(breakpoints.mobile)
+                  ? "Type Number"
+                  : "Num"
+              }
               value={periodicInvestment}
               onChange={handlePeriodicChange}
+              light={theme === "light"}
             />
           </InfoRow>
           <Line />
@@ -373,10 +460,12 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
           <Line />
           <InfoRow>
             <InfoText>Investment total value, $</InfoText>
-            <NumText>${totalValue}</NumText>
+            <NumText>${Math.round(totalValue)}</NumText>
           </InfoRow>
         </InfoContainer>
-        <CalculateBtn type="submit">Calculate</CalculateBtn>
+        <CalculateBtn type="submit" light={theme === "light"}>
+          Calculate
+        </CalculateBtn>
       </form>
     </CalcModal>
   );

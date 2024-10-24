@@ -34,6 +34,18 @@ const CalcBtn = styled.button<ThemeProp>`
   height: 100%;
   border-radius: 6px;
   background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 56px;
+    height: 56px;
+    background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+    border-radius: 50%;
+    position: fixed;
+    z-index: 1;
+    bottom: 75px;
+    font-size: 30px;
+    left: 10px;
+    font-size: 18px;
+  }
 `;
 
 const BtnContainer = styled.div`
@@ -163,10 +175,18 @@ export default function Portfolio() {
         <HeaderContainer>
           <HeaderText>Portfolio</HeaderText>
           <BtnContainer>
-            <CalcBtn light={theme === "light"} onClick={handleCalcModalOpen}>
-              Investment Calculator
+            <CalcBtn
+              light={theme === "light"}
+              onClick={handleCalcModalOpen}
+              disabled={assetFormOpen ? true : false}
+            >
+              Investment Calculator (DCA)
             </CalcBtn>
-            <AddBtn light={theme === "light"} onClick={handleAssetFormOpen}>
+            <AddBtn
+              light={theme === "light"}
+              onClick={handleAssetFormOpen}
+              disabled={calcModalOpen ? true : false}
+            >
               Add Asset
             </AddBtn>
           </BtnContainer>
@@ -203,14 +223,26 @@ export default function Portfolio() {
         />
       )}
       {calcModalOpen && <InvestmentCalc setCalcMocalOpen={setCalcMocalOpen} />}
-      {size.width < parseInt(breakpoints.mobile) && (
-        <>
-          <MobileAddBtn light={theme === "light"} onClick={handleAssetFormOpen}>
-            +
-          </MobileAddBtn>
-          <MobileButtons />
-        </>
-      )}
+      {size.width < parseInt(breakpoints.mobile) &&
+        !assetFormOpen &&
+        !calcModalOpen && (
+          <>
+            <CalcBtn
+              light={theme === "light"}
+              onClick={handleCalcModalOpen}
+              disabled={assetFormOpen ? true : false}
+            >
+              DCA
+            </CalcBtn>
+            <MobileAddBtn
+              light={theme === "light"}
+              onClick={handleAssetFormOpen}
+            >
+              +
+            </MobileAddBtn>
+            <MobileButtons />
+          </>
+        )}
     </>
   );
 }
