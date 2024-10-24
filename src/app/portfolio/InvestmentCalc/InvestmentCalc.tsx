@@ -88,6 +88,23 @@ const CoinSelect = styled.input<ThemeProp>`
   }
 `;
 
+const SearchModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #ebebfd;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 2;
+  width: 588px;
+  margin-top: 44px;
+  margin-left: 202px;
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 198px;
+    right: 10px;
+  }
+`;
+
 const DatesContainer = styled.div`
   display: flex;
   margin-bottom: 16px;
@@ -168,20 +185,6 @@ const CalculateBtn = styled.button<ThemeProp>`
   @media (max-width: ${breakpoints.mobile}) {
     width: 330px;
     margin-left: 10px;
-  }
-`;
-
-const SearchModal = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #f3f5f9;
-  border-radius: 6px;
-  padding: 10px;
-  position: absolute;
-  z-index: 2;
-  width: 588px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
   }
 `;
 
