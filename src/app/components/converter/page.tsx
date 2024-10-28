@@ -371,7 +371,7 @@ export default function Converter() {
   };
 
   if (coins.length < 1) {
-    return <LoadingText>Loading coin data</LoadingText>;
+    return <LoadingText>Loading coin database</LoadingText>;
   }
 
   return (

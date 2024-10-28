@@ -166,7 +166,7 @@ export default function Portfolio() {
   );
 
   if (coins.length < 1) {
-    return <LoadingText>Loading coin data</LoadingText>;
+    return <LoadingText>Loading coin database...</LoadingText>;
   }
 
   return (

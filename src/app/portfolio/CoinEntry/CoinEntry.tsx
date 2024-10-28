@@ -263,7 +263,7 @@ const CoinEntry = ({
       if (coin) {
         try {
           const response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
           );
           const data = await response.json();
           if (fiatCurrency === "usd") {

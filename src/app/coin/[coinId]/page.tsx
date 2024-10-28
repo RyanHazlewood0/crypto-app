@@ -237,7 +237,7 @@ export default function Coin({ params }: CoinProps) {
       setHasError(false);
       try {
         const response: Response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=falsex_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinPageObject = await response.json();
         setThisCoinData(fetchedData);
