@@ -108,6 +108,7 @@ const NavBar = () => {
     setSelectedNavLink,
     theme,
     toggleTheme,
+    setSelectedMobileBtn,
   } = useCryptoContext();
 
   const size = useWindowSize();
@@ -119,10 +120,15 @@ const NavBar = () => {
     setSelectedNavLink(LinkText);
   };
 
+  const handleLogoClick = () => {
+    setSelectedNavLink("Home");
+    setSelectedMobileBtn("Overview");
+  };
+
   return (
     <NavBarContainer>
       <LeftDiv>
-        <Link href="/" onClick={() => setSelectedBtn("Coins")}>
+        <Link href="/" onClick={handleLogoClick}>
           <Logo />
         </Link>
         {size.width > parseInt(breakpoints.mobile) && (
