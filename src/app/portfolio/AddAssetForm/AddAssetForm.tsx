@@ -250,11 +250,7 @@ const AddAssetForm = ({
       id: thisCoin.id,
     };
 
-    const updatedPortfolioCoins = portfolioCoins.filter(
-      (el) => el.name !== thisCoin.name
-    );
-
-    setPortfolioCoins([...updatedPortfolioCoins, newCoinEntry]);
+    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
     setCoinSelectValue("");
     setPurchaseDateValue("");
     setPurchasedAmountValue("");
