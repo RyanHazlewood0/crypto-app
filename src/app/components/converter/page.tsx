@@ -334,7 +334,7 @@ export default function Converter() {
 
   const toggleBuyPopup = () => {
     setSearchBuyPopupOpen(!searchBuyPopupOpen);
-    if (searchBuyPopupOpen === false) {
+    if (!searchBuyPopupOpen) {
       setBuySearch("");
     }
     if (buyDropdownOpen) {
@@ -344,7 +344,7 @@ export default function Converter() {
 
   const toggleSellPopup = () => {
     setSearchSellPopupOpen(!searchSellPopupOpen);
-    if (searchSellPopupOpen === false) {
+    if (!searchSellPopupOpen) {
       setSellSearch("");
     }
     if (sellDropdownOpen) {
