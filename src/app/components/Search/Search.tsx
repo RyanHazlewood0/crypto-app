@@ -94,7 +94,7 @@ const Search = () => {
           size.width > parseInt(breakpoints.mobile) ? "Search..." : ""
         }
         value={searchValue}
-        onChange={(e) => handleSearch(e)}
+        onChange={handleSearch}
         light={theme === "light"}
       />
       {dropDownOpen && (
