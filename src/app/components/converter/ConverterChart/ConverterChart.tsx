@@ -81,11 +81,11 @@ const ConverterChart = ({
     const fetchData = async () => {
       try {
         const response: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${sellCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          `https://api.coingecko.com/api/v3/coins/${sellCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily`
         );
         const fetchedData: FetchedDataTypes = await response.json();
         const response2: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
+          `https://api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily`
         );
         const fetchedData2: FetchedDataTypes = await response2.json();
 
