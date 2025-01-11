@@ -149,11 +149,18 @@ interface CarouselProps {
   setSelectedCoin: Dispatch<SetStateAction<Coin[] | null>>;
 }
 
+interface CarouselCacheData {
+  data: Coin[];
+  timestamp: number;
+  currency: string;
+}
+
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
   const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const CACHE_DURATION = 5 * 60 * 1000;
 
   const selectCoin = (coin) => {
     if (selectedCoin.length === 2)
@@ -176,21 +183,48 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
     }
   };
 
+  const getCachedCarouselCoins = (): CarouselCacheData | null => {
+    const cached = localStorage.getItem("cachedCarouselCoins");
+    if (!cached) return null;
+
+    const parsedCache = JSON.parse(cached) as CarouselCacheData;
+    const isExpired = Date.now() - parsedCache.timestamp > CACHE_DURATION;
+
+    return isExpired ? null : parsedCache;
+  };
+
   useEffect(() => {
     setHasError(false);
     const fetchData = async () => {
+      const cachedData = getCachedCarouselCoins();
+      if (cachedData && cachedData.currency === fiatCurrency) {
+        setCarouselCoins(cachedData.data);
+        return;
+      }
       try {
         const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=24&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
         );
         const data = await response.json();
         setCarouselCoins(data);
+        const cacheData: CarouselCacheData = {
+          data,
+          timestamp: Date.now(),
+          currency: fiatCurrency,
+        };
+        localStorage.setItem("cachedCarouselCoins", JSON.stringify(cacheData));
       } catch {
         setHasError(true);
+        const expiredCache = localStorage.getItem("cachedCarouselCoins");
+        if (expiredCache) {
+          const { data } = JSON.parse(expiredCache);
+          setCarouselCoins(data);
+          setHasError(false);
+        }
       }
     };
     fetchData();
-  }, [fiatCurrency, apiKey]);
+  }, [fiatCurrency]);
 
   useEffect(() => {
     if (carouselCoins.length > 0) {
