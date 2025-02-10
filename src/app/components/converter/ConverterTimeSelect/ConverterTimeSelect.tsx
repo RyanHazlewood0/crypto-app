@@ -8,7 +8,7 @@ const Container = styled.div<SelectBtnProps>`
   width: 463px;
   height: 42px;
   justify-content: space-between;
-  background: ${(prop) => (prop.light ? "white" : "#232336")};
+  background: ${(prop) => (prop.$light ? "white" : "#232336")};
   align-items: center;
   border-radius: 6px;
   padding: 4px;
