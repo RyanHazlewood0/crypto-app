@@ -31,7 +31,7 @@ ChartJS.register(
 const ChartContainer = styled.div<ThemeProp>`
   width: 100%;
   height: 293px;
-  background: ${(props) => (props.light ? "white" : "#191932")};
+  background: ${(props) => (props.$light ? "white" : "#191932")};
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 35px;
@@ -57,7 +57,7 @@ interface ConverterChartProps {
 }
 
 type ThemeProp = {
-  light: boolean;
+  $light: boolean;
 };
 
 const ConverterChart = ({
@@ -88,7 +88,6 @@ const ConverterChart = ({
           `https://pro-api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData2: FetchedDataTypes = await response2.json();
-
         setSellCoinPriceData(fetchedData);
         setBuyCoinPriceData(fetchedData2);
       } catch {
@@ -194,7 +193,7 @@ const ConverterChart = ({
 
   return (
     <>
-      <ChartContainer light={theme === "light"}>
+      <ChartContainer $light={theme === "light"}>
         {buyCoin && sellCoin ? (
           <Line
             options={options}

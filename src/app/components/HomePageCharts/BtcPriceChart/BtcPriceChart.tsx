@@ -31,7 +31,7 @@ ChartJS.register(
 
 const ChartContainer = styled.div<ThemeProp>`
   width: 49%;
-  background: ${(props) => (props.light ? "white" : "#191932")};
+  background: ${(props) => (props.$light ? "white" : "#191932")};
   border-radius: 6px;
   height: 400px;
   display: flex;
@@ -91,7 +91,7 @@ const MobileCoinText = styled.div`
 
 const TwoCoinsHeader = styled.p<ThemeProp>`
   font-size: 24px;
-  color: ${(props) => (props.light ? "#353570" : "white")};
+  color: ${(props) => (props.$light ? "#353570" : "white")};
   margin: 2.5% 0 0 2.5%;
 `;
 
@@ -106,7 +106,7 @@ type BtcPriceChartProps = {
 };
 
 type ThemeProp = {
-  light: boolean;
+  $light: boolean;
 };
 
 const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
@@ -196,7 +196,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
   };
 
   return (
-    <ChartContainer light={theme === "light"}>
+    <ChartContainer $light={theme === "light"}>
       {size.width < parseInt(breakpoints.mobile) &&
         selectedCoin.length === 1 && (
           <>
@@ -253,7 +253,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
       {size.width > parseInt(breakpoints.mobile) &&
         selectedCoin.length === 2 && (
           <>
-            <TwoCoinsHeader light={theme === "light"}>
+            <TwoCoinsHeader $light={theme === "light"}>
               {new Date().toDateString()}
             </TwoCoinsHeader>
             <Line

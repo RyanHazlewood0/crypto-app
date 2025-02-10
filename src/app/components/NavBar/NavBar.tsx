@@ -70,7 +70,7 @@ const RightDiv = styled.div`
 `;
 
 const ThemeIconContainer = styled.div<StyleProp>`
-  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
+  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   border: solid 1px gray;
   border-radius: 6px;
   cursor: pointer;
@@ -88,17 +88,17 @@ const ThemeIconContainer = styled.div<StyleProp>`
 const HomeText = styled.p<StyleProp>`
   margin-left: 10px;
   color: ${(props) => {
-    if (props.light) {
-      return props.selected ? "#353570" : "gray";
+    if (props.$light) {
+      return props.$selected ? "#353570" : "gray";
     } else {
-      return props.selected ? "white" : "gray";
+      return props.$selected ? "white" : "gray";
     }
   }};
 `;
 
 type StyleProp = {
-  selected?: boolean;
-  light?: boolean;
+  $selected?: boolean;
+  $light?: boolean;
 };
 
 const NavBar = () => {
@@ -137,8 +137,8 @@ const NavBar = () => {
               <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
                 <Home selectedNavLink={selectedNavLink} />
                 <HomeText
-                  selected={selectedNavLink === "Home"}
-                  light={theme === "light"}
+                  $selected={selectedNavLink === "Home"}
+                  $light={theme === "light"}
                 >
                   Home
                 </HomeText>
@@ -150,8 +150,8 @@ const NavBar = () => {
               >
                 <Portfolio selectedNavLink={selectedNavLink} />
                 <HomeText
-                  selected={selectedNavLink === "Portfolio"}
-                  light={theme === "light"}
+                  $selected={selectedNavLink === "Portfolio"}
+                  $light={theme === "light"}
                 >
                   Portfolio
                 </HomeText>
@@ -168,7 +168,7 @@ const NavBar = () => {
           <Search />
         </SearchDiv>
         <CurrencySelect />
-        <ThemeIconContainer light={theme === "light"} onClick={toggleTheme}>
+        <ThemeIconContainer $light={theme === "light"} onClick={toggleTheme}>
           {theme === "light" ? <Moon /> : <ThemeIcon />}
         </ThemeIconContainer>
       </RightDiv>

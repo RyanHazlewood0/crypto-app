@@ -26,18 +26,18 @@ const AddBtn = styled.button<ThemeProp>`
   width: 244px;
   height: 100%;
   border-radius: 6px;
-  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
 `;
 
 const CalcBtn = styled.button<ThemeProp>`
   width: 244px;
   height: 100%;
   border-radius: 6px;
-  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
   @media (max-width: ${breakpoints.mobile}) {
     width: 56px;
     height: 56px;
-    background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+    background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
     border-radius: 50%;
     position: fixed;
     z-index: 1;
@@ -56,7 +56,7 @@ const BtnContainer = styled.div`
 const MobileAddBtn = styled.button<ThemeProp>`
   width: 56px;
   height: 56px;
-  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
   border-radius: 50%;
   position: fixed;
   z-index: 1;
@@ -87,7 +87,7 @@ const EntrysContainer = styled.div`
 `;
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 export default function Portfolio() {
@@ -176,14 +176,14 @@ export default function Portfolio() {
           <HeaderText>Portfolio</HeaderText>
           <BtnContainer>
             <CalcBtn
-              light={theme === "light"}
+              $light={theme === "light"}
               onClick={handleCalcModalOpen}
               disabled={assetFormOpen ? true : false}
             >
               Investment Calculator (DCA)
             </CalcBtn>
             <AddBtn
-              light={theme === "light"}
+              $light={theme === "light"}
               onClick={handleAssetFormOpen}
               disabled={calcModalOpen ? true : false}
             >
@@ -228,14 +228,14 @@ export default function Portfolio() {
         !calcModalOpen && (
           <>
             <CalcBtn
-              light={theme === "light"}
+              $light={theme === "light"}
               onClick={handleCalcModalOpen}
               disabled={assetFormOpen ? true : false}
             >
               DCA
             </CalcBtn>
             <MobileAddBtn
-              light={theme === "light"}
+              $light={theme === "light"}
               onClick={handleAssetFormOpen}
             >
               +

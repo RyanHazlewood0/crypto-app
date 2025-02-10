@@ -14,7 +14,7 @@ const CalcModal = styled.div<ThemeProp>`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
-  background: ${(props) => (props.light ? "#ced4da" : "#13121a")};
+  background: ${(props) => (props.$light ? "#ced4da" : "#13121a")};
   border-radius: 20px;
   padding: 48px;
   @media (max-width: ${breakpoints.mobile}) {
@@ -46,7 +46,7 @@ const HeaderText = styled.h1`
 const QuitBtn = styled.button<ThemeProp>`
   width: 24px;
   height: 24px;
-  border: ${(props) => (props.light ? "solid 1px black" : "solid 1px white")};
+  border: ${(props) => (props.$light ? "solid 1px black" : "solid 1px white")};
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -66,7 +66,7 @@ const CoinContainer = styled.div`
 const CoinDisplay = styled.div<ThemeProp>`
   display: flex;
   padding: 8px;
-  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
+  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
   width: 170px;
   height: 44px;
   border-radius: 4px;
@@ -78,7 +78,7 @@ const CoinDisplay = styled.div<ThemeProp>`
 `;
 
 const CoinSelect = styled.input<ThemeProp>`
-  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
+  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
   width: 588px;
   height: 44px;
   border-radius: 4px;
@@ -123,7 +123,7 @@ const DatesInnerContainer = styled.div`
   }
 `;
 const DateInput = styled.input<ThemeProp>`
-  background: ${(props) => (props.light ? "white" : "#191925")};
+  background: ${(props) => (props.$light ? "white" : "#191925")};
   width: 238px;
   padding: 8px 24px 8px 8px;
   border-radius: 8px;
@@ -136,7 +136,7 @@ const QuantitySymbol = styled.div<ThemeProp>`
   width: 83px;
   border-radius: 8px;
   padding: 8px;
-  background: ${(props) => (props.light ? "#ebebfd" : "#191925")};
+  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
   text-align: center;
 `;
 
@@ -144,7 +144,7 @@ const InfoContainer = styled.div<ThemeProp>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: ${(props) => (props.light ? "#f3f5f9" : "#191925")};
+  background: ${(props) => (props.$light ? "#f3f5f9" : "#191925")};
   padding: 32px;
   margin-bottom: 32px;
   gap: 12px;
@@ -177,7 +177,7 @@ const Line = styled.hr`
 
 const CalculateBtn = styled.button<ThemeProp>`
   width: 100%;
-  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
   padding: 12px;
   font-size: 16px;
   color: white;
@@ -206,9 +206,9 @@ const CoinText = styled.p`
 
 const NumberInput = styled.input<ThemeProp>`
   width: 110px;
-  background: ${(props) => (props.light ? "#f3f5f9" : "#191925")};
+  background: ${(props) => (props.$light ? "#f3f5f9" : "#191925")};
   border: ${(props) =>
-    props.light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
+    props.$light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
   border-radius: 4px;
   padding: 0 5px 0 5px;
   @media (max-width: ${breakpoints.mobile}) {
@@ -221,7 +221,7 @@ interface InvestmentCalcProps {
 }
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
@@ -262,17 +262,17 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               finishDate.getTime() / 1000
             )}&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
+
           const fetchedData = await response.json();
-          setPriceData(
-            fetchedData.prices.map((el) => {
-              const thisDate = new Date(el[0]);
-              const thisPrice = el[1];
-              return {
-                price: thisPrice,
-                date: new Date(thisDate),
-              };
-            })
-          );
+          const priceDataArray = fetchedData.prices.map((el) => {
+            const thisDate = new Date(el[0]);
+            const thisPrice = el[1];
+            return {
+              price: thisPrice,
+              date: new Date(thisDate),
+            };
+          });
+          setPriceData(priceDataArray);
         };
         getPriceData();
       } catch {
@@ -348,16 +348,16 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const today = new Date();
 
   return (
-    <CalcModal light={theme === "light"}>
+    <CalcModal $light={theme === "light"}>
       <HeaderContainer>
         <HeaderText>Investment Calculator (DCA)</HeaderText>
-        <QuitBtn onClick={handleCalcModalClose} light={theme === "light"}>
+        <QuitBtn onClick={handleCalcModalClose} $light={theme === "light"}>
           x
         </QuitBtn>
       </HeaderContainer>
       <form onSubmit={handleSubmit}>
         <CoinContainer>
-          <CoinDisplay light={theme === "light"}>
+          <CoinDisplay $light={theme === "light"}>
             {!selectedCoin && <p>Your Coin</p>}
             {error && <p>error fetching coin data..</p>}
             {selectedCoin && (
@@ -377,7 +377,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               placeholder="Select coin"
               onChange={handleSearch}
               value={searchVal}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
             {searchModalOpen && (
               <SearchModal>
@@ -399,21 +399,21 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               type="date"
               value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={handleStartDate}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
             <DateInput
               type="date"
               value={finishDate ? finishDate.toISOString().split("T")[0] : ""}
               onChange={handleFinishDate}
               max={today.toISOString().split("T")[0]}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
           </DatesInnerContainer>
           {size.width > parseInt(breakpoints.mobile) && (
-            <QuantitySymbol light={theme === "light"}>Q-ty</QuantitySymbol>
+            <QuantitySymbol $light={theme === "light"}>Q-ty</QuantitySymbol>
           )}
         </DatesContainer>
-        <InfoContainer light={theme === "light"}>
+        <InfoContainer $light={theme === "light"}>
           <InfoRow>
             <InfoText>Contribution interval, days</InfoText>
             <NumberInput
@@ -424,7 +424,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={intervalDays}
               onChange={handleIntervalChange}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
           </InfoRow>
           <Line />
@@ -438,7 +438,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={initialInvestment}
               onChange={handleInitialChange}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
           </InfoRow>
           <Line />
@@ -452,7 +452,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={periodicInvestment}
               onChange={handlePeriodicChange}
-              light={theme === "light"}
+              $light={theme === "light"}
             />
           </InfoRow>
           <Line />
@@ -466,7 +466,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
             <NumText>${Math.round(totalValue)}</NumText>
           </InfoRow>
         </InfoContainer>
-        <CalculateBtn type="submit" light={theme === "light"}>
+        <CalculateBtn type="submit" $light={theme === "light"}>
           Calculate
         </CalculateBtn>
       </form>

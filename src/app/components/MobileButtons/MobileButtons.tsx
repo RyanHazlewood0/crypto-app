@@ -18,7 +18,7 @@ const MobileBtnContainer = styled.div`
 const MobileBtnInnerContainer = styled.div<StyleProp>`
   display: flex;
   justify-content: space-between;
-  background: ${(prop) => (prop.light ? "white" : "#232336")};
+  background: ${(prop) => (prop.$light ? "white" : "#232336")};
 `;
 
 const BtnContainer = styled.div<StyleProp>`
@@ -28,14 +28,14 @@ const BtnContainer = styled.div<StyleProp>`
   justify-content: center;
   width: 106.33px;
   background: ${(props) => {
-    if (props.light) {
-      if (props.selected) {
+    if (props.$light) {
+      if (props.$selected) {
         return "#B0B0EB";
       } else {
         return "white";
       }
     } else {
-      if (props.selected) {
+      if (props.$selected) {
         return "#6161d6";
       } else {
         return "#232336";
@@ -49,8 +49,8 @@ const BtnContainer = styled.div<StyleProp>`
 const Btn = styled.button``;
 
 type StyleProp = {
-  selected?: boolean;
-  light?: boolean;
+  $selected?: boolean;
+  $light?: boolean;
 };
 
 const MobileButtons = () => {
@@ -61,11 +61,11 @@ const MobileButtons = () => {
     <>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileBtnContainer>
-          <MobileBtnInnerContainer light={theme === "light"}>
+          <MobileBtnInnerContainer $light={theme === "light"}>
             <Link href="/">
               <BtnContainer
-                light={theme === "light"}
-                selected={selectedMobileBtn === "Overview"}
+                $light={theme === "light"}
+                $selected={selectedMobileBtn === "Overview"}
                 onClick={() => setSelectedMobileBtn("Overview")}
               >
                 <OverviewIcon />
@@ -74,8 +74,8 @@ const MobileButtons = () => {
             </Link>
             <Link href="/">
               <BtnContainer
-                light={theme === "light"}
-                selected={selectedMobileBtn === "Converter"}
+                $light={theme === "light"}
+                $selected={selectedMobileBtn === "Converter"}
                 onClick={() => setSelectedMobileBtn("Converter")}
               >
                 <ConverterIcon />
@@ -87,8 +87,8 @@ const MobileButtons = () => {
               onClick={() => setSelectedMobileBtn("Portfolio")}
             >
               <BtnContainer
-                light={theme === "light"}
-                selected={selectedMobileBtn === "Portfolio"}
+                $light={theme === "light"}
+                $selected={selectedMobileBtn === "Portfolio"}
               >
                 <PortfolioIcon />
                 <Btn>Portfolio</Btn>

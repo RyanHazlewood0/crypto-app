@@ -7,7 +7,7 @@ import useWindowSize from "windowSizeHook";
 
 const CurrencyContainer = styled.div<ThemeProp>`
   display: flex;
-  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
+  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   width: 100%;
   border: solid 1px gray;
   border-radius: 6px;
@@ -24,10 +24,10 @@ const CurrencyContainer = styled.div<ThemeProp>`
 `;
 
 const DropdownContainer = styled.div<ThemeProp>`
-  color: ${(props) => (props.light ? "#353570" : "white")};
+  color: ${(props) => (props.$light ? "#353570" : "white")};
   display: flex;
   flex-direction: column;
-  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
+  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   padding: 10px;
   border: solid 1px gray;
   position: absolute;
@@ -58,7 +58,7 @@ const CurrencyOptionContainer = styled.div`
 `;
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 const CurrencySelect = () => {
@@ -98,7 +98,7 @@ const CurrencySelect = () => {
     <DropdownAndOptionContainer ref={wrapperRef}>
       <CurrencyContainer
         onClick={handleToggleDropdown}
-        light={theme === "light"}
+        $light={theme === "light"}
       >
         {size.width > parseInt(breakpoints.mobile) && <DollarSymbol />}
 
@@ -106,7 +106,7 @@ const CurrencySelect = () => {
         <p>▼</p>
       </CurrencyContainer>
       {fiatDropownOpen && (
-        <DropdownContainer light={theme === "light"}>
+        <DropdownContainer $light={theme === "light"}>
           {currencyOptions.map((currency) => (
             <CurrencyOptionContainer
               key={currency}

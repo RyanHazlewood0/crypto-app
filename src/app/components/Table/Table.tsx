@@ -28,7 +28,7 @@ const CoinTable = styled.table`
 
 const TableRow = styled.tr<StyleProp>`
   width: 100%;
-  background: ${(props) => (props.light ? "white" : "#191925")};
+  background: ${(props) => (props.$light ? "white" : "#191925")};
   font-size: 14px;
   height: 77px;
 `;
@@ -53,7 +53,7 @@ const StyledTd = styled.td<StyleProp>`
   padding: 15px;
   height: 77px;
   border-radius: ${(props) =>
-    props.left ? "10px 0 0 10px" : props.right ? "0 10px 10px 0" : "none"};
+    props.$left ? "10px 0 0 10px" : props.$right ? "0 10px 10px 0" : "none"};
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 16px;
     padding: 0;
@@ -63,7 +63,7 @@ const StyledTd = styled.td<StyleProp>`
 const StyledTh = styled.th<StyleProp>`
   padding: 5px 15px 5px 15px;
   text-align: left;
-  color: ${(props) => (props.light ? "#353570" : "#D1D1D1")};
+  color: ${(props) => (props.$light ? "#353570" : "#D1D1D1")};
   @media (max-width: ${breakpoints.mobile}) {
     padding: 0;
     text-align: center;
@@ -95,14 +95,14 @@ const NumberSeparator = styled.div`
 `;
 
 const PriceChangeDiv = styled.div<StyleProp>`
-  color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+  color: ${(props) => (props.$green ? "#01F1E3" : "#FE2264")};
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 12px;
   }
 `;
 
 const ArrowSpan = styled.span<StyleProp>`
-  margin: ${(props) => (props.left ? "0 5px 0 5px" : "none")};
+  margin: ${(props) => (props.$left ? "0 5px 0 5px" : "none")};
   cursor: pointer;
 `;
 
@@ -123,7 +123,7 @@ const LineChartContainer = styled.div`
 const TextAndArrowText = styled.p<StyleProp>`
   display: flex;
   margin-bottom: 10px;
-  color: ${(props) => (props.light ? "#353570" : "#D1D1D1")};
+  color: ${(props) => (props.$light ? "#353570" : "#D1D1D1")};
 `;
 
 const LoadingMessage = styled.p`
@@ -138,11 +138,30 @@ const MobilePriceAnd24hContainer = styled.div`
 `;
 
 type StyleProp = {
-  left?: boolean;
-  green?: boolean;
-  right?: boolean;
-  gray?: boolean;
-  light?: boolean;
+  $left?: boolean;
+  $green?: boolean;
+  $right?: boolean;
+  $gray?: boolean;
+  $light?: boolean;
+};
+
+const CACHE_DURATION = 15 * 60 * 1000;
+const COINS_PER_PAGE = 50;
+
+interface TableCacheData {
+  data: Coin[];
+  timestamp: number;
+  currency: string;
+}
+
+const getCachedTableCoins = (): TableCacheData | null => {
+  const cached = localStorage.getItem("cachedTableCoins");
+  if (!cached) return null;
+
+  const parsedCache = JSON.parse(cached) as TableCacheData;
+  const isExpired = Date.now() - parsedCache.timestamp > CACHE_DURATION;
+
+  return isExpired ? null : parsedCache;
 };
 
 const Table = () => {
@@ -150,7 +169,8 @@ const Table = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
   const [currentPage, setCurrentPage] = useState(1);
-  const [tableCoins, setTableCoins] = useState([]);
+  const [displayedCoins, setDisplayedCoins] = useState<Coin[]>([]);
+  const [allCoins, setAllCoins] = useState<Coin[]>([]);
 
   const { fiatCurrency, theme } = useCryptoContext();
   const size = useWindowSize();
@@ -160,30 +180,53 @@ const Table = () => {
   useEffect(() => {
     setHasError(false);
     setIsLoading(true);
-    const getCoinData = async () => {
-      try {
-        const response1: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const fetchedData1: Coin[] = await response1.json();
-        setTableCoins(fetchedData1);
+    const fetchAllCoins = async () => {
+      const cachedData = getCachedTableCoins();
+      if (cachedData && cachedData.currency === fiatCurrency) {
+        setAllCoins(cachedData.data);
+        setDisplayedCoins(cachedData.data.slice(0, COINS_PER_PAGE));
         setIsLoading(false);
+        return;
+      }
+      try {
+        const response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=200&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: Coin[] = await response.json();
+        const cacheData: TableCacheData = {
+          data,
+          timestamp: Date.now(),
+          currency: fiatCurrency,
+        };
+        localStorage.setItem("cachedTableCoins", JSON.stringify(cacheData));
+
+        setAllCoins(data);
+        setDisplayedCoins(data.slice(0, COINS_PER_PAGE));
+        setCurrentPage(1);
       } catch {
         setHasError(true);
+        const expiredCache = localStorage.getItem("cachedTableCoins");
+        if (expiredCache) {
+          const { data } = JSON.parse(expiredCache);
+          setAllCoins(data);
+          setDisplayedCoins(data.slice(0, COINS_PER_PAGE));
+          setHasError(false);
+        }
+      } finally {
         setIsLoading(false);
       }
     };
-    getCoinData();
-    setCurrentPage(currentPage + 1);
-  }, [fiatCurrency, apiKey, setTableCoins]);
+    fetchAllCoins();
+  }, [fiatCurrency]);
 
-  const getMoreData = async () => {
-    const response: Response = await fetch(
-      `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-    );
-    const data: Coin[] = await response.json();
-    setTableCoins([...tableCoins, ...data]);
-    setCurrentPage(currentPage + 1);
+  const getMoreData = () => {
+    const nextPage = currentPage + 1;
+    const nextCoins = allCoins.slice(0, nextPage * COINS_PER_PAGE);
+    setDisplayedCoins(nextCoins);
+    setCurrentPage(nextPage);
   };
 
   const getSortOption = (
@@ -193,7 +236,7 @@ const Table = () => {
     setSortOrder(order);
   };
 
-  const sortedCoins = [...tableCoins].sort((a, b): number => {
+  const sortedCoins = [...displayedCoins].sort((a, b): number => {
     if (sortOrder === "price-desc") {
       return a.current_price - b.current_price;
     } else if (sortOrder === "price-asc") {
@@ -246,18 +289,17 @@ const Table = () => {
   if (hasError) {
     return <LoadingMessage>Error loading coin data...</LoadingMessage>;
   }
-
   return (
     <>
       <CoinTable>
         {size.width > parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
-              <StyledTh light={theme === "light"}>
-                <TextAndArrowText light={theme === "light"}>
+              <StyledTh $light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   #
                   <ArrowSpan
-                    left
+                    $left
                     onClick={(e) => getSortOption(e, "mcap-desc")}
                   >
                     ▼
@@ -268,10 +310,10 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   Name{" "}
                   <ArrowSpan
-                    left
+                    $left
                     onClick={(e) => getSortOption(e, "name-desc")}
                   >
                     ▼
@@ -282,10 +324,10 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   Price{" "}
                   <ArrowSpan
-                    left
+                    $left
                     onClick={(e) => getSortOption(e, "price-desc")}
                   >
                     ▼
@@ -296,9 +338,9 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   1h%{" "}
-                  <ArrowSpan left onClick={(e) => getSortOption(e, "1h-desc")}>
+                  <ArrowSpan $left onClick={(e) => getSortOption(e, "1h-desc")}>
                     ▼
                   </ArrowSpan>
                   <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
@@ -307,9 +349,12 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   24h%{" "}
-                  <ArrowSpan left onClick={(e) => getSortOption(e, "24h-desc")}>
+                  <ArrowSpan
+                    $left
+                    onClick={(e) => getSortOption(e, "24h-desc")}
+                  >
                     ▼
                   </ArrowSpan>
                   <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
@@ -318,9 +363,9 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   7d%{" "}
-                  <ArrowSpan left onClick={(e) => getSortOption(e, "7d-desc")}>
+                  <ArrowSpan $left onClick={(e) => getSortOption(e, "7d-desc")}>
                     ▼
                   </ArrowSpan>
                   <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
@@ -328,16 +373,16 @@ const Table = () => {
                   </ArrowSpan>
                 </TextAndArrowText>
               </StyledTh>
-              <StyledTh light={theme === "light"}>
+              <StyledTh $light={theme === "light"}>
                 <p style={{ marginBottom: "10px" }}>24h Volume / Market Cap</p>
               </StyledTh>
-              <StyledTh light={theme === "light"}>
+              <StyledTh $light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>
                   Circulating / Total Supply
                 </p>
               </StyledTh>
-              <StyledTh light={theme === "light"}>
+              <StyledTh $light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>Last 7d</p>
               </StyledTh>
@@ -348,10 +393,10 @@ const Table = () => {
           <TableHeader>
             <tr>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   Name{" "}
                   <ArrowSpan
-                    left
+                    $left
                     onClick={(e) => getSortOption(e, "name-desc")}
                   >
                     ▼
@@ -362,10 +407,10 @@ const Table = () => {
                 </TextAndArrowText>
               </StyledTh>
               <StyledTh>
-                <TextAndArrowText light={theme === "light"}>
+                <TextAndArrowText $light={theme === "light"}>
                   Price{" "}
                   <ArrowSpan
-                    left
+                    $left
                     onClick={(e) => getSortOption(e, "price-desc")}
                   >
                     ▼
@@ -375,7 +420,7 @@ const Table = () => {
                   </ArrowSpan>
                 </TextAndArrowText>
               </StyledTh>
-              <StyledTh light={theme === "light"}>
+              <StyledTh $light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>Last 7d</p>
               </StyledTh>
@@ -385,9 +430,9 @@ const Table = () => {
 
         <tbody>
           {sortedCoins.map((coin) => (
-            <TableRow key={coin.id} light={theme === "light"}>
+            <TableRow key={coin.id} $light={theme === "light"}>
               {size.width > parseInt(breakpoints.mobile) && (
-                <StyledTd left>{coin.market_cap_rank}</StyledTd>
+                <StyledTd $left>{coin.market_cap_rank}</StyledTd>
               )}
               {size.width > parseInt(breakpoints.mobile) ? (
                 <NameAndImageContainer>
@@ -401,7 +446,7 @@ const Table = () => {
                   </Link>
                 </NameAndImageContainer>
               ) : (
-                <StyledTd left>
+                <StyledTd $left>
                   <NameAndImageContainer>
                     <CoinImage src={coin.image} />
                     <Link href={`/coin/${coin.id}`}>
@@ -423,7 +468,7 @@ const Table = () => {
                   <MobilePriceAnd24hContainer>
                     ${abbreviateNumber(coin.current_price)}
                     <PriceChangeDiv
-                      green={
+                      $green={
                         Math.sign(
                           coin.price_change_percentage_24h_in_currency
                         ) === 1
@@ -438,7 +483,7 @@ const Table = () => {
                           <GreenArrow />
                         )}
                         <PriceChangeDiv
-                          green={
+                          $green={
                             Math.sign(
                               coin.price_change_percentage_24h_in_currency
                             ) === 1
@@ -467,7 +512,7 @@ const Table = () => {
                           <GreenArrow />
                         )}
                         <PriceChangeDiv
-                          green={
+                          $green={
                             Math.sign(
                               coin.price_change_percentage_1h_in_currency
                             ) === 1
@@ -492,7 +537,7 @@ const Table = () => {
                           <GreenArrow />
                         )}
                         <PriceChangeDiv
-                          green={
+                          $green={
                             Math.sign(
                               coin.price_change_percentage_24h_in_currency
                             ) === 1
@@ -517,7 +562,7 @@ const Table = () => {
                           <GreenArrow />
                         )}
                         <PriceChangeDiv
-                          green={
+                          $green={
                             Math.sign(
                               coin.price_change_percentage_7d_in_currency
                             ) === 1
@@ -559,7 +604,7 @@ const Table = () => {
                   </StyledTd>
                 </>
               )}
-              <StyledTd right>
+              <StyledTd $right>
                 <LineChartContainer>
                   <TableLineChart coin={coin} />
                 </LineChartContainer>
@@ -570,9 +615,9 @@ const Table = () => {
       </CoinTable>
       <div>
         <InfiniteScroll
-          dataLength={tableCoins.length}
+          dataLength={displayedCoins.length}
           next={getMoreData}
-          hasMore={true}
+          hasMore={displayedCoins.length < allCoins.length}
           loader={<h4>Loading...</h4>}
         >
           {""}
