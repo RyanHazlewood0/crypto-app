@@ -24,10 +24,10 @@ const SelectBtn = styled.div<StyleProp>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: ${(props) => (props.light ? "#424286" : "#a7a7cc")};
+  color: ${(props) => (props.$light ? "#424286" : "#a7a7cc")};
   background: ${(props) => {
-    if (props.selected) {
-      if (props.light) {
+    if (props.$selected) {
+      if (props.$light) {
         return "#CCCCFA";
       } else {
         return "#6262d6";
@@ -35,8 +35,8 @@ const SelectBtn = styled.div<StyleProp>`
     }
   }};
   border: ${(props) => {
-    if (props.selected) {
-      if (props.light) {
+    if (props.$selected) {
+      if (props.$light) {
         return "solid 1px #232336";
       } else {
         return "solid 1px #a7a7cc";
@@ -50,8 +50,8 @@ const SelectBtn = styled.div<StyleProp>`
 `;
 
 type StyleProp = {
-  selected?: boolean;
-  light?: boolean;
+  $selected?: boolean;
+  $light?: boolean;
 };
 
 type HomeChartTimeSelectProps = {
@@ -93,53 +93,53 @@ const HomeChartTimeSelect = ({
   };
 
   return (
-    <Container light={theme === "light"}>
+    <Container $light={theme === "light"}>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "1D"}
+        $selected={timeFrameSelected === "1D"}
       >
         1D
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "7D"}
+        $selected={timeFrameSelected === "7D"}
       >
         7D
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "14D"}
+        $selected={timeFrameSelected === "14D"}
       >
         14D
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "1M"}
+        $selected={timeFrameSelected === "1M"}
       >
         1M
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "1Q"}
+        $selected={timeFrameSelected === "1Q"}
       >
         1Q
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "1Y"}
+        $selected={timeFrameSelected === "1Y"}
       >
         1Y
       </SelectBtn>
       <SelectBtn
-        light={theme === "light"}
+        $light={theme === "light"}
         onClick={findDayCount}
-        selected={timeFrameSelected === "5Y"}
+        $selected={timeFrameSelected === "5Y"}
       >
         5Y
       </SelectBtn>

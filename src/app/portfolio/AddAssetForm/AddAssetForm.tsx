@@ -9,7 +9,7 @@ import { PortfolioCoin } from "types";
 const ModalContainer = styled.div<ThemeProp>`
   width: 886px;
   height: 393px;
-  background: ${(props) => (props.light ? "#ced4da" : "#13121a")};
+  background: ${(props) => (props.$light ? "#ced4da" : "#13121a")};
   padding: 48px;
   border-radius: 20px;
   z-index: 1;
@@ -44,7 +44,7 @@ const InnerContainer = styled.div`
 `;
 
 const ImageContainer = styled.div<ThemeProp>`
-  background: ${(props) => (props.light ? "white" : "#191932")};
+  background: ${(props) => (props.$light ? "white" : "#191932")};
   width: 297px;
   border-radius: 8px;
   display: flex;
@@ -69,7 +69,7 @@ const BtnContainer = styled.div`
 const CancelBtn = styled.button<ThemeProp>`
   width: 222.5px;
   height: 45px;
-  background: ${(props) => (props.light ? "white" : "#232336")};
+  background: ${(props) => (props.$light ? "white" : "#232336")};
   border-radius: 6px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
@@ -79,7 +79,7 @@ const CancelBtn = styled.button<ThemeProp>`
 const SaveBtn = styled.button<ThemeProp>`
   width: 222.5px;
   height: 45px;
-  background: ${(props) => (props.light ? "#B0B0EB" : "#6161d6")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
   border-radius: 6px;
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
@@ -97,7 +97,7 @@ const InputsContainer = styled.div`
 const Input = styled.input<ThemeProp>`
   width: 100%;
   height: 44px;
-  background: ${(props) => (props.light ? "white" : "#191925")};
+  background: ${(props) => (props.$light ? "white" : "#191925")};
 `;
 
 const SvgContainer = styled.div`
@@ -106,7 +106,7 @@ const SvgContainer = styled.div`
 
 const DropDown = styled.div<ThemeProp>`
   width: 200px;
-  background: ${(props) => (props.light ? "white" : "#191925")};
+  background: ${(props) => (props.$light ? "white" : "#191925")};
   padding: 10px;
   border-radius: 6px;
   background: ##191925;
@@ -129,8 +129,8 @@ const Image = styled.img`
 `;
 
 const AlertModal = styled.div<ThemeProp>`
-  background: ${(props) => (props.light ? "black" : "white")};
-  color: ${(props) => (props.light ? "white" : "black")};
+  background: ${(props) => (props.$light ? "black" : "white")};
+  color: ${(props) => (props.$light ? "white" : "black")};
   width: 325px;
   height: 70px;
   font-size: 20px;
@@ -159,7 +159,7 @@ interface AddAssetFormProps {
 }
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 const AddAssetForm = ({
@@ -274,11 +274,11 @@ const AddAssetForm = ({
   return (
     <>
       {alertTrue && (
-        <AlertModal light={theme === "light"}>
+        <AlertModal $light={theme === "light"}>
           <p>Coin already exists in portfolio!</p>
         </AlertModal>
       )}
-      <ModalContainer light={theme === "light"}>
+      <ModalContainer $light={theme === "light"}>
         <FormHeader>
           <HeaderText>Select Coins</HeaderText>
           <SvgContainer onClick={handleFormClose}>
@@ -287,7 +287,7 @@ const AddAssetForm = ({
         </FormHeader>
         <InnerContainer>
           {size.width > parseInt(breakpoints.mobile) && (
-            <ImageContainer light={theme === "light"}>
+            <ImageContainer $light={theme === "light"}>
               <Image src={coinImg} />
             </ImageContainer>
           )}
@@ -302,10 +302,10 @@ const AddAssetForm = ({
                 required
                 placeholder="Coin Name"
                 readOnly={isEditOpen}
-                light={theme === "light"}
+                $light={theme === "light"}
               />
               {nameDropdownOpen && (
-                <DropDown light={theme === "light"}>
+                <DropDown $light={theme === "light"}>
                   {filteredCoins.map((coin) => (
                     <CoinOption key={coin.id} onClick={selectCoin}>
                       {coin.name}
@@ -319,7 +319,7 @@ const AddAssetForm = ({
                 onChange={handlePurchaseAmountInputChange}
                 required
                 placeholder="Coin Amount"
-                light={theme === "light"}
+                $light={theme === "light"}
               />
               <Input
                 type="date"
@@ -327,14 +327,14 @@ const AddAssetForm = ({
                 onChange={handlePurchaseDateInputChange}
                 required
                 max={today.toISOString().split("T")[0]}
-                light={theme === "light"}
+                $light={theme === "light"}
               />
             </InputsContainer>
             <BtnContainer>
-              <CancelBtn light={theme === "light"} onClick={handleFormClose}>
+              <CancelBtn $light={theme === "light"} onClick={handleFormClose}>
                 Cancel
               </CancelBtn>
-              <SaveBtn light={theme === "light"} type="submit">
+              <SaveBtn $light={theme === "light"} type="submit">
                 {size.width > parseInt(breakpoints.mobile) ? (
                   <p>Save and Continue</p>
                 ) : (

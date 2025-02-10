@@ -18,7 +18,7 @@ const MobileBtnContainer = styled.div`
 const MobileBtnInnerContainer = styled.div<StyleProp>`
   display: flex;
   justify-content: space-between;
-  background: ${(prop) => (prop.light ? "white" : "#232336")};
+  background: ${(prop) => (prop.$light ? "white" : "#232336")};
 `;
 
 const BtnContainer = styled.div<StyleProp>`
@@ -28,7 +28,7 @@ const BtnContainer = styled.div<StyleProp>`
   justify-content: center;
   width: 106.33px;
   background: ${(props) => {
-    if (props.light) {
+    if (props.$light) {
       if (props.selected) {
         return "#B0B0EB";
       } else {
@@ -50,7 +50,7 @@ const Btn = styled.button``;
 
 type StyleProp = {
   selected?: boolean;
-  light?: boolean;
+  $light?: boolean;
 };
 
 const MobileButtons = () => {
@@ -61,10 +61,10 @@ const MobileButtons = () => {
     <>
       {size.width < parseInt(breakpoints.mobile) && (
         <MobileBtnContainer>
-          <MobileBtnInnerContainer light={theme === "light"}>
+          <MobileBtnInnerContainer $light={theme === "light"}>
             <Link href="/">
               <BtnContainer
-                light={theme === "light"}
+                $light={theme === "light"}
                 selected={selectedMobileBtn === "Overview"}
                 onClick={() => setSelectedMobileBtn("Overview")}
               >
@@ -74,7 +74,7 @@ const MobileButtons = () => {
             </Link>
             <Link href="/">
               <BtnContainer
-                light={theme === "light"}
+                $light={theme === "light"}
                 selected={selectedMobileBtn === "Converter"}
                 onClick={() => setSelectedMobileBtn("Converter")}
               >
@@ -87,7 +87,7 @@ const MobileButtons = () => {
               onClick={() => setSelectedMobileBtn("Portfolio")}
             >
               <BtnContainer
-                light={theme === "light"}
+                $light={theme === "light"}
                 selected={selectedMobileBtn === "Portfolio"}
               >
                 <PortfolioIcon />

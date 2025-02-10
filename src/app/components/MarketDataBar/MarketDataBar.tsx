@@ -11,7 +11,7 @@ import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
 const MarketDataBarWrapper = styled.div<ThemeProp>`
-  background: ${(props) => (props.light ? "#353570" : "#1e1932")};
+  background: ${(props) => (props.$light ? "#353570" : "#1e1932")};
   width: 100%;
   height: 48px;
   display: flex;
@@ -61,7 +61,7 @@ export interface MarketDataTypes {
 }
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 const MarketDataBar = () => {
@@ -70,14 +70,14 @@ const MarketDataBar = () => {
 
   if (!marketData) {
     return (
-      <MarketDataBarWrapper light={theme === "light"}>
+      <MarketDataBarWrapper $light={theme === "light"}>
         Loading...
       </MarketDataBarWrapper>
     );
   }
   if (marketData) {
     return (
-      <MarketDataBarWrapper light={theme === "light"}>
+      <MarketDataBarWrapper $light={theme === "light"}>
         <MarketDataBarInnerWrapper>
           {size.width > parseInt(breakpoints.mobile) && (
             <>

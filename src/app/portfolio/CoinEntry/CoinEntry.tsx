@@ -23,7 +23,7 @@ const CoinEntryContainer = styled.div`
 const CoinImageContainer = styled.div<ThemeProp>`
   width: 258px;
   height: 100%;
-  background: ${(props) => (props.light ? "white" : "#1e1932")};
+  background: ${(props) => (props.$light ? "white" : "#1e1932")};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,7 +33,7 @@ const CoinImageContainer = styled.div<ThemeProp>`
 const CoinInfoContainer = styled.div<ThemeProp>`
   width: 1038px;
   height: 100%;
-  background: ${(props) => (props.light ? "white" : "#191932")};
+  background: ${(props) => (props.$light ? "white" : "#191932")};
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ const InnerRow = styled.div`
 `;
 
 const Btn = styled.button<ThemeProp>`
-  background: ${(props) => (props.light ? "#B0B0EB" : "#3a3978")};
+  background: ${(props) => (props.$light ? "#B0B0EB" : "#3a3978")};
   padding: 10px;
   border-radius: 4px;
   height: 40px;
@@ -89,7 +89,7 @@ const NumberText = styled.p`
 
 const PriceChangeText = styled.p<TextColor>`
   font-size: 16px;
-  color: ${(props) => (props.green ? "#01F1E3" : "#FE2264")};
+  color: ${(props) => (props.$green ? "#01F1E3" : "#FE2264")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,7 +125,7 @@ const MobEntryContainer = styled.div<ThemeProp>`
   height: 315px;
   display: flex;
   flex-direction: column;
-  background: ${(props) => (props.light ? "white" : "#191932")};
+  background: ${(props) => (props.$light ? "white" : "#191932")};
   padding: 16px;
   border-radius: 16px;
   justify-content: space-between;
@@ -177,7 +177,7 @@ const MobPrictext = styled.div`
 `;
 const MobSmallText = styled.div<ThemeProp>`
   font-size: 12px;
-  color: ${(props) => (props.light ? "#353570" : "#e8e8e8")};
+  color: ${(props) => (props.$light ? "#353570" : "#e8e8e8")};
 `;
 
 const HeaderContainer = styled.div`
@@ -185,11 +185,11 @@ const HeaderContainer = styled.div`
 `;
 
 type TextColor = {
-  green: boolean;
+  $green: boolean;
 };
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 interface CoinEntryProps {
@@ -236,7 +236,7 @@ const CoinEntry = ({
       const fetchPriceData = async () => {
         try {
           const response: Response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily`
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData: FetchedDataType = await response.json();
           setPriceData(
@@ -263,7 +263,7 @@ const CoinEntry = ({
       if (coin) {
         try {
           const response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
           );
           const data = await response.json();
           if (fiatCurrency === "usd") {
@@ -334,7 +334,7 @@ const CoinEntry = ({
     if (size.width < parseInt(breakpoints.mobile)) {
       return (
         <>
-          <MobEntryContainer light={theme === "light"}>
+          <MobEntryContainer $light={theme === "light"}>
             <HeaderContainer>
               <MobNameDateImgContainer>
                 <MobNameDateContainer>
@@ -347,13 +347,13 @@ const CoinEntry = ({
               </MobNameDateImgContainer>
               <EditDeleteBtnContainer>
                 <Btn
-                  light={theme === "light"}
+                  $light={theme === "light"}
                   onClick={(e) => editCoinEntry(e, coin)}
                 >
                   <EditIcon />
                 </Btn>
                 <Btn
-                  light={theme === "light"}
+                  $light={theme === "light"}
                   onClick={() => deleteEntry(coin)}
                 >
                   X
@@ -369,31 +369,31 @@ const CoinEntry = ({
                 <MobNameAndNumtext>
                   ${abbreviateNumber(currentP)}
                 </MobNameAndNumtext>
-                <MobSmallText light={theme === "light"}>
+                <MobSmallText $light={theme === "light"}>
                   Current Price
                 </MobSmallText>
               </MobileValueContainer>
               <MobileValueContainer>
-                <PriceChangeText green={coin.priceChange24h > 0}>
+                <PriceChangeText $green={coin.priceChange24h > 0}>
                   {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(change24)}%
                 </PriceChangeText>
-                <MobSmallText light={theme === "light"}>24h%</MobSmallText>
+                <MobSmallText $light={theme === "light"}>24h%</MobSmallText>
               </MobileValueContainer>
             </MobValueRow>
             <MobValueRow>
               <MobileValueContainer>
-                <PriceChangeText green={coin.priceChange24h > 0}>
+                <PriceChangeText $green={coin.priceChange24h > 0}>
                   {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                   {abbreviateNumber(changeSincePurchase)}%
                 </PriceChangeText>
-                <MobSmallText light={theme === "light"}>
+                <MobSmallText $light={theme === "light"}>
                   % Since Purchase
                 </MobSmallText>
               </MobileValueContainer>
               <MobileValueContainer>
                 <MobNameAndNumtext>{coin.totalAmount}</MobNameAndNumtext>
-                <MobSmallText light={theme === "light"}>
+                <MobSmallText $light={theme === "light"}>
                   Coin Amount
                 </MobSmallText>
               </MobileValueContainer>
@@ -404,18 +404,18 @@ const CoinEntry = ({
     } else {
       return (
         <CoinEntryContainer>
-          <CoinImageContainer light={theme === "light"}>
+          <CoinImageContainer $light={theme === "light"}>
             <Symbol src={coin.image} />
             <NameText>
               {coin.name} ({coin.symbol.toUpperCase()})
             </NameText>
           </CoinImageContainer>
-          <CoinInfoContainer light={theme === "light"}>
+          <CoinInfoContainer $light={theme === "light"}>
             <Row>
               <InnerRow>
                 <TitleText>Market Price</TitleText>
                 <Btn
-                  light={theme === "light"}
+                  $light={theme === "light"}
                   onClick={() => deleteEntry(coin)}
                 >
                   X
@@ -428,7 +428,7 @@ const CoinEntry = ({
                 </ValueBox>
                 <ValueBox>
                   <SmallText>Price Change 24h</SmallText>
-                  <PriceChangeText green={coin.priceChange24h > 0}>
+                  <PriceChangeText $green={coin.priceChange24h > 0}>
                     {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                     {abbreviateNumber(change24)}%
                   </PriceChangeText>
@@ -466,7 +466,7 @@ const CoinEntry = ({
               <InnerRow>
                 <TitleText>Your Coin</TitleText>
                 <Btn
-                  light={theme === "light"}
+                  $light={theme === "light"}
                   onClick={(e) => editCoinEntry(e, coin)}
                 >
                   <EditIcon />
@@ -483,7 +483,7 @@ const CoinEntry = ({
                 </ValueBox>
                 <ValueBox>
                   <SmallText>Price Change Since Purchase</SmallText>
-                  <PriceChangeText green={currentP > purchasePrice}>
+                  <PriceChangeText $green={currentP > purchasePrice}>
                     {currentP > purchasePrice ? <GreenArrow /> : <RedArrow />}
                     {currentP < purchasePrice && "- "}
                     {abbreviateNumber(changeSincePurchase)}%

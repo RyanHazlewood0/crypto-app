@@ -67,7 +67,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
         const singleCoin = selectedCoin[0];
         try {
           const response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${singleCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily`
+            `https://pro-api.coingecko.com/api/v3/coins/${singleCoin.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData = await response.json();
 
@@ -100,10 +100,10 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
         const coinTwo = selectedCoin[1];
         try {
           const response1 = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${coinOne.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily`
+            `https://pro-api.coingecko.com/api/v3/coins/${coinOne.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const response2 = await fetch(
-            `https://api.coingecko.com/api/v3/coins/${coinTwo.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily`
+            `https://pro-api.coingecko.com/api/v3/coins/${coinTwo.id}/market_chart?vs_currency=${fiatCurrency}&days=${dayCount}&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedDataOne = await response1.json();
           const fetchedDataTwo = await response2.json();

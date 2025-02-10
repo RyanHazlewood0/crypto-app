@@ -11,13 +11,13 @@ const BtnsContainer = styled.div`
 const Btn = styled.div<StyleProp>`
   cursor: pointer;
   background: ${(props) => {
-    if (props.light) {
-      return props.selected ? "#a7a7cc" : "white";
+    if (props.$light) {
+      return props.$selected ? "#a7a7cc" : "white";
     } else {
-      return props.selected ? "#6161d6" : "#232336";
+      return props.$selected ? "#6161d6" : "#232336";
     }
   }};
-  color: ${(props) => (props.light ? "#424286" : "white")};
+  color: ${(props) => (props.$light ? "#424286" : "white")};
   width: 244px;
   height: 45px;
   font-size: 16px;
@@ -31,8 +31,8 @@ const Btn = styled.div<StyleProp>`
 `;
 
 type StyleProp = {
-  selected?: boolean;
-  light?: boolean;
+  $selected?: boolean;
+  $light?: boolean;
 };
 
 const CoinsAndConverterBtns = () => {
@@ -41,17 +41,17 @@ const CoinsAndConverterBtns = () => {
   return (
     <BtnsContainer>
       <Btn
-        selected={selectedBtn === "Coins"}
+        $selected={selectedBtn === "Coins"}
         onClick={() => setSelectedBtn("Coins")}
-        light={theme === "light"}
+        $light={theme === "light"}
       >
         Coins
       </Btn>
 
       <Btn
-        selected={selectedBtn === "Converter"}
+        $selected={selectedBtn === "Converter"}
         onClick={() => setSelectedBtn("Converter")}
-        light={theme === "light"}
+        $light={theme === "light"}
       >
         Converter
       </Btn>

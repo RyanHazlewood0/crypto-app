@@ -17,7 +17,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input<ThemeProp>`
-  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
+  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   padding: 10px 10px 10px 35px;
   border-radius: 6px;
   width: 100%;
@@ -32,7 +32,7 @@ const SearchInput = styled.input<ThemeProp>`
 const DropDown = styled.div<ThemeProp>`
   margin-top: 5px;
   width: 100%;
-  background: ${(props) => (props.light ? "#CCCCFA" : "#191925")};
+  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   padding: 10px;
   border-radius: 6px;
   position: absolute;
@@ -49,7 +49,7 @@ const LinkContainer = styled.div`
 `;
 
 type ThemeProp = {
-  light?: boolean;
+  $light?: boolean;
 };
 
 const Search = () => {
@@ -95,10 +95,10 @@ const Search = () => {
         }
         value={searchValue}
         onChange={handleSearch}
-        light={theme === "light"}
+        $light={theme === "light"}
       />
       {dropDownOpen && (
-        <DropDown light={theme === "light"}>
+        <DropDown $light={theme === "light"}>
           {filteredCoins.map((coin) => (
             <LinkContainer
               key={coin.id}

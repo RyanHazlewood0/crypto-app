@@ -32,7 +32,7 @@ export const useCryptoContext = (): CryptoContextType => {
   return value;
 };
 
-const CACHE_DURATION = 15 * 60 * 1000; // 5 minutes in milliseconds
+const CACHE_DURATION = 15 * 60 * 1000;
 
 interface CacheData {
   data: Coin[];
@@ -86,6 +86,8 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   const [theme, setTheme] = useState("light");
   const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
 
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
   function abbreviateNumber(num: number): string {
     const prefixes = ["", "k", "M", "B", "T"];
     const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
@@ -132,7 +134,9 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
         return;
       }
       try {
-        const response = await fetch("https://api.coingecko.com/api/v3/global");
+        const response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${apiKey}`
+        );
         const fetchedData: FetchedDataTypes = await response.json();
         const totalCap = abbreviateNumber(
           fetchedData.data.total_market_cap[fiatCurrency]
@@ -182,16 +186,16 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
       }
       try {
         const one = await api(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const two = await api(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const three = await api(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const four = await api(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
         const allCoins = [...one, ...two, ...three, ...four];
         setCoins(allCoins);
