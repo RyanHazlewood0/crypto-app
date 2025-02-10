@@ -226,13 +226,14 @@ export default function Coin({ params }: CoinProps) {
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
 
-  const { fiatCurrency, theme } = useCryptoContext();
+  const { fiatCurrency, theme, setSelectedNavLink } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   const size = useWindowSize();
 
   useEffect(() => {
+    setSelectedNavLink("Coin");
     const fetchData = async () => {
       setHasError(false);
       try {
