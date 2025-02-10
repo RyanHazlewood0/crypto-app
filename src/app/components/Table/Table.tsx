@@ -53,7 +53,7 @@ const StyledTd = styled.td<StyleProp>`
   padding: 15px;
   height: 77px;
   border-radius: ${(props) =>
-    props.left ? "10px 0 0 10px" : props.$right ? "0 10px 10px 0" : "none"};
+    props.$left ? "10px 0 0 10px" : props.$right ? "0 10px 10px 0" : "none"};
   @media (max-width: ${breakpoints.mobile}) {
     font-size: 16px;
     padding: 0;
