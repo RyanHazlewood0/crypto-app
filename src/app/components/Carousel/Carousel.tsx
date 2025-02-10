@@ -160,7 +160,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [carouselCoins, setCarouselCoins] = useState([]);
   const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const CACHE_DURATION = 5 * 60 * 1000;
+  const CACHE_DURATION = 15 * 60 * 1000;
 
   const selectCoin = (coin) => {
     if (selectedCoin.length === 2)

@@ -236,7 +236,7 @@ const CoinEntry = ({
       const fetchPriceData = async () => {
         try {
           const response: Response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily&x_cg_pro_api_key=${apiKey}`
+            `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily`
           );
           const fetchedData: FetchedDataType = await response.json();
           setPriceData(
@@ -263,7 +263,7 @@ const CoinEntry = ({
       if (coin) {
         try {
           const response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
+            `https://api.coingecko.com/api/v3/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
           );
           const data = await response.json();
           if (fiatCurrency === "usd") {

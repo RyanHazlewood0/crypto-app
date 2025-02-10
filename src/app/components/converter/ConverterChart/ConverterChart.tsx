@@ -88,7 +88,6 @@ const ConverterChart = ({
           `https://api.coingecko.com/api/v3/coins/${buyCoin.id}/market_chart?vs_currency=usd&days=${dayCount}&interval=daily`
         );
         const fetchedData2: FetchedDataTypes = await response2.json();
-
         setSellCoinPriceData(fetchedData);
         setBuyCoinPriceData(fetchedData2);
       } catch {

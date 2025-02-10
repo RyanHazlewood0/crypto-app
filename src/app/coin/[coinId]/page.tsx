@@ -230,14 +230,12 @@ export default function Coin({ params }: CoinProps) {
 
   const size = useWindowSize();
 
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-
   useEffect(() => {
     const fetchData = async () => {
       setHasError(false);
       try {
         const response: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
+          `https://api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false`
         );
         const fetchedData: CoinPageObject = await response.json();
         setThisCoinData(fetchedData);
