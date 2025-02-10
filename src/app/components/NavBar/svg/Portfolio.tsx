@@ -14,7 +14,7 @@ const Portfolio = ({ selectedNavLink }: PortfolioProps) => {
       } else {
         return { fill: "white", fillOpacity: "1" };
       }
-    } else if (selectedNavLink === "Home") {
+    } else if (selectedNavLink === "Home" || selectedNavLink === "Coin") {
       if (theme === "light") {
         return { fill: "gray", fillOpacity: "1" };
       } else {

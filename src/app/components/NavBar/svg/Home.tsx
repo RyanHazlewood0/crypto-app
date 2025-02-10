@@ -13,7 +13,7 @@ const Home = ({ selectedNavLink }: HomeProps) => {
       } else {
         return { fill: "white", fillOpacity: "1" };
       }
-    } else if (selectedNavLink === "Portfolio") {
+    } else if (selectedNavLink === "Portfolio" || selectedNavLink === "Coin") {
       if (theme === "light") {
         return { fill: "gray", fillOpacity: "1" };
       } else {
