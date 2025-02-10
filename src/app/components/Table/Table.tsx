@@ -28,7 +28,7 @@ const CoinTable = styled.table`
 
 const TableRow = styled.tr<StyleProp>`
   width: 100%;
-  background: ${(props) => (props.light ? "white" : "#191925")};
+  background: ${(props) => (props.$light ? "white" : "#191925")};
   font-size: 14px;
   height: 77px;
 `;

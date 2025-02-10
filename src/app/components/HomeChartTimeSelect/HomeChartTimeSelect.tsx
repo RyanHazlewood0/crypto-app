@@ -8,7 +8,7 @@ const Container = styled.div<StyleProp>`
   width: 463px;
   height: 42px;
   justify-content: space-between;
-  background: ${(props) => (props.light ? "white" : "#232336")};
+  background: ${(props) => (props.$light ? "white" : "#232336")};
   align-items: center;
   border-radius: 6px;
   padding: 4px;
