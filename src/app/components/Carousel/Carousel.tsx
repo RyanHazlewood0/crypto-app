@@ -32,7 +32,7 @@ const CarouselBox = styled.div<StylePropSelected>`
   align-items: center;
   justify-content: space-around;
   border: ${(props) => {
-    if (props.selected) {
+    if (props.$selected) {
       if (props.$light) {
         return "solid 1px #232336";
       } else {
@@ -42,7 +42,7 @@ const CarouselBox = styled.div<StylePropSelected>`
   }};
   cursor: pointer;
    background: ${(props) => {
-     if (props.selected) {
+     if (props.$selected) {
        if (props.$light) {
          return "#A7A7CC";
        } else {
@@ -136,7 +136,7 @@ type StylePropGreen = {
 };
 
 type StylePropSelected = {
-  selected: boolean;
+  $selected: boolean;
   $light: boolean;
 };
 
@@ -256,7 +256,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
               <CarouselBox
                 $light={theme === "light"}
                 key={coin.id}
-                selected={selectedCoin.some(
+                $selected={selectedCoin.some(
                   (selected) => selected.id === coin.id
                 )}
                 onClick={() => selectCoin(coin)}

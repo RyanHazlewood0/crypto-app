@@ -29,13 +29,13 @@ const BtnContainer = styled.div<StyleProp>`
   width: 106.33px;
   background: ${(props) => {
     if (props.$light) {
-      if (props.selected) {
+      if (props.$selected) {
         return "#B0B0EB";
       } else {
         return "white";
       }
     } else {
-      if (props.selected) {
+      if (props.$selected) {
         return "#6161d6";
       } else {
         return "#232336";
@@ -49,7 +49,7 @@ const BtnContainer = styled.div<StyleProp>`
 const Btn = styled.button``;
 
 type StyleProp = {
-  selected?: boolean;
+  $selected?: boolean;
   $light?: boolean;
 };
 
@@ -65,7 +65,7 @@ const MobileButtons = () => {
             <Link href="/">
               <BtnContainer
                 $light={theme === "light"}
-                selected={selectedMobileBtn === "Overview"}
+                $selected={selectedMobileBtn === "Overview"}
                 onClick={() => setSelectedMobileBtn("Overview")}
               >
                 <OverviewIcon />
@@ -75,7 +75,7 @@ const MobileButtons = () => {
             <Link href="/">
               <BtnContainer
                 $light={theme === "light"}
-                selected={selectedMobileBtn === "Converter"}
+                $selected={selectedMobileBtn === "Converter"}
                 onClick={() => setSelectedMobileBtn("Converter")}
               >
                 <ConverterIcon />
@@ -88,7 +88,7 @@ const MobileButtons = () => {
             >
               <BtnContainer
                 $light={theme === "light"}
-                selected={selectedMobileBtn === "Portfolio"}
+                $selected={selectedMobileBtn === "Portfolio"}
               >
                 <PortfolioIcon />
                 <Btn>Portfolio</Btn>

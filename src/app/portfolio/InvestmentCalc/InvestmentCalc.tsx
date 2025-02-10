@@ -208,7 +208,7 @@ const NumberInput = styled.input<ThemeProp>`
   width: 110px;
   background: ${(props) => (props.$light ? "#f3f5f9" : "#191925")};
   border: ${(props) =>
-    props.light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
+    props.$light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
   border-radius: 4px;
   padding: 0 5px 0 5px;
   @media (max-width: ${breakpoints.mobile}) {
