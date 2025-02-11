@@ -2,10 +2,6 @@
 import { createContext, useContext, useEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { Coin } from "types";
-import {
-  MarketDataTypes,
-  FetchedDataTypes,
-} from "../components/MarketDataBar/MarketDataBar";
 
 interface CryptoContextType {
   coins: Coin[];
@@ -22,7 +18,7 @@ interface CryptoContextType {
   theme: string;
   setTheme: Dispatch<SetStateAction<string>>;
   toggleTheme: any;
-  marketData: MarketDataTypes;
+  abbreviateNumber: (number: number) => string;
 }
 
 const CryptoContext = createContext<CryptoContextType | null>(null);
@@ -30,46 +26,6 @@ const CryptoContext = createContext<CryptoContextType | null>(null);
 export const useCryptoContext = (): CryptoContextType => {
   const value = useContext(CryptoContext);
   return value;
-};
-
-const CACHE_DURATION = 15 * 60 * 1000;
-
-interface CacheData {
-  data: Coin[];
-  timestamp: number;
-  currency: string;
-}
-
-interface MarketCacheData {
-  data: {
-    coins: string;
-    btcPercent: number;
-    ethPercent: number;
-    totalMarketCap: string;
-    totalVolume: string;
-  };
-  timestamp: number;
-  currency: string;
-}
-
-const getCachedMarketData = (): MarketCacheData | null => {
-  const cached = localStorage.getItem("cachedMarketData");
-  if (!cached) return null;
-
-  const parsedCache = JSON.parse(cached) as MarketCacheData;
-  const isExpired = Date.now() - parsedCache.timestamp > CACHE_DURATION;
-
-  return isExpired ? null : parsedCache;
-};
-
-const getCachedCoins = (): CacheData | null => {
-  const cached = localStorage.getItem("cachedCoins");
-  if (!cached) return null;
-
-  const parsedCache = JSON.parse(cached) as CacheData;
-  const isExpired = Date.now() - parsedCache.timestamp > CACHE_DURATION;
-
-  return isExpired ? null : parsedCache;
 };
 
 type useCryptoContextProps = {
@@ -84,7 +40,6 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
   const [theme, setTheme] = useState("light");
-  const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -127,51 +82,6 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   }, []);
 
   useEffect(() => {
-    const getMarketData = async () => {
-      const cachedData = getCachedMarketData();
-      if (cachedData && cachedData.currency === fiatCurrency) {
-        setMarketData(cachedData.data);
-        return;
-      }
-      try {
-        const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${apiKey}`
-        );
-        const fetchedData: FetchedDataTypes = await response.json();
-        const totalCap = abbreviateNumber(
-          fetchedData.data.total_market_cap[fiatCurrency]
-        );
-        const totalVol = abbreviateNumber(
-          fetchedData.data.total_volume[fiatCurrency]
-        );
-        const updatedMarketData = {
-          coins: Math.round(
-            fetchedData.data.active_cryptocurrencies
-          ).toLocaleString(),
-          btcPercent: Math.round(fetchedData.data.market_cap_percentage.btc),
-          ethPercent: Math.round(fetchedData.data.market_cap_percentage.eth),
-          totalMarketCap: totalCap,
-          totalVolume: totalVol,
-        };
-        setMarketData(updatedMarketData);
-        const cacheData: MarketCacheData = {
-          data: updatedMarketData,
-          timestamp: Date.now(),
-          currency: fiatCurrency,
-        };
-        localStorage.setItem("cachedMarketData", JSON.stringify(cacheData));
-      } catch {
-        const expiredCache = localStorage.getItem("cachedCoins");
-        if (expiredCache) {
-          const { data } = JSON.parse(expiredCache);
-          setCoins(data);
-        }
-      }
-    };
-    getMarketData();
-  }, [fiatCurrency]);
-
-  useEffect(() => {
     const api = async (url: string) => {
       const data = await fetch(url);
       const json: Coin[] = await data.json();
@@ -179,39 +89,19 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
     };
 
     const fetchData = async () => {
-      const cachedData = getCachedCoins();
-      if (cachedData && cachedData.currency === fiatCurrency) {
-        setCoins(cachedData.data);
-        return;
-      }
-      try {
-        const one = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const two = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const three = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const four = await api(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
-        );
-        const allCoins = [...one, ...two, ...three, ...four];
-        setCoins(allCoins);
-        const cacheData: CacheData = {
-          data: allCoins,
-          timestamp: Date.now(),
-          currency: fiatCurrency,
-        };
-        localStorage.setItem("cachedCoins", JSON.stringify(cacheData));
-      } catch {
-        const expiredCache = localStorage.getItem("cachedCoins");
-        if (expiredCache) {
-          const { data } = JSON.parse(expiredCache);
-          setCoins(data);
-        }
-      }
+      const one = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const two = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=2&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const three = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=3&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      const four = await api(
+        `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=250&page=4&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      );
+      setCoins([...one, ...two, ...three, ...four]);
     };
     fetchData();
   }, [fiatCurrency]);
@@ -251,7 +141,7 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
         theme,
         setTheme,
         toggleTheme,
-        marketData,
+        abbreviateNumber,
       }}
     >
       {children}
