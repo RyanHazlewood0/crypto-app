@@ -145,34 +145,14 @@ type StyleProp = {
   $light?: boolean;
 };
 
-const CACHE_DURATION = 15 * 60 * 1000;
-const COINS_PER_PAGE = 50;
-
-interface TableCacheData {
-  data: Coin[];
-  timestamp: number;
-  currency: string;
-}
-
-const getCachedTableCoins = (): TableCacheData | null => {
-  const cached = localStorage.getItem("cachedTableCoins");
-  if (!cached) return null;
-
-  const parsedCache = JSON.parse(cached) as TableCacheData;
-  const isExpired = Date.now() - parsedCache.timestamp > CACHE_DURATION;
-
-  return isExpired ? null : parsedCache;
-};
-
 const Table = () => {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("descending mcap");
   const [currentPage, setCurrentPage] = useState(1);
-  const [displayedCoins, setDisplayedCoins] = useState<Coin[]>([]);
-  const [allCoins, setAllCoins] = useState<Coin[]>([]);
+  const [tableCoins, setTableCoins] = useState([]);
 
-  const { fiatCurrency, theme } = useCryptoContext();
+  const { fiatCurrency, theme, coins } = useCryptoContext();
   const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
@@ -180,53 +160,30 @@ const Table = () => {
   useEffect(() => {
     setHasError(false);
     setIsLoading(true);
-    const fetchAllCoins = async () => {
-      const cachedData = getCachedTableCoins();
-      if (cachedData && cachedData.currency === fiatCurrency) {
-        setAllCoins(cachedData.data);
-        setDisplayedCoins(cachedData.data.slice(0, COINS_PER_PAGE));
-        setIsLoading(false);
-        return;
-      }
+    const getCoinData = async () => {
       try {
-        const response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=200&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+        const response1: Response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
         );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Coin[] = await response.json();
-        const cacheData: TableCacheData = {
-          data,
-          timestamp: Date.now(),
-          currency: fiatCurrency,
-        };
-        localStorage.setItem("cachedTableCoins", JSON.stringify(cacheData));
-
-        setAllCoins(data);
-        setDisplayedCoins(data.slice(0, COINS_PER_PAGE));
-        setCurrentPage(1);
+        const fetchedData1: Coin[] = await response1.json();
+        setTableCoins(fetchedData1);
+        setIsLoading(false);
       } catch {
         setHasError(true);
-        const expiredCache = localStorage.getItem("cachedTableCoins");
-        if (expiredCache) {
-          const { data } = JSON.parse(expiredCache);
-          setAllCoins(data);
-          setDisplayedCoins(data.slice(0, COINS_PER_PAGE));
-          setHasError(false);
-        }
-      } finally {
         setIsLoading(false);
       }
     };
-    fetchAllCoins();
-  }, [fiatCurrency]);
+    getCoinData();
+    setCurrentPage(currentPage + 1);
+  }, [fiatCurrency, apiKey, setTableCoins]);
 
-  const getMoreData = () => {
-    const nextPage = currentPage + 1;
-    const nextCoins = allCoins.slice(0, nextPage * COINS_PER_PAGE);
-    setDisplayedCoins(nextCoins);
-    setCurrentPage(nextPage);
+  const getMoreData = async () => {
+    const response: Response = await fetch(
+      `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+    );
+    const data: Coin[] = await response.json();
+    setTableCoins([...tableCoins, ...data]);
+    setCurrentPage(currentPage + 1);
   };
 
   const getSortOption = (
@@ -236,7 +193,7 @@ const Table = () => {
     setSortOrder(order);
   };
 
-  const sortedCoins = [...displayedCoins].sort((a, b): number => {
+  const sortedCoins = [...tableCoins].sort((a, b): number => {
     if (sortOrder === "price-desc") {
       return a.current_price - b.current_price;
     } else if (sortOrder === "price-asc") {
@@ -615,9 +572,9 @@ const Table = () => {
       </CoinTable>
       <div>
         <InfiniteScroll
-          dataLength={displayedCoins.length}
+          dataLength={tableCoins.length}
           next={getMoreData}
-          hasMore={displayedCoins.length < allCoins.length}
+          hasMore={tableCoins.length < coins.length}
           loader={<h4>Loading...</h4>}
         >
           {""}

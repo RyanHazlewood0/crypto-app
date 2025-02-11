@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CoinCount from "./svg/CoinCount";
 import Btc from "./svg/Btc";
@@ -65,8 +66,42 @@ type ThemeProp = {
 };
 
 const MarketDataBar = () => {
-  const { theme, marketData } = useCryptoContext();
+  const [marketData, setMarketData] = useState<MarketDataTypes | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const { theme, fiatCurrency, abbreviateNumber } = useCryptoContext();
   const size = useWindowSize();
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+
+  useEffect(() => {
+    const getMarketData = async () => {
+      setHasError(false);
+      try {
+        const response = await fetch(
+          `https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${apiKey}`
+        );
+        const fetchedData: FetchedDataTypes = await response.json();
+        const totalCap = abbreviateNumber(
+          fetchedData.data.total_market_cap[fiatCurrency]
+        );
+        const totalVol = abbreviateNumber(
+          fetchedData.data.total_volume[fiatCurrency]
+        );
+        const updatedMarketData = {
+          coins: Math.round(
+            fetchedData.data.active_cryptocurrencies
+          ).toLocaleString(),
+          btcPercent: Math.round(fetchedData.data.market_cap_percentage.btc),
+          ethPercent: Math.round(fetchedData.data.market_cap_percentage.eth),
+          totalMarketCap: totalCap,
+          totalVolume: totalVol,
+        };
+        setMarketData(updatedMarketData);
+      } catch {
+        setHasError(true);
+      }
+    };
+    getMarketData();
+  }, [fiatCurrency]);
 
   if (!marketData) {
     return (
@@ -75,6 +110,15 @@ const MarketDataBar = () => {
       </MarketDataBarWrapper>
     );
   }
+
+  if (hasError) {
+    return (
+      <MarketDataBarWrapper $light={theme === "light"}>
+        Error fetching market data...
+      </MarketDataBarWrapper>
+    );
+  }
+
   if (marketData) {
     return (
       <MarketDataBarWrapper $light={theme === "light"}>
