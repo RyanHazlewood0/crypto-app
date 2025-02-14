@@ -66,20 +66,28 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   }, [theme]);
 
   useEffect(() => {
-    if (theme === "light") {
-      document.body.classList.add("light-mode");
-    } else {
-      document.body.classList.remove("light-mode");
-    }
-  }, [theme]);
-
-  useEffect(() => {
     setIsClient(true);
     const savedFiat = localStorage.getItem("fiat");
     if (savedFiat) {
       setFiatCurrency(savedFiat);
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (isClient) {
+        localStorage.setItem("fiat", fiatCurrency);
+      }
+    }
+  }, [fiatCurrency]);
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.classList.add("light-mode");
+    } else {
+      document.body.classList.remove("light-mode");
+    }
+  }, [theme]);
 
   useEffect(() => {
     const api = async (url: string) => {
@@ -104,14 +112,6 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
       setCoins([...one, ...two, ...three, ...four]);
     };
     fetchData();
-  }, [fiatCurrency]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (isClient) {
-        localStorage.setItem("fiat", fiatCurrency);
-      }
-    }
   }, [fiatCurrency]);
 
   const toggleTheme = () => {

@@ -250,7 +250,15 @@ const AddAssetForm = ({
       id: thisCoin.id,
     };
 
-    setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+    const filteredCoins = portfolioCoins.filter(
+      (coin) => coin.name !== thisCoin.name
+    );
+    if (isEditOpen) {
+      setPortfolioCoins([...filteredCoins, newCoinEntry]);
+    } else {
+      setPortfolioCoins([...portfolioCoins, newCoinEntry]);
+    }
+
     setCoinSelectValue("");
     setPurchaseDateValue("");
     setPurchasedAmountValue("");
