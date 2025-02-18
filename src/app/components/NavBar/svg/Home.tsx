@@ -1,7 +1,7 @@
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-interface HomeProps {
+type HomeProps = {
   selectedNavLink: string;
-}
+};
 
 const Home = ({ selectedNavLink }: HomeProps) => {
   const { theme } = useCryptoContext();

@@ -47,9 +47,9 @@ const CoinAndColorCont = styled.div`
   align-items: center;
 `;
 
-interface TwoCoinsTextProps {
+type TwoCoinsTextProps = {
   selectedCoin: Coin[];
-}
+};
 
 const TwoCoinsText = ({ selectedCoin }: TwoCoinsTextProps) => {
   return (

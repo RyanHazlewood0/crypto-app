@@ -50,11 +50,11 @@ const ErrorText = styled.p`
   margin-bottom: 15px;
 `;
 
-interface ConverterChartProps {
+type ConverterChartProps = {
   dayCount: string;
   buyCoin: Coin;
   sellCoin: Coin;
-}
+};
 
 type ThemeProp = {
   $light: boolean;

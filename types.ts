@@ -1,5 +1,5 @@
 
-export interface Coin {
+export type Coin = {
   id: string;
   symbol: string;
   name: string;
@@ -20,7 +20,7 @@ export interface Coin {
   };
 }
   
-  export interface CoinPageObject {
+  export type CoinPageObject = {
     id: string;
     symbol: string;
     name: string;
@@ -48,7 +48,7 @@ export interface Coin {
     };
   }
   
-  export interface PortfolioCoin {
+  export type PortfolioCoin = {
     name: string;
     totalAmount: number;
     purchaseDate: Date;
@@ -64,6 +64,6 @@ export interface Coin {
     id: string;
   }
 
-  export interface CurrencyValue {
+  export type CurrencyValue = {
     [key: string]: number;
   }

@@ -1,8 +1,8 @@
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
-interface PortfolioProps {
+type PortfolioProps = {
   selectedNavLink: string;
-}
+};
 
 const Portfolio = ({ selectedNavLink }: PortfolioProps) => {
   const { theme } = useCryptoContext();

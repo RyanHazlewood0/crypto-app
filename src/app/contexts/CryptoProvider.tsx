@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
 import { Coin } from "types";
 
-interface CryptoContextType {
+type CryptoContextType = {
   coins: Coin[];
   selectedBtn: string;
   setCoins: Dispatch<SetStateAction<Coin[]>>;
@@ -19,7 +19,7 @@ interface CryptoContextType {
   setTheme: Dispatch<SetStateAction<string>>;
   toggleTheme: any;
   abbreviateNumber: (number: number) => string;
-}
+};
 
 const CryptoContext = createContext<CryptoContextType | null>(null);
 

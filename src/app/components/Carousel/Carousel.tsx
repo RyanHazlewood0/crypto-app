@@ -144,10 +144,10 @@ type ThemeProp = {
   $light: boolean;
 };
 
-interface CarouselProps {
+type CarouselProps = {
   selectedCoin: Coin[] | [];
   setSelectedCoin: Dispatch<SetStateAction<Coin[] | null>>;
-}
+};
 
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
