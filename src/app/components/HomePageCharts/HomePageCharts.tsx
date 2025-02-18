@@ -25,26 +25,26 @@ const MessageText = styled.p`
   font-weight: bold;
 `;
 
-interface HomePageChartsProps {
+type HomePageChartsProps = {
   selectedCoin: Coin[];
   dayCount: String;
-}
+};
 
-export interface FetchedDataTypes {
+export type FetchedDataTypes = {
   prices: [number, number][];
   market_caps: [number, number][];
   total_volumes: [number, number][];
-}
+};
 
-interface CoinPriceDataTypes {
+type CoinPriceDataTypes = {
   price: number;
   date: string;
-}
+};
 
-interface CoinVolumeDataTypes {
+type CoinVolumeDataTypes = {
   volume: number;
   date: string;
-}
+};
 
 const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   const [hasError, setHasError] = useState(false);

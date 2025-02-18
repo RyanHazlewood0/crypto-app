@@ -213,9 +213,9 @@ const CopiedMessageContainer = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-interface CoinProps {
+type CoinProps = {
   params: { coinId: string };
-}
+};
 
 type ThemeProp = {
   $light?: boolean;

@@ -192,7 +192,7 @@ type ThemeProp = {
   $light?: boolean;
 };
 
-interface CoinEntryProps {
+type CoinEntryProps = {
   coin: PortfolioCoin;
   portfolioCoins: PortfolioCoin[];
   setPortfolioCoins: Dispatch<SetStateAction<[] | PortfolioCoin[]>>;
@@ -201,15 +201,15 @@ interface CoinEntryProps {
     coin: PortfolioCoin
   ) => void;
   isEditOpen: any;
-}
+};
 
-interface FetchedDataType {
+type FetchedDataType = {
   prices: [number, number][];
-}
-export interface CoinPriceDataTypes {
+};
+export type CoinPriceDataTypes = {
   price: number;
   date: string;
-}
+};
 
 const CoinEntry = ({
   coin,

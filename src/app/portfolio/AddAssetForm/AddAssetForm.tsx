@@ -145,7 +145,7 @@ const AlertModal = styled.div<ThemeProp>`
   z-index: 2;
 `;
 
-interface AddAssetFormProps {
+type AddAssetFormProps = {
   handleFormClose: () => void;
   purchasedAmountValue: string;
   purchaseDateValue: string;
@@ -156,7 +156,7 @@ interface AddAssetFormProps {
   coinSelectValue: string;
   setCoinSelectValue: Dispatch<SetStateAction<string>>;
   isEditOpen: any;
-}
+};
 
 type ThemeProp = {
   $light?: boolean;

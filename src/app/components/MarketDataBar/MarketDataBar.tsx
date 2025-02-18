@@ -41,7 +41,7 @@ const SvgWrapper = styled.div`
   margin-right: 5px;
 `;
 
-export interface FetchedDataTypes {
+export type FetchedDataTypes = {
   data: {
     total_market_cap: CurrencyValue;
     total_volume: CurrencyValue;
@@ -51,15 +51,15 @@ export interface FetchedDataTypes {
     };
     active_cryptocurrencies: number;
   };
-}
+};
 
-export interface MarketDataTypes {
+export type MarketDataTypes = {
   coins: string;
   totalMarketCap: string;
   totalVolume: string;
   btcPercent: number;
   ethPercent: number;
-}
+};
 
 type ThemeProp = {
   $light?: boolean;

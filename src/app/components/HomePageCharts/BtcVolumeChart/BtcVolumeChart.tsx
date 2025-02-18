@@ -92,15 +92,15 @@ const TwoCoinsHeadCont = styled.div`
   gap: 15px;
 `;
 
-interface CoinVolumeDataTypes {
+type CoinVolumeDataTypes = {
   volume: number;
   date: string;
-}
+};
 
-interface BtcVolumeChartProps {
+type BtcVolumeChartProps = {
   selectedCoin: Coin[];
   coinVolumeData: CoinVolumeDataTypes[][];
-}
+};
 
 type ThemeProp = {
   $light: boolean;

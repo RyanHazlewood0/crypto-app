@@ -49,13 +49,13 @@ const CoinAndColorCont = styled.div`
   align-items: center;
 `;
 
-interface TwoCoinsTextProps {
+type TwoCoinsTextProps = {
   selectedCoin: Coin[];
   coinColor1: string;
   coinColor2: string;
   setCoinColor1: any;
   setCoinColor2: any;
-}
+};
 
 const TwoCoinsText = ({
   selectedCoin,

@@ -216,9 +216,9 @@ const NumberInput = styled.input<ThemeProp>`
   }
 `;
 
-interface InvestmentCalcProps {
+type InvestmentCalcProps = {
   setCalcMocalOpen: Dispatch<SetStateAction<boolean>>;
-}
+};
 
 type ThemeProp = {
   $light?: boolean;
