@@ -95,15 +95,26 @@ export default function Portfolio() {
           <h1 className="text-[20px]">Portfolio</h1>
           <div className="gap-[15px] flex">
             {size.width > parseInt(breakpoints.mobile) && (
-              <button
-                className={`${
-                  theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-                } h-full w-[244px] rounded-[6px]`}
-                onClick={handleCalcModalOpen}
-                disabled={assetFormOpen ? true : false}
-              >
-                Investment Calculator (DCA)
-              </button>
+              <>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+                  } h-full w-[244px] rounded-[6px]`}
+                  onClick={handleCalcModalOpen}
+                  disabled={assetFormOpen ? true : false}
+                >
+                  Investment Calculator (DCA)
+                </button>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+                  } h-full w-[244px] rounded-[6px]`}
+                  onClick={handleAssetFormOpen}
+                  disabled={calcModalOpen ? true : false}
+                >
+                  Add Asset
+                </button>
+              </>
             )}
           </div>
         </div>

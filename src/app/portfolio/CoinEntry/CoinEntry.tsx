@@ -157,7 +157,7 @@ const CoinEntry = ({
         <div
           className={`${
             theme === "light" ? "bg-[white]" : "bg-[#191932]"
-          } w-[100%] h-[315px] flex flex-col p-4 justify-between`}
+          } w-[100%] h-[315px] flex flex-col p-4 justify-between rounded-[16px]`}
         >
           <div className="flex">
             <div className="flex justify-start w-[50%] gap-[20px]">
@@ -264,7 +264,7 @@ const CoinEntry = ({
                 <p className="text-[20px]">Market Price</p>
                 <button
                   className={`${
-                    theme === "light" ? "bg-#B0B0EB" : "bg-#3a3978"
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
                   } p-2.5 rounded h-[40px] w-[40px] text-white`}
                   onClick={() => deleteEntry(coin)}
                 >
@@ -322,7 +322,7 @@ const CoinEntry = ({
                 <p className="text-[20px]">Your Coin</p>
                 <button
                   className={`${
-                    theme === "light" ? "bg-#B0B0EB" : "bg-#3a3978"
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
                   } p-2.5 rounded h-[40px] w-[40px] text-white`}
                   onClick={(e) => editCoinEntry(e, coin)}
                 >
