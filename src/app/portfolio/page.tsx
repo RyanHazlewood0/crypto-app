@@ -176,14 +176,14 @@ export default function Portfolio() {
               disabled={assetFormOpen ? true : false}
               className={`${
                 theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-              } h-[56px] w-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text[18px] left[10px]`}
+              } h-[56px] w-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[18px] left-[10px]`}
             >
               DCA
             </button>
             <button
               className={`${
                 theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-              } w-[56px] h-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[30px] right-10px`}
+              } w-[56px] h-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[30px] right-[10px]`}
               onClick={handleAssetFormOpen}
             >
               +

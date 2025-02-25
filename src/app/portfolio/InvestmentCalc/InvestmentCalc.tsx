@@ -5,24 +5,6 @@ import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const CalcModal = styled.div<ThemeProp>`
-  width: 886px;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  background: ${(props) => (props.$light ? "#ced4da" : "#13121a")};
-  border-radius: 20px;
-  padding: 48px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-    align-items: center;
-  }
-`;
-
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -53,16 +35,6 @@ const QuitBtn = styled.button<ThemeProp>`
   align-items: center;
 `;
 
-const CoinContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-    padding: 0 10px 0 10px;
-    margin-bottom: 20px;
-  }
-`;
 const CoinDisplay = styled.div<ThemeProp>`
   display: flex;
   padding: 8px;
@@ -348,75 +320,107 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
   const today = new Date();
 
   return (
-    <CalcModal $light={theme === "light"}>
-      <HeaderContainer>
-        <HeaderText>Investment Calculator (DCA)</HeaderText>
-        <QuitBtn onClick={handleCalcModalClose} $light={theme === "light"}>
+    <div
+      className={`${
+        theme === "light" ? "bg-[#ced4da]" : "bg-[#13121a]"
+      } w-[350px] md:w-[886px] justify-between items-center flex flex-col fixed top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] z-10 rounded-[20px] p-[48px] `}
+    >
+      <div className="w-[350px] md:w-full items-center px-[10px] py-0 md:p-0 mb-[20px] flex md:justify-between md:mb-[32px]">
+        <h1 className="text-[24px] w-[350px] items-center">
+          Investment Calculator (DCA)
+        </h1>
+        <button
+          onClick={handleCalcModalClose}
+          className={`${
+            theme === "light" ? "border-black" : "border-white"
+          } border rounded-[50%] flex justify-center items-center w-6 h-6`}
+        >
           x
-        </QuitBtn>
-      </HeaderContainer>
-      <form onSubmit={handleSubmit}>
-        <CoinContainer>
-          <CoinDisplay $light={theme === "light"}>
+        </button>
+      </div>
+      <form onSubmit={handleSubmit} className="w-[350px] md:w-full">
+        <div className="w-[350px] md:w-full mb-5 px-[10px] py-0 md:p-0 flex justify-between md:mb-8">
+          <div
+            className={`${
+              theme === "light" ? "bg-[#ebebfd]" : "bg-[#191925]"
+            } w-[30%] md:w-[170px] flex p-[8px] h-[44px] rounded-[4px] justify-around items-center `}
+          >
             {!selectedCoin && <p>Your Coin</p>}
             {error && <p>error fetching coin data..</p>}
             {selectedCoin && (
               <>
                 {" "}
-                <CoinImage src={selectedCoin.image} />
+                <img src={selectedCoin.image} className="w-7 h-7" />
                 {size.width > parseInt(breakpoints.mobile) && (
-                  <CoinText>{selectedCoin.name}</CoinText>
+                  <p className="text-4">{selectedCoin.name}</p>
                 )}
-                <CoinText>{selectedCoin.symbol.toUpperCase()}</CoinText>
+                <p className="text-4">{selectedCoin.symbol.toUpperCase()}</p>
               </>
             )}
-          </CoinDisplay>
+          </div>
           <>
-            <CoinSelect
+            <input
               type="text"
               placeholder="Select coin"
               onChange={handleSearch}
               value={searchVal}
-              $light={theme === "light"}
+              className={`${
+                theme === "light" ? "bg-[#ebebfd]" : "bg-[#191925]"
+              } w-[60%] md:w-[588px] h-[44px] rounded-[4px] p-[8px]`}
             />
             {searchModalOpen && (
-              <SearchModal>
+              <div className="w-[190px] right-[10px] md:w-[588px] flex flex-col bg-[#ebebfd] rounded-[6px] p-[10px] absolute z-2 mt-[44px] ml-[202px]">
                 {filteredCoins.map((coin) => (
-                  <CoinOption
+                  <div
                     key={coin.id}
                     onClick={() => handleSelectCoin(coin)}
+                    className="cursor-pointer hover:bg-[#0077b6]:"
                   >
                     {coin.name}
-                  </CoinOption>
+                  </div>
                 ))}
-              </SearchModal>
+              </div>
             )}
           </>
-        </CoinContainer>
-        <DatesContainer>
-          <DatesInnerContainer>
-            <DateInput
+        </div>
+        <div className="w-[350px] md:w-full flex mb-[16px] justify-between">
+          <div className="w-[350px] md:w-[499px] px-[10px] py-0 md:p-0 flex justify-between">
+            <input
               type="date"
               value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={handleStartDate}
-              $light={theme === "light"}
+              className={`${
+                theme === "light" ? "bg-[white]" : "bg-[#191925]"
+              } w-[150px] md:w-[238px] rounded-[8px] pt-2 pr-6 pb-2 pl-2`}
             />
-            <DateInput
+            <input
               type="date"
               value={finishDate ? finishDate.toISOString().split("T")[0] : ""}
               onChange={handleFinishDate}
               max={today.toISOString().split("T")[0]}
-              $light={theme === "light"}
+              className={`${
+                theme === "light" ? "bg-[white]" : "bg-[#191925]"
+              } w-[150px] md:w-[238px] pt-2 pr-6 pb-2 pl-2 rounded-[8px]`}
             />
-          </DatesInnerContainer>
+          </div>
           {size.width > parseInt(breakpoints.mobile) && (
-            <QuantitySymbol $light={theme === "light"}>Q-ty</QuantitySymbol>
+            <div
+              className={`${
+                theme === "light" ? "bg-[white]" : "bg-[#191925]"
+              } w-[83px] rounded-lg p-2 text-center`}
+            >
+              Q-ty
+            </div>
           )}
-        </DatesContainer>
-        <InfoContainer $light={theme === "light"}>
-          <InfoRow>
-            <InfoText>Contribution interval, days</InfoText>
-            <NumberInput
+        </div>
+        <div
+          className={`${
+            theme === "light" ? "bg-[#f3f5f9]" : "bg-[#191925]"
+          } w-[330px] md:w-[100%] m-[0_0_20px_10px] md:m-[0_0_32px_0] rounded-[4px] p-[10px] md:p-[32px] flex flex-col gap-[12px]`}
+        >
+          <div className="w-full flex justify-between">
+            <p className="text-[16px]">Contribution interval, days</p>
+            <input
               placeholder={
                 size.width > parseInt(breakpoints.mobile)
                   ? "Type Number"
@@ -424,13 +428,17 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={intervalDays}
               onChange={handleIntervalChange}
-              $light={theme === "light"}
+              className={`${
+                theme === "light"
+                  ? "bg-[#f3f5f9] border-[#191925]"
+                  : "bg-[#191925] border-[#f3f5f9]"
+              } w-[60px] md:w-[110px] border text-center rounded`}
             />
-          </InfoRow>
-          <Line />
-          <InfoRow>
-            <InfoText>Initial investment, $</InfoText>
-            <NumberInput
+          </div>
+          <hr className="w-[100%] border-t border-[#b0b0eb]" />
+          <div className="w-[100%] flex justify-between">
+            <p className="text-[16px]">Initial investment, $</p>
+            <input
               placeholder={
                 size.width > parseInt(breakpoints.mobile)
                   ? "Type Number"
@@ -438,13 +446,17 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={initialInvestment}
               onChange={handleInitialChange}
-              $light={theme === "light"}
+              className={`${
+                theme === "light"
+                  ? "bg-[#f3f5f9] border-[#191925]"
+                  : "bg-[#191925] border-[#f3f5f9]"
+              } w-[60px] md:w-[110px] border text-center rounded`}
             />
-          </InfoRow>
-          <Line />
-          <InfoRow>
-            <InfoText>investment each interval, $</InfoText>
-            <NumberInput
+          </div>
+          <hr className="w-[100%] border-t border-[#b0b0eb]" />
+          <div className="w-[100%] flex justify-between">
+            <p className="text-[16px]">investment each interval, $</p>
+            <input
               placeholder={
                 size.width > parseInt(breakpoints.mobile)
                   ? "Type Number"
@@ -452,25 +464,34 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               }
               value={periodicInvestment}
               onChange={handlePeriodicChange}
-              $light={theme === "light"}
+              className={`${
+                theme === "light"
+                  ? "bg-[#f3f5f9] border-[#191925]"
+                  : "bg-[#191925] border-[#f3f5f9]"
+              } w-[60px] md:w-[110px] border text-center rounded`}
             />
-          </InfoRow>
-          <Line />
-          <InfoRow>
-            <InfoText>Total amount spent, $</InfoText>
-            <NumText>${totalSpent}</NumText>
-          </InfoRow>
-          <Line />
-          <InfoRow>
-            <InfoText>Investment total value, $</InfoText>
-            <NumText>${Math.round(totalValue)}</NumText>
-          </InfoRow>
-        </InfoContainer>
-        <CalculateBtn type="submit" $light={theme === "light"}>
+          </div>
+          <hr className="w-[100%] border-t border-[#b0b0eb]" />
+          <div className="w-[100%] flex justify-between">
+            <p className="text-[16px]">Total amount spent, $</p>
+            <p className="text-[20px]">${totalSpent}</p>
+          </div>
+          <hr className="w-[100%] border-t border-[#b0b0eb]" />
+          <div className="w-[100%] flex justify-between">
+            <p className="text-[16px]">Investment total value, $</p>
+            <p className="text-[20px]">${Math.round(totalValue)}</p>
+          </div>
+        </div>
+        <button
+          type="submit"
+          className={`${
+            theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+          } w-[330px] ml-[10px] md:w-[100%] md:ml-0 p-[12px] text-[16px] text-white rounded-[6px] `}
+        >
           Calculate
-        </CalculateBtn>
+        </button>
       </form>
-    </CalcModal>
+    </div>
   );
 };
 
