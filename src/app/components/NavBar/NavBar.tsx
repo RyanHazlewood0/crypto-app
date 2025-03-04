@@ -1,5 +1,4 @@
 import Link from "next/link";
-import styled from "styled-components";
 import Logo from "./svg/Logo";
 import ThemeIcon from "./svg/ThemeIcon";
 import Home from "./svg/Home";
@@ -7,55 +6,11 @@ import Portfolio from "./svg/Portfolio";
 import SearchIcon from "./svg/SearchIcon";
 import Moon from "./svg/Moon";
 import Search from "../Search/Search";
+import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-
-const NavBarContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px 0 10px 0;
-  padding-bottom: 30px;
-  @media (max-width: ${breakpoints.mobile}) {
-    margin-bottom: 16px;
-    padding-bottom: 0;
-  }
-`;
-
-const SearchDiv = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 36px;
-  }
-`;
-
-const SearchIconWrapper = styled.div`
-  position: absolute;
-  margin-left: 10px;
-  width: 36px;
-`;
-
-const HomeWrapper = styled.div`
-  display: flex;
-  width: 110px;
-`;
-
-const PortfolioWrapper = styled.div`
-  display: flex;
-  width: 131px;
-`;
-
-const LeftDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 483px;
-`;
 
 const RightDiv = styled.div`
   display: flex;
@@ -68,38 +23,6 @@ const RightDiv = styled.div`
     align-items: center;
   }
 `;
-
-const ThemeIconContainer = styled.div<StyleProp>`
-  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
-  border: solid 1px gray;
-  border-radius: 6px;
-  cursor: pointer;
-  height: 44px;
-  width: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 36px;
-    height: 36px;
-  }
-`;
-
-const HomeText = styled.p<StyleProp>`
-  margin-left: 10px;
-  color: ${(props) => {
-    if (props.$light) {
-      return props.$selected ? "#353570" : "gray";
-    } else {
-      return props.$selected ? "white" : "gray";
-    }
-  }};
-`;
-
-type StyleProp = {
-  $selected?: boolean;
-  $light?: boolean;
-};
 
 const NavBar = () => {
   const {
@@ -126,53 +49,76 @@ const NavBar = () => {
   };
 
   return (
-    <NavBarContainer>
-      <LeftDiv>
+    <div className="flex w-full items-center justify-between mb-[16px] pb[0px] md:pb-[30px] mt-[15px] md:mb-[10px] ">
+      <div className="flex justify-between items-center w-[483px]">
         <Link href="/" onClick={handleLogoClick}>
           <Logo />
         </Link>
         {size.width > parseInt(breakpoints.mobile) && (
           <>
             <Link href="/" onClick={() => setSelectedBtn("Coins")}>
-              <HomeWrapper onClick={(e) => handleSelectNavLink(e, "Home")}>
+              <div
+                onClick={(e) => handleSelectNavLink(e, "Home")}
+                className="flex w-[110px]"
+              >
                 <Home selectedNavLink={selectedNavLink} />
-                <HomeText
-                  $selected={selectedNavLink === "Home"}
-                  $light={theme === "light"}
+                <p
+                  className={`${
+                    theme === "light"
+                      ? selectedNavLink === "Home"
+                        ? "text-[#353570]"
+                        : "text-gray-500"
+                      : selectedNavLink === "Home"
+                      ? "text-white"
+                      : "text-gray-500"
+                  }ml-[10px]`}
                 >
                   Home
-                </HomeText>
-              </HomeWrapper>
+                </p>
+              </div>
             </Link>
             <Link href="/portfolio">
-              <PortfolioWrapper
+              <div
                 onClick={(e) => handleSelectNavLink(e, "Portfolio")}
+                className="flex w-[131px]"
               >
                 <Portfolio selectedNavLink={selectedNavLink} />
-                <HomeText
-                  $selected={selectedNavLink === "Portfolio"}
-                  $light={theme === "light"}
+                <p
+                  className={`${
+                    theme === "light"
+                      ? selectedNavLink === "Portfolio"
+                        ? "text-[#353570]"
+                        : "text-gray-500"
+                      : selectedNavLink === "Portfolio"
+                      ? "text-white"
+                      : "text-gray-500"
+                  }ml-[10px]`}
                 >
                   Portfolio
-                </HomeText>
-              </PortfolioWrapper>
+                </p>
+              </div>
             </Link>
           </>
         )}
-      </LeftDiv>
-      <RightDiv>
-        <SearchDiv>
-          <SearchIconWrapper>
+      </div>
+      <RightDiv className=" justify-between w-[168px] h-[36px] md:w-[544px] flex items-center">
+        <div className="flex items-center relative w-[36px] md:w-auto">
+          <div className="absolute ml-[10px] w-[36px]">
             <SearchIcon />
-          </SearchIconWrapper>
+          </div>
           <Search />
-        </SearchDiv>
+        </div>
         <CurrencySelect />
-        <ThemeIconContainer $light={theme === "light"} onClick={toggleTheme}>
+        <div
+          className={`${
+            theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+          } w-[36px] h-[36px] md:w-[44px] md:h-[44px] items-center justify-center flex cursor-pointer rounded-[6px] border border-gray-500`}
+          onClick={toggleTheme}
+        >
           {theme === "light" ? <Moon /> : <ThemeIcon />}
-        </ThemeIconContainer>
+        </div>
       </RightDiv>
-    </NavBarContainer>
+    </div>
   );
 };
 

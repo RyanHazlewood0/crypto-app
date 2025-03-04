@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { PortfolioCoin } from "types";
@@ -13,184 +12,6 @@ import RedArrow from "../svg/RedArrow";
 import GreenArrow from "../svg/GreenArrow";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-
-const CoinEntryContainer = styled.div`
-  width: 100%;
-  height: 292px;
-  display: flex;
-`;
-
-const CoinImageContainer = styled.div<ThemeProp>`
-  width: 258px;
-  height: 100%;
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CoinInfoContainer = styled.div<ThemeProp>`
-  width: 1038px;
-  height: 100%;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  gap: 10px;
-`;
-
-const InnerRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Btn = styled.button<ThemeProp>`
-  background: ${(props) => (props.$light ? "#B0B0EB" : "#3a3978")};
-  padding: 10px;
-  border-radius: 4px;
-  height: 40px;
-  width: 40px;
-  color: white;
-`;
-
-const Symbol = styled.img`
-  width: 64px;
-`;
-
-const NameText = styled.p`
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const Line = styled.hr`
-  width: 100%;
-`;
-
-const TitleText = styled.p`
-  font-size: 20px;
-`;
-
-const SmallText = styled.p`
-  font-size: 14px;
-`;
-const NumberText = styled.p`
-  font-size: 16px;
-`;
-
-const PriceChangeText = styled.p<TextColor>`
-  font-size: 16px;
-  color: ${(props) => (props.$green ? "#01F1E3" : "#FE2264")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ValueBox = styled.div`
-  flex-direction: column;
-  display: flex;
-`;
-
-const LevelIndicatorOuter = styled.div`
-  display: flex;
-  height: 5px;
-  background-color: #40916c;
-  border-radius: 5px;
-  width: 55px;
-`;
-
-const LevelIndicatorInner = styled.div`
-  height: 5px;
-  background-color: #01f1e3;
-  border-radius: 5px;
-`;
-
-const NumberAndLevelBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const MobEntryContainer = styled.div<ThemeProp>`
-  width: 100%;
-  height: 315px;
-  display: flex;
-  flex-direction: column;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  padding: 16px;
-  border-radius: 16px;
-  justify-content: space-between;
-`;
-
-const MobNameDateImgContainer = styled.div`
-  display: flex;
-  justify-content: left;
-  width: 50%;
-  gap: 20px;
-`;
-
-const EditDeleteBtnContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 50%;
-  justify-content: right;
-  gap: 20px;
-`;
-
-const MobNameDateContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const MobValueRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const MobileValueContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 155.5px;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
-  align-items: center;
-  padding: 10px;
-`;
-
-const MobNameAndNumtext = styled.div`
-  font-size: 16px;
-`;
-const MobDatetext = styled.div`
-  font-size: 12px;
-`;
-const MobPrictext = styled.div`
-  font-size: 20px;
-`;
-const MobSmallText = styled.div<ThemeProp>`
-  font-size: 12px;
-  color: ${(props) => (props.$light ? "#353570" : "#e8e8e8")};
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-`;
-
-type TextColor = {
-  $green: boolean;
-};
-
-type ThemeProp = {
-  $light?: boolean;
-};
 
 type CoinEntryProps = {
   coin: PortfolioCoin;
@@ -333,172 +154,214 @@ const CoinEntry = ({
   if (coin) {
     if (size.width < parseInt(breakpoints.mobile)) {
       return (
-        <>
-          <MobEntryContainer $light={theme === "light"}>
-            <HeaderContainer>
-              <MobNameDateImgContainer>
-                <MobNameDateContainer>
-                  <MobNameAndNumtext>{coin.name}</MobNameAndNumtext>
-                  <MobDatetext>
-                    {coin.purchaseDate.toISOString().split("T")[0]}
-                  </MobDatetext>
-                </MobNameDateContainer>
-                <Symbol src={coin.image} style={{ width: "43px" }} />
-              </MobNameDateImgContainer>
-              <EditDeleteBtnContainer>
-                <Btn
-                  $light={theme === "light"}
-                  onClick={(e) => editCoinEntry(e, coin)}
-                >
-                  <EditIcon />
-                </Btn>
-                <Btn
-                  $light={theme === "light"}
-                  onClick={() => deleteEntry(coin)}
-                >
-                  X
-                </Btn>
-              </EditDeleteBtnContainer>
-            </HeaderContainer>
-            <MobPrictext>
-              {" "}
-              <SmallText>Total Value</SmallText>${abbreviateNumber(totalVal)}
-            </MobPrictext>
-            <MobValueRow>
-              <MobileValueContainer>
-                <MobNameAndNumtext>
-                  ${abbreviateNumber(currentP)}
-                </MobNameAndNumtext>
-                <MobSmallText $light={theme === "light"}>
-                  Current Price
-                </MobSmallText>
-              </MobileValueContainer>
-              <MobileValueContainer>
-                <PriceChangeText $green={coin.priceChange24h > 0}>
-                  {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
-                  {abbreviateNumber(change24)}%
-                </PriceChangeText>
-                <MobSmallText $light={theme === "light"}>24h%</MobSmallText>
-              </MobileValueContainer>
-            </MobValueRow>
-            <MobValueRow>
-              <MobileValueContainer>
-                <PriceChangeText $green={coin.priceChange24h > 0}>
-                  {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
-                  {abbreviateNumber(changeSincePurchase)}%
-                </PriceChangeText>
-                <MobSmallText $light={theme === "light"}>
-                  % Since Purchase
-                </MobSmallText>
-              </MobileValueContainer>
-              <MobileValueContainer>
-                <MobNameAndNumtext>{coin.totalAmount}</MobNameAndNumtext>
-                <MobSmallText $light={theme === "light"}>
-                  Coin Amount
-                </MobSmallText>
-              </MobileValueContainer>
-            </MobValueRow>
-          </MobEntryContainer>
-        </>
+        <div
+          className={`${
+            theme === "light" ? "bg-[white]" : "bg-[#191932]"
+          } w-[100%] h-[315px] flex flex-col p-4 justify-between rounded-[16px]`}
+        >
+          <div className="flex">
+            <div className="flex justify-start w-[50%] gap-[20px]">
+              <div className="flex flex-col">
+                <div className="text-[16px]">{coin.name}</div>
+                <div className="text-[12px]">
+                  {coin.purchaseDate.toISOString().split("T")[0]}
+                </div>
+              </div>
+              <img className="w-[43px]" src={coin.image} />
+            </div>
+            <div className="flex justify-end w-[50%] gap-[20px]">
+              <button
+                className={`${
+                  theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
+                } p-2.5 rounded h-[40px] w-[40px] text-white`}
+                onClick={(e) => editCoinEntry(e, coin)}
+              >
+                <EditIcon />
+              </button>
+              <button
+                className={`${
+                  theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
+                } p-2.5 rounded h-[40px] w-[40px] text-white`}
+                onClick={() => deleteEntry(coin)}
+              >
+                X
+              </button>
+            </div>
+          </div>
+          <div className="text-[20px]">
+            <p className="text-[14px]">Total Value</p>$
+            {abbreviateNumber(totalVal)}
+          </div>
+          <div className="flex justify-between">
+            <div
+              className="flex flex-col w-[155.5px] rounded-2 align-middle p-[10px] border justify-center rounded-[10px]"
+              style={{ borderColor: "#e8e8e8" }}
+            >
+              <p className="text-[16px] text-center">
+                ${abbreviateNumber(currentP)}
+              </p>
+              <p className="text-[12px] text-center">Current Price</p>
+            </div>
+            <div
+              className="flex flex-col w-[155.5px] rounded-2 align-middle p-[10px] border justify-center rounded-[10px]"
+              style={{ borderColor: "#e8e8e8" }}
+            >
+              <p
+                className={`${
+                  coin.priceChange24h > 0 ? "text-[#01F1E3]" : "text-[#FE2264]"
+                } text-[16px] flex items-center justify-center text-center`}
+              >
+                {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
+                {abbreviateNumber(change24)}%
+              </p>
+              <p className="text-[12px] text-center">24h%</p>
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div
+              className="flex flex-col w-[155.5px] rounded-2 align-middle p-[10px] border justify-center rounded-[10px]"
+              style={{ borderColor: "#e8e8e8" }}
+            >
+              <p
+                className={`${
+                  coin.priceChange24h > 0 ? "text-[#01F1E3]" : "text-[#FE2264]"
+                } text-[16px] flex items-center justify-center text-center`}
+              >
+                {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
+                {abbreviateNumber(changeSincePurchase)}%
+              </p>
+              <p className="text-[12px] text-center">% Since Purchase</p>
+            </div>
+            <div
+              className="flex flex-col w-[155.5px] rounded-2 align-middle p-[10px] border justify-center rounded-[10px]"
+              style={{ borderColor: "#e8e8e8" }}
+            >
+              <p className="text-[16px] text-center">{coin.totalAmount}</p>
+              <p className="text-[12px] text-center">Coin Amount</p>
+            </div>
+          </div>
+        </div>
       );
     } else {
       return (
-        <CoinEntryContainer>
-          <CoinImageContainer $light={theme === "light"}>
-            <Symbol src={coin.image} />
-            <NameText>
+        <div className="flex w-full h-[292px]">
+          <div
+            className={`${
+              theme === "light" ? "bg-white" : "bg-[#1e1932]"
+            } flex flex-col w-[258px] h-full justify-center items-center`}
+          >
+            <img className="w-[64px]" src={coin.image} />
+            <p className="text-[28px] text-center font-bold">
               {coin.name} ({coin.symbol.toUpperCase()})
-            </NameText>
-          </CoinImageContainer>
-          <CoinInfoContainer $light={theme === "light"}>
-            <Row>
-              <InnerRow>
-                <TitleText>Market Price</TitleText>
-                <Btn
-                  $light={theme === "light"}
+            </p>
+          </div>
+          <div
+            className={`${theme === "light" ? "bg-white" : "bg-[#191932]"}
+            flex flex-col w-[1038px] h-[100%] justify-around p-5`}
+          >
+            <div className="flex flex-col justify-between text-center gap-2.5">
+              <div className="flex justify-between">
+                <p className="text-[20px]">Market Price</p>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
+                  } p-2.5 rounded h-[40px] w-[40px] text-white`}
                   onClick={() => deleteEntry(coin)}
                 >
                   X
-                </Btn>
-              </InnerRow>
-              <InnerRow>
-                <ValueBox>
-                  <SmallText>Current Price</SmallText>
-                  <NumberText>${abbreviateNumber(currentP)}</NumberText>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>Price Change 24h</SmallText>
-                  <PriceChangeText $green={coin.priceChange24h > 0}>
+                </button>
+              </div>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Current Price</p>
+                  <p className="text-[16px]">${abbreviateNumber(currentP)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Price Change 24h</p>
+                  <p
+                    className={`${
+                      coin.priceChange24h > 0
+                        ? "text-[#01F1E3]"
+                        : "text-[#FE2264]"
+                    } text-[16px] flex items-center justify-center`}
+                  >
                     {coin.priceChange24h > 0 ? <GreenArrow /> : <RedArrow />}
                     {abbreviateNumber(change24)}%
-                  </PriceChangeText>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>24h Vol Vs M-Cap</SmallText>
-                  <NumberAndLevelBox>
-                    <NumberText>
+                  </p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">24h Vol Vs M-Cap</p>
+                  <div className="flex align-middle justify-between">
+                    <p className="text-[16px]">
                       <div>{abbreviateNumber(findVolumeLevel(coin))}%</div>
-                    </NumberText>
-                    <LevelIndicatorOuter>
-                      <LevelIndicatorInner
+                    </p>
+                    <div className="flex h-[5px] bg-[#40916c] rounded-[5px] w-[55px]">
+                      <div
                         style={{ width: `${findVolumeLevel(coin)}%` }}
+                        className="bg-[#01f1e3] h-[5px] rounded[5px]"
                       />
-                    </LevelIndicatorOuter>
-                  </NumberAndLevelBox>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>Circ vs Total Supply</SmallText>
-                  <NumberAndLevelBox>
-                    <NumberText>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Circ vs Total Supply</p>
+                  <div className="flex align-middle justify-between">
+                    <p className="text-[16px]">
                       <div>{abbreviateNumber(findSupplyLevel(coin))}%</div>
-                    </NumberText>
-                    <LevelIndicatorOuter>
-                      <LevelIndicatorInner
-                        style={{ width: `${findSupplyLevel(coin)}%` }}
-                      />
-                    </LevelIndicatorOuter>
-                  </NumberAndLevelBox>
-                </ValueBox>
-              </InnerRow>
-            </Row>
-            <Line />
-            <Row>
-              <InnerRow>
-                <TitleText>Your Coin</TitleText>
-                <Btn
-                  $light={theme === "light"}
+                    </p>
+                    <div className="flex h-[5px] bg-[#40916c] rounded-[5px] w-[55px]">
+                      <div style={{ width: `${findSupplyLevel(coin)}%` }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr className="w-[100%]" />
+            <div className="flex flex-col justify-between text-center gap-2.5">
+              <div className="flex justify-between">
+                <p className="text-[20px]">Your Coin</p>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#3a3978]"
+                  } p-2.5 rounded h-[40px] w-[40px] text-white`}
                   onClick={(e) => editCoinEntry(e, coin)}
                 >
                   <EditIcon />
-                </Btn>
-              </InnerRow>
-              <InnerRow>
-                <ValueBox>
-                  <SmallText>Current Amount</SmallText>
-                  <NumberText>{coin.totalAmount}</NumberText>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>Amount Value</SmallText>
-                  <NumberText>${abbreviateNumber(totalVal)}</NumberText>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>Price Change Since Purchase</SmallText>
-                  <PriceChangeText $green={currentP > purchasePrice}>
+                </button>
+              </div>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Current Amount</p>
+                  <p className="text-[16px]">{coin.totalAmount}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Amount Value</p>
+                  <p className="text-[16px]">${abbreviateNumber(totalVal)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Price Change Since Purchase</p>
+                  <p
+                    className={`${
+                      currentP > purchasePrice
+                        ? "text-[#01F1E3]"
+                        : "text-[#FE2264]"
+                    } text-[16px] flex items-center justify-center`}
+                  >
                     {currentP > purchasePrice ? <GreenArrow /> : <RedArrow />}
                     {currentP < purchasePrice && "- "}
                     {abbreviateNumber(changeSincePurchase)}%
-                  </PriceChangeText>
-                </ValueBox>
-                <ValueBox>
-                  <SmallText>Purchase Date</SmallText>
-                  <NumberText>
+                  </p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-[14px]">Purchase Date</p>
+                  <p className="text-[16px]">
                     {coin.purchaseDate.toISOString().split("T")[0]}
-                  </NumberText>
-                </ValueBox>
-              </InnerRow>
-            </Row>
-          </CoinInfoContainer>
-        </CoinEntryContainer>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
   }

@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
 import { PortfolioCoin } from "types";
@@ -9,86 +8,6 @@ import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import InvestmentCalc from "./InvestmentCalc/InvestmentCalc";
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  height: 45px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-`;
-
-const HeaderText = styled.h1`
-  font-size: 20px;
-`;
-
-const AddBtn = styled.button<ThemeProp>`
-  width: 244px;
-  height: 100%;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
-`;
-
-const CalcBtn = styled.button<ThemeProp>`
-  width: 244px;
-  height: 100%;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 56px;
-    height: 56px;
-    background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
-    border-radius: 50%;
-    position: fixed;
-    z-index: 1;
-    bottom: 75px;
-    font-size: 30px;
-    left: 10px;
-    font-size: 18px;
-  }
-`;
-
-const BtnContainer = styled.div`
-  gap: 15px;
-  display: flex;
-`;
-
-const MobileAddBtn = styled.button<ThemeProp>`
-  width: 56px;
-  height: 56px;
-  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
-  border-radius: 50%;
-  position: fixed;
-  z-index: 1;
-  bottom: 75px;
-  font-size: 30px;
-  right: 10px;
-`;
-
-const NoCoinsMessage = styled.p`
-  font-size: 35px;
-  text-align: center;
-`;
-
-const LoadingText = styled.p`
-  font-size: 35px;
-  text-align: center;
-`;
-
-const EntrysContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  margin-bottom: 25px;
-  @media (max-width: ${breakpoints.mobile}) {
-    margin-bottom: 65px;
-    gap: 16px;
-  }
-`;
-
-type ThemeProp = {
-  $light?: boolean;
-};
 
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
@@ -166,48 +85,73 @@ export default function Portfolio() {
   );
 
   if (coins.length < 1) {
-    return <LoadingText>Loading coin database...</LoadingText>;
+    return <p className="text-[35px] text-center">Loading coin database...</p>;
   }
 
   return (
     <>
       {size.width > parseInt(breakpoints.mobile) && (
-        <HeaderContainer>
-          <HeaderText>Portfolio</HeaderText>
-          <BtnContainer>
-            <CalcBtn
-              $light={theme === "light"}
-              onClick={handleCalcModalOpen}
-              disabled={assetFormOpen ? true : false}
-            >
-              Investment Calculator (DCA)
-            </CalcBtn>
-            <AddBtn
-              $light={theme === "light"}
-              onClick={handleAssetFormOpen}
-              disabled={calcModalOpen ? true : false}
-            >
-              Add Asset
-            </AddBtn>
-          </BtnContainer>
-        </HeaderContainer>
+        <div className="w-full h-[45px] flex justify-between mb-[25px]">
+          <h1 className="text-[20px]">Portfolio</h1>
+          <div className="gap-[15px] flex">
+            {size.width > parseInt(breakpoints.mobile) && (
+              <>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+                  } h-full w-[244px] rounded-[6px]`}
+                  onClick={handleCalcModalOpen}
+                  disabled={assetFormOpen ? true : false}
+                >
+                  Investment Calculator (DCA)
+                </button>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+                  } h-full w-[244px] rounded-[6px]`}
+                  onClick={handleAssetFormOpen}
+                  disabled={calcModalOpen ? true : false}
+                >
+                  Add Asset
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       )}
       {portfolioCoins.length < 1 && (
-        <NoCoinsMessage>No coins added yet</NoCoinsMessage>
+        <p className="text-[35px] text-center">No coins added yet</p>
       )}
-      <EntrysContainer>
-        {sortedPortfolioCoins &&
-          sortedPortfolioCoins.map((coin: PortfolioCoin) => (
-            <CoinEntry
-              coin={coin}
-              key={coin.name}
-              portfolioCoins={portfolioCoins}
-              setPortfolioCoins={setPortfolioCoins}
-              editCoinEntry={editCoinEntry}
-              isEditOpen={isEditOpen}
-            />
-          ))}
-      </EntrysContainer>
+      {size.width > parseInt(breakpoints.mobile) ? (
+        <div className="flex flex-col gap-[25px] mb-[25px]">
+          {sortedPortfolioCoins &&
+            sortedPortfolioCoins.map((coin: PortfolioCoin) => (
+              <CoinEntry
+                coin={coin}
+                key={coin.name}
+                portfolioCoins={portfolioCoins}
+                setPortfolioCoins={setPortfolioCoins}
+                editCoinEntry={editCoinEntry}
+                isEditOpen={isEditOpen}
+              />
+            ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-[16px] mb-[65px]">
+          {sortedPortfolioCoins &&
+            sortedPortfolioCoins.map((coin: PortfolioCoin) => (
+              <CoinEntry
+                coin={coin}
+                key={coin.name}
+                portfolioCoins={portfolioCoins}
+                setPortfolioCoins={setPortfolioCoins}
+                editCoinEntry={editCoinEntry}
+                isEditOpen={isEditOpen}
+              />
+            ))}
+        </div>
+      )}
+
       {assetFormOpen && (
         <AddAssetForm
           handleFormClose={handleFormClose}
@@ -227,19 +171,23 @@ export default function Portfolio() {
         !assetFormOpen &&
         !calcModalOpen && (
           <>
-            <CalcBtn
-              $light={theme === "light"}
+            <button
               onClick={handleCalcModalOpen}
               disabled={assetFormOpen ? true : false}
+              className={`${
+                theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+              } h-[56px] w-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[18px] left-[10px]`}
             >
               DCA
-            </CalcBtn>
-            <MobileAddBtn
-              $light={theme === "light"}
+            </button>
+            <button
+              className={`${
+                theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+              } w-[56px] h-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[30px] right-[10px]`}
               onClick={handleAssetFormOpen}
             >
               +
-            </MobileAddBtn>
+            </button>
             <MobileButtons />
           </>
         )}
