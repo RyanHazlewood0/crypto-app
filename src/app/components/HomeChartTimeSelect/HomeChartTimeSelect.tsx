@@ -86,9 +86,6 @@ const HomeChartTimeSelect = ({
     } else if (e.currentTarget.textContent === "1Y") {
       setDayCount("365");
       setTimeFrameSelected("1Y");
-    } else if (e.currentTarget.textContent === "5Y") {
-      setDayCount("1825");
-      setTimeFrameSelected("5Y");
     }
   };
 
@@ -135,13 +132,6 @@ const HomeChartTimeSelect = ({
         $selected={timeFrameSelected === "1Y"}
       >
         1Y
-      </SelectBtn>
-      <SelectBtn
-        $light={theme === "light"}
-        onClick={findDayCount}
-        $selected={timeFrameSelected === "5Y"}
-      >
-        5Y
       </SelectBtn>
     </Container>
   );

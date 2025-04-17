@@ -228,14 +228,19 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
           const response = await fetch(
             `https://pro-api.coingecko.com/api/v3/coins/${
               selectedCoin.id
-            }/market_chart/range?vs_currency=${fiatCurrency}&from=${Math.floor(
-              startDate.getTime() / 1000
-            )}&to=${Math.floor(
-              finishDate.getTime() / 1000
-            )}&interval=daily&x_cg_pro_api_key=${apiKey}`
+            }/market_chart?vs_currency=${fiatCurrency}&days=${Math.ceil(
+              (finishDate.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+            )}`,
+            {
+              headers: {
+                "x-cg-pro-api-key": apiKey,
+              },
+            }
           );
 
           const fetchedData = await response.json();
+
           const priceDataArray = fetchedData.prices.map((el) => {
             const thisDate = new Date(el[0]);
             const thisPrice = el[1];
@@ -319,6 +324,9 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
 
   const today = new Date();
 
+  const twoYearsAgo = new Date(today);
+  twoYearsAgo.setFullYear(today.getFullYear() - 2);
+
   return (
     <div
       className={`${
@@ -389,6 +397,12 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               type="date"
               value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={handleStartDate}
+              min={twoYearsAgo.toISOString().split("T")[0]}
+              max={
+                finishDate
+                  ? finishDate.toISOString().split("T")[0]
+                  : today.toISOString().split("T")[0]
+              }
               className={`${
                 theme === "light" ? "bg-[white]" : "bg-[#191925]"
               } w-[150px] md:w-[238px] rounded-[8px] pt-2 pr-6 pb-2 pl-2`}
@@ -397,6 +411,11 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               type="date"
               value={finishDate ? finishDate.toISOString().split("T")[0] : ""}
               onChange={handleFinishDate}
+              min={
+                startDate
+                  ? startDate.toISOString().split("T")[0]
+                  : twoYearsAgo.toISOString().split("T")[0]
+              }
               max={today.toISOString().split("T")[0]}
               className={`${
                 theme === "light" ? "bg-[white]" : "bg-[#191925]"

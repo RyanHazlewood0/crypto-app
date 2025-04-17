@@ -57,7 +57,7 @@ const CoinEntry = ({
       const fetchPriceData = async () => {
         try {
           const response: Response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=2000&interval=daily&x_cg_pro_api_key=${apiKey}`
+            `https://pro-api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=${fiatCurrency}&days=729&interval=daily&x_cg_pro_api_key=${apiKey}`
           );
           const fetchedData: FetchedDataType = await response.json();
           setPriceData(

@@ -279,6 +279,9 @@ const AddAssetForm = ({
 
   const today = new Date();
 
+  const twoYearsAgo = new Date(today);
+  twoYearsAgo.setFullYear(today.getFullYear() - 2);
+
   return (
     <>
       {alertTrue && (
@@ -334,6 +337,7 @@ const AddAssetForm = ({
                 value={purchaseDateValue}
                 onChange={handlePurchaseDateInputChange}
                 required
+                min={twoYearsAgo.toISOString().split("T")[0]}
                 max={today.toISOString().split("T")[0]}
                 $light={theme === "light"}
               />
