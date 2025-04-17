@@ -226,16 +226,16 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         setError(false);
         const getPriceData = async () => {
           const response = await fetch(
-            `https://pro-api.coingecko.com/api/v3/coins/${
+            `https://api.coingecko.com/api/v3/coins/${
               selectedCoin.id
-            }/market_chart/range?vs_currency=${fiatCurrency}&from=${Math.floor(
-              startDate.getTime() / 1000
-            )}&to=${Math.floor(
-              finishDate.getTime() / 1000
-            )}&interval=daily&x_cg_pro_api_key=${apiKey}`
+            }/market_chart?vs_currency=${fiatCurrency}&days=${Math.ceil(
+              (finishDate.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+            )}`
           );
 
           const fetchedData = await response.json();
+
           const priceDataArray = fetchedData.prices.map((el) => {
             const thisDate = new Date(el[0]);
             const thisPrice = el[1];
