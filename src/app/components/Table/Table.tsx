@@ -260,6 +260,16 @@ const Table = () => {
   }
   return (
     <>
+      <HeaderText
+        $light={theme === "light"}
+        style={{ cursor: "pointer", width: "284px" }}
+        onClick={openTrending}
+      >
+        Click here to see top 5 trending coins (24H)
+      </HeaderText>
+      {trendingModalOpen && (
+        <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
+      )}
       <CoinTable>
         {size.width > parseInt(breakpoints.mobile) && (
           <TableHeader>
@@ -581,16 +591,6 @@ const Table = () => {
             </TableRow>
           ))}
         </tbody>
-        <HeaderText
-          $light={theme === "light"}
-          style={{ cursor: "pointer", width: "284px" }}
-          onClick={openTrending}
-        >
-          Click here to see top 5 trending coins (24H)
-        </HeaderText>
-        {trendingModalOpen && (
-          <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
-        )}
       </CoinTable>
       <div>
         <InfiniteScroll

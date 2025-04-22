@@ -256,13 +256,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
               </CarouselBox>
             ))}
         </StyledSlider>
-        <HeaderText
-          $light={theme === "light"}
-          style={{ cursor: "pointer", width: "284px" }}
-          onClick={openTrending}
-        >
-          Click here to see top 5 trending coins (24H)
-        </HeaderText>
       </CarouselContainer>
     )
   );
