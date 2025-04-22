@@ -146,7 +146,7 @@ type ThemeProp = {
 };
 
 type CarouselProps = {
-  selectedCoin: Coin[] | [];
+  selectedCoin: Coin[];
   setSelectedCoin: Dispatch<SetStateAction<Coin[] | null>>;
 };
 
