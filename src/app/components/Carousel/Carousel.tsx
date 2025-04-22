@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { abbreviateNumber } from "helper-functions";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
-import TrendingModal from "../TrendingModal/TrendingModal";
 import { Coin } from "types";
 import { useEffect } from "react";
 import { breakpoints } from "breakpoints";
@@ -153,7 +152,6 @@ type CarouselProps = {
 const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
   const [hasError, setHasError] = useState(false);
   const [carouselCoins, setCarouselCoins] = useState([]);
-  const [trendingModalOpen, setTrendingModalOpen] = useState(false);
   const { fiatCurrency, theme } = useCryptoContext();
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -200,10 +198,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
     }
   }, [carouselCoins]);
 
-  const openTrending = () => {
-    setTrendingModalOpen(true);
-  };
-
   const settings = {
     infinite: true,
     speed: 500,
@@ -222,9 +216,6 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
         <HeaderText $light={theme === "light"}>
           Select 1 - 2 currencies below to view statistics
         </HeaderText>
-        {trendingModalOpen && (
-          <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
-        )}
         <StyledSlider {...settings}>
           {carouselCoins.length > 0 &&
             carouselCoins.map((coin) => (

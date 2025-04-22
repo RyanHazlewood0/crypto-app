@@ -15,6 +15,7 @@ import GreenArrow from "./svg/GreenArrow";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import InfiniteScroll from "react-infinite-scroll-component";
+import TrendingModal from "../TrendingModal/TrendingModal";
 
 const CoinTable = styled.table`
   width: 100%;
@@ -137,6 +138,12 @@ const MobilePriceAnd24hContainer = styled.div`
   flex-direction: column;
 `;
 
+const HeaderText = styled.p<StyleProp>`
+  color: ${(props) => (props.$light ? "#424286" : "#d1d1d1")};
+  font-size: 14px;
+  margin-bottom: 20px;
+`;
+
 type StyleProp = {
   $left?: boolean;
   $green?: boolean;
@@ -151,6 +158,7 @@ const Table = () => {
   const [sortOrder, setSortOrder] = useState("descending mcap");
   const [currentPage, setCurrentPage] = useState(1);
   const [tableCoins, setTableCoins] = useState([]);
+  const [trendingModalOpen, setTrendingModalOpen] = useState(false);
 
   const { fiatCurrency, theme, coins } = useCryptoContext();
   const size = useWindowSize();
@@ -191,6 +199,10 @@ const Table = () => {
     order: string
   ) => {
     setSortOrder(order);
+  };
+
+  const openTrending = () => {
+    setTrendingModalOpen(true);
   };
 
   const sortedCoins = [...tableCoins].sort((a, b): number => {
@@ -569,6 +581,16 @@ const Table = () => {
             </TableRow>
           ))}
         </tbody>
+        <HeaderText
+          $light={theme === "light"}
+          style={{ cursor: "pointer", width: "284px" }}
+          onClick={openTrending}
+        >
+          Click here to see top 5 trending coins (24H)
+        </HeaderText>
+        {trendingModalOpen && (
+          <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
+        )}
       </CoinTable>
       <div>
         <InfiniteScroll
