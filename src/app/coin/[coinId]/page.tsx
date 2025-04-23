@@ -12,6 +12,7 @@ import Star from "./svg/Star";
 import { CoinPageObject } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
+import { watch } from "fs";
 
 const Container = styled.div`
   width: 100%;
@@ -227,7 +228,13 @@ export default function Coin({ params }: CoinProps) {
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
 
-  const { fiatCurrency, theme, setSelectedNavLink } = useCryptoContext();
+  const {
+    fiatCurrency,
+    theme,
+    setSelectedNavLink,
+    watchListCoins,
+    setWatchListCoins,
+  } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -262,6 +269,28 @@ export default function Coin({ params }: CoinProps) {
     setTimeout(() => setCopyClicked(false), 2000);
   };
 
+  const handleStarClick = () => {
+    if (watchListCoins.some((coin) => coin.name === thisCoinData.name)) {
+      const updatedList = watchListCoins.filter(
+        (coin) => coin.name !== thisCoinData.name
+      );
+      const myJSON = JSON.stringify([...updatedList]);
+      localStorage.setItem("testJSON", myJSON);
+      setWatchListCoins([...updatedList]);
+    } else {
+      const watchListCoin = {
+        name: thisCoinData.name,
+        currentPrice: thisCoinData.market_data.current_price.usd,
+        image: thisCoinData.image.small,
+        symbol: thisCoinData.symbol,
+        id: thisCoinData.id,
+      };
+      const myJSON = JSON.stringify([...watchListCoins, watchListCoin]);
+      localStorage.setItem("testJSON", myJSON);
+      setWatchListCoins([...watchListCoins, watchListCoin]);
+    }
+  };
+
   if (hasError) {
     return <p>Error loading data</p>;
   }
@@ -285,8 +314,14 @@ export default function Coin({ params }: CoinProps) {
                     <h1 style={{ fontSize: "28px" }}>
                       {thisCoinData.name} ({thisCoinData.symbol})
                     </h1>
-                    <div className="ml-auto mr-auto cursor-pointer">
-                      <Star />
+                    <div
+                      className="ml-auto mr-auto cursor-pointer"
+                      onClick={handleStarClick}
+                    >
+                      <Star
+                        watchListCoins={watchListCoins}
+                        thisCoinData={thisCoinData}
+                      />
                     </div>
                   </CoinNameContainer>
                   <CoinLinkContainer $light={theme === "light"}>

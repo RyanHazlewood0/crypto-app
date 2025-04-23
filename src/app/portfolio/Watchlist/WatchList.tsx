@@ -7,7 +7,7 @@ interface WatchListProps {
 }
 
 const WatchList = ({ setWatchListOpen }: WatchListProps) => {
-  const { theme } = useCryptoContext();
+  const { theme, watchListCoins } = useCryptoContext();
   const handleCloseWatchList = () => {
     setWatchListOpen(false);
   };

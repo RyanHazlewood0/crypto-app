@@ -74,5 +74,4 @@ export type Coin = {
     image: string;
     symbol: string;
     id: string;
-    price_change_percent_24h: number;
   }

@@ -42,7 +42,7 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
   const [theme, setTheme] = useState("light");
-  const [watchListCoins, setWatchListCoins] = useState<WatchListCoin[]>();
+  const [watchListCoins, setWatchListCoins] = useState<WatchListCoin[]>([]);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -52,6 +52,13 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
     const abbreviated = (num / Math.pow(1000, magnitude)).toFixed(2);
     return `${abbreviated}${prefixes[magnitude]}`;
   }
+
+  useEffect(() => {
+    const storedWatchList = localStorage.getItem("testJSON");
+    if (storedWatchList) {
+      setWatchListCoins(JSON.parse(storedWatchList));
+    }
+  }, []);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("themeStyle");
