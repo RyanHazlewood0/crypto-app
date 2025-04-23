@@ -2,12 +2,13 @@
 import { useState, useEffect } from "react";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
-import { PortfolioCoin } from "types";
+import { PortfolioCoin, WatchListCoin } from "types";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import InvestmentCalc from "./InvestmentCalc/InvestmentCalc";
+import WatchList from "./Watchlist/WatchList";
 
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
@@ -21,6 +22,7 @@ export default function Portfolio() {
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [calcModalOpen, setCalcMocalOpen] = useState(false);
+  const [watchListOpen, setWatchlistOpen] = useState(false);
 
   const { setSelectedMobileBtn, setSelectedNavLink, coins, theme } =
     useCryptoContext();
@@ -69,6 +71,10 @@ export default function Portfolio() {
     setCalcMocalOpen(true);
   };
 
+  const handleWatchListOpen = () => {
+    setWatchlistOpen(true);
+  };
+
   const editCoinEntry = (
     e: React.MouseEvent<HTMLButtonElement>,
     coin: PortfolioCoin
@@ -100,6 +106,15 @@ export default function Portfolio() {
                   className={`${
                     theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
                   } h-full w-[244px] rounded-[6px]`}
+                  onClick={handleAssetFormOpen}
+                  disabled={calcModalOpen ? true : false}
+                >
+                  Add Asset
+                </button>
+                <button
+                  className={`${
+                    theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+                  } h-full w-[244px] rounded-[6px]`}
                   onClick={handleCalcModalOpen}
                   disabled={assetFormOpen ? true : false}
                 >
@@ -109,11 +124,15 @@ export default function Portfolio() {
                   className={`${
                     theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
                   } h-full w-[244px] rounded-[6px]`}
-                  onClick={handleAssetFormOpen}
-                  disabled={calcModalOpen ? true : false}
+                  onClick={handleWatchListOpen}
                 >
-                  Add Asset
+                  Watchlist
                 </button>
+                {watchListOpen && (
+                  <>
+                    <WatchList setWatchListOpen={setWatchlistOpen} />
+                  </>
+                )}
               </>
             )}
           </div>

@@ -67,3 +67,12 @@ export type Coin = {
   export type CurrencyValue = {
     [key: string]: number;
   }
+
+  export type WatchListCoin = {
+    name: string;
+    currentPrice: number;
+    image: string;
+    symbol: string;
+    id: string;
+    price_change_percent_24h: number;
+  }

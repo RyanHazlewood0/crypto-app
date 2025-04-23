@@ -8,6 +8,7 @@ import CopyIcon from "./svg/CopyIcon";
 import RoundIcon from "./svg/RoundIcon";
 import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
+import Star from "./svg/Star";
 import { CoinPageObject } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -66,7 +67,7 @@ const NameAndLinkContainer = styled.div`
 
 const CoinNameContainer = styled.div<ThemeProp>`
   width: 305px;
-  padding: 20% 0 20% 0;
+  padding: 10% 0 10% 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -284,6 +285,9 @@ export default function Coin({ params }: CoinProps) {
                     <h1 style={{ fontSize: "28px" }}>
                       {thisCoinData.name} ({thisCoinData.symbol})
                     </h1>
+                    <div className="ml-auto mr-auto cursor-pointer">
+                      <Star />
+                    </div>
                   </CoinNameContainer>
                   <CoinLinkContainer $light={theme === "light"}>
                     <StyledLink
