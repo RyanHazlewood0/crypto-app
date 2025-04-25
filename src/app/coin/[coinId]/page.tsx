@@ -564,12 +564,20 @@ export default function Coin({ params }: CoinProps) {
                 </Link>
                 <Header>{thisCoinData.name}</Header>
               </HeaderAndBtnContainer>
-
               <CoinNameContainer $light={theme === "light"}>
                 <img src={thisCoinData.image.small} />
                 <h1 style={{ fontSize: "28px" }}>
                   {thisCoinData.name} ({thisCoinData.symbol})
                 </h1>
+                <div
+                  className="ml-auto mr-auto cursor-pointer"
+                  onClick={handleStarClick}
+                >
+                  <Star
+                    watchListCoins={watchListCoins}
+                    thisCoinData={thisCoinData}
+                  />
+                </div>
               </CoinNameContainer>
               <CoinLinkContainer $light={theme === "light"}>
                 <StyledLink

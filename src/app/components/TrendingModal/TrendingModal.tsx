@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { SetStateAction, Dispatch, useEffect, useState } from "react";
+import CloseIcon from "@/app/portfolio/svg/close-circle";
 
 interface TrendingProps {
   setTrendingModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -37,13 +38,13 @@ const TrendingModal = ({ setTrendingModalOpen }: TrendingProps) => {
   return (
     <ul
       className={`${
-        theme === "light" ? "bg-white" : "bg-[#3a3978]"
-      } flex flex-col gap-2 rounded-md w-[375px] z-10 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-3`}
+        theme === "light" ? "bg-gray-200" : "bg-[#3a3978]"
+      } flex flex-col gap-3 rounded-md w-[375px] z-10 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-3 border border-black`}
     >
       <div className="flex">
         <p>Top 5 trending 24H:</p>
         <button onClick={closeModal} className="ml-auto">
-          X
+          <CloseIcon />
         </button>
       </div>
       {trendingCoins.length > 1 &&
