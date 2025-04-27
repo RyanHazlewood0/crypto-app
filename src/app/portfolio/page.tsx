@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import AddAssetForm from "./AddAssetForm/AddAssetForm";
 import CoinEntry from "./CoinEntry/CoinEntry";
-import { PortfolioCoin, WatchListCoin } from "types";
+import { PortfolioCoin } from "types";
 import MobileButtons from "../components/MobileButtons/MobileButtons";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
@@ -185,11 +185,13 @@ export default function Portfolio() {
           isEditOpen={isEditOpen}
         />
       )}
+      {watchListOpen && <WatchList setWatchListOpen={setWatchlistOpen} />}
       {calcModalOpen && <InvestmentCalc setCalcMocalOpen={setCalcMocalOpen} />}
       {size.width < parseInt(breakpoints.mobile) &&
         !assetFormOpen &&
-        !calcModalOpen && (
-          <>
+        !calcModalOpen &&
+        !watchListOpen && (
+          <div className="flex">
             <button
               onClick={handleCalcModalOpen}
               disabled={assetFormOpen ? true : false}
@@ -199,6 +201,7 @@ export default function Portfolio() {
             >
               DCA
             </button>
+
             <button
               className={`${
                 theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
@@ -207,8 +210,16 @@ export default function Portfolio() {
             >
               +
             </button>
+            <button
+              className={`${
+                theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
+              } w-[56px] h-[56px] rounded-[50%] fixed z-[1] bottom-[75px] text-[18px] left-[70px] `}
+              onClick={handleWatchListOpen}
+            >
+              List
+            </button>
             <MobileButtons />
-          </>
+          </div>
         )}
     </>
   );
