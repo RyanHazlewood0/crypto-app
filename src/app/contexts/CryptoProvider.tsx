@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect } from "react";
 import { useState, Dispatch, SetStateAction } from "react";
-import { Coin } from "types";
+import { Coin, WatchListCoin } from "types";
 
 type CryptoContextType = {
   coins: Coin[];
@@ -19,6 +19,8 @@ type CryptoContextType = {
   setTheme: Dispatch<SetStateAction<string>>;
   toggleTheme: any;
   abbreviateNumber: (number: number) => string;
+  watchListCoins: WatchListCoin[];
+  setWatchListCoins: Dispatch<SetStateAction<WatchListCoin[]>>;
 };
 
 const CryptoContext = createContext<CryptoContextType | null>(null);
@@ -40,6 +42,7 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
   const [selectedMobileBtn, setSelectedMobileBtn] = useState("Overview");
   const [selectedNavLink, setSelectedNavLink] = useState("Home");
   const [theme, setTheme] = useState("light");
+  const [watchListCoins, setWatchListCoins] = useState<WatchListCoin[]>([]);
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -49,6 +52,13 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
     const abbreviated = (num / Math.pow(1000, magnitude)).toFixed(2);
     return `${abbreviated}${prefixes[magnitude]}`;
   }
+
+  useEffect(() => {
+    const storedWatchList = localStorage.getItem("testJSON");
+    if (storedWatchList) {
+      setWatchListCoins(JSON.parse(storedWatchList));
+    }
+  }, []);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("themeStyle");
@@ -142,6 +152,8 @@ export const CryptoProvider = ({ children }: useCryptoContextProps) => {
         setTheme,
         toggleTheme,
         abbreviateNumber,
+        watchListCoins,
+        setWatchListCoins,
       }}
     >
       {children}
