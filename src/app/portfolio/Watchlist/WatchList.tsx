@@ -9,9 +9,15 @@ interface WatchListProps {
 }
 
 const WatchList = ({ setWatchListOpen }: WatchListProps) => {
-  const { theme, watchListCoins } = useCryptoContext();
+  const { theme, watchListCoins, setWatchListCoins } = useCryptoContext();
   const handleCloseWatchList = () => {
     setWatchListOpen(false);
+  };
+
+  const handleRemoveItem = (id) => {
+    const updatedList = watchListCoins.filter((coin) => coin.id !== id);
+    setWatchListCoins(updatedList);
+    localStorage.setItem("testJSON", JSON.stringify(updatedList));
   };
 
   return (
@@ -40,6 +46,7 @@ const WatchList = ({ setWatchListOpen }: WatchListProps) => {
               </div>
             </Link>
             <button
+              onClick={() => handleRemoveItem(coin.id)}
               className={`border p-1 rounded-md ${
                 theme === "light"
                   ? "text-black border-black"
