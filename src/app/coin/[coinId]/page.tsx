@@ -215,6 +215,17 @@ const CopiedMessageContainer = styled.div`
   transform: translate(-50%, -50%);
 `;
 
+const StarMessageContainer = styled.div`
+  background: black;
+  border-radius: 6px;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 type CoinProps = {
   params: { coinId: string };
 };
@@ -227,6 +238,7 @@ export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
+  const [starClicked, setStarClicked] = useState(false);
 
   const {
     fiatCurrency,
@@ -269,6 +281,11 @@ export default function Coin({ params }: CoinProps) {
     setTimeout(() => setCopyClicked(false), 2000);
   };
 
+  const handleStarModal = () => {
+    setStarClicked(true);
+    setTimeout(() => setStarClicked(false), 2000);
+  };
+
   const handleStarClick = () => {
     if (watchListCoins.some((coin) => coin.name === thisCoinData.name)) {
       const updatedList = watchListCoins.filter(
@@ -289,6 +306,7 @@ export default function Coin({ params }: CoinProps) {
       localStorage.setItem("testJSON", myJSON);
       setWatchListCoins([...watchListCoins, watchListCoin]);
     }
+    handleStarModal();
   };
 
   if (hasError) {
@@ -323,6 +341,11 @@ export default function Coin({ params }: CoinProps) {
                         thisCoinData={thisCoinData}
                       />
                     </div>
+                    {starClicked === true && (
+                      <CopiedMessageContainer>
+                        Watchlist has been updated!
+                      </CopiedMessageContainer>
+                    )}
                   </CoinNameContainer>
                   <CoinLinkContainer $light={theme === "light"}>
                     <StyledLink
