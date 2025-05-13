@@ -9,8 +9,17 @@ import {
   Tooltip,
   Legend,
   Chart,
+  ChartType,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+
+declare module "chart.js" {
+  interface PluginOptionsByType<TType extends ChartType> {
+    centerText?: {
+      theme?: string;
+    };
+  }
+}
 
 const ChartContainer = styled.div<ThemeProp>`
   width: 49%;
