@@ -9,6 +9,7 @@ import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import InvestmentCalc from "./InvestmentCalc/InvestmentCalc";
 import WatchList from "./Watchlist/WatchList";
+import PercentageBreakdown from "./PercentageBreakdown/PercentageBreakdown";
 
 export default function Portfolio() {
   const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
@@ -143,6 +144,9 @@ export default function Portfolio() {
       )}
       {size.width > parseInt(breakpoints.mobile) ? (
         <div className="flex flex-col gap-[25px] mb-[25px]">
+          {portfolioCoins.length > 0 && (
+            <PercentageBreakdown portfolioCoins={portfolioCoins} />
+          )}
           {sortedPortfolioCoins &&
             sortedPortfolioCoins.map((coin: PortfolioCoin) => (
               <CoinEntry
