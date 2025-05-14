@@ -21,6 +21,11 @@ declare module "chart.js" {
   }
 }
 
+const MainContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const ChartContainer = styled.div<ThemeProp>`
   width: 49%;
   background: ${(props) => (props.$light ? "white" : "#191932")};
@@ -29,10 +34,47 @@ const ChartContainer = styled.div<ThemeProp>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 10px;
   @media (max-width: ${breakpoints.mobile}) {
     height: 200px;
     width: 100%;
   }
+`;
+
+const DetailsContainer = styled.div<ThemeProp>`
+  width: 49%;
+  background: ${(props) => (props.$light ? "white" : "#191932")};
+  border-radius: 6px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+  @media (max-width: ${breakpoints.mobile}) {
+    height: 200px;
+    width: 100%;
+  }
+`;
+
+const CoinContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CoinTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.5px;
+`;
+
+const CoinText = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const SymbolText = styled.p`
+  font-size: 16px;
+  color: gray;
 `;
 
 ChartJS.register(DoughnutController, ArcElement, Tooltip, Legend);
@@ -96,27 +138,43 @@ const PercentageBreakdown = ({ portfolioCoins }: PercentageBreakdownProps) => {
   };
 
   return (
-    <ChartContainer $light={theme === "light"}>
-      <Doughnut
-        data={doughnutChartData}
-        plugins={[centerTextPlugin]}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "top",
+    <MainContainer>
+      <ChartContainer $light={theme === "light"}>
+        <Doughnut
+          data={doughnutChartData}
+          plugins={[centerTextPlugin]}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              tooltip: {
+                enabled: true,
+              },
+              centerText: {
+                theme,
+              },
             },
-            tooltip: {
-              enabled: true,
-            },
-            centerText: {
-              theme,
-            },
-          },
-        }}
-      />
-    </ChartContainer>
+          }}
+        />
+      </ChartContainer>
+      <DetailsContainer $light={theme === "light"}>
+        {portfolioCoins.map((coin) => (
+          <CoinContainer key={coin.id}>
+            <CoinTextContainer>
+              <CoinText>{coin.name}</CoinText>
+              <SymbolText>
+                {coin.symbol.charAt(0).toUpperCase()}
+                {coin.symbol.slice(1)}
+              </SymbolText>
+            </CoinTextContainer>
+            <CoinText>{coin.percentOfTotal.toFixed(2)}%</CoinText>
+          </CoinContainer>
+        ))}
+      </DetailsContainer>
+    </MainContainer>
   );
 };
 
