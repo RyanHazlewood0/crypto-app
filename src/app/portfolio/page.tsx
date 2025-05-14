@@ -9,11 +9,10 @@ import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import InvestmentCalc from "./InvestmentCalc/InvestmentCalc";
 import WatchList from "./Watchlist/WatchList";
+import PercentageBreakdown from "./PercentageBreakdown/PercentageBreakdown";
 
 export default function Portfolio() {
-  const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[] | []>(
-    []
-  );
+  const [portfolioCoins, setPortfolioCoins] = useState<PortfolioCoin[]>([]);
   const [assetFormOpen, setAssetFormOpen] = useState(false);
   const [coinSelectValue, setCoinSelectValue] = useState("");
   const [purchasedAmountValue, setPurchasedAmountValue] = useState<string>("");
@@ -33,8 +32,16 @@ export default function Portfolio() {
   if (typeof window !== "undefined") {
     const storedCoins: PortfolioCoin[] =
       JSON.parse(localStorage.getItem("portCoins")) || [];
+    const totalVal = storedCoins.reduce(
+      (sum, coin) => sum + coin.totalValue,
+      0
+    );
     fixedDates = storedCoins.map((el) => {
-      return { ...el, purchaseDate: new Date(el.purchaseDate) };
+      return {
+        ...el,
+        purchaseDate: new Date(el.purchaseDate),
+        percentOfTotal: (el.totalValue / totalVal) * 100,
+      };
     });
   }
 
@@ -143,6 +150,9 @@ export default function Portfolio() {
       )}
       {size.width > parseInt(breakpoints.mobile) ? (
         <div className="flex flex-col gap-[25px] mb-[25px]">
+          {portfolioCoins.length > 0 && (
+            <PercentageBreakdown portfolioCoins={portfolioCoins} />
+          )}
           {sortedPortfolioCoins &&
             sortedPortfolioCoins.map((coin: PortfolioCoin) => (
               <CoinEntry

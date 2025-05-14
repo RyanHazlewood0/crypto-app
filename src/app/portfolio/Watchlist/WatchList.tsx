@@ -41,10 +41,10 @@ const WatchList = ({ setWatchListOpen }: WatchListProps) => {
                 <div>
                   <img src={coin.image} className="w-[32px]" />
                 </div>
-                <div>{coin.name}</div>
                 <div>({coin.symbol.toUpperCase()})</div>
               </div>
             </Link>
+            <div>${coin.currentPrice}</div>
             <button
               onClick={() => handleRemoveItem(coin.id)}
               className={`border p-1 rounded-md ${
