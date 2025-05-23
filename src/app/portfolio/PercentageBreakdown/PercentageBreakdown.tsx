@@ -161,6 +161,7 @@ const PercentageBreakdown = ({ portfolioCoins }: PercentageBreakdownProps) => {
         />
       </ChartContainer>
       <DetailsContainer $light={theme === "light"}>
+        <CoinText>Portfolio Percentage Breakdown:</CoinText>
         {portfolioCoins.map((coin) => (
           <CoinContainer key={coin.id}>
             <CoinTextContainer>
