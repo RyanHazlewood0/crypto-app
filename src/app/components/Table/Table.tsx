@@ -258,6 +258,7 @@ const Table = () => {
   if (hasError) {
     return <LoadingMessage>Error loading coin data...</LoadingMessage>;
   }
+
   return (
     <>
       <HeaderText
@@ -271,7 +272,7 @@ const Table = () => {
         <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
       )}
       <CoinTable>
-        {size.width > parseInt(breakpoints.mobile) && (
+        {size.width >= parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
               <StyledTh $light={theme === "light"}>
@@ -316,51 +317,62 @@ const Table = () => {
                   </ArrowSpan>
                 </TextAndArrowText>
               </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  1h%{" "}
-                  <ArrowSpan $left onClick={(e) => getSortOption(e, "1h-desc")}>
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  24h%{" "}
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "24h-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  7d%{" "}
-                  <ArrowSpan $left onClick={(e) => getSortOption(e, "7d-desc")}>
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
+              {size.width >= parseInt(breakpoints.tablet) && (
+                <>
+                  <StyledTh>
+                    <TextAndArrowText $light={theme === "light"}>
+                      1h%{" "}
+                      <ArrowSpan
+                        $left
+                        onClick={(e) => getSortOption(e, "1h-desc")}
+                      >
+                        ▼
+                      </ArrowSpan>
+                      <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
+                        ▲
+                      </ArrowSpan>
+                    </TextAndArrowText>
+                  </StyledTh>
+                  <StyledTh>
+                    <TextAndArrowText $light={theme === "light"}>
+                      24h%{" "}
+                      <ArrowSpan
+                        $left
+                        onClick={(e) => getSortOption(e, "24h-desc")}
+                      >
+                        ▼
+                      </ArrowSpan>
+                      <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
+                        ▲
+                      </ArrowSpan>
+                    </TextAndArrowText>
+                  </StyledTh>
+                  <StyledTh>
+                    <TextAndArrowText $light={theme === "light"}>
+                      7d%{" "}
+                      <ArrowSpan
+                        $left
+                        onClick={(e) => getSortOption(e, "7d-desc")}
+                      >
+                        ▼
+                      </ArrowSpan>
+                      <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
+                        ▲
+                      </ArrowSpan>
+                    </TextAndArrowText>
+                  </StyledTh>
+                  <StyledTh $light={theme === "light"}>
+                    {" "}
+                    <p style={{ marginBottom: "10px" }}>
+                      Circulating / Total Supply
+                    </p>
+                  </StyledTh>
+                </>
+              )}
               <StyledTh $light={theme === "light"}>
                 <p style={{ marginBottom: "10px" }}>24h Volume / Market Cap</p>
               </StyledTh>
-              <StyledTh $light={theme === "light"}>
-                {" "}
-                <p style={{ marginBottom: "10px" }}>
-                  Circulating / Total Supply
-                </p>
-              </StyledTh>
+
               <StyledTh $light={theme === "light"}>
                 {" "}
                 <p style={{ marginBottom: "10px" }}>Last 7d</p>
@@ -368,7 +380,7 @@ const Table = () => {
             </tr>
           </TableHeader>
         )}
-        {size.width < parseInt(breakpoints.mobile) && (
+        {size.width <= parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
               <StyledTh>
@@ -410,15 +422,15 @@ const Table = () => {
         <tbody>
           {sortedCoins.map((coin) => (
             <TableRow key={coin.id} $light={theme === "light"}>
-              {size.width > parseInt(breakpoints.mobile) && (
+              {size.width >= parseInt(breakpoints.mobile) && (
                 <StyledTd $left>{coin.market_cap_rank}</StyledTd>
               )}
-              {size.width > parseInt(breakpoints.mobile) ? (
+              {size.width >= parseInt(breakpoints.mobile) ? (
                 <NameAndImageContainer>
                   <CoinImage src={coin.image} />
                   <Link href={`/coin/${coin.id}`}>
                     <div style={{ display: "flex" }}>
-                      {size.width > parseInt(breakpoints.mobile)
+                      {size.width >= parseInt(breakpoints.mobile)
                         ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
                         : coin.symbol.toUpperCase()}
                     </div>
@@ -430,7 +442,7 @@ const Table = () => {
                     <CoinImage src={coin.image} />
                     <Link href={`/coin/${coin.id}`}>
                       <div style={{ display: "flex" }}>
-                        {size.width > parseInt(breakpoints.mobile)
+                        {size.width >= parseInt(breakpoints.mobile)
                           ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
                           : coin.symbol.toUpperCase()}
                       </div>
@@ -439,10 +451,10 @@ const Table = () => {
                 </StyledTd>
               )}
 
-              {size.width > parseInt(breakpoints.mobile) && (
+              {size.width >= parseInt(breakpoints.mobile) && (
                 <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
               )}
-              {size.width < parseInt(breakpoints.mobile) && (
+              {size.width <= parseInt(breakpoints.mobile) && (
                 <StyledTd>
                   <MobilePriceAnd24hContainer>
                     ${abbreviateNumber(coin.current_price)}
@@ -478,83 +490,99 @@ const Table = () => {
                   </MobilePriceAnd24hContainer>
                 </StyledTd>
               )}
-              {size.width > parseInt(breakpoints.mobile) && (
+              {size.width >= parseInt(breakpoints.mobile) && (
                 <>
-                  <StyledTd>
-                    {coin.price_change_percentage_1h_in_currency && (
-                      <ArrowAndPercentContainer>
-                        {Math.sign(
-                          coin.price_change_percentage_1h_in_currency
-                        ) !== 1 ? (
-                          <RedArrow />
-                        ) : (
-                          <GreenArrow />
-                        )}
-                        <PriceChangeDiv
-                          $green={
-                            Math.sign(
+                  {size.width >= parseInt(breakpoints.tablet) && (
+                    <>
+                      <StyledTd>
+                        {coin.price_change_percentage_1h_in_currency && (
+                          <ArrowAndPercentContainer>
+                            {Math.sign(
                               coin.price_change_percentage_1h_in_currency
-                            ) === 1
-                          }
-                        >
-                          {coin.price_change_percentage_1h_in_currency.toFixed(
-                            2
-                          )}
-                          %
-                        </PriceChangeDiv>
-                      </ArrowAndPercentContainer>
-                    )}
-                  </StyledTd>
-                  <StyledTd>
-                    {coin.price_change_percentage_24h_in_currency && (
-                      <ArrowAndPercentContainer>
-                        {Math.sign(
-                          coin.price_change_percentage_24h_in_currency
-                        ) !== 1 ? (
-                          <RedArrow />
-                        ) : (
-                          <GreenArrow />
+                            ) !== 1 ? (
+                              <RedArrow />
+                            ) : (
+                              <GreenArrow />
+                            )}
+                            <PriceChangeDiv
+                              $green={
+                                Math.sign(
+                                  coin.price_change_percentage_1h_in_currency
+                                ) === 1
+                              }
+                            >
+                              {coin.price_change_percentage_1h_in_currency.toFixed(
+                                2
+                              )}
+                              %
+                            </PriceChangeDiv>
+                          </ArrowAndPercentContainer>
                         )}
-                        <PriceChangeDiv
-                          $green={
-                            Math.sign(
+                      </StyledTd>
+                      <StyledTd>
+                        {coin.price_change_percentage_24h_in_currency && (
+                          <ArrowAndPercentContainer>
+                            {Math.sign(
                               coin.price_change_percentage_24h_in_currency
-                            ) === 1
-                          }
-                        >
-                          {coin.price_change_percentage_24h_in_currency.toFixed(
-                            2
-                          )}
-                          %
-                        </PriceChangeDiv>
-                      </ArrowAndPercentContainer>
-                    )}
-                  </StyledTd>
-                  <StyledTd>
-                    {coin.price_change_percentage_7d_in_currency && (
-                      <ArrowAndPercentContainer>
-                        {Math.sign(
-                          coin.price_change_percentage_7d_in_currency
-                        ) !== 1 ? (
-                          <RedArrow />
-                        ) : (
-                          <GreenArrow />
+                            ) !== 1 ? (
+                              <RedArrow />
+                            ) : (
+                              <GreenArrow />
+                            )}
+                            <PriceChangeDiv
+                              $green={
+                                Math.sign(
+                                  coin.price_change_percentage_24h_in_currency
+                                ) === 1
+                              }
+                            >
+                              {coin.price_change_percentage_24h_in_currency.toFixed(
+                                2
+                              )}
+                              %
+                            </PriceChangeDiv>
+                          </ArrowAndPercentContainer>
                         )}
-                        <PriceChangeDiv
-                          $green={
-                            Math.sign(
+                      </StyledTd>
+                      <StyledTd>
+                        {coin.price_change_percentage_7d_in_currency && (
+                          <ArrowAndPercentContainer>
+                            {Math.sign(
                               coin.price_change_percentage_7d_in_currency
-                            ) === 1
-                          }
-                        >
-                          {coin.price_change_percentage_7d_in_currency.toFixed(
-                            2
-                          )}
-                          %
-                        </PriceChangeDiv>
-                      </ArrowAndPercentContainer>
-                    )}
-                  </StyledTd>
+                            ) !== 1 ? (
+                              <RedArrow />
+                            ) : (
+                              <GreenArrow />
+                            )}
+                            <PriceChangeDiv
+                              $green={
+                                Math.sign(
+                                  coin.price_change_percentage_7d_in_currency
+                                ) === 1
+                              }
+                            >
+                              {coin.price_change_percentage_7d_in_currency.toFixed(
+                                2
+                              )}
+                              %
+                            </PriceChangeDiv>
+                          </ArrowAndPercentContainer>
+                        )}
+                      </StyledTd>
+                      <StyledTd>
+                        <NumberSeparator>
+                          <div>{abbreviateNumber(coin.circulating_supply)}</div>
+                          <div>{abbreviateNumber(coin.total_supply)}</div>
+                        </NumberSeparator>
+                        <LevelIndicatorOuter>
+                          <LevelIndicatorInner
+                            style={{ width: `${findSupplyLevel(coin)}%` }}
+                          />
+                        </LevelIndicatorOuter>
+                      </StyledTd>
+                    </>
+                  )}
+
                   <StyledTd>
                     <NumberSeparator>
                       {coin.total_volume && coin.market_cap && (
@@ -567,17 +595,6 @@ const Table = () => {
                     <LevelIndicatorOuter>
                       <LevelIndicatorInner
                         style={{ width: `${findVolumeLevel(coin)}%` }}
-                      />
-                    </LevelIndicatorOuter>
-                  </StyledTd>
-                  <StyledTd>
-                    <NumberSeparator>
-                      <div>{abbreviateNumber(coin.circulating_supply)}</div>
-                      <div>{abbreviateNumber(coin.total_supply)}</div>
-                    </NumberSeparator>
-                    <LevelIndicatorOuter>
-                      <LevelIndicatorInner
-                        style={{ width: `${findSupplyLevel(coin)}%` }}
                       />
                     </LevelIndicatorOuter>
                   </StyledTd>

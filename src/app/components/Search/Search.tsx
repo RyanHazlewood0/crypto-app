@@ -87,7 +87,7 @@ const Search = () => {
   };
 
   return (
-    <SearchContainer onBlur={handleBlur}>
+    <div className={"w-[36px] md:w-[175px] lg:w-[356px]"} onBlur={handleBlur}>
       <SearchInput
         type="text"
         placeholder={
@@ -109,7 +109,7 @@ const Search = () => {
           ))}
         </DropDown>
       )}
-    </SearchContainer>
+    </div>
   );
 };
 
