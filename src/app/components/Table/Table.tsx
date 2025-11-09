@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import {
-  abbreviateNumber,
-  findSupplyLevel,
-  findVolumeLevel,
-} from "helper-functions";
+import { abbreviateNumber, findVolumeLevel } from "helper-functions";
 import { Coin } from "types";
 import TableLineChart from "../TableLineChart/TableLineChart";
 import Link from "next/link";
@@ -113,10 +109,10 @@ const CoinImage = styled.img`
 `;
 
 const LineChartContainer = styled.div`
-  width: 150px;
+  width: 175px;
   max-height: 47px;
   @media (max-width: ${breakpoints.mobile}) {
-    width: 120px;
+    width: 80px;
     margin-left: 20px;
   }
 `;
@@ -361,12 +357,6 @@ const Table = () => {
                       </ArrowSpan>
                     </TextAndArrowText>
                   </StyledTh>
-                  <StyledTh $light={theme === "light"}>
-                    {" "}
-                    <p style={{ marginBottom: "10px" }}>
-                      Circulating / Total Supply
-                    </p>
-                  </StyledTh>
                 </>
               )}
               <StyledTh $light={theme === "light"}>
@@ -568,17 +558,6 @@ const Table = () => {
                             </PriceChangeDiv>
                           </ArrowAndPercentContainer>
                         )}
-                      </StyledTd>
-                      <StyledTd>
-                        <NumberSeparator>
-                          <div>{abbreviateNumber(coin.circulating_supply)}</div>
-                          <div>{abbreviateNumber(coin.total_supply)}</div>
-                        </NumberSeparator>
-                        <LevelIndicatorOuter>
-                          <LevelIndicatorInner
-                            style={{ width: `${findSupplyLevel(coin)}%` }}
-                          />
-                        </LevelIndicatorOuter>
                       </StyledTd>
                     </>
                   )}
