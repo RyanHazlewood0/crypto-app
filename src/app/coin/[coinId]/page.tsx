@@ -841,7 +841,8 @@ export default function Coin({ params }: CoinProps) {
     );
   } else if (
     size.width > parseInt(breakpoints.mobile) &&
-    size.width <= parseInt(breakpoints.tablet)
+    size.width <= parseInt(breakpoints.tablet) &&
+    thisCoinData
   ) {
     return (
       <Container>
