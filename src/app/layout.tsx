@@ -11,7 +11,7 @@ const MainContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   @media (max-width: ${breakpoints.tablet}) {
-    max-width: 768px;
+    max-width: 1368px;
   }
   @media (max-width: ${breakpoints.mobile}) {
     max-width: 375px;

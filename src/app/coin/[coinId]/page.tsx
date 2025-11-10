@@ -283,6 +283,7 @@ export default function Coin({ params }: CoinProps) {
           `https://pro-api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
         );
         const fetchedData: CoinPageObject = await response.json();
+        console.log(fetchedData);
         setThisCoinData(fetchedData);
       } catch {
         setHasError(true);
@@ -841,7 +842,8 @@ export default function Coin({ params }: CoinProps) {
     );
   } else if (
     size.width > parseInt(breakpoints.mobile) &&
-    size.width <= parseInt(breakpoints.tablet)
+    size.width <= parseInt(breakpoints.tablet) &&
+    thisCoinData
   ) {
     return (
       <Container>
