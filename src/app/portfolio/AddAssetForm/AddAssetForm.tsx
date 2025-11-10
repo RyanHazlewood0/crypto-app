@@ -17,6 +17,9 @@ const ModalContainer = styled.div<ThemeProp>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 768px;
+  }
   @media (max-width: ${breakpoints.mobile}) {
     width: 350px;
   }
@@ -34,10 +37,13 @@ const HeaderText = styled.h1`
 `;
 
 const InnerContainer = styled.div`
-  width: 790px;
+  width: 100%;
   height: 241px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: ${breakpoints.tablet}) {
+    gap: 20px;
+  }
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
   }
@@ -50,12 +56,16 @@ const ImageContainer = styled.div<ThemeProp>`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 90%;
+  }
 `;
 const CoinForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 461px;
+
   @media (max-width: ${breakpoints.mobile}) {
     width: 100%;
   }
@@ -63,7 +73,7 @@ const CoinForm = styled.form`
 const BtnContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
 `;
 
 const CancelBtn = styled.button<ThemeProp>`
@@ -71,6 +81,9 @@ const CancelBtn = styled.button<ThemeProp>`
   height: 45px;
   background: ${(props) => (props.$light ? "white" : "#232336")};
   border-radius: 6px;
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 190px;
+  }
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
   }
@@ -81,6 +94,9 @@ const SaveBtn = styled.button<ThemeProp>`
   height: 45px;
   background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
   border-radius: 6px;
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 190px;
+  }
   @media (max-width: ${breakpoints.mobile}) {
     width: 45%;
   }

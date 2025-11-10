@@ -7,15 +7,6 @@ import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const SearchContainer = styled.div`
-  display: column;
-  width: 356px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 36px;
-    height: 36px;
-  }
-`;
-
 const SearchInput = styled.input<ThemeProp>`
   background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
   padding: 10px 10px 10px 35px;

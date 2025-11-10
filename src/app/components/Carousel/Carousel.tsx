@@ -241,7 +241,10 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
                         ) === 1
                       }
                     >
-                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                      {coin.price_change_percentage_1h_in_currency?.toFixed(
+                        2
+                      ) ?? "0.00"}
+                      %
                     </PriceChangeDiv>
                   </ArrowAndPercentContainer>
                 </div>

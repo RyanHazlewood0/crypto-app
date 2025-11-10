@@ -1,199 +1,11 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-    align-items: center;
-    padding: 0 10px 0 10px;
-    margin-bottom: 20px;
-  }
-`;
-
-const HeaderText = styled.h1`
-  font-size: 24px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-    align-items: center;
-  }
-`;
-
-const QuitBtn = styled.button<ThemeProp>`
-  width: 24px;
-  height: 24px;
-  border: ${(props) => (props.$light ? "solid 1px black" : "solid 1px white")};
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CoinDisplay = styled.div<ThemeProp>`
-  display: flex;
-  padding: 8px;
-  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
-  width: 170px;
-  height: 44px;
-  border-radius: 4px;
-  justify-content: space-around;
-  align-items: center;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 30%;
-  }
-`;
-
-const CoinSelect = styled.input<ThemeProp>`
-  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
-  width: 588px;
-  height: 44px;
-  border-radius: 4px;
-  padding: 8px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 60%;
-  }
-`;
-
-const SearchModal = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #ebebfd;
-  border-radius: 6px;
-  padding: 10px;
-  position: absolute;
-  z-index: 2;
-  width: 588px;
-  margin-top: 44px;
-  margin-left: 202px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 198px;
-    right: 10px;
-  }
-`;
-
-const DatesContainer = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-  }
-`;
-const DatesInnerContainer = styled.div`
-  display: flex;
-  width: 499px;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 350px;
-    padding: 0 10px 0 10px;
-  }
-`;
-const DateInput = styled.input<ThemeProp>`
-  background: ${(props) => (props.$light ? "white" : "#191925")};
-  width: 238px;
-  padding: 8px 24px 8px 8px;
-  border-radius: 8px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 150px;
-  }
-`;
-
-const QuantitySymbol = styled.div<ThemeProp>`
-  width: 83px;
-  border-radius: 8px;
-  padding: 8px;
-  background: ${(props) => (props.$light ? "#ebebfd" : "#191925")};
-  text-align: center;
-`;
-
-const InfoContainer = styled.div<ThemeProp>`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: ${(props) => (props.$light ? "#f3f5f9" : "#191925")};
-  padding: 32px;
-  margin-bottom: 32px;
-  gap: 12px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 330px;
-    padding: 10px;
-    margin: 0 0 20px 10px;
-    border-radius: 4px;
-  }
-`;
-
-const InfoRow = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const InfoText = styled.p`
-  font-size: 16px;
-`;
-
-const NumText = styled.p`
-  font-size: 20px;
-`;
-
-const Line = styled.hr`
-  border-top: 1px solid #b0b0eb;
-  width: 100%;
-`;
-
-const CalculateBtn = styled.button<ThemeProp>`
-  width: 100%;
-  background: ${(props) => (props.$light ? "#B0B0EB" : "#6161d6")};
-  padding: 12px;
-  font-size: 16px;
-  color: white;
-  border-radius: 6px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 330px;
-    margin-left: 10px;
-  }
-`;
-
-const CoinOption = styled.div`
-  cursor: pointer;
-  &:hover {
-    background: #0077b6;
-  }
-`;
-
-const CoinImage = styled.img`
-  width: 28px;
-  height: 28px;
-`;
-
-const CoinText = styled.p`
-  font-size: 16px;
-`;
-
-const NumberInput = styled.input<ThemeProp>`
-  width: 110px;
-  background: ${(props) => (props.$light ? "#f3f5f9" : "#191925")};
-  border: ${(props) =>
-    props.$light ? "solid 1px #191925" : "solid 1px #f3f5f9"};
-  border-radius: 4px;
-  padding: 0 5px 0 5px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 60px;
-  }
-`;
-
 type InvestmentCalcProps = {
   setCalcMocalOpen: Dispatch<SetStateAction<boolean>>;
-};
-
-type ThemeProp = {
-  $light?: boolean;
 };
 
 const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
@@ -331,7 +143,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
     <div
       className={`${
         theme === "light" ? "bg-[#ced4da]" : "bg-[#13121a]"
-      } w-[350px] md:w-[886px] justify-between items-center flex flex-col fixed top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] z-10 rounded-[20px] p-[48px] `}
+      } w-[350px] md:w-[768px] justify-between items-center flex flex-col fixed top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] z-10 rounded-[20px] p-[48px] `}
     >
       <div className="w-[350px] md:w-full items-center px-[10px] py-0 md:p-0 mb-[20px] flex md:justify-between md:mb-[32px]">
         <h1 className="text-[24px] w-[350px] items-center">
@@ -347,7 +159,7 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
         </button>
       </div>
       <form onSubmit={handleSubmit} className="w-[350px] md:w-full">
-        <div className="w-[350px] md:w-full mb-5 px-[10px] py-0 md:p-0 flex justify-between md:mb-8">
+        <div className="w-[350px] md:w-[720px] mb-5 px-[10px] py-0 md:p-0 flex justify-between md:mb-8">
           <div
             className={`${
               theme === "light" ? "bg-[#ebebfd]" : "bg-[#191925]"
@@ -374,10 +186,10 @@ const InvestmentCalc = ({ setCalcMocalOpen }: InvestmentCalcProps) => {
               value={searchVal}
               className={`${
                 theme === "light" ? "bg-[#ebebfd]" : "bg-[#191925]"
-              } w-[60%] md:w-[588px] h-[44px] rounded-[4px] p-[8px]`}
+              } w-[60%] md:mr-[48px] md:w-[477.5px] h-[44px] rounded-[4px] p-[8px]`}
             />
             {searchModalOpen && (
-              <div className="w-[190px] right-[10px] md:w-[588px] flex flex-col bg-[#ebebfd] rounded-[6px] p-[10px] absolute z-2 mt-[44px] ml-[202px]">
+              <div className="w-[198px] md:w-[477.5px] flex flex-col bg-[#ebebfd] rounded-[6px] p-[10px] absolute z-2 mt-[44px] md:ml-[195px] ml-[37.5%]">
                 {filteredCoins.map((coin) => (
                   <div
                     key={coin.id}
