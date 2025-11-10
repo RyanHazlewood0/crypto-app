@@ -24,7 +24,7 @@ const ConverterContainer = styled.div`
 `;
 
 const ConverterBox = styled.div<ThemeProp>`
-  width: 636px;
+  width: 47.5%;
   height: 200px;
   border-radius: 16px;
   display: flex;
@@ -103,6 +103,7 @@ const ReverseConvertBtn = styled.div<ThemeProp>`
 `;
 
 const SellAmountInput = styled.input<ThemeProp>`
+  width: 30%;
   border: solid 1px gray;
   border-radius: 6px;
   background: ${(props) => (props.$light ? "white" : "#191932")};
@@ -112,6 +113,7 @@ const SellAmountInput = styled.input<ThemeProp>`
 `;
 
 const BuyAmountInput = styled.input<ThemeProp>`
+  width: 30%;
   border: solid 1px gray;
   border-radius: 6px;
   background: ${(props) => (props.$light ? "white" : "#191932")};

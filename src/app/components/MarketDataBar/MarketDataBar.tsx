@@ -99,21 +99,7 @@ const MarketDataBar = () => {
           theme === "light" ? "bg-[#353570]" : "bg-[#1e1932]"
         } w-full h-12 flex items-center text-white`}
       >
-        <div className="w-[375px] max-w-[1440px] flex md:w-1/2 justify-between m-auto">
-          {size.width > parseInt(breakpoints.mobile) && (
-            <>
-              <div className={"flex items-center"}>
-                <div className="mr-[5px]">
-                  <CoinCount />
-                </div>
-                <div>Coins {marketData.coins}</div>
-              </div>
-              <div className={"flex items-center"}>
-                <div>${marketData.totalMarketCap}</div>
-              </div>
-            </>
-          )}
-
+        <div className="w-[375px] md:w-[600px] flex justify-between m-auto">
           <div className={"flex items-center"}>
             <div className="mr-[5px]">
               <TotalVol />

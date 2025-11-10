@@ -12,14 +12,6 @@ import { Coin } from "types";
 import { useEffect } from "react";
 import { breakpoints } from "breakpoints";
 
-const CarouselContainer = styled.div`
-  width: 100%;
-  margin-top: 80px;
-  @media (max-width: ${breakpoints.mobile}) {
-    margin-top: 40px;
-  }
-`;
-
 const CarouselBox = styled.div<StylePropSelected>`
   @media (max-width: ${breakpoints.mobile}) {
     width: 181px !important;
@@ -212,7 +204,7 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
 
   return (
     carouselCoins !== null && (
-      <CarouselContainer>
+      <div className={"mt-[40px] md:mt-[80px] "}>
         <HeaderText $light={theme === "light"}>
           Select 1 - 2 currencies below to view statistics
         </HeaderText>
@@ -249,14 +241,17 @@ const Carousel = ({ setSelectedCoin, selectedCoin }: CarouselProps) => {
                         ) === 1
                       }
                     >
-                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                      {coin.price_change_percentage_1h_in_currency?.toFixed(
+                        2
+                      ) ?? "0.00"}
+                      %
                     </PriceChangeDiv>
                   </ArrowAndPercentContainer>
                 </div>
               </CarouselBox>
             ))}
         </StyledSlider>
-      </CarouselContainer>
+      </div>
     )
   );
 };

@@ -99,13 +99,13 @@ export default function Portfolio() {
       {size.width > parseInt(breakpoints.mobile) && (
         <div className="w-full h-[45px] flex justify-between mb-[25px]">
           <h1 className="text-[20px]">Portfolio</h1>
-          <div className="gap-[15px] flex">
+          <div className="gap-[15px] flex w-full justify-end">
             {size.width > parseInt(breakpoints.mobile) && (
               <>
                 <button
                   className={`${
                     theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-                  } h-full w-[244px] rounded-[6px]`}
+                  } h-full md:w-[175px] lg:w-[244px] rounded-[6px]`}
                   onClick={handleAssetFormOpen}
                   disabled={calcModalOpen ? true : false}
                 >
@@ -114,16 +114,16 @@ export default function Portfolio() {
                 <button
                   className={`${
                     theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-                  } h-full w-[244px] rounded-[6px]`}
+                  } h-full md:w-[175px] lg:w-[244px] rounded-[6px]`}
                   onClick={handleCalcModalOpen}
                   disabled={assetFormOpen ? true : false}
                 >
-                  Investment Calculator (DCA)
+                  Investment Calc
                 </button>
                 <button
                   className={`${
                     theme === "light" ? "bg-[#B0B0EB]" : "bg-[#6161d6]"
-                  } h-full w-[244px] rounded-[6px]`}
+                  } h-full md:w-[175px] lg:w-[244px] rounded-[6px]`}
                   onClick={handleWatchListOpen}
                 >
                   Watchlist

@@ -6,23 +6,10 @@ import Portfolio from "./svg/Portfolio";
 import SearchIcon from "./svg/SearchIcon";
 import Moon from "./svg/Moon";
 import Search from "../Search/Search";
-import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
-
-const RightDiv = styled.div`
-  display: flex;
-  align-items: center;
-  width: 544px;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.mobile}) {
-    max-width: 168px;
-    height: 36px;
-    align-items: center;
-  }
-`;
 
 const NavBar = () => {
   const {
@@ -101,7 +88,7 @@ const NavBar = () => {
           </>
         )}
       </div>
-      <RightDiv className=" justify-between w-[168px] h-[36px] md:w-[544px] flex items-center">
+      <div className=" justify-between h-[36px] flex items-center gap-[5px]">
         <div className="flex items-center relative w-[36px] md:w-auto">
           <div className="absolute ml-[10px] w-[36px]">
             <SearchIcon />
@@ -117,7 +104,7 @@ const NavBar = () => {
         >
           {theme === "light" ? <Moon /> : <ThemeIcon />}
         </div>
-      </RightDiv>
+      </div>
     </div>
   );
 };
