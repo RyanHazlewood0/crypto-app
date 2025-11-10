@@ -35,7 +35,7 @@ const TableHeader = styled.thead`
   font-size: 12px;
 `;
 
-const NameAndImageContainer = styled.td`
+const NameAndImageContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 15px;
@@ -419,7 +419,7 @@ const Table = () => {
                 <NameAndImageContainer>
                   <CoinImage src={coin.image} />
                   <Link href={`/coin/${coin.id}`}>
-                    <div style={{ display: "flex" }}>
+                    <div>
                       {size.width >= parseInt(breakpoints.mobile)
                         ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
                         : coin.symbol.toUpperCase()}

@@ -6,7 +6,7 @@ import Carousel from "./components/Carousel/Carousel";
 import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeSelect";
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
 import Converter from "./components/converter/page";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Coin } from "types";
 import MobileButtons from "./components/MobileButtons/MobileButtons";
 import useWindowSize from "windowSizeHook";
@@ -21,9 +21,11 @@ export default function Home() {
     useCryptoContext();
   const size = useWindowSize();
 
-  if (selectedMobileBtn !== "Portfolio") {
-    setSelectedNavLink("Home");
-  }
+  useEffect(() => {
+    if (selectedMobileBtn !== "Portfolio") {
+      setSelectedNavLink("Home");
+    }
+  }, [selectedMobileBtn]);
 
   return (
     <>
