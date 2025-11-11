@@ -97,9 +97,9 @@ const MarketDataBar = () => {
       <div
         className={`${
           theme === "light" ? "bg-[#353570]" : "bg-[#1e1932]"
-        } w-full h-12 flex items-center text-white`}
+        } w-full flex items-center text-white`}
       >
-        <div className="w-[375px] md:w-[600px] flex justify-between m-auto">
+        <div className="w-full md:max-w-2xl flex justify-between m-auto px-4 py-2">
           <div className={"flex items-center"}>
             <div className="mr-[5px]">
               <TotalVol />

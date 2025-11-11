@@ -5,62 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
-const CurrencyContainer = styled.div<ThemeProp>`
-  display: flex;
-  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
-  width: 100%;
-  border: solid 1px gray;
-  border-radius: 6px;
-  height: 44px;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  position: relative;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 100%;
-    height: 36px;
-  }
-`;
-
-const DropdownContainer = styled.div<ThemeProp>`
-  color: ${(props) => (props.$light ? "#353570" : "white")};
-  display: flex;
-  flex-direction: column;
-  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
-  padding: 10px;
-  border: solid 1px gray;
-  position: absolute;
-  width: 108px;
-  text-align: center;
-  border-radius: 6px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 80px;
-  }
-`;
-
-const DropdownAndOptionContainer = styled.div`
-  width: 108px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 80px;
-    height: 36px;
-    position: relative;
-    z-index: 3;
-  }
-`;
-
-const CurrencyOptionContainer = styled.div`
-  width: 100%;
-  cursor: pointer;
-  &:hover {
-    background-color: #0077b6;
-  }
-`;
-
-type ThemeProp = {
-  $light?: boolean;
-};
-
 const CurrencySelect = () => {
   const { setFiatCurrency, fiatCurrency, isClient, theme } = useCryptoContext();
   const [fiatDropownOpen, setFiatDropdownOpen] = useState(false);
@@ -95,29 +39,36 @@ const CurrencySelect = () => {
   useOutsideAlerter(wrapperRef);
 
   return (
-    <DropdownAndOptionContainer ref={wrapperRef}>
-      <CurrencyContainer
+    <div ref={wrapperRef} className={"relative z-3 h-[36px] w-[80px"}>
+      <div
         onClick={handleToggleDropdown}
-        $light={theme === "light"}
+        className={`flex hover:cursor-pointer h-[36px] md:h-[44px] w-[80px] md:w-[108px] gap-2.5 relative justify-center items-center rounded-[6px] border border-solid border-gray-500  ${
+          theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+        }`}
       >
         {size.width > parseInt(breakpoints.mobile) && <DollarSymbol />}
 
         <p>{isClient ? fiatCurrency.toUpperCase() : "usd"}</p>
         <p>▼</p>
-      </CurrencyContainer>
+      </div>
       {fiatDropownOpen && (
-        <DropdownContainer $light={theme === "light"}>
+        <div
+          className={`flex p-2.5 flex-col border border-solid border-gray-500 w-[80px] md:w-[108px] rounded-[6px] text-center absolute  ${
+            theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+          }`}
+        >
           {currencyOptions.map((currency) => (
-            <CurrencyOptionContainer
+            <div
               key={currency}
               onClick={(e) => handleCurrencySelect(e)}
+              className={"w-full hover:cursor-pointer hover:bg-[#0077b6]"}
             >
               {currency.toUpperCase()}
-            </CurrencyOptionContainer>
+            </div>
           ))}
-        </DropdownContainer>
+        </div>
       )}
-    </DropdownAndOptionContainer>
+    </div>
   );
 };
 
