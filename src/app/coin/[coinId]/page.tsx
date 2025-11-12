@@ -10,243 +10,6 @@ import RedArrow from "./svg/RedArrow";
 import GreenArrow from "./svg/GreenArrow";
 import Star from "./svg/Star";
 import { CoinPageObject } from "types";
-import { breakpoints } from "breakpoints";
-import useWindowSize from "windowSizeHook";
-
-const Container = styled.div`
-  width: 100%;
-`;
-
-const Header = styled.h1`
-  font-size: 20px;
-`;
-
-const BackBtn = styled.div`
-  font-size: 20px;
-  margin-right: 15px;
-`;
-
-const HeaderAndBtnContainer = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-`;
-
-const TopHalfContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 100px;
-  @media (max-width: ${breakpoints.mobile}) {
-    flex-direction: column;
-  }
-`;
-
-const BottomHalfContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const InfoContainerOne = styled.div`
-  width: 692px;
-  display: flex;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 100%;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 100%;
-    flex-direction: column;
-  }
-`;
-
-const NameAndLinkContainer = styled.div`
-  width: 305px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 48%;
-  }
-`;
-
-const CoinNameContainer = styled.div<ThemeProp>`
-  width: 305px;
-  padding: 10% 0 10% 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  border-radius: 12px;
-  gap: 20px;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 100%;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 100%;
-    gap: 5px;
-    padding: 7.5% 0 7.5% 0;
-  }
-`;
-
-const PriceInfoContainer = styled.div<ThemeProp>`
-  width: 355px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  border-radius: 12px;
-  gap: 10px;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 48%;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 15px 0 15px 0;
-  }
-`;
-
-const CoinLinkContainer = styled.div<ThemeProp>`
-  width: 305px;
-  padding: 10px 0 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  border-radius: 12px;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 100%;
-    margin-top: 30px;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 100%;
-    margin-top: 0;
-  }
-`;
-
-const InfoContainerThree = styled.div`
-  width: 692px;
-`;
-
-const DescriptionHeader = styled.h2`
-  font-size: 24px;
-  @media (max-width: ${breakpoints.tablet}) {
-    margin-top: 25px;
-  }
-`;
-
-const DescriptionText = styled.p`
-  font-size: 14px;
-`;
-
-const InfoContainerFour = styled.div`
-  width: 544px;
-  gap: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 100%;
-    margin-top: 30px;
-  }
-`;
-
-const LinkContainer = styled.div<ThemeProp>`
-  width: 100%;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  border-radius: 12px;
-`;
-
-const TableRow = styled.tr<ThemeProp>`
-  background: ${(props) => (props.$light ? "white" : "#1e1932")};
-  font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 544px;
-  padding: 5px 15px 5px 15px;
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 768px;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 355px;
-  }
-`;
-
-const StyledTd = styled.td`
-  display: flex;
-  align-items: center;
-  padding: 10px 0 10px 0;
-`;
-
-const LeftContent = styled.div`
-  display: flex;
-  gap: 10px;
-  font-size: 16px;
-`;
-
-const RightText = styled.p`
-  font-size: 20px;
-`;
-
-const TableContainer = styled.div`
-  @media (max-width: ${breakpoints.tablet}) {
-    width: 100%;
-    margin-top: 30px;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    margin-top: 0;
-  }
-`;
-
-const PriceInnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 243px;
-  gap: 20px;
-`;
-
-const DateText = styled.p<ThemeProp>`
-  font-size: 14px;
-  color: ${(props) => (props.$light ? "#353570" : "#b9b9ba")};
-  text-align: center;
-`;
-
-const MobileContainer = styled.div`
-  width: 375px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 15px;
-  padding: 10px;
-`;
-
-const StyledLink = styled.a`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-const CopiedMessageContainer = styled.div`
-  background: black;
-  border-radius: 6px;
-  color: white;
-  padding: 10px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
 
 type CoinProps = {
   params: { coinId: string };
@@ -271,8 +34,6 @@ export default function Coin({ params }: CoinProps) {
   } = useCryptoContext();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-
-  const size = useWindowSize();
 
   useEffect(() => {
     setSelectedNavLink("Coin");
@@ -335,520 +96,22 @@ export default function Coin({ params }: CoinProps) {
     return <p>Error loading data</p>;
   }
 
-  if (size.width > parseInt(breakpoints.tablet)) {
-    return (
-      <Container>
+  return (
+    <>
+      <div className={"w-full flex flex-col justify-center gap-[15px]"}>
         {thisCoinData !== null && (
           <>
-            <HeaderAndBtnContainer>
-              <StyledLink href="/">
-                <BackBtn>←</BackBtn>
-              </StyledLink>
-              <Header>{thisCoinData.name}</Header>
-            </HeaderAndBtnContainer>
-            <TopHalfContainer>
-              <InfoContainerOne>
-                <NameAndLinkContainer>
-                  <CoinNameContainer $light={theme === "light"}>
-                    <img src={thisCoinData.image.small} />
-                    <h1 style={{ fontSize: "28px" }}>
-                      {thisCoinData.name} ({thisCoinData.symbol})
-                    </h1>
-                    <div
-                      className="ml-auto mr-auto cursor-pointer"
-                      onClick={handleStarClick}
-                    >
-                      <Star
-                        watchListCoins={watchListCoins}
-                        thisCoinData={thisCoinData}
-                      />
-                    </div>
-                    {starClicked === true && (
-                      <CopiedMessageContainer>
-                        Watchlist has been updated!
-                      </CopiedMessageContainer>
-                    )}
-                  </CoinNameContainer>
-                  <CoinLinkContainer $light={theme === "light"}>
-                    <StyledLink
-                      href={thisCoinData.links.homepage[0]}
-                      style={{ marginRight: "10px" }}
-                    >
-                      {thisCoinData.links.homepage[0]}
-                    </StyledLink>
-                    <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                      <CopyIcon />
-                    </div>
-                  </CoinLinkContainer>
-                  {copyClicked === true && (
-                    <CopiedMessageContainer>
-                      Link has been copied!
-                    </CopiedMessageContainer>
-                  )}
-                </NameAndLinkContainer>
-                <PriceInfoContainer $light={theme === "light"}>
-                  <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.current_price[fiatCurrency]
-                    )}
-                  </h1>
-                  <PriceInnerContainer>
-                    <div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "15px",
-                          marginBottom: "7px",
-                        }}
-                      >
-                        <GreenArrow />
-                        <p style={{ fontSize: "16px" }}>All time high:</p>
-                        <p style={{ fontSize: "20px" }}>
-                          $
-                          {abbreviateNumber(
-                            thisCoinData.market_data.ath[fiatCurrency]
-                          )}
-                        </p>{" "}
-                      </div>
-                      <DateText $light={theme === "light"}>
-                        {formatDate(
-                          thisCoinData.market_data.ath_date[fiatCurrency]
-                        )}
-                      </DateText>
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "15px",
-                          marginBottom: "7px",
-                        }}
-                      >
-                        <RedArrow />
-                        <p style={{ fontSize: "16px" }}>All time low:</p>
-                        <p style={{ fontSize: "20px" }}>
-                          $
-                          {abbreviateNumber(
-                            thisCoinData.market_data.atl[fiatCurrency]
-                          )}
-                        </p>{" "}
-                      </div>
-                      <DateText $light={theme === "light"}>
-                        {formatDate(
-                          thisCoinData.market_data.atl_date[fiatCurrency]
-                        )}
-                      </DateText>
-                    </div>
-                  </PriceInnerContainer>
-                </PriceInfoContainer>
-              </InfoContainerOne>
-              <TableContainer>
-                <table className={"md:w-[10%]"}>
-                  <TableRow
-                    style={{
-                      borderTopLeftRadius: "12px",
-                      borderTopRightRadius: "12px",
-                    }}
-                    $light={theme === "light"}
-                  >
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Market Cap</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.market_cap[fiatCurrency]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Fully Diluted Valuation</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.fully_diluted_valuation[
-                            fiatCurrency
-                          ]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Volume 24h</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.total_volume[fiatCurrency]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Circulating Supply</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        {abbreviateNumber(
-                          thisCoinData.market_data.circulating_supply
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow
-                    style={{
-                      borderBottomLeftRadius: "12px",
-                      borderBottomRightRadius: "12px",
-                    }}
-                    $light={theme === "light"}
-                  >
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Total Supply</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        {abbreviateNumber(
-                          thisCoinData.market_data.total_supply
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                </table>
-              </TableContainer>
-            </TopHalfContainer>
-            <BottomHalfContainer>
-              <InfoContainerThree>
-                <DescriptionHeader>Description</DescriptionHeader>
-                <DescriptionText
-                  dangerouslySetInnerHTML={{
-                    __html: thisCoinData.description.en,
-                  }}
-                />
-              </InfoContainerThree>
-              <InfoContainerFour>
-                <LinkContainer $light={theme === "light"}>
-                  <StyledLink
-                    style={{ marginRight: "10px" }}
-                    href={thisCoinData.links.blockchain_site[0]}
-                  >
-                    {thisCoinData.links.blockchain_site[0]}
-                  </StyledLink>
-                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                    <CopyIcon />
-                  </div>
-                  {copyClicked === true && (
-                    <CopiedMessageContainer>
-                      Link has been copied!
-                    </CopiedMessageContainer>
-                  )}
-                </LinkContainer>
-                <LinkContainer $light={theme === "light"}>
-                  <StyledLink
-                    style={{ marginRight: "10px" }}
-                    href={thisCoinData.links.blockchain_site[1]}
-                  >
-                    {thisCoinData.links.blockchain_site[1]}
-                  </StyledLink>
-                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                    <CopyIcon />
-                  </div>
-                  {copyClicked === true && (
-                    <CopiedMessageContainer>
-                      Link has been copied!
-                    </CopiedMessageContainer>
-                  )}
-                </LinkContainer>
-                <LinkContainer $light={theme === "light"}>
-                  <StyledLink
-                    style={{ marginRight: "10px" }}
-                    href={thisCoinData.links.blockchain_site[2]}
-                  >
-                    {thisCoinData.links.blockchain_site[2]}
-                  </StyledLink>
-                  <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                    <CopyIcon />
-                  </div>
-                  {copyClicked === true && (
-                    <CopiedMessageContainer>
-                      Link has been copied!
-                    </CopiedMessageContainer>
-                  )}
-                </LinkContainer>
-              </InfoContainerFour>
-            </BottomHalfContainer>
-          </>
-        )}
-      </Container>
-    );
-  } else if (size.width <= parseInt(breakpoints.mobile)) {
-    return (
-      <>
-        <MobileContainer>
-          {thisCoinData !== null && (
-            <>
-              <HeaderAndBtnContainer>
-                <Link href="/">
-                  <BackBtn>←</BackBtn>
-                </Link>
-                <Header>{thisCoinData.name}</Header>
-              </HeaderAndBtnContainer>
-              <CoinNameContainer $light={theme === "light"}>
-                <img src={thisCoinData.image.small} />
-                <h1 style={{ fontSize: "28px" }}>
-                  {thisCoinData.name} ({thisCoinData.symbol})
-                </h1>
-                <div
-                  className="ml-auto mr-auto cursor-pointer"
-                  onClick={handleStarClick}
-                >
-                  <Star
-                    watchListCoins={watchListCoins}
-                    thisCoinData={thisCoinData}
-                  />
-                </div>
-              </CoinNameContainer>
-              <CoinLinkContainer $light={theme === "light"}>
-                <StyledLink
-                  href={thisCoinData.links.homepage[0]}
-                  style={{ marginRight: "10px" }}
-                >
-                  {thisCoinData.links.homepage[0]}
-                </StyledLink>
-                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                  <CopyIcon />
-                </div>
-                {copyClicked === true && (
-                  <CopiedMessageContainer>
-                    Link has been copied!
-                  </CopiedMessageContainer>
-                )}
-              </CoinLinkContainer>
-              <PriceInfoContainer $light={theme === "light"}>
-                <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
-                  $
-                  {abbreviateNumber(
-                    thisCoinData.market_data.current_price[fiatCurrency]
-                  )}
-                </h1>
-                <PriceInnerContainer>
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "15px",
-                        marginBottom: "7px",
-                      }}
-                    >
-                      <GreenArrow />
-                      <p style={{ fontSize: "16px" }}>All time high:</p>
-                      <p style={{ fontSize: "20px" }}>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.ath[fiatCurrency]
-                        )}
-                      </p>{" "}
-                    </div>
-                    <DateText $light={theme === "light"}>
-                      {formatDate(
-                        thisCoinData.market_data.ath_date[fiatCurrency]
-                      )}
-                    </DateText>
-                  </div>
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "15px",
-                        marginBottom: "7px",
-                      }}
-                    >
-                      <RedArrow />
-                      <p style={{ fontSize: "16px" }}>All time low:</p>
-                      <p style={{ fontSize: "20px" }}>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.atl[fiatCurrency]
-                        )}
-                      </p>{" "}
-                    </div>
-                    <DateText $light={theme === "light"}>
-                      {formatDate(
-                        thisCoinData.market_data.atl_date[fiatCurrency]
-                      )}
-                    </DateText>
-                  </div>
-                </PriceInnerContainer>
-              </PriceInfoContainer>
-              <TableContainer>
-                <table>
-                  <TableRow
-                    style={{
-                      borderTopLeftRadius: "12px",
-                      borderTopRightRadius: "12px",
-                    }}
-                    $light={theme === "light"}
-                  >
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Market Cap</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.market_cap[fiatCurrency]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Fully Diluted Valuation</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.fully_diluted_valuation[
-                            fiatCurrency
-                          ]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Volume 24h</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        $
-                        {abbreviateNumber(
-                          thisCoinData.market_data.total_volume[fiatCurrency]
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow $light={theme === "light"}>
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Circulating Supply</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        {abbreviateNumber(
-                          thisCoinData.market_data.circulating_supply
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                  <TableRow
-                    style={{
-                      borderBottomLeftRadius: "12px",
-                      borderBottomRightRadius: "12px",
-                    }}
-                    $light={theme === "light"}
-                  >
-                    <LeftContent>
-                      <RoundIcon />
-                      <p>Total Supply</p>
-                    </LeftContent>
-                    <StyledTd>
-                      <RightText>
-                        {abbreviateNumber(
-                          thisCoinData.market_data.total_supply
-                        )}
-                      </RightText>
-                    </StyledTd>
-                  </TableRow>
-                </table>
-              </TableContainer>
-              <DescriptionHeader>Description</DescriptionHeader>
-              <DescriptionText>{thisCoinData.description.en}</DescriptionText>
-              <LinkContainer $light={theme === "light"}>
-                <StyledLink
-                  style={{ marginRight: "10px" }}
-                  href={thisCoinData.links.blockchain_site[0]}
-                >
-                  {thisCoinData.links.blockchain_site[0]}
-                </StyledLink>
-                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                  <CopyIcon />
-                </div>
-                {copyClicked === true && (
-                  <CopiedMessageContainer>
-                    Link has been copied!
-                  </CopiedMessageContainer>
-                )}
-              </LinkContainer>
-              <LinkContainer $light={theme === "light"}>
-                <StyledLink
-                  style={{ marginRight: "10px" }}
-                  href={thisCoinData.links.blockchain_site[1]}
-                >
-                  {thisCoinData.links.blockchain_site[1]}
-                </StyledLink>
-                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                  <CopyIcon />
-                </div>
-                {copyClicked === true && (
-                  <CopiedMessageContainer>
-                    Link has been copied!
-                  </CopiedMessageContainer>
-                )}
-              </LinkContainer>
-              <LinkContainer $light={theme === "light"}>
-                <StyledLink
-                  style={{ marginRight: "10px" }}
-                  href={thisCoinData.links.blockchain_site[2]}
-                >
-                  {thisCoinData.links.blockchain_site[2]}
-                </StyledLink>
-                <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
-                  <CopyIcon />
-                </div>
-                {copyClicked === true && (
-                  <CopiedMessageContainer>
-                    Link has been copied!
-                  </CopiedMessageContainer>
-                )}
-              </LinkContainer>
-            </>
-          )}
-        </MobileContainer>
-      </>
-    );
-  } else if (
-    size.width > parseInt(breakpoints.mobile) &&
-    size.width <= parseInt(breakpoints.tablet) &&
-    thisCoinData
-  ) {
-    return (
-      <Container>
-        <InfoContainerOne>
-          <NameAndLinkContainer>
-            <CoinNameContainer $light={theme === "light"}>
+            <div className={"flex mb-2.5"}>
+              <Link href="/">
+                <div className={"text-[20px] mr-[15px]"}>←</div>
+              </Link>
+              <h1 className={"text-[20px]"}>{thisCoinData.name}</h1>
+            </div>
+            <div
+              className={`flex flex-col justify-center items-center w-full px-0 py-[10%] rounded-lg gap-5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932]"
+              } `}
+            >
               <img src={thisCoinData.image.small} />
               <h1 style={{ fontSize: "28px" }}>
                 {thisCoinData.name} ({thisCoinData.symbol})
@@ -862,223 +125,274 @@ export default function Coin({ params }: CoinProps) {
                   thisCoinData={thisCoinData}
                 />
               </div>
-              {starClicked === true && (
-                <CopiedMessageContainer>
-                  Watchlist has been updated!
-                </CopiedMessageContainer>
-              )}
-            </CoinNameContainer>
-            <CoinLinkContainer $light={theme === "light"}>
-              <StyledLink
+            </div>
+            <div
+              className={`w-full flex py-2.5 items-center justify-center rounded-lg px-2.5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932]"
+              }`}
+            >
+              <a
                 href={thisCoinData.links.homepage[0]}
                 style={{ marginRight: "10px" }}
+                className={"truncate"}
               >
                 {thisCoinData.links.homepage[0]}
-              </StyledLink>
+              </a>
               <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                 <CopyIcon />
               </div>
-            </CoinLinkContainer>
-          </NameAndLinkContainer>
-          <PriceInfoContainer $light={theme === "light"}>
-            <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
-              $
-              {abbreviateNumber(
-                thisCoinData.market_data.current_price[fiatCurrency]
+              {copyClicked === true && (
+                <div
+                  className={
+                    "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                  }
+                >
+                  Link has been copied!
+                </div>
               )}
-            </h1>
-            <PriceInnerContainer>
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "15px",
-                    marginBottom: "7px",
-                  }}
-                >
-                  <GreenArrow />
-                  <p style={{ fontSize: "16px" }}>All time high:</p>
-                  <p style={{ fontSize: "20px" }}>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.ath[fiatCurrency]
-                    )}
-                  </p>{" "}
-                </div>
-                <DateText $light={theme === "light"}>
-                  {formatDate(thisCoinData.market_data.ath_date[fiatCurrency])}
-                </DateText>
-              </div>
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "15px",
-                    marginBottom: "7px",
-                  }}
-                >
-                  <RedArrow />
-                  <p style={{ fontSize: "16px" }}>All time low:</p>
-                  <p style={{ fontSize: "20px" }}>
-                    $
-                    {abbreviateNumber(
-                      thisCoinData.market_data.atl[fiatCurrency]
-                    )}
-                  </p>{" "}
-                </div>
-                <DateText $light={theme === "light"}>
-                  {formatDate(thisCoinData.market_data.atl_date[fiatCurrency])}
-                </DateText>
-              </div>
-            </PriceInnerContainer>
-          </PriceInfoContainer>
-        </InfoContainerOne>
-        <TableContainer>
-          <table>
-            <TableRow
-              style={{
-                borderTopLeftRadius: "12px",
-                borderTopRightRadius: "12px",
-              }}
-              $light={theme === "light"}
+            </div>
+            <div
+              className={`w-full flex flex-col justify-center items-center rounded-[12px] gap-2.5 py-2.5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932]"
+              }`}
             >
-              <LeftContent>
-                <RoundIcon />
-                <p>Market Cap</p>
-              </LeftContent>
-              <StyledTd>
-                <RightText>
-                  $
-                  {abbreviateNumber(
-                    thisCoinData.market_data.market_cap[fiatCurrency]
-                  )}
-                </RightText>
-              </StyledTd>
-            </TableRow>
-            <TableRow $light={theme === "light"}>
-              <LeftContent>
-                <RoundIcon />
-                <p>Fully Diluted Valuation</p>
-              </LeftContent>
-              <StyledTd>
-                <RightText>
-                  $
-                  {abbreviateNumber(
-                    thisCoinData.market_data.fully_diluted_valuation[
-                      fiatCurrency
-                    ]
-                  )}
-                </RightText>
-              </StyledTd>
-            </TableRow>
-            <TableRow $light={theme === "light"}>
-              <LeftContent>
-                <RoundIcon />
-                <p>Volume 24h</p>
-              </LeftContent>
-              <StyledTd>
-                <RightText>
-                  $
-                  {abbreviateNumber(
-                    thisCoinData.market_data.total_volume[fiatCurrency]
-                  )}
-                </RightText>
-              </StyledTd>
-            </TableRow>
-
-            <TableRow $light={theme === "light"}>
-              <LeftContent>
-                <RoundIcon />
-                <p>Circulating Supply</p>
-              </LeftContent>
-              <StyledTd>
-                <RightText>
-                  {abbreviateNumber(
-                    thisCoinData.market_data.circulating_supply
-                  )}
-                </RightText>
-              </StyledTd>
-            </TableRow>
-            <TableRow
-              style={{
-                borderBottomLeftRadius: "12px",
-                borderBottomRightRadius: "12px",
-              }}
-              $light={theme === "light"}
+              <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
+                $
+                {abbreviateNumber(
+                  thisCoinData.market_data.current_price[fiatCurrency]
+                )}
+              </h1>
+              <div>
+                <div className={"flex flex-col w-full gap-[20px]"}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    <GreenArrow />
+                    <p style={{ fontSize: "16px" }}>All time high:</p>
+                    <p style={{ fontSize: "20px" }}>
+                      $
+                      {abbreviateNumber(
+                        thisCoinData.market_data.ath[fiatCurrency]
+                      )}
+                    </p>{" "}
+                  </div>
+                  <p
+                    className={`text-[14px] text-center ${
+                      theme === "light" ? "text-[#353570]" : "text-[#b9b9ba]"
+                    }`}
+                  >
+                    {formatDate(
+                      thisCoinData.market_data.ath_date[fiatCurrency]
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginBottom: "7px",
+                    }}
+                  >
+                    <RedArrow />
+                    <p style={{ fontSize: "16px" }}>All time low:</p>
+                    <p style={{ fontSize: "20px" }}>
+                      $
+                      {abbreviateNumber(
+                        thisCoinData.market_data.atl[fiatCurrency]
+                      )}
+                    </p>{" "}
+                  </div>
+                  <p
+                    className={`text-[14px] text-center ${
+                      theme === "light" ? "text-[#353570]" : "text-[#b9b9ba]"
+                    }`}
+                  >
+                    {formatDate(
+                      thisCoinData.market_data.atl_date[fiatCurrency]
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={"w-full"}>
+              <table className={"w-full"}>
+                <tr
+                  className={`flex w-full justify-between items-center py-[5px] px-[15px] ${
+                    theme === "light" ? "bg-white" : "bg-[#1e1932]"
+                  } rounded-t-[12px]`}
+                >
+                  <div className={"flex gap-2.5 text-[16px]"}>
+                    <RoundIcon />
+                    <p>Market Cap</p>
+                  </div>
+                  <td className={"flex items-center py-2.5 px-0"}>
+                    <div className={"text-[20px]"}>
+                      $
+                      {abbreviateNumber(
+                        thisCoinData.market_data.market_cap[fiatCurrency]
+                      )}
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className={`flex w-full text-[14px] justify-between items-center py-[5px] px-[15px] ${
+                    theme === "light" ? "bg-white" : "bg-[#1e1932]"
+                  }`}
+                >
+                  <div className={"flex gap-2.5 text-[16px]"}>
+                    <RoundIcon />
+                    <p>Fully Diluted Valuation</p>
+                  </div>
+                  <td className={"flex items-center py-2.5 px-0"}>
+                    <p className={"text-[20px]"}>
+                      $
+                      {abbreviateNumber(
+                        thisCoinData.market_data.fully_diluted_valuation[
+                          fiatCurrency
+                        ]
+                      )}
+                    </p>
+                  </td>
+                </tr>
+                <tr
+                  className={`flex w-full text-[14px] justify-between items-center py-[5px] px-[15px] ${
+                    theme === "light" ? "bg-white" : "bg-[#1e1932]"
+                  }`}
+                >
+                  <div className={"flex gap-2.5 text-[16px]"}>
+                    <RoundIcon />
+                    <p>Volume 24h</p>
+                  </div>
+                  <td className={"flex items-center py-2.5 px-0"}>
+                    <p className={"text-[20px]"}>
+                      $
+                      {abbreviateNumber(
+                        thisCoinData.market_data.total_volume[fiatCurrency]
+                      )}
+                    </p>
+                  </td>
+                </tr>
+                <tr
+                  className={`flex w-full text-[14px] justify-between items-center py-[5px] px-[15px] ${
+                    theme === "light" ? "bg-white" : "bg-[#1e1932]"
+                  }`}
+                >
+                  <div className={"flex gap-2.5 text-[16px]"}>
+                    <RoundIcon />
+                    <p>Circulating Supply</p>
+                  </div>
+                  <td className={"flex items-center py-2.5 px-0"}>
+                    <p className={"text-[20px]"}>
+                      {abbreviateNumber(
+                        thisCoinData.market_data.circulating_supply
+                      )}
+                    </p>
+                  </td>
+                </tr>
+                <tr
+                  className={`flex w-full text-[14px] justify-between items-center py-[5px] px-[15px] rounded-b-[12px] ${
+                    theme === "light" ? "bg-white" : "bg-[#1e1932]"
+                  }`}
+                >
+                  <div className={"flex gap-2.5 text-[16px]"}>
+                    <RoundIcon />
+                    <p>Total Supply</p>
+                  </div>
+                  <td className={"flex items-center py-2.5 px-0"}>
+                    <p className={"text-[20px]"}>
+                      {abbreviateNumber(thisCoinData.market_data.total_supply)}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <p className={"text-[24px]"}>Description</p>
+            <p className={"text-14px"}>{thisCoinData.description.en}</p>
+            <div
+              className={`w-full flex py-2.5 items-center justify-center rounded-lg px-2.5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932]"
+              }`}
             >
-              <LeftContent>
-                <RoundIcon />
-                <p>Total Supply</p>
-              </LeftContent>
-              <StyledTd>
-                <RightText>
-                  {abbreviateNumber(thisCoinData.market_data.total_supply)}
-                </RightText>
-              </StyledTd>
-            </TableRow>
-          </table>
-        </TableContainer>
-        <div>
-          <DescriptionHeader>Description</DescriptionHeader>
-          <DescriptionText
-            dangerouslySetInnerHTML={{
-              __html: thisCoinData.description.en,
-            }}
-          />
-          <InfoContainerFour>
-            <LinkContainer $light={theme === "light"}>
-              <StyledLink
+              <a
                 style={{ marginRight: "10px" }}
                 href={thisCoinData.links.blockchain_site[0]}
+                className={"truncate"}
               >
                 {thisCoinData.links.blockchain_site[0]}
-              </StyledLink>
+              </a>
               <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                 <CopyIcon />
               </div>
               {copyClicked === true && (
-                <CopiedMessageContainer>
+                <div
+                  className={
+                    "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                  }
+                >
                   Link has been copied!
-                </CopiedMessageContainer>
+                </div>
               )}
-            </LinkContainer>
-            <LinkContainer $light={theme === "light"}>
-              <StyledLink
+            </div>
+            <div
+              className={`w-full flex py-2.5 items-center justify-center rounded-lg px-2.5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932] "
+              }`}
+            >
+              <a
                 style={{ marginRight: "10px" }}
                 href={thisCoinData.links.blockchain_site[1]}
+                className={"truncate"}
               >
                 {thisCoinData.links.blockchain_site[1]}
-              </StyledLink>
+              </a>
               <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                 <CopyIcon />
               </div>
               {copyClicked === true && (
-                <CopiedMessageContainer>
+                <div
+                  className={
+                    "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                  }
+                >
                   Link has been copied!
-                </CopiedMessageContainer>
+                </div>
               )}
-            </LinkContainer>
-            <LinkContainer $light={theme === "light"}>
-              <StyledLink
+            </div>
+            <div
+              className={`w-full flex py-2.5 items-center justify-center rounded-lg px-2.5 ${
+                theme === "light" ? "bg-white" : "bg-[#1e1932]"
+              }`}
+            >
+              <a
                 style={{ marginRight: "10px" }}
                 href={thisCoinData.links.blockchain_site[2]}
+                className={"truncate"}
               >
                 {thisCoinData.links.blockchain_site[2]}
-              </StyledLink>
+              </a>
               <div onClick={handleCopyTrue} style={{ cursor: "pointer" }}>
                 <CopyIcon />
               </div>
               {copyClicked === true && (
-                <CopiedMessageContainer>
+                <div
+                  className={
+                    "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                  }
+                >
                   Link has been copied!
-                </CopiedMessageContainer>
+                </div>
               )}
-            </LinkContainer>
-          </InfoContainerFour>
-        </div>
-      </Container>
-    );
-  }
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
 }
