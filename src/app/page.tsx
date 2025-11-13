@@ -5,7 +5,7 @@ import HomePageCharts from "./components/HomePageCharts/HomePageCharts";
 import Carousel from "./components/Carousel/Carousel";
 import HomeChartTimeSelect from "./components/HomeChartTimeSelect/HomeChartTimeSelect";
 import CoinsAndConverterBtns from "./components/CoinsAndConverterBtns/CoinsAndConverterBtns";
-import Converter from "./components/converter/page";
+import Converter from "./components/converter/converter";
 import { useState, useEffect } from "react";
 import { Coin } from "types";
 import MobileButtons from "./components/MobileButtons/MobileButtons";

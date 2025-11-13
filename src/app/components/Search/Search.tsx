@@ -2,53 +2,13 @@
 import { useState } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useRouter } from "next/navigation";
-import styled from "styled-components";
 import { Coin } from "types";
-import { breakpoints } from "breakpoints";
-import useWindowSize from "windowSizeHook";
-
-const SearchInput = styled.input<ThemeProp>`
-  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
-  padding: 10px 10px 10px 35px;
-  border-radius: 6px;
-  width: 100%;
-  border: solid 1px gray;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-  }
-`;
-
-const DropDown = styled.div<ThemeProp>`
-  margin-top: 5px;
-  width: 100%;
-  background: ${(props) => (props.$light ? "#CCCCFA" : "#191925")};
-  padding: 10px;
-  border-radius: 6px;
-  position: absolute;
-  z-index: 4;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 168px;
-  }
-`;
-
-const LinkContainer = styled.div`
-  &:hover {
-    background-color: #0077b6;
-  }
-`;
-
-type ThemeProp = {
-  $light?: boolean;
-};
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const { coins, theme } = useCryptoContext();
   const router = useRouter();
-  const size = useWindowSize();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -78,27 +38,30 @@ const Search = () => {
   };
 
   return (
-    <div className={"w-[36px] md:w-[175px] lg:w-[356px]"} onBlur={handleBlur}>
-      <SearchInput
-        type="text"
-        placeholder={
-          size.width > parseInt(breakpoints.mobile) ? "Search..." : ""
-        }
+    <div className={"w-full"} onBlur={handleBlur}>
+      <input
         value={searchValue}
         onChange={handleSearch}
-        $light={theme === "light"}
+        className={`w-[168px] h-9 md:h-11 rounded-md border border-solid border-gray-500 ${
+          theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+        }`}
       />
       {dropDownOpen && (
-        <DropDown $light={theme === "light"}>
+        <div
+          className={`mt-1.5 w-full p-2.5 rounded-md absolute ${
+            theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+          }`}
+        >
           {filteredCoins.map((coin) => (
-            <LinkContainer
+            <div
               key={coin.id}
               onMouseDown={() => handleNavLink(coin)}
+              className={"hover:bg-blue-700"}
             >
               <p style={{ cursor: "pointer" }}>{coin.name}</p>
-            </LinkContainer>
+            </div>
           ))}
-        </DropDown>
+        </div>
       )}
     </div>
   );

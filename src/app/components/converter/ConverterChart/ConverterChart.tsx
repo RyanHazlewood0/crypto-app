@@ -28,28 +28,6 @@ ChartJS.register(
   Filler
 );
 
-const ChartContainer = styled.div<ThemeProp>`
-  width: 100%;
-  height: 293px;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 35px;
-
-  canvas {
-    width: 100% !important;
-  }
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-    margin-bottom: 16px;
-    padding: 10px;
-  }
-`;
-
-const ErrorText = styled.p`
-  margin-bottom: 15px;
-`;
-
 type ConverterChartProps = {
   dayCount: string;
   buyCoin: Coin;
@@ -179,21 +157,25 @@ const ConverterChart = ({
       sellCoinPriceData.prices.length < Number(dayCount)
     ) {
       return (
-        <ErrorText>
+        <p className={"mb-[25px]"}>
           Coin doesn{"'"}t have {dayCount} days long price history, select a
           shorter price history setting for this coin.
-        </ErrorText>
+        </p>
       );
     }
   }
 
   if (hasError) {
-    <ErrorText>error fetching coin data</ErrorText>;
+    <p className={"mb-[25px]"}>error fetching coin data</p>;
   }
 
   return (
     <>
-      <ChartContainer $light={theme === "light"}>
+      <div
+        className={`w-full rounded-lg p-1 mb-[35px] h-[200px] md:h-[280px] ${
+          theme === "light" ? "bg-white" : "bg-[#191932]"
+        }`}
+      >
         {buyCoin && sellCoin ? (
           <Line
             options={options}
@@ -203,7 +185,7 @@ const ConverterChart = ({
         ) : (
           ""
         )}
-      </ChartContainer>
+      </div>
     </>
   );
 };

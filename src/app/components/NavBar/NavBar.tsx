@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Logo from "./svg/Logo";
 import ThemeIcon from "./svg/ThemeIcon";
 import Home from "./svg/Home";
 import Portfolio from "./svg/Portfolio";
@@ -8,7 +7,6 @@ import Moon from "./svg/Moon";
 import Search from "../Search/Search";
 import CurrencySelect from "./CurrencySelect/CurrencySelect";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 
 const NavBar = () => {
@@ -37,72 +35,78 @@ const NavBar = () => {
 
   return (
     <div className="flex w-full items-center justify-between mb-[16px] pb[0px] md:pb-[30px] mt-[15px] md:mb-[10px] ">
-      <div className="flex justify-between items-center w-[483px]">
-        <Link href="/" onClick={handleLogoClick}>
-          <Logo />
+      <div className="w-full justify-start items-center hidden md:flex">
+        <Link href="/" onClick={() => setSelectedBtn("Coins")}>
+          <div
+            onClick={(e) => handleSelectNavLink(e, "Home")}
+            className="flex w-[110px]"
+          >
+            <Home selectedNavLink={selectedNavLink} />
+            <p
+              className={`${
+                theme === "light"
+                  ? selectedNavLink === "Home"
+                    ? "text-[#353570]"
+                    : "text-gray-500"
+                  : selectedNavLink === "Home"
+                  ? "text-white"
+                  : "text-gray-500"
+              }ml-[10px]`}
+            >
+              Home
+            </p>
+          </div>
         </Link>
-        {size.width > parseInt(breakpoints.mobile) && (
-          <>
-            <Link href="/" onClick={() => setSelectedBtn("Coins")}>
-              <div
-                onClick={(e) => handleSelectNavLink(e, "Home")}
-                className="flex w-[110px]"
-              >
-                <Home selectedNavLink={selectedNavLink} />
-                <p
-                  className={`${
-                    theme === "light"
-                      ? selectedNavLink === "Home"
-                        ? "text-[#353570]"
-                        : "text-gray-500"
-                      : selectedNavLink === "Home"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }ml-[10px]`}
-                >
-                  Home
-                </p>
-              </div>
-            </Link>
-            <Link href="/portfolio">
-              <div
-                onClick={(e) => handleSelectNavLink(e, "Portfolio")}
-                className="flex w-[131px]"
-              >
-                <Portfolio selectedNavLink={selectedNavLink} />
-                <p
-                  className={`${
-                    theme === "light"
-                      ? selectedNavLink === "Portfolio"
-                        ? "text-[#353570]"
-                        : "text-gray-500"
-                      : selectedNavLink === "Portfolio"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }ml-[10px]`}
-                >
-                  Portfolio
-                </p>
-              </div>
-            </Link>
-          </>
-        )}
+        <Link href="/portfolio">
+          <div
+            onClick={(e) => handleSelectNavLink(e, "Portfolio")}
+            className="flex w-[131px]"
+          >
+            <Portfolio selectedNavLink={selectedNavLink} />
+            <p
+              className={`${
+                theme === "light"
+                  ? selectedNavLink === "Portfolio"
+                    ? "text-[#353570]"
+                    : "text-gray-500"
+                  : selectedNavLink === "Portfolio"
+                  ? "text-white"
+                  : "text-gray-500"
+              }ml-[10px]`}
+            >
+              Portfolio
+            </p>
+          </div>
+        </Link>
       </div>
-      <div className=" justify-between h-[36px] flex items-center gap-[5px]">
-        <div className="flex items-center relative w-[36px] md:w-auto">
-          <div className="absolute ml-[10px] w-[36px]">
+      <div className="w-full justify-between h-[36px] flex items-center md:justify-end md:gap-[140px]">
+        <div className="flex items-center relative w-[36px]">
+          <div className="flex absolute w-9 md:w-11 justify-center">
             <SearchIcon />
           </div>
           <Search />
         </div>
-        <CurrencySelect />
-        <div
-          className={`${
-            theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
-          } w-[36px] h-[36px] md:w-[44px] md:h-[44px] items-center justify-center flex cursor-pointer rounded-[6px] border border-gray-500`}
-          onClick={toggleTheme}
-        >
-          {theme === "light" ? <Moon /> : <ThemeIcon />}
+        <div className={"hidden gap-2 md:flex"}>
+          <CurrencySelect />
+          <div
+            className={`${
+              theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+            } w-[36px] h-[36px] md:w-[44px] md:h-[44px] items-center justify-center flex cursor-pointer rounded-[6px] border border-gray-500`}
+            onClick={toggleTheme}
+          >
+            {theme === "light" ? <Moon /> : <ThemeIcon />}
+          </div>
+        </div>
+        <div className={"flex gap-2 md:hidden"}>
+          <CurrencySelect />
+          <div
+            className={`${
+              theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
+            } w-[36px] h-[36px] md:w-[44px] md:h-[44px] items-center justify-center flex cursor-pointer rounded-[6px] border border-gray-500`}
+            onClick={toggleTheme}
+          >
+            {theme === "light" ? <Moon /> : <ThemeIcon />}
+          </div>
         </div>
       </div>
     </div>
