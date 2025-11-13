@@ -1,205 +1,12 @@
 "use client";
 import ConverterChart from "./ConverterChart/ConverterChart";
 import ConverterTimeSelect from "./ConverterTimeSelect/ConverterTimeSelect";
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { Coin } from "types";
 import { breakpoints } from "breakpoints";
 import useWindowSize from "windowSizeHook";
 import MobileButtons from "../MobileButtons/MobileButtons";
-
-const ConverterContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  margin-bottom: 50px;
-  @media (max-width: ${breakpoints.mobile}) {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-`;
-
-const ConverterBox = styled.div<ThemeProp>`
-  width: 47.5%;
-  height: 200px;
-  border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  position: relative;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 20px;
-`;
-
-const DateText = styled.p<ThemeProp>`
-  color: ${(props) => (props.$light ? "#424286" : "#9e9e9e")};
-  font-size: 16px;
-  margin-bottom: 15px;
-`;
-
-const BuySellText = styled.p`
-  font-size: 14px;
-  color: #9e9e9e;
-  margin-bottom: 15px;
-`;
-
-const InnerContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-`;
-
-const SearchInput = styled.input<ThemeProp>`
-  width: 100%;
-  border: solid 1px gray;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "#8D8DB1" : "#191932")};
-`;
-
-const SearchAndValueContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const HorizontalLine = styled.hr`
-  color: white;
-  width: 100%;
-  margin-top: 15px;
-`;
-
-const CurrencyAndPriceText = styled.p`
-  font-size: 14px;
-`;
-
-const ReverseConvertBtn = styled.div<ThemeProp>`
-  background: ${(props) => (props.$light ? "#6161D6" : "white")};
-  border-radius: 50px;
-  width: 48px;
-  height: 48px;
-  color: ${(props) => (props.$light ? "white" : "black")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-24px, -24px);
-  z-index: 1;
-`;
-
-const SellAmountInput = styled.input<ThemeProp>`
-  width: 30%;
-  border: solid 1px gray;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  @media (max-width: ${breakpoints.mobile}) {
-    max-width: 40%;
-  }
-`;
-
-const BuyAmountInput = styled.input<ThemeProp>`
-  width: 30%;
-  border: solid 1px gray;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  @media (max-width: ${breakpoints.mobile}) {
-    max-width: 40%;
-  }
-`;
-
-const CoinContainer = styled.div`
-  display: flex;
-  max-width: 350px;
-  align-items: center;
-  gap: 5px;
-`;
-
-const CoinText = styled.p`
-  font-size: 20px;
-`;
-
-const ArrowText = styled.p`
-  font-size: 20px;
-  cursor: pointer;
-`;
-
-const CoinOption = styled.p`
-  cursor: pointer;
-`;
-
-const CoinLogo = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-const DropdownAndPopupContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-`;
-
-const CoinSearchPopup = styled.div<ThemeProp>`
-  border-radius: 6px;
-  width: 200px;
-  background: ${(props) => (props.$light ? "#8D8DB1" : "#191925")};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
-  height: 90px;
-  position: absolute;
-  margin-left: -290px;
-  gap: 5px;
-  top: 100%;
-  justify-content: center;
-  @media (max-width: ${breakpoints.mobile}) {
-    z-index: 2;
-    margin-left: -190px;
-  }
-`;
-
-const CoinSearchPopupHeader = styled.h1`
-  font-size: 25px;
-`;
-
-const DropDown = styled.div<ThemeProp>`
-  width: 200px;
-  padding: 10px;
-  border-radius: 6px;
-  background: ${(props) => (props.$light ? "#8D8DB1" : "#191925")};
-  position: absolute;
-  top: 100%;
-  transform: translateY(90px) translateX(-290px);
-  @media (max-width: ${breakpoints.mobile}) {
-    z-index: 2;
-    transform: translateY(90px) translateX(-190px);
-  }
-`;
-
-const LoadingText = styled.p`
-  font-size: 35px;
-  text-align: center;
-`;
-
-type ThemeProp = {
-  $light?: boolean;
-};
 
 export default function Converter() {
   const [buyCoin, setBuyCoin] = useState<Coin | null>(null);
@@ -373,140 +180,223 @@ export default function Converter() {
   };
 
   if (coins.length < 1) {
-    return <LoadingText>Loading coin database</LoadingText>;
+    return <p className={"text[35px] text-center"}>Loading coin database</p>;
   }
 
   return (
     <>
       {sellCoin && buyCoin && (
         <>
-          <Title>Cryptocurrency Converter</Title>
-          <DateText $light={theme === "light"}>{currentDate}</DateText>
-          <ConverterContainer>
-            <ConverterBox $light={theme === "light"}>
-              <InnerContainer>
-                <BuySellText>You Sell</BuySellText>
-                <SearchAndValueContainer>
-                  <CoinContainer>
-                    <CoinLogo src={sellCoin.image} />
+          <h1 className={"text-xl mb-4"}>Cryptocurrency Converter</h1>
+          <p
+            className={` mb-4 ${
+              theme === "light" ? "color-white" : "color-[#9e9e9e]"
+            }`}
+          >
+            {currentDate}
+          </p>
+          <div
+            className={
+              "w-full flex flex-col md:flex-row items-center gap-4 mb-4 md:mb-10 justify-between"
+            }
+          >
+            <div
+              className={`w-full h-[200px] rounded-lg flex items-center md:w-[47.5%] ${
+                theme === "light" ? "bg-white" : "bg-[#191932]"
+              }`}
+            >
+              <div
+                className={"w-full h-full flex flex-col justify-between p-5"}
+              >
+                <p className={"text[14px] text-[#9e9e9e] mb-[15px]"}>
+                  You Sell
+                </p>
+                <div className={"w-full flex justify-between"}>
+                  <div className={"flex max-w-[350px] items-center gap-[5px]"}>
+                    <img className={"w-[24px] h-[24px]"} src={sellCoin.image} />
                     {size.width > parseInt(breakpoints.mobile) && (
-                      <CoinText>{sellCoin.name}</CoinText>
+                      <p className={"text-[20px]"}>{sellCoin.name}</p>
                     )}
-                    <CoinText>({sellCoin.symbol.toUpperCase()})</CoinText>
-                    <ArrowText onClick={toggleSellPopup}>▼</ArrowText>
-                  </CoinContainer>
-                  <DropdownAndPopupContainer>
+                    <p className={"text-[20px]"}>
+                      ({sellCoin.symbol.toUpperCase()})
+                    </p>
+                    <p
+                      className={"text[20px] hover:cursor-pointer"}
+                      onClick={toggleSellPopup}
+                    >
+                      ▼
+                    </p>
+                  </div>
+                  <div className={"flex flex-col justify-center relative"}>
                     {searchSellPopupOpen && (
-                      <CoinSearchPopup $light={theme === "light"}>
-                        <CoinSearchPopupHeader>
-                          Search Coin
-                        </CoinSearchPopupHeader>
-                        <SearchInput
+                      <div
+                        className={`rounded-[6px] w-[200px] ${
+                          theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191925]"
+                        } 
+                      flex z-10 flex-col items-center p-[15px] h-[90px] absolute right-full gap-[5px] top-full justify-center`}
+                      >
+                        <h2 className={"text-[25px]"}>Search Coin</h2>
+                        <input
                           value={sellSearch}
                           onChange={(e) => handleSellSearch(e)}
                           placeholder="Search Coin..."
                           autoFocus
-                          $light={theme === "light"}
+                          className={`w-full border border-gray-500 rounded-[6px] ${
+                            theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191932]"
+                          }`}
                         />
-                      </CoinSearchPopup>
+                      </div>
                     )}
                     {sellDropdownOpen && (
-                      <DropDown $light={theme === "light"}>
+                      <div
+                        className={`
+  w-[200px] 
+  p-[10px] 
+  rounded-[6px] 
+  ${theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191925]"} 
+  absolute 
+  top-full 
+  transform 
+  z-[2] 
+  translate-x-[-200px] translate-y-[90px]
+`}
+                      >
                         {filteredSellCoins.map((coin) => (
-                          <CoinOption
+                          <p
                             key={coin.id}
                             onClick={() => handleSetSellCoin(coin)}
+                            className={"hover:cursor-pointer"}
                           >
                             {coin.name}
-                          </CoinOption>
+                          </p>
                         ))}
-                      </DropDown>
+                      </div>
                     )}
-                  </DropdownAndPopupContainer>
-                  <SellAmountInput
+                  </div>
+                  <input
                     placeholder="Add Quanitity..."
                     value={sellQuantity}
                     onChange={(e) => handleSellQuantity(e)}
                     type="number"
-                    $light={theme === "light"}
+                    className={`w-[30%] border border-gray-500 rounded-[6px] ${
+                      theme === "light" ? "bg-white" : "bg-[#191932]"
+                    } `}
                   />
-                </SearchAndValueContainer>
-                <HorizontalLine />
+                </div>
+                <hr className={"bg-white w-full mt-[15px]"} />
                 {sellCoin !== null ? (
-                  <CurrencyAndPriceText>
+                  <p className={"text-[14px]"}>
                     1 {sellCoin.symbol.toUpperCase()} = $
                     {sellCoin.current_price}
-                  </CurrencyAndPriceText>
+                  </p>
                 ) : (
-                  <CurrencyAndPriceText>0</CurrencyAndPriceText>
+                  <p className={"text-[14px]"}>0</p>
                 )}
-              </InnerContainer>
-            </ConverterBox>
-            <ReverseConvertBtn
-              $light={theme === "light"}
+              </div>
+            </div>
+            <div
               onClick={() => reverseConvert()}
+              className={`rounded-[50px] w-[48px] h-[48px] flex items-center justify-center cursor-pointer z-1 absolute left-[50%] top-[50%]
+                transform -translate-x-[24px] -translate-y-[24px] ${
+                  theme === "light"
+                    ? "bg-[#6161D6] text-white"
+                    : "bg-white text-black"
+                }`}
             >
               <p>↑↓</p>
-            </ReverseConvertBtn>
-            <ConverterBox $light={theme === "light"}>
-              <InnerContainer>
-                <BuySellText>You Buy</BuySellText>
-                <SearchAndValueContainer>
-                  <CoinContainer>
-                    <CoinLogo src={buyCoin.image} />
+            </div>
+            <div
+              className={`w-full h-[200px] rounded-lg flex items-center md:w-[47.5%] ${
+                theme === "light" ? "bg-white" : "bg-[#191932]"
+              }`}
+            >
+              <div
+                className={"w-full h-full flex flex-col justify-between p-5"}
+              >
+                <p className={"text[14px] text-[#9e9e9e] mb-[15px]"}>You Buy</p>
+                <div className={"w-full flex justify-between"}>
+                  <div className={"flex max-w-[350px] items-center gap-[5px]"}>
+                    <img className={"w-[24px] h-[24px]"} src={buyCoin.image} />
                     {size.width > parseInt(breakpoints.mobile) && (
-                      <CoinText>{buyCoin.name}</CoinText>
+                      <p className={"text-[20px]"}>{buyCoin.name}</p>
                     )}
-                    <CoinText>({buyCoin.symbol.toUpperCase()})</CoinText>
-                    <ArrowText onClick={toggleBuyPopup}>▼</ArrowText>
-                  </CoinContainer>
-                  <DropdownAndPopupContainer>
+                    <p className={"text-[20px]"}>
+                      ({buyCoin.symbol.toUpperCase()})
+                    </p>
+                    <p
+                      className={"text[20px] hover:cursor-pointer"}
+                      onClick={toggleBuyPopup}
+                    >
+                      ▼
+                    </p>
+                  </div>
+                  <div className={"flex flex-col justify-center relative"}>
                     {searchBuyPopupOpen && (
-                      <CoinSearchPopup $light={theme === "light"}>
-                        <CoinSearchPopupHeader>
-                          Search Coin
-                        </CoinSearchPopupHeader>
-                        <SearchInput
+                      <div
+                        className={`rounded-[6px] w-[200px] ${
+                          theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191925]"
+                        } 
+                      flex z-10 flex-col items-center p-[15px] h-[90px] absolute right-full gap-[5px] top-full justify-center`}
+                      >
+                        <h2 className={"text-[25px]"}>Search Coin</h2>
+                        <input
                           value={buySearch}
                           onChange={(e) => handleBuySearch(e)}
                           placeholder="Search Coin..."
                           autoFocus
-                          $light={theme === "light"}
+                          className={`w-full border border-gray-500 rounded-[6px] ${
+                            theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191932]"
+                          }`}
                         />
-                      </CoinSearchPopup>
+                      </div>
                     )}
                     {buyDropdownOpen && (
-                      <DropDown $light={theme === "light"}>
+                      <div
+                        className={`
+  w-[200px] 
+  p-[10px] 
+  rounded-[6px] 
+  ${theme === "light" ? "bg-[#8D8DB1]" : "bg-[#191925]"} 
+  absolute 
+  top-full 
+  transform 
+  z-[2] 
+  translate-x-[-200px] translate-y-[90px]
+`}
+                      >
                         {filteredBuyCoins.map((coin) => (
-                          <CoinOption
+                          <p
                             key={coin.id}
                             onClick={() => handleSetBuyCoin(coin)}
+                            className={"hover:cursor-pointer"}
                           >
                             {coin.name}
-                          </CoinOption>
+                          </p>
                         ))}
-                      </DropDown>
+                      </div>
                     )}
-                  </DropdownAndPopupContainer>
-                  <BuyAmountInput
+                  </div>
+                  <input
                     placeholder="Add Quanitity..."
                     value={buyQuantity}
                     onChange={(e) => handleBuyQuantity(e)}
                     type="number"
-                    $light={theme === "light"}
+                    className={`w-[30%] border border-gray-500 rounded-[6px] ${
+                      theme === "light" ? "bg-white" : "bg-[#191932]"
+                    }`}
                   />
-                </SearchAndValueContainer>
-                <HorizontalLine />
+                </div>
+                <hr className={"bg-white w-full mt-[15px]"} />
                 {buyCoin !== null ? (
-                  <CurrencyAndPriceText>
+                  <p className={"text-[14px]"}>
                     1 {buyCoin.symbol.toUpperCase()} = ${buyCoin.current_price}
-                  </CurrencyAndPriceText>
+                  </p>
                 ) : (
-                  <CurrencyAndPriceText>0</CurrencyAndPriceText>
+                  <p className={"text-[14px]"}>0</p>
                 )}
-              </InnerContainer>
-            </ConverterBox>
-          </ConverterContainer>
+              </div>
+            </div>
+          </div>
           <ConverterChart
             dayCount={dayCount}
             buyCoin={buyCoin}

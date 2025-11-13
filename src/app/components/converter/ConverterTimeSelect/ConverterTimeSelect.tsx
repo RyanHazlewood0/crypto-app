@@ -1,23 +1,6 @@
 import { SetStateAction, Dispatch } from "react";
 import styled from "styled-components";
-import { breakpoints } from "breakpoints";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-
-const Container = styled.div<SelectBtnProps>`
-  display: flex;
-  width: 463px;
-  height: 42px;
-  justify-content: space-between;
-  background: ${(prop) => (prop.$light ? "white" : "#232336")};
-  align-items: center;
-  border-radius: 6px;
-  padding: 4px;
-  margin-bottom: 70px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-    margin-bottom: 82px;
-  }
-`;
 
 const SelectBtn = styled.div<SelectBtnProps>`
   display: flex;
@@ -89,7 +72,11 @@ const ConverterTimeSelect = ({
   };
 
   return (
-    <Container $light={theme === "light"}>
+    <div
+      className={`flex justify-between items-center rounded-lg p-1 w-full md:w-1/2 lg:w-[35%] mb-10 ${
+        theme === "light" ? "bg-white" : "bg-[#232336]"
+      }`}
+    >
       <SelectBtn
         $light={theme === "light"}
         onClick={findDayCount}
@@ -132,7 +119,7 @@ const ConverterTimeSelect = ({
       >
         1Y
       </SelectBtn>
-    </Container>
+    </div>
   );
 };
 
