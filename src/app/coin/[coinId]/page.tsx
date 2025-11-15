@@ -1,5 +1,4 @@
 "use client";
-import styled from "styled-components";
 import Link from "next/link";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useEffect } from "react";
@@ -15,15 +14,10 @@ type CoinProps = {
   params: { coinId: string };
 };
 
-type ThemeProp = {
-  $light?: boolean;
-};
-
 export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
-  const [starClicked, setStarClicked] = useState(false);
 
   const {
     fiatCurrency,

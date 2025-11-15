@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -14,7 +13,6 @@ import {
 } from "chart.js";
 import { Coin } from "types";
 import { FetchedDataTypes } from "@/app/components/HomePageCharts/HomePageCharts";
-import { breakpoints } from "breakpoints";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
 ChartJS.register(
