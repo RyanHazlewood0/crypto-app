@@ -7,52 +7,6 @@ import { ConverterIcon } from "./svg/converter";
 import Link from "next/link";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 
-const MobileBtnContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  padding: 0;
-  background: #232336;
-  width: 375px;
-`;
-
-const MobileBtnInnerContainer = styled.div<StyleProp>`
-  display: flex;
-  justify-content: space-between;
-  background: ${(prop) => (prop.$light ? "white" : "#232336")};
-`;
-
-const BtnContainer = styled.div<StyleProp>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 106.33px;
-  background: ${(props) => {
-    if (props.$light) {
-      if (props.$selected) {
-        return "#B0B0EB";
-      } else {
-        return "white";
-      }
-    } else {
-      if (props.$selected) {
-        return "#6161d6";
-      } else {
-        return "#232336";
-      }
-    }
-  }};
-  padding: 10px;
-  border-radius: 6px;
-`;
-
-const Btn = styled.button``;
-
-type StyleProp = {
-  $selected?: boolean;
-  $light?: boolean;
-};
-
 const MobileButtons = () => {
   const size = useWindowSize();
   const { selectedMobileBtn, setSelectedMobileBtn, theme } = useCryptoContext();
@@ -60,42 +14,67 @@ const MobileButtons = () => {
   return (
     <>
       {size.width < parseInt(breakpoints.mobile) && (
-        <MobileBtnContainer>
-          <MobileBtnInnerContainer $light={theme === "light"}>
+        <div className={"fixed bottom-0 left-0 right-0  bg-[#232336]"}>
+          <div
+            className={`flex justify-between w-full px-4 ${
+              theme === "light" ? "bg-white" : "bg-[#232336]"
+            } `}
+          >
             <Link href="/">
-              <BtnContainer
-                $light={theme === "light"}
-                $selected={selectedMobileBtn === "Overview"}
+              <div
+                className={`flex flex-col items-center justify-center flex-1 p-2.5 rounded-md ${
+                  theme === "light"
+                    ? selectedMobileBtn === "Overview"
+                      ? "bg-[#B0B0EB] border border-[#232336]"
+                      : "bg-white"
+                    : selectedMobileBtn === "Overview"
+                    ? "bg-[#6161d6] border border-[#a7a7cc]"
+                    : "bg-[#232336]"
+                }`}
                 onClick={() => setSelectedMobileBtn("Overview")}
               >
                 <OverviewIcon />
-                <Btn>Overview</Btn>
-              </BtnContainer>
+                <button>Overview</button>
+              </div>
             </Link>
             <Link href="/">
-              <BtnContainer
-                $light={theme === "light"}
-                $selected={selectedMobileBtn === "Converter"}
+              <div
+                className={`flex flex-col items-center justify-center flex-1 p-2.5 rounded-md ${
+                  theme === "light"
+                    ? selectedMobileBtn === "Converter"
+                      ? "bg-[#B0B0EB] border border-[#232336]"
+                      : "bg-white"
+                    : selectedMobileBtn === "Converter"
+                    ? "bg-[#6161d6] border border-[#a7a7cc]"
+                    : "bg-[#232336]"
+                }`}
                 onClick={() => setSelectedMobileBtn("Converter")}
               >
                 <ConverterIcon />
-                <Btn>Converter</Btn>
-              </BtnContainer>
+                <button>Converter</button>
+              </div>
             </Link>
             <Link
               href="/portfolio"
               onClick={() => setSelectedMobileBtn("Portfolio")}
             >
-              <BtnContainer
-                $light={theme === "light"}
-                $selected={selectedMobileBtn === "Portfolio"}
+              <div
+                className={`flex flex-col items-center justify-center flex-1 p-2.5 rounded-md ${
+                  theme === "light"
+                    ? selectedMobileBtn === "Portfolio"
+                      ? "bg-[#B0B0EB] border border-[#232336]"
+                      : "bg-white"
+                    : selectedMobileBtn === "Portfolio"
+                    ? "bg-[#6161d6] border border-[#a7a7cc]"
+                    : "bg-[#232336]"
+                }`}
               >
                 <PortfolioIcon />
-                <Btn>Portfolio</Btn>
-              </BtnContainer>
+                <button>Portfolio</button>
+              </div>
             </Link>
-          </MobileBtnInnerContainer>
-        </MobileBtnContainer>
+          </div>
+        </div>
       )}
     </>
   );

@@ -1,29 +1,8 @@
-import styled from "styled-components";
 import BtcPriceChart from "./BtcPriceChart/BtcPriceChart";
 import BtcVolumeChart from "./BtcVolumeChart/BtcVolumeChart";
 import { useEffect, useState } from "react";
 import { Coin } from "types";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-import { breakpoints } from "breakpoints";
-
-const ChartsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 40px 0 50px 0;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-`;
-
-const MessageText = styled.p`
-  font-size: 35px;
-  font-weight: bold;
-`;
 
 type HomePageChartsProps = {
   selectedCoin: Coin[];
@@ -161,11 +140,15 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
   }, [selectedCoin, dayCount, fiatCurrency]);
 
   if (hasError) {
-    return <MessageText>Error loading data...</MessageText>;
+    return <p className={"text-[35px] font-bold"}>Error loading data...</p>;
   }
 
   return (
-    <ChartsContainer>
+    <div
+      className={
+        "flex flex-col w-full justify-between my-[10px] md:mt-[40px] md:my-[20px] gap-[10px] md:flex-row"
+      }
+    >
       {coinPriceData && (
         <BtcPriceChart
           coinPriceData={coinPriceData}
@@ -178,7 +161,7 @@ const HomePageCharts = ({ selectedCoin, dayCount }: HomePageChartsProps) => {
           selectedCoin={selectedCoin}
         />
       )}
-    </ChartsContainer>
+    </div>
   );
 };
 

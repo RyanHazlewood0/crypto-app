@@ -1,23 +1,6 @@
 import styled from "styled-components";
 import { Dispatch, SetStateAction } from "react";
-import { breakpoints } from "breakpoints";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
-
-const Container = styled.div<StyleProp>`
-  display: flex;
-  width: 463px;
-  height: 42px;
-  justify-content: space-between;
-  background: ${(props) => (props.$light ? "white" : "#232336")};
-  align-items: center;
-  border-radius: 6px;
-  padding: 4px;
-  margin-bottom: 70px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-    margin-bottom: 20px;
-  }
-`;
 
 const SelectBtn = styled.div<StyleProp>`
   display: flex;
@@ -68,10 +51,7 @@ const HomeChartTimeSelect = ({
   const { theme } = useCryptoContext();
 
   const findDayCount = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.textContent === "1D") {
-      setDayCount("1");
-      setTimeFrameSelected("1D");
-    } else if (e.currentTarget.textContent === "7D") {
+    if (e.currentTarget.textContent === "7D") {
       setDayCount("7");
       setTimeFrameSelected("7D");
     } else if (e.currentTarget.textContent === "14D") {
@@ -90,14 +70,11 @@ const HomeChartTimeSelect = ({
   };
 
   return (
-    <Container $light={theme === "light"}>
-      <SelectBtn
-        $light={theme === "light"}
-        onClick={findDayCount}
-        $selected={timeFrameSelected === "1D"}
-      >
-        1D
-      </SelectBtn>
+    <div
+      className={`flex w-full md:w-[49%] h-[42px] justify-between items-center mb-5 md:mb-[50px] lg:mb-[70px] rounded-lg ${
+        theme === "light" ? "bg-white" : "bg-[#232336]"
+      }`}
+    >
       <SelectBtn
         $light={theme === "light"}
         onClick={findDayCount}
@@ -133,7 +110,7 @@ const HomeChartTimeSelect = ({
       >
         1Y
       </SelectBtn>
-    </Container>
+    </div>
   );
 };
 

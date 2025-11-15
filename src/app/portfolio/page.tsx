@@ -96,11 +96,11 @@ export default function Portfolio() {
 
   return (
     <>
-      {size.width > parseInt(breakpoints.mobile) && (
+      {size.width >= parseInt(breakpoints.mobile) && (
         <div className="w-full h-[45px] flex justify-between mb-[25px]">
           <h1 className="text-[20px]">Portfolio</h1>
           <div className="gap-[15px] flex w-full justify-end">
-            {size.width > parseInt(breakpoints.mobile) && (
+            {size.width >= parseInt(breakpoints.mobile) && (
               <>
                 <button
                   className={`${

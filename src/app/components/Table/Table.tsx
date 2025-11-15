@@ -18,9 +18,6 @@ const CoinTable = styled.table`
   margin: 0 auto 0 auto;
   border-collapse: separate;
   border-spacing: 0 6px;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 375px;
-  }
 `;
 
 const TableRow = styled.tr<StyleProp>`
@@ -268,7 +265,7 @@ const Table = () => {
         <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
       )}
       <CoinTable>
-        {size.width >= parseInt(breakpoints.mobile) && (
+        {size.width > parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
               <StyledTh $light={theme === "light"}>
