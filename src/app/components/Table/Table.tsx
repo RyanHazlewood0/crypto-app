@@ -265,7 +265,7 @@ const Table = () => {
         <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
       )}
       <CoinTable>
-        {size.width > parseInt(breakpoints.mobile) && (
+        {size.width >= parseInt(breakpoints.mobile) && (
           <TableHeader>
             <tr>
               <StyledTh $light={theme === "light"}>
