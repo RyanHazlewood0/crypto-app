@@ -18,6 +18,7 @@ export default function Coin({ params }: CoinProps) {
   const [hasError, setHasError] = useState(false);
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
+  const [starClicked, setStarClicked] = useState(false);
 
   const {
     fiatCurrency,
