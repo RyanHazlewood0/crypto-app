@@ -331,7 +331,7 @@ export default function Coin({ params }: CoinProps) {
               {copyClicked === true && (
                 <div
                   className={
-                    "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                    "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white rounded-[6px] p-[10px]"
                   }
                 >
                   Link has been copied!
@@ -452,7 +452,7 @@ export default function Coin({ params }: CoinProps) {
                   {copyClicked === true && (
                     <div
                       className={
-                        "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                        "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white rounded-[6px] p-[10px]"
                       }
                     >
                       Link has been copied!
@@ -477,7 +477,7 @@ export default function Coin({ params }: CoinProps) {
                   {copyClicked === true && (
                     <div
                       className={
-                        "fixed top‑1/2 left‑1/2 transform ‑translate‑x‑1/2 ‑translate‑y‑1/2 bg‑black text‑white rounded‑[6px] p‑[10px]"
+                        "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white rounded-[6px] p-[10px]"
                       }
                     >
                       Link has been copied!
