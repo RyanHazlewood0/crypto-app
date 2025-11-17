@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <>
-      {size.width > parseInt(breakpoints.mobile) && <CoinsAndConverterBtns />}
+      {size.width >= parseInt(breakpoints.mobile) && <CoinsAndConverterBtns />}
       {selectedBtn === "Coins" &&
         size.width >= parseInt(breakpoints.mobile) && (
           <>

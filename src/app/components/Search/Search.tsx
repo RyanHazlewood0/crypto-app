@@ -42,13 +42,13 @@ const Search = () => {
       <input
         value={searchValue}
         onChange={handleSearch}
-        className={`w-[168px] h-9 md:h-11 rounded-md border border-solid border-gray-500 ${
+        className={`w-[168px] h-9 md:h-11 rounded-md border border-solid border-gray-500 pl-10 ${
           theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
         }`}
       />
       {dropDownOpen && (
         <div
-          className={`mt-1.5 w-full p-2.5 rounded-md absolute ${
+          className={`mt-1.5 w-full p-2.5 rounded-md absolute z-50 ${
             theme === "light" ? "bg-[#CCCCFA]" : "bg-[#191925]"
           }`}
         >
