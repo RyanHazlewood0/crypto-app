@@ -60,18 +60,15 @@ export default function Home() {
             />
           </>
         )}
-      {selectedBtn === "Converter" &&
-        size.width > parseInt(breakpoints.mobile) && (
-          <>
-            <Converter />
-          </>
-        )}
-      {selectedMobileBtn === "Converter" &&
-        size.width <= parseInt(breakpoints.mobile) && (
-          <>
-            <Converter />
-          </>
-        )}
+      {(selectedBtn === "Converter" || selectedMobileBtn === "Converter") && (
+        <>
+          {selectedBtn === "Converter" &&
+            size.width >= parseInt(breakpoints.mobile) && <Converter />}
+
+          {selectedMobileBtn === "Converter" &&
+            size.width < parseInt(breakpoints.mobile) && <Converter />}
+        </>
+      )}
 
       <Table />
       <MobileButtons />
