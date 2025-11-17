@@ -129,7 +129,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
 
   return (
     <div
-      className={`w-full h-[200px] flex flex-col justify-between md:h-[400px] rounded-lg ${
+      className={`w-full flex flex-col justify-between md:h-[400px] rounded-lg ${
         theme === "light" ? "bg-white" : "bg-[#191932]"
       }`}
     >
@@ -159,7 +159,7 @@ const BtcPriceChart = ({ coinPriceData, selectedCoin }: BtcPriceChartProps) => {
       {selectedCoin.length === 2 && (
         <>
           <div
-            className={` my-[2.5%] text-[24px] ${
+            className={` my-[2.5%] text-[24px] ml-3 ${
               theme === "light" ? "text-[#353570]" : " text-white"
             }`}
           >

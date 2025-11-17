@@ -101,7 +101,7 @@ const BtcVolumeChart = ({
 
   return (
     <div
-      className={`w-full h-[200px] flex flex-col justify-between md:h-[400px] rounded-lg ${
+      className={`w-full flex flex-col justify-between md:h-[400px] rounded-lg ${
         theme === "light" ? "bg-white" : "bg-[#191932]"
       }`}
     >
@@ -122,7 +122,7 @@ const BtcVolumeChart = ({
       {selectedCoin.length === 2 && (
         <div className={"items-baseline flex gap-[15px] my-[2.5%]"}>
           <p
-            className={`text-[24px] ${
+            className={`text-[24px] ml-3 ${
               theme === "light" ? "text-[#353570]" : "bg-text-white"
             }`}
           >

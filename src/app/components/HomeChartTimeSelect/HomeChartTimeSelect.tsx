@@ -71,7 +71,7 @@ const HomeChartTimeSelect = ({
 
   return (
     <div
-      className={`flex w-full md:w-[49%] h-[42px] justify-between items-center mb-5 md:mb-[50px] lg:mb-[70px] rounded-lg ${
+      className={`flex w-full md:w-1/3 lg:w-1/4 h-[42px] justify-between items-center mb-5 md:mb-[50px] lg:mb-[70px] rounded-lg ${
         theme === "light" ? "bg-white" : "bg-[#232336]"
       }`}
     >
