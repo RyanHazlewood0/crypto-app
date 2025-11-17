@@ -67,11 +67,12 @@ export default function Home() {
           </>
         )}
       {selectedMobileBtn === "Converter" &&
-        size.width < parseInt(breakpoints.mobile) && (
+        size.width <= parseInt(breakpoints.mobile) && (
           <>
             <Converter />
           </>
         )}
+
       <Table />
       <MobileButtons />
     </>
