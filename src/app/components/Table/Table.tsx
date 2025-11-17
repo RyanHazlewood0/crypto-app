@@ -13,98 +13,6 @@ import useWindowSize from "windowSizeHook";
 import InfiniteScroll from "react-infinite-scroll-component";
 import TrendingModal from "../TrendingModal/TrendingModal";
 
-const CoinTable = styled.table`
-  width: 100%;
-  margin: 0 auto 0 auto;
-  border-collapse: separate;
-  border-spacing: 0 6px;
-`;
-
-const TableRow = styled.tr<StyleProp>`
-  width: 100%;
-  background: ${(props) => (props.$light ? "white" : "#191925")};
-  font-size: 14px;
-  height: 77px;
-`;
-
-const TableHeader = styled.thead`
-  color: #d1d1d1;
-  font-size: 12px;
-`;
-
-const NameAndImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  width: 175px;
-  height: 77px;
-  @media (max-width: ${breakpoints.mobile}) {
-    max-width: 125px;
-  }
-`;
-
-const StyledTd = styled.td<StyleProp>`
-  padding: 15px;
-  height: 77px;
-  border-radius: ${(props) =>
-    props.$left ? "10px 0 0 10px" : props.$right ? "0 10px 10px 0" : "none"};
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 16px;
-    padding: 0;
-  }
-`;
-
-const StyledTh = styled.th<StyleProp>`
-  padding: 5px 15px 5px 15px;
-  text-align: left;
-  color: ${(props) => (props.$light ? "#353570" : "#D1D1D1")};
-  @media (max-width: ${breakpoints.mobile}) {
-    padding: 0;
-    text-align: center;
-  }
-`;
-
-const ArrowAndPercentContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const LevelIndicatorOuter = styled.div`
-  display: flex;
-  height: 5px;
-  background-color: #40916c;
-  border-radius: 5px;
-`;
-
-const LevelIndicatorInner = styled.div`
-  height: 5px;
-  background-color: #30e0a1;
-  border-radius: 5px;
-`;
-
-const NumberSeparator = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 200px;
-`;
-
-const PriceChangeDiv = styled.div<StyleProp>`
-  color: ${(props) => (props.$green ? "#01F1E3" : "#FE2264")};
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 12px;
-  }
-`;
-
-const ArrowSpan = styled.span<StyleProp>`
-  margin: ${(props) => (props.$left ? "0 5px 0 5px" : "none")};
-  cursor: pointer;
-`;
-
-const CoinImage = styled.img`
-  margin-right: 15px;
-  width: 32px;
-`;
-
 const LineChartContainer = styled.div`
   width: 175px;
   max-height: 47px;
@@ -114,21 +22,10 @@ const LineChartContainer = styled.div`
   }
 `;
 
-const TextAndArrowText = styled.p<StyleProp>`
-  display: flex;
-  margin-bottom: 10px;
-  color: ${(props) => (props.$light ? "#353570" : "#D1D1D1")};
-`;
-
 const LoadingMessage = styled.p`
   font-size: 50px;
   font-weight: bold;
   text-align: center;
-`;
-
-const MobilePriceAnd24hContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const HeaderText = styled.p<StyleProp>`
@@ -264,327 +161,230 @@ const Table = () => {
       {trendingModalOpen && (
         <TrendingModal setTrendingModalOpen={setTrendingModalOpen} />
       )}
-      <CoinTable>
-        {size.width > parseInt(breakpoints.mobile) && (
-          <TableHeader>
-            <tr>
-              <StyledTh $light={theme === "light"}>
-                <TextAndArrowText $light={theme === "light"}>
-                  #
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "mcap-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "mcap-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  Name{" "}
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "name-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  Price{" "}
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "price-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              {size.width >= parseInt(breakpoints.tablet) && (
-                <>
-                  <StyledTh>
-                    <TextAndArrowText $light={theme === "light"}>
-                      1h%{" "}
-                      <ArrowSpan
-                        $left
-                        onClick={(e) => getSortOption(e, "1h-desc")}
-                      >
-                        ▼
-                      </ArrowSpan>
-                      <ArrowSpan onClick={(e) => getSortOption(e, "1h-asc")}>
-                        ▲
-                      </ArrowSpan>
-                    </TextAndArrowText>
-                  </StyledTh>
-                  <StyledTh>
-                    <TextAndArrowText $light={theme === "light"}>
-                      24h%{" "}
-                      <ArrowSpan
-                        $left
-                        onClick={(e) => getSortOption(e, "24h-desc")}
-                      >
-                        ▼
-                      </ArrowSpan>
-                      <ArrowSpan onClick={(e) => getSortOption(e, "24h-asc")}>
-                        ▲
-                      </ArrowSpan>
-                    </TextAndArrowText>
-                  </StyledTh>
-                  <StyledTh>
-                    <TextAndArrowText $light={theme === "light"}>
-                      7d%{" "}
-                      <ArrowSpan
-                        $left
-                        onClick={(e) => getSortOption(e, "7d-desc")}
-                      >
-                        ▼
-                      </ArrowSpan>
-                      <ArrowSpan onClick={(e) => getSortOption(e, "7d-asc")}>
-                        ▲
-                      </ArrowSpan>
-                    </TextAndArrowText>
-                  </StyledTh>
-                </>
-              )}
-              <StyledTh $light={theme === "light"}>
-                <p style={{ marginBottom: "10px" }}>24h Volume / Market Cap</p>
-              </StyledTh>
+      <table
+        className={"w-full my-0 mx-auto border-separate border-spacing-y-[6px]"}
+      >
+        <thead className={"text-[12px]"}>
+          <tr className={"w-full text-[14px]"}>
+            <th className={" p-0 md:py-[5px] md:px-[15px] "}>
+              <p className={"flex mb-[10-px]"}>
+                Name{" "}
+                <span
+                  onClick={(e) => getSortOption(e, "name-desc")}
+                  className={"cursor-pointer"}
+                >
+                  ▼{" "}
+                </span>
+                <span
+                  onClick={(e) => getSortOption(e, "name-asc")}
+                  className={"cursor-pointer"}
+                >
+                  ▲
+                </span>
+              </p>
+            </th>
 
-              <StyledTh $light={theme === "light"}>
-                {" "}
-                <p style={{ marginBottom: "10px" }}>Last 7d</p>
-              </StyledTh>
-            </tr>
-          </TableHeader>
-        )}
-        {size.width <= parseInt(breakpoints.mobile) && (
-          <TableHeader>
-            <tr>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  Name{" "}
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "name-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "name-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh>
-                <TextAndArrowText $light={theme === "light"}>
-                  Price{" "}
-                  <ArrowSpan
-                    $left
-                    onClick={(e) => getSortOption(e, "price-desc")}
-                  >
-                    ▼
-                  </ArrowSpan>
-                  <ArrowSpan onClick={(e) => getSortOption(e, "price-asc")}>
-                    ▲
-                  </ArrowSpan>
-                </TextAndArrowText>
-              </StyledTh>
-              <StyledTh $light={theme === "light"}>
-                {" "}
-                <p style={{ marginBottom: "10px" }}>Last 7d</p>
-              </StyledTh>
-            </tr>
-          </TableHeader>
-        )}
+            <th className={" p-0 md:py-[5px] md:px-[15px]"}>
+              <p className={"flex mb-[10-px]"}>
+                Price{" "}
+                <span
+                  onClick={(e) => getSortOption(e, "price-desc")}
+                  className={"cursor-pointer"}
+                >
+                  ▼{" "}
+                </span>
+                <span
+                  onClick={(e) => getSortOption(e, "price-asc")}
+                  className={"cursor-pointer"}
+                >
+                  ▲
+                </span>
+              </p>
+            </th>
+
+            <th className={"hidden lg:table-cell p-0 md:py-[5px] md:px-[15px]"}>
+              <p className={"flex mb-[10-px]"}>
+                1h%{" "}
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "1h-desc")}
+                >
+                  ▼
+                </span>
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "1h-asc")}
+                >
+                  ▲
+                </span>
+              </p>
+            </th>
+
+            <th className={"hidden lg:table-cell p-0 md:py-[5px] md:px-[15px]"}>
+              <p className={"flex mb-[10-px]"}>
+                24h%{" "}
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "24h-desc")}
+                >
+                  ▼
+                </span>
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "24h-asc")}
+                >
+                  ▲
+                </span>
+              </p>
+            </th>
+
+            <th className={"hidden lg:table-cell p-0 md:py-[5px] md:px-[15px]"}>
+              <p className={"flex mb-[10-px]"}>
+                7d%{" "}
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "7d-desc")}
+                >
+                  ▼
+                </span>
+                <span
+                  className={"cursor-pointer"}
+                  onClick={(e) => getSortOption(e, "7d-asc")}
+                >
+                  ▲
+                </span>
+              </p>
+            </th>
+
+            <th className={"hidden md:table-cell p-0 md:py-[5px] md:px-[15px]"}>
+              24h Volume / Market Cap
+            </th>
+            <th className={"p-0 md:py-[5px] md:px-[15px]"}>Last 7d</th>
+          </tr>
+        </thead>
 
         <tbody>
           {sortedCoins.map((coin) => (
-            <TableRow key={coin.id} $light={theme === "light"}>
-              {size.width >= parseInt(breakpoints.mobile) && (
-                <StyledTd $left>{coin.market_cap_rank}</StyledTd>
-              )}
-              {size.width >= parseInt(breakpoints.mobile) ? (
-                <NameAndImageContainer>
-                  <CoinImage src={coin.image} />
-                  <Link href={`/coin/${coin.id}`}>
-                    <div>
-                      {size.width >= parseInt(breakpoints.mobile)
-                        ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
-                        : coin.symbol.toUpperCase()}
+            <tr
+              key={coin.id}
+              className={`w-full text-[14px] md:text-[16px] mb-[6px]  ${
+                theme === "light" ? "bg-white" : "bg-[#191925]"
+              }`}
+            >
+              <td className={"rounded-l-lg p-[10px] max-w-[200px]"}>
+                <div className={"flex items-center overflow-hidden truncate"}>
+                  <img src={coin.image} className={"w-[32px] mr-[10px]"} />
+                  <Link href={`/coin/${coin.id}`} className={"flex"}>
+                    <div className={"hidden md:block md:mr-1"}>
+                      {coin.name}{" "}
+                    </div>
+                    <div className={"block md:hidden"}>
+                      {coin.symbol.toUpperCase()}
+                    </div>
+                    <div className={"hidden md:flex"}>
+                      ({coin.symbol.toUpperCase()})
                     </div>
                   </Link>
-                </NameAndImageContainer>
+                </div>
+              </td>
+              <td className={" p-[10px]"}>
+                <div>${abbreviateNumber(coin.current_price)}</div>
+                <div
+                  className={` block md:hidden
+                    ${
+                      coin.price_change_percentage_1h_in_currency >= 0
+                        ? "text-[#01f1e3]"
+                        : "text-[#fe2264]"
+                    }`}
+                >
+                  {" "}
+                  {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                </div>
+              </td>
+              {coin.price_change_percentage_1h_in_currency ? (
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div
+                    className={
+                      coin.price_change_percentage_1h_in_currency >= 0
+                        ? "text-[#01f1e3]"
+                        : "text-[#fe2264]"
+                    }
+                  >
+                    {" "}
+                    {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                  </div>
+                </td>
               ) : (
-                <StyledTd $left>
-                  <NameAndImageContainer>
-                    <CoinImage src={coin.image} />
-                    <Link href={`/coin/${coin.id}`}>
-                      <div style={{ display: "flex" }}>
-                        {size.width >= parseInt(breakpoints.mobile)
-                          ? coin.name + " " + `(${coin.symbol.toUpperCase()})`
-                          : coin.symbol.toUpperCase()}
-                      </div>
-                    </Link>
-                  </NameAndImageContainer>
-                </StyledTd>
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div>0</div>
+                </td>
               )}
 
-              {size.width >= parseInt(breakpoints.mobile) && (
-                <StyledTd>${abbreviateNumber(coin.current_price)}</StyledTd>
+              {coin.price_change_percentage_24h_in_currency ? (
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div
+                    className={
+                      coin.price_change_percentage_1h_in_currency >= 0
+                        ? "text-[#01f1e3]"
+                        : "text-[#fe2264]"
+                    }
+                  >
+                    {" "}
+                    {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                  </div>
+                </td>
+              ) : (
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div>0</div>
+                </td>
               )}
-              {size.width <= parseInt(breakpoints.mobile) && (
-                <StyledTd>
-                  <MobilePriceAnd24hContainer>
-                    ${abbreviateNumber(coin.current_price)}
-                    <PriceChangeDiv
-                      $green={
-                        Math.sign(
-                          coin.price_change_percentage_24h_in_currency
-                        ) === 1
-                      }
-                    >
-                      <ArrowAndPercentContainer>
-                        {Math.sign(
-                          coin.price_change_percentage_24h_in_currency
-                        ) !== 1 ? (
-                          <RedArrow />
-                        ) : (
-                          <GreenArrow />
-                        )}
-                        <PriceChangeDiv
-                          $green={
-                            Math.sign(
-                              coin.price_change_percentage_24h_in_currency
-                            ) === 1
-                          }
-                        >
-                          {coin.price_change_percentage_24h_in_currency.toFixed(
-                            2
-                          )}
-                          %
-                        </PriceChangeDiv>
-                      </ArrowAndPercentContainer>
-                    </PriceChangeDiv>
-                  </MobilePriceAnd24hContainer>
-                </StyledTd>
-              )}
-              {size.width >= parseInt(breakpoints.mobile) && (
-                <>
-                  {size.width >= parseInt(breakpoints.tablet) && (
-                    <>
-                      <StyledTd>
-                        {coin.price_change_percentage_1h_in_currency && (
-                          <ArrowAndPercentContainer>
-                            {Math.sign(
-                              coin.price_change_percentage_1h_in_currency
-                            ) !== 1 ? (
-                              <RedArrow />
-                            ) : (
-                              <GreenArrow />
-                            )}
-                            <PriceChangeDiv
-                              $green={
-                                Math.sign(
-                                  coin.price_change_percentage_1h_in_currency
-                                ) === 1
-                              }
-                            >
-                              {coin.price_change_percentage_1h_in_currency.toFixed(
-                                2
-                              )}
-                              %
-                            </PriceChangeDiv>
-                          </ArrowAndPercentContainer>
-                        )}
-                      </StyledTd>
-                      <StyledTd>
-                        {coin.price_change_percentage_24h_in_currency && (
-                          <ArrowAndPercentContainer>
-                            {Math.sign(
-                              coin.price_change_percentage_24h_in_currency
-                            ) !== 1 ? (
-                              <RedArrow />
-                            ) : (
-                              <GreenArrow />
-                            )}
-                            <PriceChangeDiv
-                              $green={
-                                Math.sign(
-                                  coin.price_change_percentage_24h_in_currency
-                                ) === 1
-                              }
-                            >
-                              {coin.price_change_percentage_24h_in_currency.toFixed(
-                                2
-                              )}
-                              %
-                            </PriceChangeDiv>
-                          </ArrowAndPercentContainer>
-                        )}
-                      </StyledTd>
-                      <StyledTd>
-                        {coin.price_change_percentage_7d_in_currency && (
-                          <ArrowAndPercentContainer>
-                            {Math.sign(
-                              coin.price_change_percentage_7d_in_currency
-                            ) !== 1 ? (
-                              <RedArrow />
-                            ) : (
-                              <GreenArrow />
-                            )}
-                            <PriceChangeDiv
-                              $green={
-                                Math.sign(
-                                  coin.price_change_percentage_7d_in_currency
-                                ) === 1
-                              }
-                            >
-                              {coin.price_change_percentage_7d_in_currency.toFixed(
-                                2
-                              )}
-                              %
-                            </PriceChangeDiv>
-                          </ArrowAndPercentContainer>
-                        )}
-                      </StyledTd>
-                    </>
-                  )}
 
-                  <StyledTd>
-                    <NumberSeparator>
-                      {coin.total_volume && coin.market_cap && (
-                        <>
-                          <div>{abbreviateNumber(coin.total_volume)}</div>
-                          <div>{abbreviateNumber(coin.market_cap)}</div>
-                        </>
-                      )}
-                    </NumberSeparator>
-                    <LevelIndicatorOuter>
-                      <LevelIndicatorInner
-                        style={{ width: `${findVolumeLevel(coin)}%` }}
-                      />
-                    </LevelIndicatorOuter>
-                  </StyledTd>
-                </>
+              {coin.price_change_percentage_7d_in_currency ? (
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div
+                    className={
+                      coin.price_change_percentage_1h_in_currency >= 0
+                        ? "text-[#01f1e3]"
+                        : "text-[#fe2264]"
+                    }
+                  >
+                    {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
+                  </div>
+                </td>
+              ) : (
+                <td className={"p-[10px] hidden lg:table-cell"}>
+                  <div>0</div>
+                </td>
               )}
-              <StyledTd $right>
-                <LineChartContainer>
+
+              <td className={"hidden md:table-cell p-[10px]"}>
+                <div className={"max-w-[220px]"}>
+                  <div className={"flex justify-between w-full"}>
+                    {coin.total_volume && coin.market_cap && (
+                      <>
+                        <div>{abbreviateNumber(coin.total_volume)}</div>
+                        <div>{abbreviateNumber(coin.market_cap)}</div>
+                      </>
+                    )}
+                  </div>
+                  <div className={"flex h-[5px] rounded-lg bg-[#40916c] "}>
+                    <div
+                      className={"h-[5px] rounded-lg bg-[#30e0a1]"}
+                      style={{ width: `${findVolumeLevel(coin)}%` }}
+                    />
+                  </div>
+                </div>
+              </td>
+
+              <td className={" rounded-r-lg p-[10px]"}>
+                <div className={"h-[50px] max-w-[175px]"}>
                   <TableLineChart coin={coin} />
-                </LineChartContainer>
-              </StyledTd>
-            </TableRow>
+                </div>
+              </td>
+            </tr>
           ))}
         </tbody>
-      </CoinTable>
+      </table>
       <div>
         <InfiniteScroll
           dataLength={tableCoins.length}
