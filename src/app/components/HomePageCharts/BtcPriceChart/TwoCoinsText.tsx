@@ -1,51 +1,5 @@
-import { breakpoints } from "breakpoints";
 import { abbreviateNumber } from "helper-functions";
-import styled from "styled-components";
 import { Coin } from "types";
-
-const TwoCoinsNameCont = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  margin-left: 2.5%;
-  margin-bottom: 2.5%;
-`;
-
-const CoinsText = styled.p`
-  color: gray;
-  font-size: 20px;
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 16px;
-  }
-`;
-
-const CoinOneColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: #ff0054;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 14px;
-    height: 14px;
-  }
-`;
-
-const CoinTwoColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: #2d00f7;
-  @media (max-width: ${breakpoints.mobile}) {
-    width: 14px;
-    height: 14px;
-  }
-`;
-
-const CoinAndColorCont = styled.div`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-`;
 
 type TwoCoinsTextProps = {
   selectedCoin: Coin[];
@@ -56,26 +10,34 @@ const TwoCoinsText = ({ selectedCoin }: TwoCoinsTextProps) => {
     <>
       {selectedCoin.length === 2 && (
         <>
-          <TwoCoinsNameCont>
-            <CoinAndColorCont>
-              <CoinsText>
+          <div className={"w-full flex gap-[20px] ml-[2.5%] mb-[2.5%]"}>
+            <div className={"flex items-center gap-[10px]"}>
+              <p className={"text-gray-500 text-[16px] md:[text-20px]"}>
                 {selectedCoin[0].symbol.toUpperCase() +
                   " " +
                   "$" +
                   abbreviateNumber(selectedCoin[0].current_price)}
-              </CoinsText>
-              <CoinTwoColor />
-            </CoinAndColorCont>
-            <CoinAndColorCont>
-              <CoinsText>
+              </p>
+              <div
+                className={
+                  "w-[14px] h-[14px] rounded-[5px] bg-[#2d00f7] md:w-[20px] md:h-[20px]"
+                }
+              />
+            </div>
+            <div className={"flex items-center gap-[10px]"}>
+              <p className={"text-gray-500 text-[16px] md:[text-20px]"}>
                 {selectedCoin[1].symbol.toUpperCase() +
                   " " +
                   "$" +
                   abbreviateNumber(selectedCoin[1].current_price)}
-              </CoinsText>
-              <CoinOneColor />
-            </CoinAndColorCont>
-          </TwoCoinsNameCont>
+              </p>
+              <div
+                className={
+                  "w-[14px] h-[14px] rounded-[5px] bg-[#ff0054] md:w-[20px] md:h-[20px]"
+                }
+              />
+            </div>
+          </div>
         </>
       )}
     </>

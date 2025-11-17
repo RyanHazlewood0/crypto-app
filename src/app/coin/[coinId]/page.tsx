@@ -1,5 +1,4 @@
 "use client";
-import styled from "styled-components";
 import Link from "next/link";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState, useEffect } from "react";
@@ -13,10 +12,6 @@ import { CoinPageObject } from "types";
 
 type CoinProps = {
   params: { coinId: string };
-};
-
-type ThemeProp = {
-  $light?: boolean;
 };
 
 export default function Coin({ params }: CoinProps) {

@@ -30,20 +30,21 @@ export default function Home() {
   return (
     <>
       {size.width > parseInt(breakpoints.mobile) && <CoinsAndConverterBtns />}
-      {selectedBtn === "Coins" && size.width > parseInt(breakpoints.mobile) && (
-        <>
-          <Carousel
-            setSelectedCoin={setSelectedCoin}
-            selectedCoin={selectedCoin}
-          />
-          <HomePageCharts selectedCoin={selectedCoin} dayCount={dayCount} />
-          <HomeChartTimeSelect
-            timeFrameSelected={timeFrameSelected}
-            setTimeFrameSelected={setTimeFrameSelected}
-            setDayCount={setDayCount}
-          />
-        </>
-      )}
+      {selectedBtn === "Coins" &&
+        size.width >= parseInt(breakpoints.mobile) && (
+          <>
+            <Carousel
+              setSelectedCoin={setSelectedCoin}
+              selectedCoin={selectedCoin}
+            />
+            <HomePageCharts selectedCoin={selectedCoin} dayCount={dayCount} />
+            <HomeChartTimeSelect
+              timeFrameSelected={timeFrameSelected}
+              setTimeFrameSelected={setTimeFrameSelected}
+              setDayCount={setDayCount}
+            />
+          </>
+        )}
       {selectedMobileBtn === "Overview" &&
         size.width < parseInt(breakpoints.mobile) && (
           <>

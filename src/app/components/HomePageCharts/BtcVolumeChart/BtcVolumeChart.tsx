@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +11,6 @@ import {
 import { abbreviateNumber } from "helper-functions";
 import { Coin } from "types";
 import { breakpoints } from "breakpoints";
-import useWindowSize from "windowSizeHook";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import { useState } from "react";
 import TwoCoinsText from "./TwoCoinsText";
@@ -26,72 +24,6 @@ ChartJS.register(
   Legend
 );
 
-const ChartContainer = styled.div<ThemeProp>`
-  width: 49%;
-  background: ${(props) => (props.$light ? "white" : "#191932")};
-  border-radius: 6px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media (max-width: ${breakpoints.mobile}) {
-    height: 200px;
-    width: 100%;
-  }
-`;
-
-const HeaderTextContainer = styled.div`
-  height: 30%;
-  padding: 2.5% 0 0 2.5%;
-`;
-
-const CoinText = styled.h1`
-  font-size: 24px;
-  color: gray;
-  margin-bottom: 10px;
-`;
-
-const VolumeText = styled.h2`
-  font-size: 28px;
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 20px;
-  }
-`;
-
-const DateText = styled.p`
-  font-size: 16px;
-  color: gray;
-`;
-
-const MobileHeaderTextContainer = styled.div`
-  height: 30%;
-  padding: 2.5% 0 0 2.5%;
-  display: flex;
-  justify-content: space-around;
-`;
-
-const MobileDateText = styled.div`
-  margin-right: auto;
-  font-size: 12px;
-`;
-
-const MobileCoinText = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const TwoCoinsHeader = styled.p<ThemeProp>`
-  font-size: 24px;
-  color: ${(props) => (props.$light ? "#353570" : "white")};
-`;
-
-const TwoCoinsHeadCont = styled.div`
-  display: flex;
-  align-items: baseline;
-  margin: 2.5% 0 0 2.5%;
-  gap: 15px;
-`;
-
 type CoinVolumeDataTypes = {
   volume: number;
   date: string;
@@ -102,17 +34,12 @@ type BtcVolumeChartProps = {
   coinVolumeData: CoinVolumeDataTypes[][];
 };
 
-type ThemeProp = {
-  $light: boolean;
-};
-
 const BtcVolumeChart = ({
   coinVolumeData,
   selectedCoin,
 }: BtcVolumeChartProps) => {
   const [coinColor1, setCoinColor1] = useState("#a100f2");
   const [coinColor2, setCoinColor2] = useState("#ff758f");
-  const size = useWindowSize();
   const { theme } = useCryptoContext();
 
   const barChartData = {
@@ -173,47 +100,39 @@ const BtcVolumeChart = ({
   };
 
   return (
-    <ChartContainer $light={theme === "light"}>
-      {size.width > parseInt(breakpoints.mobile) &&
-        selectedCoin.length === 1 && (
-          <HeaderTextContainer>
-            <CoinText>Volume 24h</CoinText>
-            <VolumeText>
+    <div
+      className={`w-full h-[200px] flex flex-col justify-between md:h-[400px] rounded-lg ${
+        theme === "light" ? "bg-white" : "bg-[#191932]"
+      }`}
+    >
+      {selectedCoin.length === 1 && (
+        <div className={"py-[2.5%] h-[30%] flex justify-around items-center"}>
+          <p className={"text-gray-500 text-[24px] mb-[10px]"}>Volume 24h</p>
+          <div className={"flex flex-col justify-around"}>
+            <p className={"text-[20px] md:text-[28px]"}>
               ${abbreviateNumber(selectedCoin[0].total_volume)}
-            </VolumeText>
-            <DateText>{new Date().toDateString()}</DateText>
-          </HeaderTextContainer>
-        )}
+            </p>
+            <p className={"text-gray-500 md:text-[16px]"}>
+              {new Date().toDateString()}
+            </p>
+          </div>
+        </div>
+      )}
 
-      {size.width < parseInt(breakpoints.mobile) &&
-        selectedCoin.length === 1 && (
-          <MobileHeaderTextContainer>
-            <MobileCoinText>{selectedCoin[0].name}</MobileCoinText>
-            <div>
-              <VolumeText>
-                ${abbreviateNumber(selectedCoin[0].total_volume)}
-              </VolumeText>
-              <MobileDateText>{new Date().toDateString()}</MobileDateText>
-            </div>
-          </MobileHeaderTextContainer>
-        )}
-
-      {size.width < parseInt(breakpoints.mobile) &&
-        selectedCoin.length === 2 && (
-          <MobileHeaderTextContainer>
-            <MobileDateText>{new Date().toDateString()}</MobileDateText>
-          </MobileHeaderTextContainer>
-        )}
-
-      {size.width > parseInt(breakpoints.mobile) &&
-        selectedCoin.length === 2 && (
-          <TwoCoinsHeadCont>
-            <TwoCoinsHeader $light={theme === "light"}>
-              Volume 24h
-            </TwoCoinsHeader>
-            <DateText>{new Date().toDateString()}</DateText>
-          </TwoCoinsHeadCont>
-        )}
+      {selectedCoin.length === 2 && (
+        <div className={"items-baseline flex gap-[15px] my-[2.5%]"}>
+          <p
+            className={`text-[24px] ${
+              theme === "light" ? "text-[#353570]" : "bg-text-white"
+            }`}
+          >
+            Volume 24h
+          </p>
+          <p className={"text-gray-500 md:text-[16px]"}>
+            {new Date().toDateString()}
+          </p>
+        </div>
+      )}
 
       <Bar
         options={options}
@@ -227,7 +146,7 @@ const BtcVolumeChart = ({
         coinColor2={coinColor2}
         setCoinColor2={setCoinColor2}
       />
-    </ChartContainer>
+    </div>
   );
 };
 
