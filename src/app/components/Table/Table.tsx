@@ -318,7 +318,7 @@ const Table = () => {
                         : "text-[#fe2264]"
                     }`}
                   >
-                    {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+                    {coin.price_change_percentage_24h_in_currency}%
                   </div>
                 </td>
                 {coin.price_change_percentage_1h_in_currency ? (
@@ -331,7 +331,7 @@ const Table = () => {
                       }
                     >
                       {" "}
-                      {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+                      {coin.price_change_percentage_1h_in_currency?.toFixed(2)}%
                     </div>
                   </td>
                 ) : (
