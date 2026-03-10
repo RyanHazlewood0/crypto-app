@@ -20,6 +20,7 @@ export default function Coin({ params }: CoinProps) {
   const [thisCoinData, setThisCoinData] = useState<CoinPageObject | null>(null);
   const [copyClicked, setCopyClicked] = useState(false);
   const [starClicked, setStarClicked] = useState(false);
+  const [topHoldersClicked, setTopHoldersClicked] = useState(false);
 
   const {
     fiatCurrency,
@@ -514,11 +515,18 @@ export default function Coin({ params }: CoinProps) {
                   className={`w-full flex py-2.5 items-center justify-center rounded-lg px-2.5 ${
                     theme === "light" ? "bg-white" : "bg-[#1e1932]"
                   }`}
+                  onClick={() => setTopHoldersClicked(true)}
                 >
                   Click to show top holders
                 </button>
               </div>
             </div>
+            {topHoldersClicked && (
+              <TopHolders
+                setTopHoldersClicked={setTopHoldersClicked}
+                thisCoinData={thisCoinData}
+              />
+            )}
           </>
         )}
       </div>

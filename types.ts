@@ -46,6 +46,7 @@ export type Coin = {
     description: {
       en: string;
     };
+    asset_platform_id: string;
   }
   
   export type PortfolioCoin = {
