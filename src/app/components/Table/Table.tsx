@@ -49,7 +49,7 @@ const Table = () => {
     const getCoinData = async () => {
       try {
         const response1: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
         );
         const fetchedData1: Coin[] = await response1.json();
         setTableCoins(fetchedData1);
@@ -65,7 +65,7 @@ const Table = () => {
 
   const getMoreData = async () => {
     const response: Response = await fetch(
-      `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`
+      `https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=${fiatCurrency}&order=market_cap_desc&per_page=50&page=${currentPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_pro_api_key=${apiKey}`,
     );
     const data: Coin[] = await response.json();
     setTableCoins([...tableCoins, ...data]);
@@ -74,7 +74,7 @@ const Table = () => {
 
   const getSortOption = (
     e: React.MouseEvent<HTMLSpanElement>,
-    order: string
+    order: string,
   ) => {
     setSortOrder(order);
   };
@@ -318,7 +318,7 @@ const Table = () => {
                         : "text-[#fe2264]"
                     }`}
                   >
-                    {coin.price_change_percentage_24h_in_currency}%
+                    {coin.price_change_percentage_24h_in_currency?.toFixed(2)}%
                   </div>
                 </td>
                 {coin.price_change_percentage_1h_in_currency ? (
