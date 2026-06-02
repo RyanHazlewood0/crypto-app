@@ -264,6 +264,7 @@ const AddAssetForm = ({
       priceChange24h: thisCoin.price_change_percentage_24h_in_currency,
       symbol: thisCoin.symbol,
       id: thisCoin.id,
+      percentOfTotal: 69,
     };
 
     const filteredCoins = portfolioCoins.filter(

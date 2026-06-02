@@ -62,6 +62,7 @@ export type Coin = {
     priceChange24h: number;
     symbol: string;
     id: string;
+    percentOfTotal: number,
   }
 
   export type CurrencyValue = {
