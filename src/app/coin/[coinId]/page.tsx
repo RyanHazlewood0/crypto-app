@@ -36,7 +36,7 @@ export default function Coin({ params }: CoinProps) {
       setHasError(false);
       try {
         const response: Response = await fetch(
-          `https://pro-api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`
+          `https://pro-api.coingecko.com/api/v3/coins/${params.coinId}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false&x_cg_pro_api_key=${apiKey}`,
         );
         const fetchedData: CoinPageObject = await response.json();
         setThisCoinData(fetchedData);
@@ -67,7 +67,7 @@ export default function Coin({ params }: CoinProps) {
   const handleStarClick = () => {
     if (watchListCoins.some((coin) => coin.name === thisCoinData.name)) {
       const updatedList = watchListCoins.filter(
-        (coin) => coin.name !== thisCoinData.name
+        (coin) => coin.name !== thisCoinData.name,
       );
       const myJSON = JSON.stringify([...updatedList]);
       localStorage.setItem("testJSON", myJSON);
@@ -79,6 +79,8 @@ export default function Coin({ params }: CoinProps) {
         image: thisCoinData.image.small,
         symbol: thisCoinData.symbol,
         id: thisCoinData.id,
+        total_volume: thisCoinData.market_data.total_volume.usd,
+        market_cap: thisCoinData.market_data.market_cap.usd,
       };
       const myJSON = JSON.stringify([...watchListCoins, watchListCoin]);
       localStorage.setItem("testJSON", myJSON);
@@ -155,7 +157,7 @@ export default function Coin({ params }: CoinProps) {
                 <h1 style={{ fontSize: "36px", fontWeight: "bold" }}>
                   $
                   {abbreviateNumber(
-                    thisCoinData.market_data.current_price[fiatCurrency]
+                    thisCoinData.market_data.current_price[fiatCurrency],
                   )}
                 </h1>
                 <div>
@@ -173,7 +175,7 @@ export default function Coin({ params }: CoinProps) {
                       <p style={{ fontSize: "20px" }}>
                         $
                         {abbreviateNumber(
-                          thisCoinData.market_data.ath[fiatCurrency]
+                          thisCoinData.market_data.ath[fiatCurrency],
                         )}
                       </p>{" "}
                     </div>
@@ -183,7 +185,7 @@ export default function Coin({ params }: CoinProps) {
                       }`}
                     >
                       {formatDate(
-                        thisCoinData.market_data.ath_date[fiatCurrency]
+                        thisCoinData.market_data.ath_date[fiatCurrency],
                       )}
                     </p>
                   </div>
@@ -201,7 +203,7 @@ export default function Coin({ params }: CoinProps) {
                       <p style={{ fontSize: "20px" }}>
                         $
                         {abbreviateNumber(
-                          thisCoinData.market_data.atl[fiatCurrency]
+                          thisCoinData.market_data.atl[fiatCurrency],
                         )}
                       </p>{" "}
                     </div>
@@ -211,7 +213,7 @@ export default function Coin({ params }: CoinProps) {
                       }`}
                     >
                       {formatDate(
-                        thisCoinData.market_data.atl_date[fiatCurrency]
+                        thisCoinData.market_data.atl_date[fiatCurrency],
                       )}
                     </p>
                   </div>
@@ -235,7 +237,7 @@ export default function Coin({ params }: CoinProps) {
                     <div className={"text-[20px]"}>
                       $
                       {abbreviateNumber(
-                        thisCoinData.market_data.market_cap[fiatCurrency]
+                        thisCoinData.market_data.market_cap[fiatCurrency],
                       )}
                     </div>
                   </div>
@@ -255,7 +257,7 @@ export default function Coin({ params }: CoinProps) {
                       {abbreviateNumber(
                         thisCoinData.market_data.fully_diluted_valuation[
                           fiatCurrency
-                        ]
+                        ],
                       )}
                     </p>
                   </div>
@@ -273,7 +275,7 @@ export default function Coin({ params }: CoinProps) {
                     <p className={"text-[20px]"}>
                       $
                       {abbreviateNumber(
-                        thisCoinData.market_data.total_volume[fiatCurrency]
+                        thisCoinData.market_data.total_volume[fiatCurrency],
                       )}
                     </p>
                   </td>
@@ -290,7 +292,7 @@ export default function Coin({ params }: CoinProps) {
                   <div className={"flex items-center py-2.5 px-0"}>
                     <p className={"text-[20px]"}>
                       {abbreviateNumber(
-                        thisCoinData.market_data.circulating_supply
+                        thisCoinData.market_data.circulating_supply,
                       )}
                     </p>
                   </div>
@@ -353,7 +355,7 @@ export default function Coin({ params }: CoinProps) {
                     <div className={"text-[20px]"}>
                       $
                       {abbreviateNumber(
-                        thisCoinData.market_data.market_cap[fiatCurrency]
+                        thisCoinData.market_data.market_cap[fiatCurrency],
                       )}
                     </div>
                   </td>
@@ -373,7 +375,7 @@ export default function Coin({ params }: CoinProps) {
                       {abbreviateNumber(
                         thisCoinData.market_data.fully_diluted_valuation[
                           fiatCurrency
-                        ]
+                        ],
                       )}
                     </p>
                   </td>
@@ -391,7 +393,7 @@ export default function Coin({ params }: CoinProps) {
                     <p className={"text-[20px]"}>
                       $
                       {abbreviateNumber(
-                        thisCoinData.market_data.total_volume[fiatCurrency]
+                        thisCoinData.market_data.total_volume[fiatCurrency],
                       )}
                     </p>
                   </td>
@@ -408,7 +410,7 @@ export default function Coin({ params }: CoinProps) {
                   <td className={"flex items-center py-2.5 px-0"}>
                     <p className={"text-[20px]"}>
                       {abbreviateNumber(
-                        thisCoinData.market_data.circulating_supply
+                        thisCoinData.market_data.circulating_supply,
                       )}
                     </p>
                   </td>

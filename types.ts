@@ -75,4 +75,6 @@ export type Coin = {
     image: string;
     symbol: string;
     id: string;
+    total_volume: number;
+    market_cap: number;
   }

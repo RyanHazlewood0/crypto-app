@@ -39,7 +39,6 @@ const Table = () => {
   const [trendingModalOpen, setTrendingModalOpen] = useState(false);
 
   const { fiatCurrency, theme, coins } = useCryptoContext();
-  const size = useWindowSize();
 
   const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
