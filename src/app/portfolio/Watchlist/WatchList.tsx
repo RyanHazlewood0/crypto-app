@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useCryptoContext } from "@/app/contexts/CryptoProvider";
 import CloseIcon from "../svg/close-circle";
 import Link from "next/link";
@@ -8,10 +8,17 @@ interface WatchListProps {
   setWatchListOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+const sortingOptions = ["Highest Market Cap", "Highest 24 Hour Volume"];
+
 const WatchList = ({ setWatchListOpen }: WatchListProps) => {
+  const [sortOrder, setSortOrder] = useState("Highest Market Cap");
   const { theme, watchListCoins, setWatchListCoins } = useCryptoContext();
   const handleCloseWatchList = () => {
     setWatchListOpen(false);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(e.target.value);
   };
 
   const handleRemoveItem = (id) => {
@@ -19,6 +26,14 @@ const WatchList = ({ setWatchListOpen }: WatchListProps) => {
     setWatchListCoins(updatedList);
     localStorage.setItem("testJSON", JSON.stringify(updatedList));
   };
+
+  const sortedCoins = [...watchListCoins].sort((a, b) => {
+    if (sortOrder === "Highest 24 Hour Volume") {
+      return b.total_volume - a.total_volume;
+    } else if (sortOrder === "Highest Market Cap") {
+      return b.market_cap - a.market_cap;
+    }
+  });
 
   return (
     <ul
@@ -32,9 +47,24 @@ const WatchList = ({ setWatchListOpen }: WatchListProps) => {
           <CloseIcon />
         </div>
       </div>
-
-      {watchListCoins.length > 0 &&
-        watchListCoins.map((coin) => (
+      <div className="flex gap-2">
+        <h2 className="text-lg">Sort by:</h2>
+        <select
+          className={`p-1 rounded-md border ${
+            theme === "light"
+              ? "text-black border-black bg-white"
+              : "text-white border-white bg-[#5e60ce]"
+          }`}
+          onChange={handleSortChange}
+          value={sortOrder}
+        >
+          {sortingOptions.map((sortOption) => (
+            <option key={sortOption}>{sortOption}</option>
+          ))}
+        </select>
+      </div>
+      {sortedCoins.length > 0 &&
+        sortedCoins.map((coin) => (
           <li key={coin.id} className="flex justify-between">
             <Link key={coin.id} href={`/coin/${coin.id}`}>
               <div className="flex gap-3">
